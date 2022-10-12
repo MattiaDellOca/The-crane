@@ -15,6 +15,8 @@
 
 // C/C++:
 #include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 
 
@@ -121,7 +123,10 @@ bool LIB_API SimpleDynLib::doNothing()
         return false;
     }
 
-    std::cout << "If you read this, your library is working as expected" << std::endl;
+    // FIXME: Test GLM
+    glm::vec3 vec(glm::vec3(1,2,3));
+    std::cout << "If you read this, your library is working as expected!" << std::endl;
+    std::cout << "GLM TEST: " << glm::to_string(vec) << std::endl;
 
     // Done:
     return true;
