@@ -4,4 +4,5 @@ int main(int argc, char* argv[]) {
    DynLib::init();
    DynLib::doNothing();
    DynLib::free();
+
 }
