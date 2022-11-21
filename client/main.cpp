@@ -10,7 +10,7 @@ void myKeyboardCallback(unsigned char key, int x, int y) {
 
 int main(int argc, char* argv[]) {
    cout << "Hello world!" << endl;
-   DynLib::init();
+   DynLib::init(&argc, argv);
    /*
    MyEngine::init("My OpenGL window", 640, 480);
    MyEngine::setKeyboardCallback(myKeyboardCallback);

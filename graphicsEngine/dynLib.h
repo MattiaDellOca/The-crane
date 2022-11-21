@@ -35,7 +35,7 @@ public:    //
    //////////           
    
   // Init/free:
-   static bool init();
+   static bool init(int*, char**);
    static bool free();   
    // Event manager:
    static bool doNothing();

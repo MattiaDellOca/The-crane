@@ -22,6 +22,9 @@
    //FreeGLUT:
 #include <GL/freeglut.h>
 
+    //Engine:
+#include "Engine.h"
+
 
 ////////////
 // STATIC //
@@ -69,7 +72,7 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
  * Initialization method. Call this before any other Eureka function.
  * @return true on success, false on error
  */
-bool LIB_API DynLib::init()
+bool LIB_API DynLib::init(int* argc, char** argv)
 {
    // Prevent double init:
    if (initFlag)
@@ -77,8 +80,13 @@ bool LIB_API DynLib::init()
       std::cout << "ERROR: class already initialized" << std::endl;
       return false;
    }
-   // Done:
+   // Set flag
    initFlag = true;
+
+   // Init engine
+   Engine* engine = engine->getInstance();
+   engine->init(argc, argv);
+
    return true;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
