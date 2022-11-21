@@ -29,8 +29,6 @@
 
    // Reserved pointer:
 bool DynLib::initFlag = false;
-bool MyEngine::initFlag = false;
-MyEngine* MyEngine::myEngine = nullptr;
 
 
 //////////////
