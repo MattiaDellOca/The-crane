@@ -40,3 +40,7 @@ void Camera::setNear(float near) {
 void Camera::setFar(float far) {
 	m_far = far;
 }
+
+void Camera::render() {
+	//TODO
+}

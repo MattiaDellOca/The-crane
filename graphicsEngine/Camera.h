@@ -1,3 +1,4 @@
+#pragma once
 //////////////
 // #INCLUDE //
 //////////////
@@ -30,4 +31,5 @@ public:
 	void setProjection(glm::mat4);
 	void setNear(float);
 	void setFar(float);
+	void virtual render() override;
 };

@@ -22,7 +22,7 @@ const std::vector<Node*> Node::getChildren() {
 }
 
 int Node::getNumberOfChildren() {
-	return m_children.size();
+	return static_cast<int>(m_children.size());
 }
 
 const Node* Node::getChild(int pos) {
@@ -54,4 +54,8 @@ bool Node::removeChild(Node* child) {
 	}
 
 	return false;
+}
+
+void Node::render() {
+	//TODO
 }

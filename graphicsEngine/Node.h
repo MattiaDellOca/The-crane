@@ -1,3 +1,5 @@
+#pragma once
+
 //////////////
 // #INCLUDE //
 //////////////
@@ -30,4 +32,5 @@ public:
 	void setParent(Node*);
 	void addChild(Node*);
 	bool removeChild(Node*);
+	void virtual render() override;
 };

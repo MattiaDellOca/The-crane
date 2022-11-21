@@ -1,3 +1,5 @@
+#pragma once
+
 //////////////
 // #INCLUDE //
 //////////////
@@ -17,11 +19,11 @@ protected:
 	static unsigned int m_incemental_id;
 
 public:
-	BaseEntity(std::string) {};
+	BaseEntity(std::string);
 	// Destructor?
 
 	void setName(std::string);
 	const std::string getName();
 	const unsigned int getId();
-	void virtual render();
+	void virtual render() = 0;
 };
