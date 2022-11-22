@@ -4,7 +4,7 @@
 //////////////
 
 	// Project classes
-#include "Node.h"
+#include "node.h"
 
 	// C/C++
 #include <string>

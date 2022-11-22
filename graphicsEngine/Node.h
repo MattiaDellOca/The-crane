@@ -5,15 +5,14 @@
 //////////////
 
 	// Project classes
-#include "BaseEntity.h"
+#include "baseentity.h"
 
 	// C/C++
 #include <vector>
 #include <string>
 
-	// GLM:
+	// GLM
 #include <glm/glm.hpp>
-
 
 class Node : public BaseEntity {
 protected:

@@ -86,18 +86,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BaseEntity.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="dynLib.cpp" />
-    <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="baseentity.cpp" />
+    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="engine.cpp" />
+    <ClCompile Include="node.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseEntity.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="dynLib.h" />
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="Node.h" />
+    <ClInclude Include="baseentity.h" />
+    <ClInclude Include="camera.h" />
+    <ClInclude Include="engine.h" />
+    <ClInclude Include="node.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

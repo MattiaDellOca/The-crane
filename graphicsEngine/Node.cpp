@@ -3,7 +3,7 @@
 //////////////
 
 	// Library main include
-#include "Node.h"
+#include "node.h"
 
 
 /////////////

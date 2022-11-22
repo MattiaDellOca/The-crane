@@ -3,7 +3,7 @@
 //////////////
 
 	// Library main include
-#include "Camera.h"
+#include "camera.h"
 
 
 /////////////

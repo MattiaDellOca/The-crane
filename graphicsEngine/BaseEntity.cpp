@@ -3,8 +3,7 @@
 //////////////
 
 	// Library main include
-#include "BaseEntity.h"
-
+#include "baseentity.h"
 
 /////////////
 // CLASSES //
