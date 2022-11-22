@@ -1,35 +1,31 @@
 #include "main.h"
 
-void myKeyboardCallback(unsigned char key, int x, int y) {
-
+void keyboardCallback(unsigned char key, int x, int y) {
+   cout << "Pressed: " << key << endl;
    if (key == ' ') {
       cout << "spacebar pressed" << endl;
    }
 }
 
-
 int main(int argc, char* argv[]) {
    cout << "Hello world!" << endl;
-   DynLib::init(&argc, argv);
-   /*
-   MyEngine::init("My OpenGL window", 640, 480);
-   MyEngine::setKeyboardCallback(myKeyboardCallback);
-   MyEngine::setBackgroundColor(0.2f, 0.2f, 0.7f);
-   //while (MyEngine::isRunning()) {
-   while (true) {
+   Engine::init("My OpenGL window", 650, 650);
+   Engine::setKeyboardFunction(keyboardCallback);
+   Engine::setBackgroundColor(0.2f, 0.2f, 0.7f);
 
-   
-      MyEngine::clearWindow();
-      
-      //draw Something
-      MyEngine::doSomething();
-      
-      MyEngine::swapBuffers(); 
-   }
-      //} 
-   MyEngine::free();
-   */
+   while (Engine::isRunning()) {
+       while (true) {
+          // Clear image
+          Engine::clear();
+
+          // Force engine to re-render everything!
+          Engine::render();
+        
+          // Swap buffers!
+          Engine::swapBuffers(); 
+       }
+   } 
+
+   Engine::free();
    return 0;
-
-
 }
