@@ -5,13 +5,29 @@
 	// Library main include
 #include "node.h"
 
-
 /////////////
 // CLASSES //
 /////////////
 
-Node::Node(std::string name, glm::mat4 matrix) : 
-	BaseEntity(name), m_matrix{ matrix } {  };
+Node::Node(std::string name, glm::mat4 matrix) :
+	Object(name), m_matrix{ matrix }, m_parent{ nullptr } {  };
+
+/*
+Node::~Node() {
+	// Delete all allocated vars
+	delete& m_matrix;
+
+	// Empty each vector item + clear
+	for (Node* node : m_children) {
+		delete node;
+	}
+	m_children.clear();
+	delete& m_children;
+
+	// Delete parent node
+	delete m_parent;
+}
+*/
 
 const glm::mat4 Node::getMatrix() const {
 	return m_matrix;

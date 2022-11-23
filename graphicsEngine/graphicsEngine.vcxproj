@@ -86,7 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="baseentity.cpp" />
+    <ClCompile Include="object.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="node.cpp" />
@@ -94,7 +94,7 @@
     <ClCompile Include="perspectiveCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="baseentity.h" />
+    <ClInclude Include="object.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="cameraType.h" />
     <ClInclude Include="engine.h" />

@@ -7,20 +7,18 @@
 	// C/C++
 #include <string>
 
-
 /////////////
 // CLASSES //
 /////////////
 
-class BaseEntity {
+class Object {
 protected:
 	unsigned int m_id;
 	std::string m_name;
 	static unsigned int m_incemental_id;
-
 public:
-	BaseEntity(std::string);
-	// Destructor?
+	Object(std::string);
+	// virtual ~Object() = 0;
 
 	void setName(std::string);
 	const std::string getName();

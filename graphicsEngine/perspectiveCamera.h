@@ -19,6 +19,6 @@
 
 class PerspectiveCamera : public Camera {
 public:
-	PerspectiveCamera(std::string name, unsigned int width, unsigned int height, float far, float near, float fov = 45.0f);
-	void render();
+	PerspectiveCamera(std::string name, unsigned int width, unsigned int height, float near, float far, float fov = 45.0f);
+	virtual void render();
 };

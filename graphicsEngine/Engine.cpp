@@ -62,6 +62,11 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 }
 #endif
 
+Engine::Engine() : m_scene_graph{ nullptr } {};
+Engine::~Engine() {
+	delete m_scene_graph;
+}
+
 /**
  * Initialization method. Call this before any other Eureka function.
  * @return true on success, false on error

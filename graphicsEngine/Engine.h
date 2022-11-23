@@ -24,9 +24,7 @@
 /////////////
 // CLASSES //
 /////////////
-#include "node.h"
 #include "camera.h"
-#include <functional>
 
 /**
  * @brief Simple static class example.
@@ -35,10 +33,8 @@ class LIB_API Engine {
 private:
 	Node* m_scene_graph;
 
-	Engine() : m_scene_graph{nullptr} {};
-	~Engine() {
-		delete m_scene_graph;
-	}
+	Engine();
+	~Engine();
 	static bool m_initFlag;
 	static Engine* m_instance;
 	static bool m_isRunning;
