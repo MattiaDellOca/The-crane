@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -90,12 +90,17 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="node.cpp" />
+    <ClCompile Include="orthographicCamera.cpp" />
+    <ClCompile Include="perspectiveCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="baseentity.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="cameraType.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="node.h" />
+    <ClInclude Include="orthographicCamera.h" />
+    <ClInclude Include="perspectiveCamera.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

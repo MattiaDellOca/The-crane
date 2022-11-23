@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\camera">
+      <UniqueIdentifier>{bc443dde-1cda-495e-94a2-37038bdcdaf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\camera">
+      <UniqueIdentifier>{6e6115f0-e82d-426a-83ad-0cb4b50d9008}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="baseentity.cpp">
@@ -27,6 +33,12 @@
     <ClCompile Include="engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="orthographicCamera.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="perspectiveCamera.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="baseentity.h">
@@ -40,6 +52,15 @@
     </ClInclude>
     <ClInclude Include="engine.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orthographicCamera.h">
+      <Filter>Header Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="perspectiveCamera.h">
+      <Filter>Header Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="cameraType.h">
+      <Filter>Header Files\camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
