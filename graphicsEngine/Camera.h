@@ -5,6 +5,7 @@
 
 	// Project classes
 #include "node.h"
+#include "cameraType.h"
 
 	// C/C++
 #include <string>
@@ -19,17 +20,14 @@
 
 class Camera : public Node {
 protected:
-	glm::mat4 m_projection;
 	float m_near;
 	float m_far;
+	CameraType m_type;
 public:
-	Camera(std::string, glm::mat4, glm::mat4, float, float);
-	const glm::mat4& getProjection();
-	const glm::mat4& getInverse();
+	Camera(CameraType type, std::string name, glm::mat4 matrix, float near, float far);
 	float getNear();
 	float getFar();
-	void setProjection(glm::mat4);
 	void setNear(float);
 	void setFar(float);
-	void virtual render() override;
+	void virtual render() = 0;
 };
