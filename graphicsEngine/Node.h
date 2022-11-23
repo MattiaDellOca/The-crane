@@ -19,7 +19,6 @@ protected:
 	glm::mat4 m_matrix;
 	std::vector<Node*> m_children;
 	Node* m_parent;
-
 public:
 	Node(std::string, glm::mat4);
 	const glm::mat4 getMatrix() const;
