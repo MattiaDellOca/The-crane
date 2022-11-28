@@ -94,6 +94,7 @@
     <ClCompile Include="perspectiveCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lib.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="cameraType.h" />

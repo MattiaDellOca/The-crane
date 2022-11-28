@@ -9,7 +9,7 @@
 // CLASSES //
 /////////////
 
-unsigned int Object::m_incemental_id = 0;
+unsigned int LIB_API Object::m_incemental_id = 0;
 
 Object::Object(std::string name) :
 	m_id{ m_incemental_id++ },
@@ -17,14 +17,14 @@ Object::Object(std::string name) :
 
 // Object::~Object() {}
 
-void Object::setName(std::string name) {
+void LIB_API Object::setName(std::string name) {
 	m_name = name;
 }
 
-const std::string Object::getName() {
+const LIB_API std::string Object::getName() {
 	return m_name;
 }
 
-const unsigned int Object::getId() {
+const LIB_API unsigned int Object::getId() {
 	return m_id;
 }

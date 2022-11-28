@@ -62,5 +62,8 @@
     <ClInclude Include="cameraType.h">
       <Filter>Header Files\camera</Filter>
     </ClInclude>
+    <ClInclude Include="lib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

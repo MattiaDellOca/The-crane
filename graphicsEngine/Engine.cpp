@@ -62,10 +62,51 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 }
 #endif
 
+
+/////////////
+// PRIVATE //
+/////////////
+
+
 Engine::Engine() : m_scene_graph{ nullptr } {};
 Engine::~Engine() {
 	delete m_scene_graph;
 }
+
+
+void Engine::reshapeCallback(int width, int height) {
+	std::cout << "[Reshape callback called] -> " << width << "x" << height << std::endl;
+
+	// Update viewport size:
+	glViewport(0, 0, width, height);
+
+	// Refresh projection matrices:
+	// perspective = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 100.0f);
+	// ortho = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
+}
+
+void Engine::displayCallback() {
+	std::cout << "DISPLAY CALLBACK" << std::endl;
+}
+
+
+
+////////////
+// PUBLIC //
+////////////
+
+
+/**
+* Get Engine instance
+* @return Engine instance
+*/
+Engine* Engine::getInstance() {
+	if (!m_instance) {
+		m_instance = new Engine();
+	}
+	return m_instance;
+}
+
 
 /**
  * Initialization method. Call this before any other Eureka function.
@@ -114,46 +155,6 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	return true;
 }
 
-void LIB_API Engine::run(void (*renderFunction)()) {
-	glutDisplayFunc(renderFunction);
-	glutMainLoop();
-
-	// Stopped running, set m_isRunning to false
-	m_isRunning = false;
-}
-
-/**
- * Deinitialization method.
- * @return true on success, false on error
- */
-bool LIB_API Engine::free()
-{
-	// Really necessary?
-	if (!m_initFlag)
-	{
-		std::cout << "ERROR: class not initialized" << std::endl;
-		return false;
-	}
-
-	// Delete Engine instance
-	delete m_instance;
-
-	// Done:
-	m_initFlag = false;
-	return true;
-}
-
-
-/**
-* Get Engine instance
-* @return Engine instance
-*/
-Engine* Engine::getInstance() {
-	if (!m_instance) {
-		m_instance = new Engine();
-	}
-	return m_instance;
-}
 
 /**
 * Clear buffers
@@ -185,6 +186,7 @@ void LIB_API Engine::end3D() {
 	// Stop drawing
 }
 
+
 /**
 * Swap back-buffer and front-buffer to show current render result
 */
@@ -193,31 +195,41 @@ void LIB_API Engine::swapBuffers() {
 	glutSwapBuffers();
 }
 
+/**
+ * Deinitialization method.
+ * @return true on success, false on error
+ */
+bool LIB_API Engine::free()
+{
+	// Really necessary?
+	if (!m_initFlag)
+	{
+		std::cout << "ERROR: class not initialized" << std::endl;
+		return false;
+	}
+
+	// Delete Engine instance
+	delete m_instance;
+
+	// Done:
+	m_initFlag = false;
+	return true;
+}
+
 
 void LIB_API Engine::render() {
 	std::cout << "RENDERING Scene Graph..." << std::endl;
 	glutPostRedisplay();
 }
 
-void LIB_API Engine::reshapeCallback(int width, int height) {
-	std::cout << "[Reshape callback called] -> " << width << "x" << height << std::endl;
+void LIB_API Engine::run(void (*renderFunction)()) {
+	glutDisplayFunc(renderFunction);
+	glutMainLoop();
 
-	// Update viewport size:
-	glViewport(0, 0, width, height);
-
-	// Refresh projection matrices:
-	// perspective = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 100.0f);
-	// ortho = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
+	// Stopped running, set m_isRunning to false
+	m_isRunning = false;
 }
 
-void LIB_API Engine::displayCallback() {
-	std::cout << "DISPLAY CALLBACK" << std::endl;
-}
-
-
-bool LIB_API Engine::isRunning() {
-	return m_isRunning;
-}
 
 //
 // Callback setters
@@ -237,3 +249,9 @@ void LIB_API Engine::setSpecialKeyboardFunction(void (*callback)(int,int,int))
 void LIB_API Engine::setKeyboardFunction(void (*callback)(unsigned char,int,int)) {
 	glutKeyboardFunc(callback);
 }
+
+
+bool LIB_API Engine::isRunning() {
+	return m_isRunning;
+}
+

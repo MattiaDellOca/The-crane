@@ -4,6 +4,9 @@
 // #INCLUDE //
 //////////////
 
+	// Library main include
+#include "lib.h"
+
 	// C/C++
 #include <string>
 
@@ -11,7 +14,7 @@
 // CLASSES //
 /////////////
 
-class Object {
+class LIB_API Object {
 protected:
 	unsigned int m_id;
 	std::string m_name;

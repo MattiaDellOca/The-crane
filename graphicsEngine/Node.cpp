@@ -29,15 +29,15 @@ Node::~Node() {
 }
 */
 
-const glm::mat4 Node::getMatrix() const {
+const glm::mat4 LIB_API Node::getMatrix() const {
 	return m_matrix;
 }
 
-const std::vector<Node*> Node::getChildren() {
+const std::vector<Node*> LIB_API Node::getChildren() {
 	return m_children;
 }
 
-int Node::getNumberOfChildren() {
+int LIB_API Node::getNumberOfChildren() {
 	return static_cast<int>(m_children.size());
 }
 
@@ -49,19 +49,19 @@ const Node* Node::getParent() {
 	return m_parent;
 }
 
-void Node::setMatrix(glm::mat4 matrix) {
+void LIB_API Node::setMatrix(glm::mat4 matrix) {
 	m_matrix = matrix;
 }
 
-void Node::setParent(Node* parent) {
+void LIB_API Node::setParent(Node* parent) {
 	m_parent = parent;
 }
 
-void Node::addChild(Node* child) {
+void LIB_API Node::addChild(Node* child) {
 	m_children.push_back(child);
 }
 
-bool Node::removeChild(Node* child) {
+bool LIB_API Node::removeChild(Node* child) {
 	for (int i = 0; i < getNumberOfChildren(); i++) {
 		if (child->m_id == getChild(i)->m_id) {
 			m_children.erase(m_children.begin() + i);
@@ -72,6 +72,6 @@ bool Node::removeChild(Node* child) {
 	return false;
 }
 
-void Node::render() {
+void LIB_API Node::render() {
 	//TODO
 }

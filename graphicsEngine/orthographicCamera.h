@@ -17,7 +17,7 @@
 // CLASSES //
 /////////////
 
-class OrthographicCamera : public Camera {
+class LIB_API OrthographicCamera : public Camera {
 public:
 	OrthographicCamera(std::string name, unsigned int width, unsigned int height);
 	void render();

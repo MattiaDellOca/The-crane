@@ -1,3 +1,3 @@
 #pragma once
 
-enum CameraType { PERSPECTIVE, ORTHOGRAPHIC };
+enum LIB_API CameraType { PERSPECTIVE, ORTHOGRAPHIC };

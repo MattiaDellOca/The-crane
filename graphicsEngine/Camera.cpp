@@ -13,22 +13,22 @@
 Camera::Camera(CameraType type, std::string name, glm::mat4 matrix, float near, float far) :
 	Node(name, matrix), m_near{ near }, m_far{ far }, m_type{ type } {};
 
-float Camera::getNear() {
+float LIB_API Camera::getNear() {
 	return m_near;
 }
 
-float Camera::getFar() {
+float LIB_API Camera::getFar() {
 	return m_far;
 }
 
-void Camera::setNear(float near) {
+void LIB_API Camera::setNear(float near) {
 	m_near = near;
 }
 
-void Camera::setFar(float far) {
+void LIB_API Camera::setFar(float far) {
 	m_far = far;
 }
 
-void Camera::render() {
+void LIB_API Camera::render() {
 	//TODO
 }

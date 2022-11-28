@@ -18,7 +18,7 @@
 // CLASSES //
 /////////////
 
-class Camera : public Node {
+class LIB_API Camera : public Node {
 protected:
 	float m_near;
 	float m_far;

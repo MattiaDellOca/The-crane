@@ -15,7 +15,7 @@
 	// GLM
 #include <glm/glm.hpp>
 
-class Node : public Object {
+class LIB_API Node : public Object {
 protected:
 	glm::mat4 m_matrix;
 	std::vector<Node*> m_children;
