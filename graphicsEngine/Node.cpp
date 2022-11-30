@@ -9,7 +9,7 @@
 // CLASSES //
 /////////////
 
-Node::Node(std::string name, glm::mat4 matrix) :
+Node::Node(std::string * name, glm::mat4 * matrix) :
 	Object(name), m_matrix{ matrix }, m_parent{ nullptr } {  };
 
 /*
@@ -30,26 +30,26 @@ Node::~Node() {
 */
 
 const glm::mat4 LIB_API Node::getMatrix() const {
-	return m_matrix;
+	return *m_matrix;
 }
 
 const std::vector<Node*> LIB_API Node::getChildren() {
-	return m_children;
+	return *m_children;
 }
 
 int LIB_API Node::getNumberOfChildren() {
-	return static_cast<int>(m_children.size());
+	return static_cast<int>(m_children->size());
 }
 
 const Node* Node::getChild(int pos) {
-	return m_children.at(pos);
+	return m_children->at(pos);
 }
 
 const Node* Node::getParent() {
 	return m_parent;
 }
 
-void LIB_API Node::setMatrix(glm::mat4 matrix) {
+void LIB_API Node::setMatrix(glm::mat4* matrix) {
 	m_matrix = matrix;
 }
 
@@ -58,13 +58,13 @@ void LIB_API Node::setParent(Node* parent) {
 }
 
 void LIB_API Node::addChild(Node* child) {
-	m_children.push_back(child);
+	m_children->push_back(child);
 }
 
 bool LIB_API Node::removeChild(Node* child) {
 	for (int i = 0; i < getNumberOfChildren(); i++) {
 		if (child->m_id == getChild(i)->m_id) {
-			m_children.erase(m_children.begin() + i);
+			m_children->erase(m_children->begin() + i);
 			return true;
 		}
 	}

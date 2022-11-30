@@ -19,6 +19,6 @@
 
 class LIB_API PerspectiveCamera : public Camera {
 public:
-	PerspectiveCamera(std::string name, unsigned int width, unsigned int height, float near, float far, float fov = 45.0f);
+	PerspectiveCamera(std::string * name, unsigned int width, unsigned int height, float near, float far, float fov = 45.0f);
 	virtual void render();
 };

@@ -19,6 +19,6 @@
 
 class LIB_API OrthographicCamera : public Camera {
 public:
-	OrthographicCamera(std::string name, unsigned int width, unsigned int height);
+	OrthographicCamera(std::string * name, unsigned int width, unsigned int height);
 	void render();
 };
