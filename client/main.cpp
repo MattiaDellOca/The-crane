@@ -3,6 +3,12 @@
 // Create camera
 PerspectiveCamera camera{"Main camera", 100, 100, 1, 100 };
 
+// ====== LISTA DI COSE DA FARE ======
+
+// 1 - Implementare list per rendering + rendering luci prima del resto della scena
+// 2 - Aggiornare parametri della camera al reshape
+
+
 void display() {
     // Clear image
     Engine::clear();
