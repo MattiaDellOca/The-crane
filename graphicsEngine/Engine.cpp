@@ -26,7 +26,7 @@
 ////////////
 
 	// Reserved pointer:
-Node* m_scene_graph = nullptr;
+Node* Engine::m_scene_graph = nullptr;
 bool Engine::m_initFlag = false;
 bool Engine::m_isRunning = false;
 Engine* Engine::m_instance = nullptr;
