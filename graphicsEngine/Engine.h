@@ -16,19 +16,15 @@
  */
 class LIB_API Engine {
 private:
-	Node* m_scene_graph;
-
 	Engine();
 	~Engine();
 	static Node* m_scene_graph;
 	static bool m_initFlag;
-	static Engine* m_instance;
 	static bool m_isRunning;
 	static int m_windowId;
 	static void reshapeCallback(int, int);
 	static void displayCallback();
 public:
-	static Engine* getInstance();
 	static bool init(const char*, unsigned int, unsigned int, int*, char**);
 	static Node* load(std::string);
 	static void clear();
@@ -39,9 +35,6 @@ public:
 	static bool free();
 	static void render();
 	static void run(void (*)());
-
-	static void run(void (*)());
-
 
 	// Callback setters
 	static void setKeyboardFunction(void (*callback)(unsigned char, int, int));

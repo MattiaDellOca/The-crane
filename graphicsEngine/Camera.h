@@ -24,7 +24,7 @@ protected:
 	float m_far;
 	CameraType m_type;
 public:
-	Camera(CameraType type, std::string * name, glm::mat4 matrix, float near, float far);
+	Camera(CameraType type, std::string name, glm::mat4 matrix, float near, float far);
 
 	float getNear();
 	float getFar();

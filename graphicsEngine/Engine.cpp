@@ -29,7 +29,6 @@
 Node* Engine::m_scene_graph = nullptr;
 bool Engine::m_initFlag = false;
 bool Engine::m_isRunning = false;
-Engine* Engine::m_instance = nullptr;
 int Engine::m_windowId = NULL;
 
 //////////////
@@ -94,18 +93,6 @@ void Engine::displayCallback() {
 ////////////
 // PUBLIC //
 ////////////
-
-
-/**
-* Get Engine instance
-* @return Engine instance
-*/
-Engine* Engine::getInstance() {
-	if (!m_instance) {
-		m_instance = new Engine();
-	}
-	return m_instance;
-}
 
 
 /**
@@ -207,9 +194,6 @@ bool LIB_API Engine::free()
 		std::cout << "ERROR: class not initialized" << std::endl;
 		return false;
 	}
-
-	// Delete Engine instance
-	delete m_instance;
 
 	// Done:
 	m_initFlag = false;
