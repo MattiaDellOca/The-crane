@@ -10,7 +10,7 @@
 /////////////
 
 LIB_API Node::Node(std::string name, glm::mat4 matrix) :
-	Object(name), m_matrix{ matrix }, m_parent{ nullptr } {  };
+	Object(name), m_matrix{ matrix }, m_parent{ nullptr }, m_children{ nullptr } {  };
 
 
 LIB_API Node::~Node() {
@@ -18,10 +18,10 @@ LIB_API Node::~Node() {
 	delete& m_matrix;
 
 	// Empty each vector item + clear
-	for (auto* node : m_children) {
+	for (auto* node : *m_children) {
 		delete node;
 	}
-	m_children.clear();
+	m_children->clear();
 	delete& m_children;
 
 	// Delete parent node
@@ -33,15 +33,15 @@ const glm::mat4 LIB_API Node::getMatrix() const {
 }
 
 const std::vector<Node*> LIB_API Node::getChildren() {
-	return m_children;
+	return *m_children;
 }
 
 int LIB_API Node::getNumberOfChildren() {
-	return static_cast<int>(m_children.size());
+	return static_cast<int>(m_children->size());
 }
 
 const Node* Node::getChild(int pos) {
-	return m_children.at(pos);
+	return m_children->at(pos);
 }
 
 const Node* Node::getParent() {
@@ -57,14 +57,23 @@ void LIB_API Node::setParent(Node* parent) {
 }
 
 void LIB_API Node::addChild(Node* child) {
+	if (m_children == nullptr) {
+		// create empty vector
+		m_children = new std::vector<Node*>();
+	}
+
+	// Set parent + recursive matrix
+	child->setParent(this);
+	child->setMatrix(child->getMatrix() * this->m_matrix);
+
 	// Check if children is nullptr
-	m_children.push_back(child);
+	m_children->push_back(child);
 }
 
 bool LIB_API Node::removeChild(Node* child) {
 	for (int i = 0; i < getNumberOfChildren(); i++) {
 		if (child->m_id == getChild(i)->m_id) {
-			m_children.erase(m_children.begin() + i);
+			m_children->erase(m_children->begin() + i);
 			return true;
 		}
 	}
@@ -73,5 +82,15 @@ bool LIB_API Node::removeChild(Node* child) {
 }
 
 void LIB_API Node::render() {
-	//TODO
+	// Render this node and also children
+	std::cout << "Rendering: " << m_name << std::endl;
+
+	// Show node
+	if (m_children != nullptr && m_children->size() > 0) {
+		// render each children
+		for (auto* c : *m_children) {
+			// std::cout << "Rendering: " << c->getName() << std::endl;
+			c->render();
+		}
+	}
 }

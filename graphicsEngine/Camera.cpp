@@ -10,8 +10,8 @@
 // CLASSES //
 /////////////
 
-LIB_API Camera::Camera(CameraType type, std::string name, glm::mat4 matrix, float near, float far) :
-	Node(name, matrix), m_near{ near }, m_far{ far }, m_type{ type } {};
+LIB_API Camera::Camera(CameraType type, std::string name, glm::mat4 matrix, float near, float far, float width, float height) :
+	Node(name, matrix), m_near{ near }, m_far{ far }, m_type{ type }, m_width{ width }, m_height{ height } {};
 
 float LIB_API Camera::getNear() {
 	return m_near;

@@ -18,7 +18,7 @@
 class LIB_API Node : public Object {
 protected:
 	glm::mat4 m_matrix;
-	std::vector<Node*> m_children;
+	std::vector<Node*> * m_children; // https://stackoverflow.com/a/6869033
 	Node* m_parent;
 public:
 	Node(std::string, glm::mat4);

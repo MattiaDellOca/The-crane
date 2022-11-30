@@ -4,13 +4,13 @@
 
 	// Project classes
 #include "engine.h"
+#include "perspectiveCamera.h"
 
 	// C/C++
 #include <iostream>
 #include <thread>
 
 
-// FIXME: HERE OR IN DYNLIB? WE NEED TO DISCUSS THIS
    //GLM:
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
@@ -29,6 +29,8 @@
 Node* Engine::m_scene_graph = nullptr;
 bool Engine::m_initFlag = false;
 bool Engine::m_isRunning = false;
+int Engine::m_window_height = -1;
+int Engine::m_window_width = -1;
 int Engine::m_windowId = NULL;
 
 //////////////
@@ -79,7 +81,10 @@ void Engine::reshapeCallback(int width, int height) {
 	// Update viewport size:
 	glViewport(0, 0, width, height);
 
-	// Refresh projection matrices:
+	// Width + Height fields
+	m_window_width = width;
+	m_window_height = height;
+	
 	// perspective = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 100.0f);
 	// ortho = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
 }
@@ -127,8 +132,12 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	glEnable(GL_CULL_FACE);
 
 	glutInitWindowPosition(500, 500);
-	glutInitWindowSize(width, height);
 
+	// Set window size
+	m_window_width = width;
+	m_window_height = height;
+	glutInitWindowSize(width, height);
+	
 	// Create the window with a specific title:
 	m_windowId = glutCreateWindow(title);
 
@@ -168,9 +177,7 @@ void LIB_API Engine::begin3D(Camera* camera) {
 * Stop drawing
 */
 void LIB_API Engine::end3D() {
-	std::cout << "Function end3D still needs to be implemented!" << std::endl;
-
-	// Stop drawing
+	glEnd();
 }
 
 
@@ -203,6 +210,16 @@ bool LIB_API Engine::free()
 
 void LIB_API Engine::render() {
 	std::cout << "RENDERING Scene Graph..." << std::endl;
+	
+	// Start rendering
+	if (m_scene_graph != nullptr) {
+		m_scene_graph->render();
+	}
+	else {
+		std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
+	}
+
+	// force refresh
 	glutPostRedisplay();
 }
 
@@ -237,5 +254,9 @@ void LIB_API Engine::setKeyboardFunction(void (*callback)(unsigned char,int,int)
 
 bool LIB_API Engine::isRunning() {
 	return m_isRunning;
+}
+
+void LIB_API Engine::load(Node* newScene) {
+	m_scene_graph = newScene;
 }
 

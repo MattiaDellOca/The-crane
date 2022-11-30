@@ -14,3 +14,7 @@ LIB_API PerspectiveCamera::PerspectiveCamera(std::string name, unsigned int widt
 
 void LIB_API PerspectiveCamera::render() {
 }
+
+void LIB_API updateMatrix(unsigned int width, unsigned int height) {
+
+}

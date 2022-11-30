@@ -22,11 +22,14 @@ private:
 	static bool m_initFlag;
 	static bool m_isRunning;
 	static int m_windowId;
+	static int m_window_width;
+	static int m_window_height;
 	static void reshapeCallback(int, int);
 	static void displayCallback();
 public:
 	static bool init(const char*, unsigned int, unsigned int, int*, char**);
 	static Node* load(std::string);
+	static void load(Node*);
 	static void clear();
 	static void setBackgroundColor(float, float, float);
 	static void begin3D(Camera*);
