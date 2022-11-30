@@ -15,7 +15,7 @@ Object::Object(std::string * name) :
 	m_id{ m_incemental_id++ },
 	m_name{ name } {};
 
-// Object::~Object() {}
+Object::~Object() {}
 
 void LIB_API Object::setName(std::string * name) {
 	m_name = name;

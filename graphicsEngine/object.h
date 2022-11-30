@@ -21,7 +21,7 @@ protected:
 	static unsigned int m_incemental_id;
 public:
 	Object(std::string*);
-	// virtual ~Object() = 0;
+	virtual ~Object() = 0;
 
 	void setName(std::string*);
 	const std::string* getName();
