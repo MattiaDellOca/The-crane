@@ -20,6 +20,7 @@ private:
 
 	Engine();
 	~Engine();
+	static Node* m_scene_graph;
 	static bool m_initFlag;
 	static Engine* m_instance;
 	static bool m_isRunning;
@@ -37,6 +38,7 @@ public:
 	static void swapBuffers();
 	static bool free();
 	static void render();
+	static void run(void (*)());
 
 	static void run(void (*)());
 
