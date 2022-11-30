@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cube.cpp" />
+    <ClCompile Include="material.cpp" />
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="camera.cpp" />
@@ -99,6 +100,7 @@
   <ItemGroup>
     <ClInclude Include="cube.h" />
     <ClInclude Include="lib.h" />
+    <ClInclude Include="material.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="camera.h" />

@@ -54,6 +54,9 @@
     <ClCompile Include="cube.cpp">
       <Filter>Source Files\figure</Filter>
     </ClCompile>
+    <ClCompile Include="material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="object.h">
@@ -88,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="cube.h">
       <Filter>Header Files\figure</Filter>
+    </ClInclude>
+    <ClInclude Include="material.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
