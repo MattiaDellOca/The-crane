@@ -68,7 +68,7 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 /////////////
 
 
-Engine::Engine() : m_scene_graph{ nullptr } {};
+Engine::Engine() {};
 Engine::~Engine() {
 	delete m_scene_graph;
 }

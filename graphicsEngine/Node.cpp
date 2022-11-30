@@ -10,7 +10,7 @@
 /////////////
 
 Node::Node(std::string * name, glm::mat4 * matrix) :
-	Object(name), m_matrix{ matrix }, m_parent{ nullptr } {  };
+	Object(name), m_matrix{ matrix }, m_parent{ nullptr }, m_children{ nullptr } {  };
 
 /*
 Node::~Node() {
