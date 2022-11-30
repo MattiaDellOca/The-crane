@@ -1,13 +1,12 @@
 #pragma once
 
 #include "lib.h"
-#include "node.h"
+#include "mesh.h"
 
-class LIB_API Sphere : public Node {
+class LIB_API Sphere : public Mesh {
 private:
-	int m_radius;
-
+	float m_radius;
 public:
-	Sphere(int radius, glm::mat4 matrix, std::string name);
+	Sphere(float radius, std::string name, glm::mat4 matrix);
 	void render();
 };

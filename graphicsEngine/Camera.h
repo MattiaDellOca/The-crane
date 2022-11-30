@@ -26,11 +26,17 @@ protected:
 	float m_far;
 	CameraType m_type;
 public:
-	Camera(CameraType type, std::string name, glm::mat4 matrix, float near, float far, float width, float height);
+	Camera(CameraType type, std::string name, glm::mat4 matrix, float near, float far, unsigned int width, unsigned int height);
 
-	float getNear();
-	float getFar();
+	float getNear() const;
+	float getFar() const;
 	void setNear(float);
 	void setFar(float);
+
+	void setWidth(unsigned int);
+	void setHeight(unsigned int);
+	unsigned int getWidth() const;
+	unsigned int getHeight() const;
+
 	void virtual render() = 0;
 };

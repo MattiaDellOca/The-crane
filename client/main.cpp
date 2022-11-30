@@ -38,10 +38,10 @@ int main(int argc, char* argv[]) {
    Engine::setBackgroundColor(0.0f, 0.0f, 0.0f);
 
    // Create scene graph
-   Sphere s{10, glm::mat4(1), "Root"};
-   Node nodeA{ "A", glm::mat4(1) };
-   Node nodeB{ "B", glm::mat4(1) };
-   Node nodeC{ "C", glm::mat4(1) };
+   Sphere s{10.0f,  "Root", glm::mat4(1)};
+   Cube nodeA{ 5.0f, "A", glm::mat4(1) };
+   Cube nodeB{ 10.0f, "B", glm::mat4(1) };
+   Sphere nodeC{ 5.0f, "C", glm::mat4(1) };
    s.addChild(&nodeA);
    s.addChild(&nodeB);
    s.addChild(&nodeC);
