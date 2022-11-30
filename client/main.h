@@ -4,5 +4,6 @@
 #include "node.h"
 #include "orthographicCamera.h"
 #include "perspectiveCamera.h"
+#include "sphere.h"
 
 using namespace std; 
