@@ -22,7 +22,7 @@ protected:
 	Node* m_parent;
 public:
 	Node(std::string *, glm::mat4 *);
-	// virtual ~Node();
+	virtual ~Node();
 
 	const glm::mat4 getMatrix() const;
 	const std::vector<Node*> getChildren();
