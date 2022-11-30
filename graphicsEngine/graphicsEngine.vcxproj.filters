@@ -19,6 +19,12 @@
     <Filter Include="Source Files\camera">
       <UniqueIdentifier>{6e6115f0-e82d-426a-83ad-0cb4b50d9008}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\figure">
+      <UniqueIdentifier>{51af930c-573f-4ea6-9728-aa9f988ff41a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\figure">
+      <UniqueIdentifier>{99539906-e33b-4544-b260-68994bba20dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="object.cpp">
@@ -38,6 +44,9 @@
     </ClCompile>
     <ClCompile Include="perspectiveCamera.cpp">
       <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="sphere.cpp">
+      <Filter>Source Files\figure</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="lib.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sphere.h">
+      <Filter>Header Files\figure</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
