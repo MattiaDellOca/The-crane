@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cube.cpp" />
+    <ClCompile Include="light.cpp" />
     <ClCompile Include="material.cpp" />
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="object.cpp" />
@@ -95,11 +96,13 @@
     <ClCompile Include="node.cpp" />
     <ClCompile Include="orthographicCamera.cpp" />
     <ClCompile Include="perspectiveCamera.cpp" />
+    <ClCompile Include="renderingList.cpp" />
     <ClCompile Include="sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cube.h" />
     <ClInclude Include="lib.h" />
+    <ClInclude Include="light.h" />
     <ClInclude Include="material.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="object.h" />
@@ -109,6 +112,7 @@
     <ClInclude Include="node.h" />
     <ClInclude Include="orthographicCamera.h" />
     <ClInclude Include="perspectiveCamera.h" />
+    <ClInclude Include="renderingList.h" />
     <ClInclude Include="sphere.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

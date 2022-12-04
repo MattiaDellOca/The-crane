@@ -10,6 +10,7 @@
 /////////////
 #include "camera.h"
 #include "lib.h"
+#include "renderingList.h"
 
 /**
  * @brief Simple static class example.
@@ -36,7 +37,7 @@ public:
 	static void end3D();
 	static void swapBuffers();
 	static bool free();
-	static void render();
+	static void render(Camera*, RenderingList*);
 	static void run(void (*)());
 
 	// Callback setters

@@ -208,7 +208,8 @@ bool LIB_API Engine::free()
 }
 
 
-void LIB_API Engine::render() {
+void LIB_API Engine::render(Camera *camera, RenderingList *renderingList) {
+	/*
 	std::cout << "RENDERING Scene Graph..." << std::endl;
 	
 	// Start rendering
@@ -218,6 +219,9 @@ void LIB_API Engine::render() {
 	else {
 		std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
 	}
+	*/
+
+	renderingList->render();
 
 	// force refresh
 	glutPostRedisplay();
