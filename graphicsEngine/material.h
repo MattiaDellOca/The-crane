@@ -3,6 +3,8 @@
 #include "lib.h"
 #include "object.h"
 
+#include <iostream>
+
 // GLM
 #include <glm/glm.hpp>
 

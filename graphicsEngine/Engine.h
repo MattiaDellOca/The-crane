@@ -20,11 +20,13 @@ private:
 	Engine();
 	~Engine();
 	static Node* m_scene_graph;
+	static RenderingList* m_rendering_list;
 	static bool m_initFlag;
 	static bool m_isRunning;
 	static int m_windowId;
 	static int m_window_width;
 	static int m_window_height;
+	static void passNode(Node *);
 	static void reshapeCallback(int, int);
 	static void displayCallback();
 public:
@@ -37,7 +39,7 @@ public:
 	static void end3D();
 	static void swapBuffers();
 	static bool free();
-	static void render(Camera*, RenderingList*);
+	static void render(Camera*);
 	static void run(void (*)());
 
 	// Callback setters

@@ -37,7 +37,9 @@ const std::vector<Node*> LIB_API Node::getChildren() {
 }
 
 int LIB_API Node::getNumberOfChildren() {
-	return static_cast<int>(m_children->size());
+	if(m_children != nullptr)
+		return static_cast<int>(m_children->size());
+	return 0;
 }
 
 const Node* Node::getChild(int pos) {
@@ -82,6 +84,7 @@ bool LIB_API Node::removeChild(Node* child) {
 }
 
 void LIB_API Node::render() {
+	/*
 	// Render this node and also children
 	std::cout << "Rendering: " << m_name << std::endl;
 
@@ -93,4 +96,6 @@ void LIB_API Node::render() {
 			c->render();
 		}
 	}
+	*/
+	std::cout << "Rendering: " << m_name << std::endl;
 }

@@ -10,16 +10,13 @@
    //FreeGLUT:
 #include <GL/freeglut.h>
 
-LIB_API Sphere::Sphere(float radius, std::string name, glm::mat4 matrix) : Mesh(name, matrix), m_radius{ radius } {};
+LIB_API Sphere::Sphere(float radius, std::string name, glm::mat4 matrix, Material material) : Mesh(name, matrix, material), m_radius{ radius } {};
 
 void LIB_API Sphere::render() {
 	// Render sphere
-	std::cout << "SPHERE!" << std::endl;
+	std::cout << "SPHERE: radius: " << m_radius << " Name: " << m_name << std::endl;
 
 	// Display sphere
 	glLoadMatrixf(glm::value_ptr(m_matrix));
 	glutSolidSphere(1, (int)8 * 5, (int)8 * 5);
-
-	// Call render children
-	Node::render();
 }

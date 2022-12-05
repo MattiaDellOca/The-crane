@@ -54,3 +54,7 @@ glm::vec4 LIB_API Material::getSpecular() const {
 float LIB_API Material::getShininess() const {
 	return m_shininess;
 }
+
+void LIB_API Material::render() {
+	std::cout << "MATERIAL: name: " << m_name << "id: " << m_id << std::endl;
+}

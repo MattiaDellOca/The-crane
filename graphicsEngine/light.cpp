@@ -1,5 +1,7 @@
 #include "light.h"
 
+LIB_API Light::Light(std::string name, glm::mat4 matrix) : Node(name, matrix) {};
+
 glm::vec4 LIB_API Light::getAmbient() {
 	return m_ambient;
 }
@@ -22,4 +24,8 @@ void LIB_API Light::setDiffuse(glm::vec4 diffuse) {
 
 void LIB_API Light::setSpecular(glm::vec4 specular) {
 	m_specular = specular;
+}
+
+void LIB_API Light::render() {
+	std::cout << "Light: name: " << m_name << std::endl;
 }

@@ -9,16 +9,19 @@
 #include <iterator>
 #include <vector>
 #include <list>
+#include <algorithm>
 
 class LIB_API RenderingList : public Object {
 protected:
-	std::list<Node> *m_list;		// objects contained can be either Meshes or Lights: generalization to Node
-	Camera *m_camera;				// Camera is has a pure virtual function, therefore it can't be initialized
+	std::list<Object *> m_list;
+	Camera *m_camera;
+	static bool sortCondition(Object *, Object *);
 public:
 	RenderingList(std::string);
-	std::list<Node>* getRenderingList();
+	std::list<Object *> getRenderingList();
 	void setCamera(Camera *);
-	void pass(Node);
+	void pass(Object *);
 	void sort();
+	void clear();
 	void render();
 };

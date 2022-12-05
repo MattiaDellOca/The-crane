@@ -27,6 +27,7 @@
 
 	// Reserved pointer:
 Node* Engine::m_scene_graph = nullptr;
+RenderingList* Engine::m_rendering_list = new RenderingList{"Rendering list"};
 bool Engine::m_initFlag = false;
 bool Engine::m_isRunning = false;
 int Engine::m_window_height = -1;
@@ -72,6 +73,21 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 Engine::Engine() {};
 Engine::~Engine() {
 	delete m_scene_graph;
+	delete m_rendering_list;
+}
+
+/* Add a node to the rendering list:
+*  if the node has children, had them recursively 
+*/
+void Engine::passNode(Node* node) {
+	std::cout << "Loading " << node->getName() << " in rendering list" << std::endl;
+	m_rendering_list->pass(node);
+	if (node->getNumberOfChildren() > 0) {
+		// pass each child
+		for (auto* c : node->getChildren()) {
+			passNode(c);
+		}
+	}
 }
 
 
@@ -208,20 +224,32 @@ bool LIB_API Engine::free()
 }
 
 
-void LIB_API Engine::render(Camera *camera, RenderingList *renderingList) {
-	/*
+void LIB_API Engine::render(Camera *camera) {
+	std::cout << std::endl;
 	std::cout << "RENDERING Scene Graph..." << std::endl;
 	
 	// Start rendering
 	if (m_scene_graph != nullptr) {
-		m_scene_graph->render();
+		// Clear rendering list
+		m_rendering_list->clear();
+
+
+		std::cout << "Loading nodes..." << std::endl;
+		// Popolate rendering list
+		m_rendering_list->setCamera(camera);
+		passNode(m_scene_graph);
+
+		// Order rengering list
+		m_rendering_list->sort();
+
+		std::cout << "Rendering nodes..." << std::endl;
+		// Render
+		m_rendering_list->render();
 	}
 	else {
 		std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
 	}
-	*/
-
-	renderingList->render();
+	
 
 	// force refresh
 	glutPostRedisplay();
@@ -262,5 +290,6 @@ bool LIB_API Engine::isRunning() {
 
 void LIB_API Engine::load(Node* newScene) {
 	m_scene_graph = newScene;
+
 }
 
