@@ -26,6 +26,7 @@ private:
 	static int m_windowId;
 	static int m_window_width;
 	static int m_window_height;
+	static Camera* m_curr_camera;
 	static void passNode(Node *);
 	static void reshapeCallback(int, int);
 	static void displayCallback();
@@ -39,7 +40,7 @@ public:
 	static void end3D();
 	static void swapBuffers();
 	static bool free();
-	static void render(Camera*);
+	static void render();
 	static void run(void (*)());
 
 	// Callback setters

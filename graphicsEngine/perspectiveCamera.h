@@ -24,4 +24,5 @@ public:
 	PerspectiveCamera(std::string name, unsigned int width, unsigned int height, float near, float far, float fov = 45.0f);
 	void updateMatrix(unsigned int width, unsigned int height);
 	virtual void render();
+	virtual void updateWindowSize(unsigned int width, unsigned int height);
 };

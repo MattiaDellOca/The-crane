@@ -18,3 +18,12 @@ LIB_API OrthographicCamera::OrthographicCamera(std::string name, unsigned int wi
 void LIB_API OrthographicCamera::render() {
 	std::cout << "Rendering perspective camera" << std::endl;
 }
+
+void LIB_API OrthographicCamera::updateWindowSize(unsigned int width, unsigned int height) {
+	// Update width + matrix fields
+	m_width = width;
+	m_height = height;
+
+	// Recalculate perspective matrix
+	m_matrix = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
+}

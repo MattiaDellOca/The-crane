@@ -16,7 +16,7 @@ void LIB_API PerspectiveCamera::render() {
 	std::cout << "Rendering perspective camera" << std::endl;
 }
 
-void LIB_API PerspectiveCamera::updateMatrix(unsigned int width, unsigned int height) {
+void LIB_API PerspectiveCamera::updateWindowSize(unsigned int width, unsigned int height) {
 	// Update width + matrix fields
 	m_width = width;
 	m_height = height;

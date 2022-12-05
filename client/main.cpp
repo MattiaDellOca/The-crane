@@ -14,9 +14,9 @@ void display() {
     Engine::clear();
 
     // Render scene
-    Engine::begin3D(&camera);
-    Engine::render(&camera);
-    Engine::end3D();
+    Engine::begin3D(&camera); // set camera
+    Engine::render(&camera); // render scene
+    Engine::end3D(); // remove camera
 
     // Swap buffers to show rendered image
     Engine::swapBuffers();
@@ -36,7 +36,6 @@ int main(int argc, char* argv[]) {
    Engine::init("My OpenGL window", 650, 650, &argc, argv);
    Engine::setKeyboardFunction(keyboardCallback);
    Engine::setBackgroundColor(0.0f, 0.0f, 0.0f);
-
 
    // Instantiate material
    // EMERALD -> http://devernay.free.fr/cours/opengl/materials.html

@@ -33,6 +33,7 @@ bool Engine::m_isRunning = false;
 int Engine::m_window_height = -1;
 int Engine::m_window_width = -1;
 int Engine::m_windowId = NULL;
+Camera* Engine::m_curr_camera = nullptr;
 
 //////////////
 // DLL MAIN //
@@ -100,9 +101,11 @@ void Engine::reshapeCallback(int width, int height) {
 	// Width + Height fields
 	m_window_width = width;
 	m_window_height = height;
-	
-	// perspective = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 100.0f);
-	// ortho = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
+
+	// If current camera is set, update width / height
+	if (m_curr_camera != nullptr) {
+		m_curr_camera->updateWindowSize(width, height);
+	}
 }
 
 void Engine::displayCallback() {
@@ -125,7 +128,7 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Prevent double init:
 	if (m_initFlag)
 	{
-		std::cout << "ERROR: class already initialized" << std::endl;
+		std::cout << "ERROR: Engine already initialized" << std::endl;
 		return false;
 	}
 	// Set flag
@@ -183,6 +186,8 @@ void LIB_API Engine::setBackgroundColor(float r, float g, float b) {
 * Start drawing something
 */
 void LIB_API Engine::begin3D(Camera* camera) {
+	// Save camera
+	m_curr_camera = camera;
 	// Pass to right coordinates based on requested camera
 	glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(glm::value_ptr(camera->getMatrix()));
@@ -194,6 +199,9 @@ void LIB_API Engine::begin3D(Camera* camera) {
 */
 void LIB_API Engine::end3D() {
 	glEnd();
+
+	// Clear camera
+	m_curr_camera = nullptr;
 }
 
 
@@ -224,7 +232,7 @@ bool LIB_API Engine::free()
 }
 
 
-void LIB_API Engine::render(Camera *camera) {
+void LIB_API Engine::render() {
 	std::cout << std::endl;
 	std::cout << "RENDERING Scene Graph..." << std::endl;
 	
@@ -233,16 +241,22 @@ void LIB_API Engine::render(Camera *camera) {
 		// Clear rendering list
 		m_rendering_list->clear();
 
-
 		std::cout << "Loading nodes..." << std::endl;
+		
+		if (m_curr_camera == nullptr) {
+			std::cout << "[ENGINE] Warning: trying to render not in a begin-end block. Skip frame rendering." << std::endl;
+			return;
+		}
+
 		// Popolate rendering list
-		m_rendering_list->setCamera(camera);
+		m_rendering_list->setCamera(m_curr_camera);
 		passNode(m_scene_graph);
 
 		// Order rengering list
 		m_rendering_list->sort();
 
 		std::cout << "Rendering nodes..." << std::endl;
+		
 		// Render
 		m_rendering_list->render();
 	}
@@ -290,6 +304,5 @@ bool LIB_API Engine::isRunning() {
 
 void LIB_API Engine::load(Node* newScene) {
 	m_scene_graph = newScene;
-
 }
 

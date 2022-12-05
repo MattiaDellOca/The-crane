@@ -39,4 +39,5 @@ public:
 	unsigned int getHeight() const;
 
 	void virtual render() = 0;
+	void virtual updateWindowSize(unsigned int, unsigned int) = 0;
 };
