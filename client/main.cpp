@@ -15,7 +15,7 @@ void display() {
 
     // Render scene
     Engine::begin3D(&camera); // set camera
-    Engine::render(&camera); // render scene
+    Engine::render(); // render scene
     Engine::end3D(); // remove camera
 
     // Swap buffers to show rendered image
