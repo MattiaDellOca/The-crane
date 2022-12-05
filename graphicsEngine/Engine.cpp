@@ -108,10 +108,6 @@ void Engine::reshapeCallback(int width, int height) {
 	}
 }
 
-void Engine::displayCallback() {
-	std::cout << "DISPLAY CALLBACK" << std::endl;
-}
-
 
 
 ////////////

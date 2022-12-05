@@ -29,7 +29,6 @@ private:
 	static Camera* m_curr_camera;
 	static void passNode(Node *);
 	static void reshapeCallback(int, int);
-	static void displayCallback();
 public:
 	static bool init(const char*, unsigned int, unsigned int, int*, char**);
 	static Node* load(std::string);
