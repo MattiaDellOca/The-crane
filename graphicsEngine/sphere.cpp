@@ -1,22 +1,15 @@
 #include "sphere.h"
 
-//GLM:
-#include <glm/glm.hpp>
-#include <glm/gtx/string_cast.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-
-   //FreeGLUT:
-#include <GL/freeglut.h>
+//FreeGLUT:
+	#include <GL/freeglut.h>
 
 LIB_API Sphere::Sphere(float radius, std::string name, glm::mat4 matrix, Material material) : Mesh(name, matrix, material), m_radius{ radius } {};
 
 void LIB_API Sphere::render() {
+	// Render mesh
+	Mesh::render();
+
 	// Render sphere
 	std::cout << "SPHERE: radius: " << m_radius << " Name: " << m_name << std::endl;
-
-	// Display sphere
-	glLoadMatrixf(glm::value_ptr(m_matrix));
-	glutSolidSphere(1, (int)8 * 5, (int)8 * 5);
+	glutSolidSphere(m_radius, (int)8 * 5, (int)8 * 5);
 }

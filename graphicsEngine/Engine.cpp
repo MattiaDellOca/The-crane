@@ -34,6 +34,7 @@ int Engine::m_window_height = -1;
 int Engine::m_window_width = -1;
 int Engine::m_windowId = NULL;
 Camera* Engine::m_curr_camera = nullptr;
+bool Engine::m_render_wireframe = false;
 
 //////////////
 // DLL MAIN //
@@ -144,7 +145,7 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Enable Z-Buffer+Lighting+Face Cûlling
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
-	glEnable(GL_CULL_FACE);
+	// FIXME: ENABLE CULLING -> glEnable(GL_CULL_FACE);
 
 	glutInitWindowPosition(500, 500);
 
@@ -178,6 +179,17 @@ void LIB_API Engine::setBackgroundColor(float r, float g, float b) {
 	glClearColor(r, g, b, 1.0f);
 }
 
+
+void LIB_API Engine::toggleWireframe() {
+	m_render_wireframe = !m_render_wireframe;
+	if (m_render_wireframe) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+}
+
 /**
 * Start drawing something
 */
@@ -188,6 +200,8 @@ void LIB_API Engine::begin3D(Camera* camera) {
 	glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(glm::value_ptr(camera->getMatrix()));
 	glMatrixMode(GL_MODELVIEW);
+
+	// User can start drawing
 }
 
 /**

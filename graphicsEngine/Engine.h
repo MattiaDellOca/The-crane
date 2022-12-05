@@ -27,6 +27,7 @@ private:
 	static int m_window_width;
 	static int m_window_height;
 	static Camera* m_curr_camera;
+	static bool m_render_wireframe;
 	static void passNode(Node *);
 	static void reshapeCallback(int, int);
 public:
@@ -41,6 +42,7 @@ public:
 	static bool free();
 	static void render();
 	static void run(void (*)());
+	static void toggleWireframe();
 
 	// Callback setters
 	static void setKeyboardFunction(void (*callback)(unsigned char, int, int));

@@ -28,4 +28,7 @@ void LIB_API Light::setSpecular(glm::vec4 specular) {
 
 void LIB_API Light::render() {
 	std::cout << "Light: name: " << m_name << std::endl;
+
+	// Render light
+
 }

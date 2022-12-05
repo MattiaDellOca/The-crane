@@ -87,6 +87,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cube.cpp" />
+    <ClCompile Include="directionalLight.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="material.cpp" />
     <ClCompile Include="mesh.cpp" />
@@ -94,13 +95,16 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="node.cpp" />
+    <ClCompile Include="omniLight.cpp" />
     <ClCompile Include="orthographicCamera.cpp" />
     <ClCompile Include="perspectiveCamera.cpp" />
     <ClCompile Include="renderingList.cpp" />
     <ClCompile Include="sphere.cpp" />
+    <ClCompile Include="spotLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cube.h" />
+    <ClInclude Include="directionalLight.h" />
     <ClInclude Include="lib.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="material.h" />
@@ -110,10 +114,12 @@
     <ClInclude Include="cameraType.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="node.h" />
+    <ClInclude Include="omniLight.h" />
     <ClInclude Include="orthographicCamera.h" />
     <ClInclude Include="perspectiveCamera.h" />
     <ClInclude Include="renderingList.h" />
     <ClInclude Include="sphere.h" />
+    <ClInclude Include="spotLight.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

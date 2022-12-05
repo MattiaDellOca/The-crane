@@ -4,6 +4,12 @@
 #include "node.h"
 #include "material.h"
 
+//GLM:
+#include <glm/glm.hpp>
+#include <glm/gtx/string_cast.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 class LIB_API Mesh : public Node {
 protected:
 	Material m_material;

@@ -1,7 +1,8 @@
 #include "main.h"
 
 // Create camera
-PerspectiveCamera camera{"Main camera", 100, 100, 1, 100 };
+PerspectiveCamera camera3d{"Main camera", 100, 100, 1, 100 };
+OrthographicCamera camera2d{ "2d Camera", 100, 100 }; // TODO: Write "wireframe" option in 2D UI (it is supported but not shown to the user)
 
 // ====== LISTA DI COSE DA FARE ======
 
@@ -13,8 +14,9 @@ void display() {
     // Clear image
     Engine::clear();
 
+    
     // Render scene
-    Engine::begin3D(&camera); // set camera
+    Engine::begin3D(&camera3d); // set camera
     Engine::render(); // render scene
     Engine::end3D(); // remove camera
 
@@ -24,8 +26,9 @@ void display() {
 
 void keyboardCallback(unsigned char key, int x, int y) {
     cout << "Pressed: " << key << endl;
-    if (key == ' ') {
-        cout << "spacebar pressed" << endl;
+    if (key == 'w') {
+        cout << "[CRANE] Info: Toggling wireframe.." << endl;
+        Engine::toggleWireframe();
     }
 }
 
@@ -33,7 +36,7 @@ int main(int argc, char* argv[]) {
     cout << "[Crane - SUPSI]" << endl;
 
    // Initialize Engine
-   Engine::init("My OpenGL window", 650, 650, &argc, argv);
+   Engine::init("CRANE - An OpenGL crane simulator", 650, 650, &argc, argv);
    Engine::setKeyboardFunction(keyboardCallback);
    Engine::setBackgroundColor(0.0f, 0.0f, 0.0f);
 
@@ -46,17 +49,24 @@ int main(int argc, char* argv[]) {
    emerald.setShininess(0.6f * 128);
 
    // Create scene graph
-   Sphere s{10.0f,  "Root", glm::mat4(1), emerald };
-   Cube nodeA{ 5.0f, "A", glm::mat4(1), emerald };
-   Cube nodeB{ 10.0f, "B", glm::mat4(1), emerald };
-   Sphere nodeC{ 5.0f, "C", glm::mat4(1), emerald };
-   Sphere nodeD{ 5.0f, "D", glm::mat4(1), emerald };
-   Light light{ "Light", glm::mat4(1) };
-   s.addChild(&nodeA);
-   s.addChild(&nodeB);
-   s.addChild(&nodeC);
-   nodeA.addChild(&nodeD);
-   nodeA.addChild(&light);
+   glm::mat4 rootPosition = glm::translate(glm::mat4(1.0f), glm::vec3(-10.0f, -9.0f, -60.0f));
+   Sphere s{10.0f,  "Root", rootPosition, emerald };
+   glm::mat4 lightPosition = glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 1.0f, 1.0f));
+   Light light{ "Light", lightPosition };
+   s.addChild(&light);
+   
+   /*
+       Cube nodeA{ 5.0f, "A", glm::mat4(1), emerald };
+       Cube nodeB{ 10.0f, "B", glm::mat4(1), emerald };
+       Sphere nodeC{ 5.0f, "C", glm::mat4(1), emerald };
+       Sphere nodeD{ 5.0f, "D", glm::mat4(1), emerald };
+       Light light{ "Light", glm::mat4(1) };
+       s.addChild(&nodeA);
+       s.addChild(&nodeB);
+       s.addChild(&nodeC);
+       nodeA.addChild(&nodeD);
+       nodeA.addChild(&light);
+   */
 
    // Load scene graph manually
    Engine::load(&s);
