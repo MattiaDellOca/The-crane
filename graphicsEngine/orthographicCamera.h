@@ -20,6 +20,6 @@
 class LIB_API OrthographicCamera : public Camera {
 public:
 	OrthographicCamera(std::string name, unsigned int width, unsigned int height);
-	virtual void render();
+	virtual void render(glm::mat4);
 	virtual void updateWindowSize(unsigned int width, unsigned int height);
 };

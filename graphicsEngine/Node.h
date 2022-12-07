@@ -27,11 +27,11 @@ public:
 	const glm::mat4 getMatrix() const;
 	const std::vector<Node*> getChildren();
 	int getNumberOfChildren();
-	const Node* getChild(int);
+	Node* getChild(int);
 	const Node* getParent();
 	void setMatrix(glm::mat4);
 	void setParent(Node*);
 	void addChild(Node*);
 	bool removeChild(Node*);
-	void virtual render();
+	void virtual render(glm::mat4);
 };

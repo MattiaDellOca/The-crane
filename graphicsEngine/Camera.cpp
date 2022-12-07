@@ -45,6 +45,6 @@ void LIB_API Camera::setFar(float far) {
 	m_far = far;
 }
 
-void LIB_API Camera::render() {
+void LIB_API Camera::render(glm::mat4) {
 	//TODO
 }

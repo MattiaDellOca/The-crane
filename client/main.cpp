@@ -6,9 +6,8 @@ OrthographicCamera camera2d{ "2d Camera", 100, 100 }; // TODO: Write "wireframe"
 
 // ====== LISTA DI COSE DA FARE ======
 
-// 1 - Implementare list per rendering + rendering luci prima del resto della scena
-// 2 - Aggiornare parametri della camera al reshape
-// 3 - Per waring: o pragma per disabilitarli o struttura pimpl
+// 1 - Aggiornare parametri della camera al reshape
+// 2 - Per warning: o pragma per disabilitarli o struttura pimpl
 
 void display() {
     // Clear image
@@ -42,34 +41,31 @@ int main(int argc, char* argv[]) {
 
    // Instantiate material
    // EMERALD -> http://devernay.free.fr/cours/opengl/materials.html
-   Material emerald{ "Green" };
+   Material emerald{ "Emerald" };
    emerald.setAmbient({ glm::vec4(0.0215f, 0.1745f, 0.0215f, 1.0f) });
    emerald.setDiffuse({ glm::vec4(0.07568f, 0.61424f, 0.07568f, 1.0f) });
    emerald.setSpecular({ glm::vec4(0.633f, 0.727811f, 0.633f, 1.0f) });
    emerald.setShininess(0.6f * 128);
 
    // Create scene graph
-   glm::mat4 rootPosition = glm::translate(glm::mat4(1.0f), glm::vec3(-10.0f, -9.0f, -60.0f));
-   Sphere s{10.0f,  "Root", rootPosition, emerald };
-   glm::mat4 lightPosition = glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, 1.0f, 1.0f));
-   Light light{ "Light", lightPosition };
-   s.addChild(&light);
-   
-   /*
-       Cube nodeA{ 5.0f, "A", glm::mat4(1), emerald };
-       Cube nodeB{ 10.0f, "B", glm::mat4(1), emerald };
-       Sphere nodeC{ 5.0f, "C", glm::mat4(1), emerald };
-       Sphere nodeD{ 5.0f, "D", glm::mat4(1), emerald };
-       Light light{ "Light", glm::mat4(1) };
-       s.addChild(&nodeA);
-       s.addChild(&nodeB);
-       s.addChild(&nodeC);
-       nodeA.addChild(&nodeD);
-       nodeA.addChild(&light);
-   */
+   glm::mat4 f = glm::mat4(1);
+   Sphere a{10.0f,  "A", f, emerald};
+   f = glm::translate(f, glm::vec3(10.0f, 0.0f, 0.0f));
+   Cube b{ 5.0f, "B", f, emerald};
+   Light c{ "C", f };
+   f = glm::translate(f, glm::vec3(0.0f, 10.0f, 0.0f));
+   Sphere d{ 1.0f, "D", f, emerald };
+   Sphere e{ 1.0f, "E", f, emerald };
+   Light light{ "F", glm::mat4(1) };
+
+   a.addChild(&b);
+   a.addChild(&c);
+   b.addChild(&d);
+   b.addChild(&e);
+   e.addChild(&light);
 
    // Load scene graph manually
-   Engine::load(&s);
+   Engine::load(&a);
 
    // Start rendering some figures..
    Engine::run(display);

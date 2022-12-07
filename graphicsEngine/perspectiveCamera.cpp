@@ -12,7 +12,7 @@
 LIB_API PerspectiveCamera::PerspectiveCamera(std::string name, unsigned int width, unsigned int height, float near, float far, float fov) :
 	Camera(CameraType::PERSPECTIVE, name, glm::perspective(glm::radians(fov), (float)width / (float)height, near, far), near, far, width, height) {};
 
-void LIB_API PerspectiveCamera::render() {
+void LIB_API PerspectiveCamera::render(glm::mat4 matrix) {
 	std::cout << "Rendering perspective camera" << std::endl;
 }
 

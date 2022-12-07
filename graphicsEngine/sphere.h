@@ -8,5 +8,5 @@ private:
 	float m_radius;
 public:
 	Sphere(float radius, std::string name, glm::mat4 matrix, Material material);
-	void render();
+	void render(glm::mat4);
 };

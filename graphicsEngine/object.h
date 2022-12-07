@@ -10,6 +10,9 @@
 	// C/C++
 #include <string>
 
+	//GLM
+#include <glm/glm.hpp>
+
 /////////////
 // CLASSES //
 /////////////
@@ -26,5 +29,6 @@ public:
 	void setName(std::string);
 	const std::string getName();
 	const unsigned int getId();
-	void virtual render() = 0;
+	// render with parameters
+	void virtual render(glm::mat4) = 0;
 };

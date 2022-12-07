@@ -12,6 +12,8 @@
 #include "lib.h"
 #include "renderingList.h"
 
+#include <queue>
+
 /**
  * @brief Simple static class example.
  */
@@ -28,7 +30,7 @@ private:
 	static int m_window_height;
 	static Camera* m_curr_camera;
 	static bool m_render_wireframe;
-	static void passNode(Node *);
+	static void levelOrderTraversal(Node *);
 	static void reshapeCallback(int, int);
 public:
 	static bool init(const char*, unsigned int, unsigned int, int*, char**);

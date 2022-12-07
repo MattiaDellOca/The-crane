@@ -38,6 +38,6 @@ public:
 	unsigned int getWidth() const;
 	unsigned int getHeight() const;
 
-	void virtual render() = 0;
+	void virtual render(glm::mat4) = 0;
 	void virtual updateWindowSize(unsigned int, unsigned int) = 0;
 };

@@ -15,7 +15,7 @@ protected:
 	Material m_material;
 public:
 	Mesh(std::string name, glm::mat4 matrix, Material material);
-	void render();
+	void render(glm::mat4);
 	const Material& getMaterial();
 	void setMaterial(Material);
 };

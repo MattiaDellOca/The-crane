@@ -13,7 +13,7 @@ void LIB_API Mesh::setMaterial(Material material) {
 	m_material = material;
 }
 
-void LIB_API Mesh::render() {
+void LIB_API Mesh::render(glm::mat4 matrix) {
 	std::cout << "MESH: name: " << m_name << "id: " << m_id << std::endl;
 
 	// Load material

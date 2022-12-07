@@ -18,7 +18,7 @@ private:
 public:
 	Material(std::string name);
 	void apply();
-	void render();
+	void render(glm::mat4);
 
 	void setMaterialColor(glm::vec3);
 	void setAmbient(glm::vec4);

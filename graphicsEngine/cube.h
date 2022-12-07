@@ -8,5 +8,5 @@ private:
 	float m_edge;
 public:
 	Cube(float edge, std::string name, glm::mat4 matrix, Material material);
-	void render();
+	void render(glm::mat4);
 };

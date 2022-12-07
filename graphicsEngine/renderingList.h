@@ -11,17 +11,20 @@
 #include <list>
 #include <algorithm>
 
+struct RenderNode {
+	Node* m_node;
+	glm::mat4 m_mat;
+};
+
 class LIB_API RenderingList : public Object {
 protected:
-	std::list<Object *> m_list;
+	std::list<RenderNode *> m_list;
 	Camera *m_camera;
-	static bool sortCondition(Object *, Object *);
 public:
 	RenderingList(std::string);
-	std::list<Object *> getRenderingList();
+	std::list<RenderNode *> getRenderingList();
 	void setCamera(Camera *);
-	void pass(Object *);
-	void sort();
+	void pass(RenderNode *);
 	void clear();
-	void render();
+	void render(glm::mat4);
 };

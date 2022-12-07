@@ -19,5 +19,5 @@ public:
 	void setDiffuse(glm::vec4);
 	void setSpecular(glm::vec4);
 	// Make this pure virtual
-	void virtual render();
+	void virtual render(glm::mat4);
 };
