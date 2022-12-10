@@ -160,7 +160,7 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Global OpenGL settings:
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
 
-	// Enable Z-Buffer+Lighting+Face Cûlling
+	// Enable Z-Buffer+Lighting+Face Cûlling+Lighting
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 	// FIXME: ENABLE CULLING -> glEnable(GL_CULL_FACE);

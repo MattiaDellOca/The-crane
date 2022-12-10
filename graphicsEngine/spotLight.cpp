@@ -11,6 +11,7 @@ LIB_API SpotLight::SpotLight(std::string name, glm::mat4 matrix, unsigned int li
 	: Light(name, matrix, LightType::SPOT, lightId, ambient, diffuse, specular), m_direction{direction} {
 	if (cutoff >= 0 && cutoff <= 90) {
 		m_cutoff = cutoff;
+		glEnable(m_baseValueLights + m_lightId);
 	}
 	else {
 		//throw exception
