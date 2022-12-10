@@ -1,13 +1,11 @@
 #pragma once
 
-#include "lib.h"
 #include "node.h"
 #include "lightType.h"
 
-#include <glm/glm.hpp>
-
 class LIB_API Light : public Node {
 protected:
+	static unsigned int m_baseValueLights;
 	LightType m_type;
 	unsigned int m_lightId;
 	glm::vec4 m_lightAmbient;

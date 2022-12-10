@@ -11,14 +11,14 @@
 #include <thread>
 
 
-   //GLM:
+	//GLM:
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 
-   //FreeGLUT:
+	//FreeGLUT:
 #include <GL/freeglut.h>
 
 ////////////

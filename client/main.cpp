@@ -78,6 +78,12 @@ int main(int argc, char* argv[]) {
 	glm::vec4 diffuse(1.0f, 1.0f, 1.0f, 1.0f);
 	glm::vec4 specular(1.0f, 1.0f, 1.0f, 1.0f);
 	DirectionalLight light{ "DirLight",f,1,ambient,diffuse,specular };
+	OmnidirectionalLight light2{ "OmniLight",f,2,ambient,diffuse,specular };
+	SpotLight light3{"SpotLight",f,3,ambient,diffuse,specular,40.f};
+
+	light.render(f);
+	light2.render(f);
+	light3.render(f);
 
 	// Free engine
 	Engine::free();

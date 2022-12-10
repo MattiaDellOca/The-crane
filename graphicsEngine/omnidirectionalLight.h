@@ -1,8 +1,6 @@
 #pragma once
 
-#include "lib.h"
 #include "light.h"
-#include "lightType.h"
 
 class LIB_API OmnidirectionalLight : public Light {
 
