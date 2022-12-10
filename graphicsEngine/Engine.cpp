@@ -139,7 +139,7 @@ void Engine::reshapeCallback(int width, int height) {
  * @return true on success, false on error
  */
 bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int height, int* argc, char** argv)
-{
+{	
 	// Prevent double init:
 	if (m_initFlag)
 	{

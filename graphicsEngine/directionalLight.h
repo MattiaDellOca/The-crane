@@ -10,5 +10,4 @@ public:
 	DirectionalLight(std::string, glm::mat4, unsigned int, glm::vec4, glm::vec4, glm::vec4);
 
 	virtual void render(glm::mat4);
-
 };

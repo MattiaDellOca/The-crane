@@ -95,7 +95,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="node.cpp" />
-    <ClCompile Include="omniLight.cpp" />
+    <ClCompile Include="omnidirectionalLight.cpp" />
     <ClCompile Include="orthographicCamera.cpp" />
     <ClCompile Include="perspectiveCamera.cpp" />
     <ClCompile Include="renderingList.cpp" />
@@ -115,7 +115,7 @@
     <ClInclude Include="cameraType.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="node.h" />
-    <ClInclude Include="omniLight.h" />
+    <ClInclude Include="omnidirectionalLight.h" />
     <ClInclude Include="orthographicCamera.h" />
     <ClInclude Include="perspectiveCamera.h" />
     <ClInclude Include="renderingList.h" />
