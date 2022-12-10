@@ -12,7 +12,6 @@ OrthographicCamera camera2d{ "2d Camera", 100, 100 }; // TODO: Write "wireframe"
 void display() {
     // Clear image
     Engine::clear();
-
     
     // Render scene
     Engine::begin3D(&camera3d); // set camera
@@ -48,9 +47,10 @@ int main(int argc, char* argv[]) {
    emerald.setShininess(0.6f * 128);
 
    // Create scene graph
+   /*
    glm::mat4 f = glm::mat4(1);
-   Sphere a{10.0f,  "A", f, emerald};
-   f = glm::translate(f, glm::vec3(10.0f, 0.0f, 0.0f));
+   Sphere a{2.0f,  "A", f, emerald};
+   f = glm::translate(f, glm::vec3(10.0f, 0.0f, 50.0f));
    Cube b{ 5.0f, "B", f, emerald};
    Light c{ "C", f };
    f = glm::translate(f, glm::vec3(0.0f, 10.0f, 0.0f));
@@ -58,17 +58,21 @@ int main(int argc, char* argv[]) {
    Sphere e{ 1.0f, "E", f, emerald };
    Light light{ "F", glm::mat4(1) };
 
-   a.addChild(&b);
-   a.addChild(&c);
-   b.addChild(&d);
-   b.addChild(&e);
-   e.addChild(&light);
+   //a.addChild(&b);
+   //a.addChild(&c);
+   //b.addChild(&d);
+   //b.addChild(&e);
+   //e.addChild(&light);
+   */
 
    // Load scene graph manually
-   Engine::load(&a);
+   //Engine::load(&a);
 
    // Start rendering some figures..
-   Engine::run(display);
+   //Engine::run(display);
+
+   //TEST LIGHT
+   DirectionalLight light;
 
    // Free engine
    Engine::free();

@@ -1,34 +1,28 @@
 #include "light.h"
 
-LIB_API Light::Light(std::string name, glm::mat4 matrix) : Node(name, matrix) {};
+LIB_API Light::Light(std::string name, glm::mat4 matrix, LightType type, unsigned int lightId, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular)
+	: Node(name, matrix),
+	m_type{type},
+	m_lightId{lightId},
+	m_lightPosition{glm::vec3(0.f,0.f,0.f)},
+	m_lightAmbient{ ambient },
+	m_lightDiffuse{ diffuse },
+	m_lightSpecular{ specular }
+{
+	std::cout << "Light" << m_lightId << std::endl;
+};
 
-glm::vec4 LIB_API Light::getAmbient() {
-	return m_ambient;
-}
 
-glm::vec4 LIB_API Light::getDiffuse() {
-	return m_diffuse;
-}
+//Factory method
+/*
+Light LIB_API Light::create(std::string name, glm::mat4 matrix, LightType type, unsigned int lightId, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular) {
+	return Light(name, matrix, type, lightId, ambient, diffuse, specular);
+}*/
 
-glm::vec4 LIB_API Light::getSpecular() {
-	return m_specular;
-}
-
-void LIB_API Light::setAmbient(glm::vec4 ambient) {
-	m_ambient = ambient;
-}
-
-void LIB_API Light::setDiffuse(glm::vec4 diffuse) {
-	m_diffuse = diffuse;
-}
-
-void LIB_API Light::setSpecular(glm::vec4 specular) {
-	m_specular = specular;
-}
-
+/*
 void LIB_API Light::render(glm::mat4 matrix) {
 	std::cout << "Light: name: " << m_name << std::endl;
 
 	// Render light
 
-}
+}*/
