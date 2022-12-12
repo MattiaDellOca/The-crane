@@ -9,8 +9,11 @@ void LIB_API Cube::render(glm::mat4 coords) {
 	// Render cube
 	std::cout << "CUBE: edge: " << m_edge << " Name: " << m_name << std::endl;
 
-	// Load superclass
-	Mesh::render(coords);
+	// Load material
+	m_material->apply();
+
+	// Load matrix
+	glLoadMatrixf(glm::value_ptr(coords));
 
 	// Show cube
 	glutSolidCube(m_edge);
