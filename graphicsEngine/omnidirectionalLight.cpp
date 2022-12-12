@@ -26,8 +26,6 @@ LIB_API void OmnidirectionalLight::render(glm::mat4 matrix)
 	//rendering
 	std::cout << "DirectionalLight " << m_type << std::endl;
 
-	//Activate light
-
 	//Load matrix
 	glLoadMatrixf(glm::value_ptr(matrix));
 

@@ -163,6 +163,8 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Enable Z-Buffer+Lighting+Face Cûlling+Lighting
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
+	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
+
 	// FIXME: ENABLE CULLING -> glEnable(GL_CULL_FACE);
 
 	glutInitWindowPosition(500, 500);
