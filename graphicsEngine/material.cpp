@@ -40,6 +40,10 @@ void LIB_API Material::setShininess(float shininess) {
 	m_shininess = shininess;
 }
 
+void LIB_API Material::setEmission(glm::vec4 emission) {
+	m_emission = emission;
+}
+
 glm::vec3 LIB_API Material::getMaterialColor() const {
 	return m_materialColor;
 }
@@ -58,6 +62,10 @@ glm::vec4 LIB_API Material::getSpecular() const {
 
 float LIB_API Material::getShininess() const {
 	return m_shininess;
+}
+
+glm::vec4 LIB_API Material::getEmission() const {
+	return m_emission;
 }
 
 void LIB_API Material::render(glm::mat4 matrix) {
