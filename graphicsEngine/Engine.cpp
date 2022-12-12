@@ -128,10 +128,13 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Global OpenGL settings:
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
 
-	// Enable Z-Buffer+Lighting+Face Cûlling
+	// Enable Z-Buffer+Lighting+Face Culling
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 	// FIXME: ENABLE CULLING -> glEnable(GL_CULL_FACE);
+	
+	// FIXME: DEBUG PUROSES - Setup Gauraud shading
+	glShadeModel(GL_SMOOTH);
 
 	glutInitWindowPosition(500, 500);
 
@@ -186,8 +189,6 @@ void LIB_API Engine::begin3D(Camera* camera) {
 	glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(glm::value_ptr(camera->getMatrix()));
 	glMatrixMode(GL_MODELVIEW);
-
-	// User can start drawing
 }
 
 /**
