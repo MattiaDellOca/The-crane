@@ -128,14 +128,6 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Global OpenGL settings:
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
 
-	// Enable Z-Buffer+Lighting+Face Culling
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING);
-	// FIXME: ENABLE CULLING -> glEnable(GL_CULL_FACE);
-	
-	// FIXME: DEBUG PUROSES - Setup Gauraud shading
-	glShadeModel(GL_SMOOTH);
-
 	glutInitWindowPosition(500, 500);
 
 	// Set window size
@@ -148,6 +140,17 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 
 	// Set reshape function
 	glutReshapeFunc(reshapeCallback);
+
+	// Enable Z-Buffer+Lighting+Face Culling
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	// FIXME: glEnable(GL_CULL_FACE);
+	// FIXME: Remove temp light
+	glEnable(GL_LIGHT0);
+	glEnable(GL_NORMALIZE);
+
+	// FIXME: DEBUG PUROSES - Setup Gauraud shading
+	glShadeModel(GL_SMOOTH);
 	
 	// Set running state
 	m_isRunning = true;
