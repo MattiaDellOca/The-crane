@@ -13,7 +13,6 @@ void display() {
     // Clear image
     Engine::clear();
 
-    
     // Render scene
     Engine::begin3D(&camera3d); // set camera
     Engine::render(); // render scene
@@ -49,7 +48,7 @@ int main(int argc, char* argv[]) {
 
    // Create scene graph
    glm::mat4 f = glm::mat4(1);
-   Sphere a{10.0f,  "A", f, &emerald};
+   Sphere a{1.0f,  "A", f, &emerald};
    f = glm::translate(f, glm::vec3(10.0f, 0.0f, 0.0f));
    Cube b{ 5.0f, "B", f, &emerald};
    Light c{ "C", f };
@@ -63,7 +62,6 @@ int main(int argc, char* argv[]) {
    b.addChild(&d);
    b.addChild(&e);
    e.addChild(&light);
-
    // Load scene graph manually
    Engine::load(&a);
 
