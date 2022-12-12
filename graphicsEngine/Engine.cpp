@@ -79,38 +79,6 @@ Engine::~Engine() {
 }
 
 
-void Engine::levelOrderTraversal(Node* root) {
-	if (root == NULL)
-		return;
-
-	std::queue<RenderNode *> queue;
-	RenderNode *r = new RenderNode { root, root->getMatrix() };
-	queue.push(r);
-	while (!queue.empty()) {
-		int n = queue.size();
-
-		// If the node has children
-		while (n > 0) {
-			// Remove first child
-			RenderNode* parent = queue.front();
-			queue.pop();
-			m_rendering_list->pass(parent);
-
-			std::cout << "Loading " << parent->m_node->getName() << std::endl;
-
-			// Enqueue all children of the dequeued item
-			if (parent->m_node->getNumberOfChildren() > 0) {
-				for (auto* child : parent->m_node->getChildren()) {
-					RenderNode *c = new RenderNode{ child, parent->m_mat * child->getMatrix() };
-					queue.push(c);
-				}
-			}
-			n--;
-		}
-	}
-}
-
-
 void Engine::reshapeCallback(int width, int height) {
 	std::cout << "[Reshape callback called] -> " << width << "x" << height << std::endl;
 
@@ -276,15 +244,14 @@ void LIB_API Engine::render() {
 			return;
 		}
 
-		// Popolate rendering list
-		m_rendering_list->setCamera(m_curr_camera);
-		// popolate list saving the matrix of each object in word coordinates
-		levelOrderTraversal(m_scene_graph);
+		// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
+		// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
+		m_rendering_list->pass(m_scene_graph, glm::mat4(1));
 
 		std::cout << "Rendering nodes..." << std::endl;
 		
 		// Render
-		m_rendering_list->render(glm::mat4(1));
+		m_rendering_list->render(m_curr_camera->getMatrix());
 	}
 	else {
 		std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;

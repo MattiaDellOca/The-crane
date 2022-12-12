@@ -49,13 +49,13 @@ int main(int argc, char* argv[]) {
 
    // Create scene graph
    glm::mat4 f = glm::mat4(1);
-   Sphere a{10.0f,  "A", f, emerald};
+   Sphere a{10.0f,  "A", f, &emerald};
    f = glm::translate(f, glm::vec3(10.0f, 0.0f, 0.0f));
-   Cube b{ 5.0f, "B", f, emerald};
+   Cube b{ 5.0f, "B", f, &emerald};
    Light c{ "C", f };
    f = glm::translate(f, glm::vec3(0.0f, 10.0f, 0.0f));
-   Sphere d{ 1.0f, "D", f, emerald };
-   Sphere e{ 1.0f, "E", f, emerald };
+   Sphere d{ 1.0f, "D", f, &emerald };
+   Sphere e{ 1.0f, "E", f, &emerald };
    Light light{ "F", glm::mat4(1) };
 
    a.addChild(&b);

@@ -3,7 +3,7 @@
 //FreeGLUT:
 #include <GL/freeglut.h>
 
-LIB_API Cube::Cube(float edge, std::string name, glm::mat4 matrix, Material material) : Mesh{ name,matrix, material }, m_edge{edge} {};
+LIB_API Cube::Cube(float edge, std::string name, glm::mat4 matrix, Material *material) : Mesh{ name,matrix, material }, m_edge{edge} {};
 
 void LIB_API Cube::render(glm::mat4) {
 	// Render cube

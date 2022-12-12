@@ -66,7 +66,6 @@ void LIB_API Node::addChild(Node* child) {
 
 	// Set parent + recursive matrix
 	child->setParent(this);
-	child->setMatrix(child->getMatrix());
 
 	// Check if children is nullptr
 	m_children->push_back(child);
@@ -84,18 +83,5 @@ bool LIB_API Node::removeChild(Node* child) {
 }
 
 void LIB_API Node::render(glm::mat4 matrix) {
-	/*
-	// Render this node and also children
-	std::cout << "Rendering: " << m_name << std::endl;
-
-	// Show node
-	if (m_children != nullptr && m_children->size() > 0) {
-		// render each children
-		for (auto* c : *m_children) {
-			// std::cout << "Rendering: " << c->getName() << std::endl;
-			c->render();
-		}
-	}
-	*/
 	std::cout << "Rendering: " << m_name << std::endl;
 }

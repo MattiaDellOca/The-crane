@@ -3,7 +3,7 @@
 //FreeGLUT:
 #include <GL/freeglut.h>
 
-LIB_API Sphere::Sphere(float radius, std::string name, glm::mat4 matrix, Material material) : Mesh(name, matrix, material), m_radius{ radius } {};
+LIB_API Sphere::Sphere(float radius, std::string name, glm::mat4 matrix, Material *material) : Mesh(name, matrix, material), m_radius{ radius } {};
 
 void LIB_API Sphere::render(glm::mat4) {
 
