@@ -9,11 +9,11 @@ void LIB_API Sphere::render(glm::mat4 coords) {
 	// Render sphere
 	std::cout << "SPHERE: radius: " << m_radius << " Name: " << m_name << std::endl;
 
-	// Load material
-	m_material->apply();
-
 	// Load matrix
 	glLoadMatrixf(glm::value_ptr(coords));
+
+	// Load material
+	m_material->apply();
 
 	// Draw sphere
 	glutSolidSphere(m_radius, (int)8 * 5, (int)8 * 5);
