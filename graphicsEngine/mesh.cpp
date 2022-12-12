@@ -18,10 +18,7 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 	std::cout << "MESH: name: " << m_name << "id: " << m_id << std::endl;
 
 	// Load material
-	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, powf(2.0f, 5));
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(m_material->getAmbient()));
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glm::value_ptr(m_material->getDiffuse()));
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, glm::value_ptr(m_material->getSpecular()));
+	m_material->apply();
 
 	// Load matrix
 	glLoadMatrixf(glm::value_ptr(m_matrix));
