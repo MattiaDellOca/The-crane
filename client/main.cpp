@@ -48,18 +48,28 @@ int main(int argc, char* argv[]) {
 
    // Create scene graph
    glm::mat4 f = glm::mat4(1);
-   Sphere a{1.0f,  "A", f, &emerald};
-   f = glm::translate(f, glm::vec3(10.0f, 0.0f, 0.0f));
-   Cube b{ 5.0f, "B", f, &emerald};
-   f = glm::translate(f, glm::vec3(0.0f, 10.0f, 0.0f));
-   Sphere d{ 1.0f, "D", f, &emerald };
-   Sphere e{ 1.0f, "E", f, &emerald };
+   Node root{ "Root",f };
+   glm::mat4 f2 = glm::translate(f, glm::vec3(-0.5f, 0.0f, 0.0f));
+   Sphere a{0.2f,  "A", f2, &emerald};
 
-   a.addChild(&b);
-   b.addChild(&d);
-   b.addChild(&e);
+   //Light settings
+   glm::vec4 ambientLight(1.f, 1.f, 1.f, 1.0f);
+   glm::vec4 diffuseLight(0.8f, 0.8f, 0.8f, 1.0f);
+   glm::vec4 specularLight(0.8f, 0.8f, 0.8f, 1.0f);
+
+
+   f = glm::translate(f, glm::vec3(0.2f, 0.0f, -0.2f));
+   OmnidirectionalLight omniLight{ "OmniLight",f,1,ambientLight ,diffuseLight , specularLight };
+   //DirectionalLight directionalLight{ "dirLight", f,1, ambientLight, diffuseLight, specularLight };
+   //SpotLight spotLight{ "spotLight",f,3,ambientLight, diffuseLight, specularLight, 25.f, glm::vec3(1.f,0.f,1.f) };
+
+   root.addChild(&a);
+   root.addChild(&omniLight);
+   //root.addChild(&directionalLight);
+   //root.addChild(&spotLight);
+
    // Load scene graph manually
-   Engine::load(&a);
+   Engine::load(&root);
 
    // Start rendering some figures..
    Engine::run(display);

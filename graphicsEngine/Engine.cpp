@@ -146,7 +146,6 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	glEnable(GL_LIGHTING);
 	// FIXME: glEnable(GL_CULL_FACE);
 	// FIXME: Remove temp light
-	glEnable(GL_LIGHT0);
 	glEnable(GL_NORMALIZE);
 
 	// FIXME: DEBUG PUROSES - Setup Gauraud shading
