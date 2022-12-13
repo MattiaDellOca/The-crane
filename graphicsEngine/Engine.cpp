@@ -11,14 +11,14 @@
 #include <thread>
 
 
-	//GLM:
+   //GLM:
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 
-	//FreeGLUT:
+   //FreeGLUT:
 #include <GL/freeglut.h>
 
 ////////////
@@ -79,38 +79,6 @@ Engine::~Engine() {
 }
 
 
-void Engine::levelOrderTraversal(Node* root) {
-	if (root == NULL)
-		return;
-
-	std::queue<RenderNode *> queue;
-	RenderNode *r = new RenderNode { root, root->getMatrix() };
-	queue.push(r);
-	while (!queue.empty()) {
-		int n = queue.size();
-
-		// If the node has children
-		while (n > 0) {
-			// Remove first child
-			RenderNode* parent = queue.front();
-			queue.pop();
-			m_rendering_list->pass(parent);
-
-			std::cout << "Loading " << parent->m_node->getName() << std::endl;
-
-			// Enqueue all children of the dequeued item
-			if (parent->m_node->getNumberOfChildren() > 0) {
-				for (auto* child : parent->m_node->getChildren()) {
-					RenderNode *c = new RenderNode{ child, parent->m_mat * child->getMatrix() };
-					queue.push(c);
-				}
-			}
-			n--;
-		}
-	}
-}
-
-
 void Engine::reshapeCallback(int width, int height) {
 	std::cout << "[Reshape callback called] -> " << width << "x" << height << std::endl;
 
@@ -139,7 +107,7 @@ void Engine::reshapeCallback(int width, int height) {
  * @return true on success, false on error
  */
 bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int height, int* argc, char** argv)
-{	
+{
 	// Prevent double init:
 	if (m_initFlag)
 	{
@@ -160,13 +128,6 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Global OpenGL settings:
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
 
-	// Enable Z-Buffer+Lighting+Face Cûlling+Lighting
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING);
-	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
-
-	// FIXME: ENABLE CULLING -> glEnable(GL_CULL_FACE);
-
 	glutInitWindowPosition(500, 500);
 
 	// Set window size
@@ -179,6 +140,17 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 
 	// Set reshape function
 	glutReshapeFunc(reshapeCallback);
+
+	// Enable Z-Buffer+Lighting+Face Culling
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	// FIXME: glEnable(GL_CULL_FACE);
+	// FIXME: Remove temp light
+	glEnable(GL_LIGHT0);
+	glEnable(GL_NORMALIZE);
+
+	// FIXME: DEBUG PUROSES - Setup Gauraud shading
+	glShadeModel(GL_SMOOTH);
 	
 	// Set running state
 	m_isRunning = true;
@@ -220,8 +192,6 @@ void LIB_API Engine::begin3D(Camera* camera) {
 	glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(glm::value_ptr(camera->getMatrix()));
 	glMatrixMode(GL_MODELVIEW);
-
-	// User can start drawing
 }
 
 /**
@@ -278,15 +248,14 @@ void LIB_API Engine::render() {
 			return;
 		}
 
-		// Popolate rendering list
-		m_rendering_list->setCamera(m_curr_camera);
-		// popolate list saving the matrix of each object in word coordinates
-		levelOrderTraversal(m_scene_graph);
+		// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
+		// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
+		m_rendering_list->pass(m_scene_graph, glm::mat4(1));
 
 		std::cout << "Rendering nodes..." << std::endl;
 		
 		// Render
-		m_rendering_list->render(glm::mat4(1));
+		m_rendering_list->render(m_curr_camera->getMatrix());
 	}
 	else {
 		std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;

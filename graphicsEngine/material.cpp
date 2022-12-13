@@ -1,23 +1,25 @@
 
 #include "material.h"
 
+
+   //GLM:
+#include <glm/gtc/type_ptr.hpp>
+
+   //FreeGLUT:
+#include <GL/freeglut.h>
+
 LIB_API Material::Material(std::string name) : Object{ name } {};
 
 void LIB_API Material::apply() {
-	/*
-		// Set material properties:
-		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, powf(2.0f, 5));
-		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(ambient));
-		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glm::value_ptr(diffuse));
-		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, glm::value_ptr(specular));
-	*/
+	std::cout << "APPLING MATERIAL: name: " << m_name << "id: " << m_id << std::endl;
+	// Set material properties:
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, m_shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(m_ambient));
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glm::value_ptr(m_diffuse));
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, glm::value_ptr(m_specular));
 }
 
 // GETTER + SETTERS
-
-void LIB_API Material::setMaterialColor(glm::vec3 color) {
-	m_materialColor = color;
-}
 
 void LIB_API Material::setAmbient(glm::vec4 ambient) {
 	m_ambient = ambient;
@@ -33,10 +35,6 @@ void LIB_API Material::setSpecular(glm::vec4 specular) {
 
 void LIB_API Material::setShininess(float shininess) {
 	m_shininess = shininess;
-}
-
-glm::vec3 LIB_API Material::getMaterialColor() const {
-	return m_materialColor;
 }
 
 glm::vec4 LIB_API Material::getAmbient() const {

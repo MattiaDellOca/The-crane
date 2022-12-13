@@ -1,10 +1,10 @@
 #pragma once
 
 #include "lib.h"
-#include "camera.h"
 #include "object.h"
 #include "mesh.h"
 #include "light.h"
+#include "camera.h"
 
 #include <iterator>
 #include <vector>
@@ -12,19 +12,18 @@
 #include <algorithm>
 
 struct RenderNode {
-	Node* m_node;
+	Object* m_node;
 	glm::mat4 m_mat;
 };
 
 class LIB_API RenderingList : public Object {
 protected:
 	std::list<RenderNode *> m_list;
-	Camera *m_camera;
+	void loadRenderNode(RenderNode*);
 public:
 	RenderingList(std::string);
 	std::list<RenderNode *> getRenderingList();
-	void setCamera(Camera *);
-	void pass(RenderNode *);
+	void pass(Node *, glm::mat4);
 	void clear();
 	void render(glm::mat4);
 };

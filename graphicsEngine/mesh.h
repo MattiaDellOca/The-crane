@@ -12,10 +12,10 @@
 
 class LIB_API Mesh : public Node {
 protected:
-	Material m_material;
+	Material *m_material;
 public:
-	Mesh(std::string name, glm::mat4 matrix, Material material);
+	Mesh(std::string name, glm::mat4 matrix, Material *material);
 	void render(glm::mat4);
-	const Material& getMaterial();
-	void setMaterial(Material);
+	const Material *getMaterial();
+	void setMaterial(Material*);
 };
