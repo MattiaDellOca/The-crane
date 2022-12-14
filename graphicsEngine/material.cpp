@@ -17,6 +17,7 @@ void LIB_API Material::apply() {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(m_ambient));
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glm::value_ptr(m_diffuse));
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, glm::value_ptr(m_specular));
+	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, glm::value_ptr(m_emission));
 }
 
 // GETTER + SETTERS
@@ -37,6 +38,10 @@ void LIB_API Material::setShininess(float shininess) {
 	m_shininess = shininess;
 }
 
+void LIB_API Material::setEmission(glm::vec4 emission) {
+	m_emission = emission;
+}
+
 glm::vec4 LIB_API Material::getAmbient() const {
 	return m_ambient;
 }
@@ -52,6 +57,11 @@ glm::vec4 LIB_API Material::getSpecular() const {
 float LIB_API Material::getShininess() const {
 	return m_shininess;
 }
+
+glm::vec4 LIB_API Material::getEmission() const {
+	return m_emission;
+}
+
 
 void LIB_API Material::render(glm::mat4 matrix) {
 	std::cout << "MATERIAL: name: " << m_name << "id: " << m_id << std::endl;
