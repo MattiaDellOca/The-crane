@@ -78,6 +78,9 @@
     <ClCompile Include="spotLight.cpp">
       <Filter>Source Files\light</Filter>
     </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="object.h">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="directionalLight.h">
       <Filter>Header Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
