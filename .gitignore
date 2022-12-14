@@ -16,15 +16,6 @@
 # Mono auto generated files
 mono_crash.*
 
-### Exception ###
-!dependencies/freeglut/lib/x64/	
-!dependencies/freeglut/lib/x64/Release
-!dependencies/freeglut/lib/x64/Debug
-
-!dependencies/freeimage/lib/x64/	
-!dependencies/freeimage/lib/x64/Release
-!dependencies/freeimage/lib/x64/Debug
-
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -40,7 +31,6 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
-
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -414,3 +404,12 @@ FodyWeavers.xsd
 # generated directories
 bin/
 obj/
+
+### Exceptions ###
+!dependencies/freeglut/lib/x64/	
+!dependencies/freeglut/lib/x64/Release
+!dependencies/freeglut/lib/x64/Debug
+
+!dependencies/freeimage/lib/x64/	
+!dependencies/freeimage/lib/x64/Release
+!dependencies/freeimage/lib/x64/Debug
