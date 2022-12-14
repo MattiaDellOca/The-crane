@@ -7,11 +7,9 @@
 #include <glm/gtc/type_ptr.hpp>
 
 
-LIB_API DirectionalLight::DirectionalLight(std::string name, glm::mat4 matrix, unsigned int lightId, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular)
-	: Light(name, matrix, LightType::DIRECTIONAL, lightId, ambient, diffuse, specular) 
-{
-	glEnable(m_baseValueLights + m_lightId);
-};
+LIB_API DirectionalLight::DirectionalLight(std::string name, glm::mat4 matrix, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular)
+	: Light(name, matrix, LightType::DIRECTIONAL, ambient, diffuse, specular) 
+{};
 
 
 LIB_API void DirectionalLight::render(glm::mat4 matrix)
@@ -21,9 +19,6 @@ LIB_API void DirectionalLight::render(glm::mat4 matrix)
 
 	//Values for omnidirectional light
 	glm::vec4 objectCoordPosition(0.f, 0.f, 0.f, 0.f); //w = 0
-
-	//rendering
-	std::cout << "DirectionalLight " << m_type << std::endl;
 
 	//Load matrix
 	glLoadMatrixf(glm::value_ptr(matrix));

@@ -98,6 +98,7 @@
     <ClCompile Include="omnidirectionalLight.cpp" />
     <ClCompile Include="orthographicCamera.cpp" />
     <ClCompile Include="perspectiveCamera.cpp" />
+    <ClCompile Include="positionalLight.cpp" />
     <ClCompile Include="renderingList.cpp" />
     <ClCompile Include="sphere.cpp" />
     <ClCompile Include="spotLight.cpp" />
@@ -118,6 +119,7 @@
     <ClInclude Include="omnidirectionalLight.h" />
     <ClInclude Include="orthographicCamera.h" />
     <ClInclude Include="perspectiveCamera.h" />
+    <ClInclude Include="positionalLight.h" />
     <ClInclude Include="renderingList.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="spotLight.h" />

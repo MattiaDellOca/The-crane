@@ -78,6 +78,9 @@
     <ClCompile Include="spotLight.cpp">
       <Filter>Source Files\light</Filter>
     </ClCompile>
+    <ClCompile Include="positionalLight.cpp">
+      <Filter>Source Files\light</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="object.h">
@@ -132,6 +135,9 @@
       <Filter>Header Files\light</Filter>
     </ClInclude>
     <ClInclude Include="lightType.h">
+      <Filter>Header Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="positionalLight.h">
       <Filter>Header Files\light</Filter>
     </ClInclude>
   </ItemGroup>

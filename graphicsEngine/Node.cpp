@@ -15,14 +15,16 @@ LIB_API Node::Node(std::string name, glm::mat4 matrix) :
 
 LIB_API Node::~Node() {
 	// Delete all allocated vars
-	delete& m_matrix;
+	//delete& m_matrix;
 
 	// Empty each vector item + clear
-	for (auto* node : *m_children) {
-		delete node;
+	if (m_children != nullptr) {
+		for (auto* node : *m_children) {
+			delete node;
+		}
+		m_children->clear();
+		delete& m_children;
 	}
-	m_children->clear();
-	delete& m_children;
 
 	// Delete parent node
 	delete m_parent;
