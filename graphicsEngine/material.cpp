@@ -18,6 +18,11 @@ void LIB_API Material::apply() {
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glm::value_ptr(m_diffuse));
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, glm::value_ptr(m_specular));
 	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, glm::value_ptr(m_emission));
+
+	// Apply texture if present
+	if (m_texture != nullptr) {
+		m_texture->load();
+	}
 }
 
 // GETTER + SETTERS
@@ -44,6 +49,14 @@ void LIB_API Material::setEmission(glm::vec4 emission) {
 
 glm::vec4 LIB_API Material::getAmbient() const {
 	return m_ambient;
+}
+
+Texture LIB_API* Material::getTexture() const {
+	return m_texture;
+}
+
+void LIB_API Material::setTexture(Texture* texture) {
+	m_texture = texture;
 }
 
 glm::vec4 LIB_API Material::getDiffuse() const {
