@@ -17,16 +17,15 @@
 mono_crash.*
 
 ### Exception ###
-!dependencies/freeglut/lib/x64/
-!dependencies/freeglut/lib/x64/Release
-!dependencies/freeglut/lib/x64/Debug
+!dependencies/freeglut/lib/x64/Debug/*
+!dependencies/freeglut/lib/x64/Release/*
+!dependencies/freeimage/lib/*
 
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
-
 [Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
