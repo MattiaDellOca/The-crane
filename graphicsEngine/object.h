@@ -29,6 +29,4 @@ public:
 	void setName(std::string);
 	const std::string getName();
 	const unsigned int getId();
-	// render with parameters
-	void virtual render(glm::mat4) = 0;
 };

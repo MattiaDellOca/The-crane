@@ -18,7 +18,6 @@ private:
 public:
 	Material(std::string name);
 	void apply();
-	void render(glm::mat4);
 
 	void setAmbient(glm::vec4);
 	void setDiffuse(glm::vec4);

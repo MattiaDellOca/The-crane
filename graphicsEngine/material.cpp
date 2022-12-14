@@ -61,8 +61,3 @@ float LIB_API Material::getShininess() const {
 glm::vec4 LIB_API Material::getEmission() const {
 	return m_emission;
 }
-
-
-void LIB_API Material::render(glm::mat4 matrix) {
-	std::cout << "MATERIAL: name: " << m_name << "id: " << m_id << std::endl;
-}
