@@ -1,34 +1,38 @@
 #include "light.h"
 
-LIB_API Light::Light(std::string name, glm::mat4 matrix) : Node(name, matrix) {};
+//FreeGLUT:
+#include <GL/freeglut.h>
 
-glm::vec4 LIB_API Light::getAmbient() {
-	return m_ambient;
-}
+//Basic value for openGl Lights:
+//GL_LIGHT0 = 0x4000
+//GL_LIGHT5 = 0x4005
+//LI_LIGHTX = 0x4000 + X
+unsigned int Light::m_baseValueLights = 0x4000;
 
-glm::vec4 LIB_API Light::getDiffuse() {
-	return m_diffuse;
-}
+//Incremental value used in openGL for identify the light
+unsigned int Light::m_incrementalLightId = 0;
+int Light::m_maxLights = 0;
 
-glm::vec4 LIB_API Light::getSpecular() {
-	return m_specular;
-}
+LIB_API Light::Light(std::string name, glm::mat4 matrix, LightType type, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular)
+	: Node(name, matrix),
+	m_type{type},
+	m_lightId{ m_incrementalLightId },
+	m_lightAmbient{ ambient },
+	m_lightDiffuse{ diffuse },
+	m_lightSpecular{ specular }
+	{
+		//The first time a light is instantiated the max lights is calculated
+		if (m_incrementalLightId == 0) {
+			glGetIntegerv(GL_MAX_LIGHTS, &m_maxLights);
+		}
+		//Throw an exception if opengl can't manage the light
+		else if (m_incrementalLightId > m_maxLights - 1) {
+			throw std::runtime_error("Maximum number of lights possible reached: " + name);
+		}
 
-void LIB_API Light::setAmbient(glm::vec4 ambient) {
-	m_ambient = ambient;
-}
+		//increment lightid
+		m_incrementalLightId++;
 
-void LIB_API Light::setDiffuse(glm::vec4 diffuse) {
-	m_diffuse = diffuse;
-}
-
-void LIB_API Light::setSpecular(glm::vec4 specular) {
-	m_specular = specular;
-}
-
-void LIB_API Light::render(glm::mat4 matrix) {
-	std::cout << "Light: name: " << m_name << std::endl;
-
-	// Render light
-
-}
+		//enable light
+		glEnable(m_baseValueLights + m_lightId);
+	};

@@ -72,10 +72,13 @@
     <ClCompile Include="directionalLight.cpp">
       <Filter>Source Files\light</Filter>
     </ClCompile>
-    <ClCompile Include="omniLight.cpp">
+    <ClCompile Include="omnidirectionalLight.cpp">
       <Filter>Source Files\light</Filter>
     </ClCompile>
     <ClCompile Include="spotLight.cpp">
+      <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="positionalLight.cpp">
       <Filter>Source Files\light</Filter>
     </ClCompile>
   </ItemGroup>
@@ -122,13 +125,19 @@
     <ClInclude Include="light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="omniLight.h">
+    <ClInclude Include="omnidirectionalLight.h">
       <Filter>Header Files\light</Filter>
     </ClInclude>
     <ClInclude Include="spotLight.h">
       <Filter>Header Files\light</Filter>
     </ClInclude>
     <ClInclude Include="directionalLight.h">
+      <Filter>Header Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="lightType.h">
+      <Filter>Header Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="positionalLight.h">
       <Filter>Header Files\light</Filter>
     </ClInclude>
   </ItemGroup>

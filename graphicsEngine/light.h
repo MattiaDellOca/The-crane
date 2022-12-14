@@ -1,23 +1,20 @@
 #pragma once
 
-#include "lib.h"
 #include "node.h"
-
-#include <glm/glm.hpp>
+#include "lightType.h"
 
 class LIB_API Light : public Node {
 protected:
-	glm::vec4 m_ambient;
-	glm::vec4 m_diffuse;
-	glm::vec4 m_specular;
+	static unsigned int m_baseValueLights;
+	static unsigned int m_incrementalLightId;
+	static int m_maxLights; //max lights that opengl can manage 
+	LightType m_type;
+	unsigned int m_lightId;
+	glm::vec4 m_lightAmbient;
+	glm::vec4 m_lightDiffuse;
+	glm::vec4 m_lightSpecular;
+	Light(std::string, glm::mat4, LightType, glm::vec4, glm::vec4, glm::vec4);
+
 public:
-	Light(std::string name, glm::mat4 matrix);
-	glm::vec4 getAmbient();
-	glm::vec4 getDiffuse();
-	glm::vec4 getSpecular();
-	void setAmbient(glm::vec4);
-	void setDiffuse(glm::vec4);
-	void setSpecular(glm::vec4);
-	// Make this pure virtual
-	void virtual render(glm::mat4);
+	void virtual render(glm::mat4) = 0;
 };
