@@ -12,7 +12,7 @@
 #include <algorithm>
 
 struct RenderNode {
-	Object* m_node;
+	Node* m_node;
 	glm::mat4 m_mat;
 };
 
