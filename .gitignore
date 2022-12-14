@@ -406,10 +406,8 @@ bin/
 obj/
 
 ### Exceptions ###
-!dependencies/freeglut/lib/x64/	
-!dependencies/freeglut/lib/x64/Release
-!dependencies/freeglut/lib/x64/Debug
+!dependencies/freeglut/lib/x64/Release/**
+!dependencies/freeglut/lib/x64/Debug/**
 
-!dependencies/freeimage/lib/x64/	
-!dependencies/freeimage/lib/x64/Release
-!dependencies/freeimage/lib/x64/Debug
+!dependencies/freeimage/lib/x64/Release/**
+!dependencies/freeimage/lib/x64/Debug/**
