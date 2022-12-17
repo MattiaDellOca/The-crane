@@ -43,8 +43,42 @@
 			<Add library="glut" />
 			<Add library="GL" />
 		</Linker>
-		<Unit filename="dynLib.cpp" />
-		<Unit filename="dynLib.h" />
+		<Unit filename="camera.cpp" />
+		<Unit filename="camera.h" />
+		<Unit filename="cameraType.h" />
+		<Unit filename="cube.cpp" />
+		<Unit filename="cube.h" />
+		<Unit filename="directionalLight.cpp" />
+		<Unit filename="directionalLight.h" />
+		<Unit filename="engine.cpp" />
+		<Unit filename="engine.h" />
+		<Unit filename="lib.h" />
+		<Unit filename="light.cpp" />
+		<Unit filename="light.h" />
+		<Unit filename="lightType.h" />
+		<Unit filename="material.cpp" />
+		<Unit filename="material.h" />
+		<Unit filename="mesh.cpp" />
+		<Unit filename="mesh.h" />
+		<Unit filename="node.cpp" />
+		<Unit filename="node.h" />
+		<Unit filename="object.cpp" />
+		<Unit filename="object.h" />
+		<Unit filename="objectToRender.h" />
+		<Unit filename="omnidirectionalLight.cpp" />
+		<Unit filename="omnidirectionalLight.h" />
+		<Unit filename="orthographicCamera.cpp" />
+		<Unit filename="orthographicCamera.h" />
+		<Unit filename="perspectiveCamera.cpp" />
+		<Unit filename="perspectiveCamera.h" />
+		<Unit filename="positionalLight.cpp" />
+		<Unit filename="positionalLight.h" />
+		<Unit filename="renderingList.cpp" />
+		<Unit filename="renderingList.h" />
+		<Unit filename="sphere.cpp" />
+		<Unit filename="sphere.h" />
+		<Unit filename="spotLight.cpp" />
+		<Unit filename="spotLight.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
