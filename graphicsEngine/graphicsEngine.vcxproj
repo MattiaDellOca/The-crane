@@ -86,22 +86,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cube.cpp" />
-    <ClCompile Include="directionalLight.cpp" />
-    <ClCompile Include="light.cpp" />
-    <ClCompile Include="material.cpp" />
-    <ClCompile Include="mesh.cpp" />
-    <ClCompile Include="object.cpp" />
-    <ClCompile Include="camera.cpp" />
-    <ClCompile Include="engine.cpp" />
-    <ClCompile Include="node.cpp" />
-    <ClCompile Include="omnidirectionalLight.cpp" />
-    <ClCompile Include="orthographicCamera.cpp" />
-    <ClCompile Include="perspectiveCamera.cpp" />
-    <ClCompile Include="positionalLight.cpp" />
-    <ClCompile Include="renderingList.cpp" />
-    <ClCompile Include="sphere.cpp" />
-    <ClCompile Include="spotLight.cpp" />
+    <ClCompile Include="src\camera.cpp" />
+    <ClCompile Include="src\cube.cpp" />
+    <ClCompile Include="src\directionalLight.cpp" />
+    <ClCompile Include="src\engine.cpp" />
+    <ClCompile Include="src\light.cpp" />
+    <ClCompile Include="src\material.cpp" />
+    <ClCompile Include="src\mesh.cpp" />
+    <ClCompile Include="src\node.cpp" />
+    <ClCompile Include="src\object.cpp" />
+    <ClCompile Include="src\omnidirectionalLight.cpp" />
+    <ClCompile Include="src\orthographicCamera.cpp" />
+    <ClCompile Include="src\perspectiveCamera.cpp" />
+    <ClCompile Include="src\positionalLight.cpp" />
+    <ClCompile Include="src\renderingList.cpp" />
+    <ClCompile Include="src\sphere.cpp" />
+    <ClCompile Include="src\spotLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cube.h" />
@@ -112,7 +112,6 @@
     <ClInclude Include="material.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="object.h" />
-    <ClInclude Include="camera.h" />
     <ClInclude Include="cameraType.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="node.h" />
@@ -123,6 +122,7 @@
     <ClInclude Include="renderingList.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="spotLight.h" />
+    <ClInclude Include="src\camera.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
