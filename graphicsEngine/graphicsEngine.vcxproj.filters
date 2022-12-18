@@ -31,6 +31,12 @@
     <Filter Include="Header Files\light">
       <UniqueIdentifier>{235222e2-4e92-488b-8181-66863368cbf2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\utilities">
+      <UniqueIdentifier>{d5f32c8a-69c3-43a5-bb68-6a140135cc05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utilities">
+      <UniqueIdentifier>{0e201e96-b975-4d80-a45e-8cc3bc745605}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="object.cpp">
@@ -80,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="positionalLight.cpp">
       <Filter>Source Files\light</Filter>
+    </ClCompile>
+    <ClCompile Include="ovoreader.cpp">
+      <Filter>Source Files\utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="positionalLight.h">
       <Filter>Header Files\light</Filter>
+    </ClInclude>
+    <ClInclude Include="ovoreader.h">
+      <Filter>Header Files\utilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
