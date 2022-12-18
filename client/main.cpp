@@ -38,6 +38,7 @@ int main(int argc, char* argv[]) {
    Engine::setKeyboardFunction(keyboardCallback);
    Engine::setBackgroundColor(0.0f, 0.0f, 0.0f);
 
+
    // Instantiate material
    // EMERALD -> http://devernay.free.fr/cours/opengl/materials.html
    Material emerald{ "Emerald" };
