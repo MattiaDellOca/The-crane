@@ -38,7 +38,7 @@
 			<Add directory="../dependencies/glm/include" />
 		</Compiler>
 		<Linker>
-			<Add library="graphicsEngine" />
+			<Add library="engine" />
 		</Linker>
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/main.h" />
