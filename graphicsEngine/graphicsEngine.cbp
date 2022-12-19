@@ -79,6 +79,9 @@
 		<Unit filename="src/sphere.h" />
 		<Unit filename="src/spotLight.cpp" />
 		<Unit filename="src/spotLight.h" />
+		<Unit filename="test/main.cpp" />
+		<Unit filename="test/node_test.cpp" />
+		<Unit filename="test/node_test.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>
