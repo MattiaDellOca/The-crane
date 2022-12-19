@@ -18,7 +18,6 @@ CXXFLAGS += -I../dependencies/glm/include/ #add glm path
 LDFLAGS = -shared
 LIB = -lglut -lGL
 
-
 # Specify the unit testing library and flags
 #GTEST_DIR = /googletest-release-1.12.1
 #GTEST_FLAGS = -isystem $(GTEST_DIR)/include
