@@ -1,9 +1,9 @@
 #!/bin/bash
-cd graphicsEngine
+cd engine
 make clean
 make
 cd ../client
 make clean
 make
 cd bin/Debug
-LD_LIBRARY_PATH=../../../graphicsEngine/bin/Debug/ ./client
+LD_LIBRARY_PATH=../../../engine/bin/Debug/ ./client

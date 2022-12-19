@@ -27,17 +27,17 @@ OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 CXX = g++
 CXXFLAGS = -std=c++11 -Wall -Wextra 
 CXXFLAGS += -I../dependencies/glm/include/ #add glm path
-CXXFLAGS += -I../graphicsEngine
+CXXFLAGS += -I../engine
 
 #Debug
 CXXFLAGS_DEBUG = $(CXXFLAGS) -g #-g = debugging symbols
-LDFLAGS_DEBUG = -L../graphicsEngine/bin/Debug/ -lengine
+LDFLAGS_DEBUG = -L../engine/bin/Debug/ -lengine
 OUT_DEBUG = $(OUTDIR_DEBUG)/$(TARGET)
 OBJ_FILES_DEBUG = $(patsubst $(SRC_DIR)/%.cpp,$(OBJDIR_DEBUG)/%.o,$(SRC_FILES))
 
 #Release
 CXXFLAGS_RELEASE = $(CXXFLAGS) -O2 #optimization level 2 of 3
-LDFLAGS_RELEASE = -L../graphicsEngine/bin/Release/ -lengine -s
+LDFLAGS_RELEASE = -L../engine/bin/Release/ -lengine -s
 OUT_RELEASE = $(OUTDIR_RELEASE)/$(TARGET)
 OBJ_FILES_RELEASE = $(patsubst $(SRC_DIR)/%.cpp,$(OBJDIR_RELEASE)/%.o,$(SRC_FILES))
 
