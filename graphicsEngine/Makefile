@@ -1,17 +1,28 @@
-# Default target executed when no arguments are given to make.
-#default_target: compile
+# compile executed when no arguments are given to make.
 .PHONY : compile
 
-# Specify the target executable
+####
+#VARIABLES
+####
+
 TARGET = libengine.so #name of the .so
-
-#general 
 SRC_DIR = src
-#OBJ_DIR = obj2
-SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
-#OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
-#test files
+#Debug
+OBJDIR_DEBUG = obj/Debug/src
+OUTDIR_DEBUG = bin/Debug
+
+#Release
+OBJDIR_RELEASE = obj/Release/src
+OUTDIR_RELEASE = bin/Release
+
+
+####
+#SETTINGS
+####
+
+#files
+SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
 TEST_SOURCES = $(wildcard $(TEST_FOLDER)/*_test.cpp)
 
 # Specify the C++ compiler and flags
@@ -26,8 +37,7 @@ LIB = -lglut -lGL
 CXXFLAGS_DEBUG = $(CXXFLAGS) -g #-g = debugging symbols
 LIB_DEBUG = $(LIB)
 LDFLAGS_DEBUG = $(LDFLAGS)
-OBJDIR_DEBUG = obj/Debug/src
-OUTDIR_DEBUG = bin/Debug
+
 OUT_DEBUG = $(OUTDIR_DEBUG)/$(TARGET)
 OBJ_FILES_DEBUG = $(patsubst $(SRC_DIR)/%.cpp,$(OBJDIR_DEBUG)/%.o,$(SRC_FILES))
 
@@ -35,8 +45,7 @@ OBJ_FILES_DEBUG = $(patsubst $(SRC_DIR)/%.cpp,$(OBJDIR_DEBUG)/%.o,$(SRC_FILES))
 CXXFLAGS_RELEASE = $(CXXFLAGS) -02 #optimization level 2 of 3
 LIB_RELEASE = $(LIB)
 LDFLAGS_RELEASE = $(LDFLAGS) -s
-OBJDIR_RELEASE = obj/Release/src
-OUTDIR_RELEASE = bin/Release
+
 OUT_RELEASE = $(OUTDIR_RELEASE)/$(TARGET)
 OBJ_FILES_RELEASE = $(patsubst $(SRC_DIR)/%.cpp,$(OBJDIR_RELEASE)/%.o,$(SRC_FILES))
 
@@ -89,27 +98,4 @@ clean_release:
 	rm -f $(OUT_RELEASE) $(OBJDIR_RELEASE)/*.o
 	rm -rf $(OUTDIR_RELEASE)
 	rm -rf $(OBJDIR_RELEASE)
-
-
-
-
-#$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-#	$(CXX) $(CXXFLAGS) -o $@ $<
-# Compile the source files into the target executable
-#compile: $(OBJ_FILES)
-#	$(CXX) -fPIC $(LDFLAGS) -o  $(TARGET) $^ $(LIB)
-
-# Compile the test files into the test executable
-#compile_test: $(TEST_SOURCES) compile
-#	$(CXX) $(CXXFLAGS) $(GTEST_FLAGS) -o $(TEST_TARGET) $(TEST_SOURCES) $(GTEST_LIBS)
-
-#Run the test executable
-#test: compile_test
-#	./$(TEST_TARGET)
-
-# Clean up object files and executables
-#clean:
-#	rm -f $(TARGET) $(TEST_TARGET) $(OBJ_DIR)/*.o
-	
-	
 
