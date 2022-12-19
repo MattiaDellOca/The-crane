@@ -37,15 +37,13 @@ LIB = -lglut -lGL
 CXXFLAGS_DEBUG = $(CXXFLAGS) -g #-g = debugging symbols
 LIB_DEBUG = $(LIB)
 LDFLAGS_DEBUG = $(LDFLAGS)
-
 OUT_DEBUG = $(OUTDIR_DEBUG)/$(TARGET)
 OBJ_FILES_DEBUG = $(patsubst $(SRC_DIR)/%.cpp,$(OBJDIR_DEBUG)/%.o,$(SRC_FILES))
 
 #Release
-CXXFLAGS_RELEASE = $(CXXFLAGS) -02 #optimization level 2 of 3
+CXXFLAGS_RELEASE = $(CXXFLAGS) -O2 #optimization level 2 of 3
 LIB_RELEASE = $(LIB)
 LDFLAGS_RELEASE = $(LDFLAGS) -s
-
 OUT_RELEASE = $(OUTDIR_RELEASE)/$(TARGET)
 OBJ_FILES_RELEASE = $(patsubst $(SRC_DIR)/%.cpp,$(OBJDIR_RELEASE)/%.o,$(SRC_FILES))
 
@@ -63,7 +61,7 @@ clean: clean_debug clean_release
 
 #create .o file
 $(OBJDIR_DEBUG)/%.o: $(SRC_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -o $@ $<
+	$(CXX) $(CXXFLAGS_DEBUG) -o $@ $<
 
 before_debug: 
 	test -d $(OUTDIR_DEBUG) || mkdir -p $(OUTDIR_DEBUG)
@@ -83,7 +81,7 @@ clean_debug:
 
 #create .o file
 $(OBJDIR_RELEASE)/%.o: $(SRC_DIR)/%.cpp
-	$(CXX) $(CXXFLAGS) -o $@ $<
+	$(CXX) $(CXXFLAGS_RELEASE) -o $@ $<
 
 before_release: 
 	test -d $(OUTDIR_RELEASE) || mkdir -p $(OUTDIR_RELEASE)

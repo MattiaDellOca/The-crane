@@ -5,4 +5,5 @@ make
 cd ../client
 make clean
 make
-LD_LIBRARY_PATH=../graphicsEngine/ ./client 
+cd bin/Debug
+LD_LIBRARY_PATH=../../../graphicsEngine/bin/Debug/ ./client
