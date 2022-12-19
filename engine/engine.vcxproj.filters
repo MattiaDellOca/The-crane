@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\src">
+      <UniqueIdentifier>{5c49b326-311f-4731-bd91-c84d3de0dc52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\camera">
+      <UniqueIdentifier>{6e6115f0-e82d-426a-83ad-0cb4b50d9008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\figure">
+      <UniqueIdentifier>{51af930c-573f-4ea6-9728-aa9f988ff41a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\light">
+      <UniqueIdentifier>{6a6d60bd-25b0-4fea-89bc-03aded208f00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src">
+      <UniqueIdentifier>{3d683425-0003-4bc8-844a-ec743a19adf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\camera">
+      <UniqueIdentifier>{7bd129bb-68f5-43ab-95f5-361a605710fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\figure">
+      <UniqueIdentifier>{b921f2bf-a898-472c-9a25-ea3a53734ee1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\light">
+      <UniqueIdentifier>{289d965c-53c6-4b9a-9b64-dccca3fd0cfe}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\cube.cpp">
+      <Filter>Source Files\src\figure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\directionalLight.cpp">
+      <Filter>Source Files\src\light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\omnidirectionalLight.cpp">
+      <Filter>Source Files\src\light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perspectiveCamera.cpp">
+      <Filter>Source Files\src\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\orthographicCamera.cpp">
+      <Filter>Source Files\src\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\positionalLight.cpp">
+      <Filter>Source Files\src\light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sphere.cpp">
+      <Filter>Source Files\src\figure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\spotLight.cpp">
+      <Filter>Source Files\src\light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\light.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\material.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mesh.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\node.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\object.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderingList.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\cameraType.h">
+      <Filter>Header Files\src\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\orthographicCamera.h">
+      <Filter>Header Files\src\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\perspectiveCamera.h">
+      <Filter>Header Files\src\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cube.h">
+      <Filter>Header Files\src\figure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\sphere.h">
+      <Filter>Header Files\src\figure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\directionalLight.h">
+      <Filter>Header Files\src\light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lightType.h">
+      <Filter>Header Files\src\light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\omnidirectionalLight.h">
+      <Filter>Header Files\src\light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\positionalLight.h">
+      <Filter>Header Files\src\light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\spotLight.h">
+      <Filter>Header Files\src\light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\light.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\material.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mesh.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\node.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\object.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderingList.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
