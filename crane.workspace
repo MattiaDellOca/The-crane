@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
 	<Workspace title="Workspace">
-		<Project filename="graphicsEngine/graphicsEngine.cbp" />
 		<Project filename="client/client.cbp" />
+		<Project filename="engine/graphicsEngine.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>
