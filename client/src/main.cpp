@@ -5,7 +5,6 @@ PerspectiveCamera camera3d{ "Main camera", 100, 100, 1, 100 };
 OrthographicCamera camera2d{ "2d Camera", 100, 100 }; // TODO: Write "wireframe" option in 2D UI (it is supported but not shown to the user)
 
 // ====== LISTA DI COSE DA FARE ======
-
 // 1 - Aggiornare parametri della camera al reshape
 // 2 - Per warning: o pragma per disabilitarli o struttura pimpl
 

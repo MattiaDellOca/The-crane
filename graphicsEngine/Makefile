@@ -36,7 +36,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 
 # Compile the source files into the target executable
 compile: $(OBJ_FILES)
-	$(CXX) $(LDFLAGS) -o  $(TARGET) $^ $(LIB)
+	$(CXX) -fPIC $(LDFLAGS) -o  $(TARGET) $^ $(LIB)
 
 # Compile the test files into the test executable
 compile_test: $(TEST_SOURCES) compile

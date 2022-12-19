@@ -9,12 +9,13 @@ TARGET = client #name of the executable
 SRC_DIR = src
 OBJ_DIR = obj2
 SRC_FILES = $(wildcard $(SRC_DIR)/*.cpp)
-OBJ_FILES = $(SRC_FILES:.cpp=.o)
+OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
 # Specify the C++ compiler and flags
 CXX = g++
-CXXFLAGS = -c -std=c++11 -Wall -Wextra 
+CXXFLAGS = -std=c++11 -Wall -Wextra 
 CXXFLAGS += -I../dependencies/glm/include/ #add glm path
+CXXFLAGS += -I../graphicsEngine
 
 LDFLAGS += -L../graphicsEngine/ -lengine
 
@@ -28,25 +29,17 @@ TEST_TARGET = testFile #name of the test file
 TEST_FOLDER = test
 TEST_SOURCES = $(wildcard $(TEST_FOLDER)/*_test.cpp)
 
-
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) $(LDFLAGS)  -o $@ $<
-
+#create .o file
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(CXX) -c $(CXXFLAGS) -o $@ $(LDFLAGS) $<
+	
 # Compile the source files into the target executable
 compile: $(OBJ_FILES)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $(TARGET) $^ 
-
-# Compile the test files into the test executable
-compile_test: $(TEST_SOURCES) compile
-	$(CXX) $(CXXFLAGS) $(GTEST_FLAGS) -o $(TEST_TARGET) $(TEST_SOURCES) $(GTEST_LIBS)
-
-#Run the test executable
-test: compile_test
-	./$(TEST_TARGET)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $^ $(LDFLAGS)
 
 # Clean up object files and executables
 clean:
-	rm -f $(TARGET) $(TEST_TARGET)
+	rm -f $(TARGET) $(TEST_TARGET) $(OBJ_DIR)/*.o
 	
 	
 

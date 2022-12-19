@@ -39,8 +39,8 @@
 		<Linker>
 			<Add library="graphicsEngine" />
 		</Linker>
-		<Unit filename="main.cpp" />
-		<Unit filename="main.h" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/main.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
