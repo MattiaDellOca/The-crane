@@ -15,6 +15,7 @@
 #include <iostream>
 #include <iomanip>   
 #include <limits.h>
+
 using namespace std;
 
 #include "lib.h"
@@ -27,6 +28,7 @@ using namespace std;
 #include "positionalLight.h"
 #include "spotLight.h"
 #include "lightType.h"
+#include "vertex.h"
 
 
 /////////////
@@ -128,9 +130,10 @@ public:
     Node* readFile(const char* path);
 protected:
     std::map<string, Material*> m_materials;
-    void parseOject(char* data, unsigned int* position);
-    Node* parseNode(char* data, unsigned int* position, unsigned int* nChildren);
-    Material* parseMaterial(char* data, unsigned int* position);
-    Mesh* parseMesh(char* data, unsigned int* position);
-    Light* parseLight(char* data, unsigned int* position);
+    Node* recursiveLoad(FILE* dat, const char* path);
+    void parseOject(char* data, unsigned int& position);
+    Node* parseNode(char* data, unsigned int& position, unsigned int* nChildren);
+    Material* parseMaterial(char* data, unsigned int& position);
+    Mesh* parseMesh(char* data, unsigned int& position, unsigned int* nChildren);
+    Light* parseLight(char* data, unsigned int& position, unsigned int* nChildren);
 };

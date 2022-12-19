@@ -103,6 +103,7 @@
     <ClCompile Include="renderingList.cpp" />
     <ClCompile Include="sphere.cpp" />
     <ClCompile Include="spotLight.cpp" />
+    <ClCompile Include="vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cube.h" />
@@ -125,6 +126,7 @@
     <ClInclude Include="renderingList.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="spotLight.h" />
+    <ClInclude Include="vertex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

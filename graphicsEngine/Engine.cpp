@@ -157,7 +157,7 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 
 
 	Ovoreader ovoreader;
-	m_scene_graph = ovoreader.readFile("C:\\Users\\matti\\OneDrive\\Desktop\\simple3dScene.ovo");
+	m_scene_graph = ovoreader.readFile("C:\\Users\\matti\\OneDrive\\Desktop\\example.ovo");
 
 
 	// Succes!!

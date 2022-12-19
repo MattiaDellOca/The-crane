@@ -66,7 +66,7 @@ void LIB_API Node::addChild(Node* child) {
 		m_children = new std::vector<Node*>();
 	}
 
-	// Set parent + recursive matrix
+	// Set parent
 	child->setParent(this);
 
 	// Check if children is nullptr
