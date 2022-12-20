@@ -1,5 +1,5 @@
 #include "light.h"
-
+#include <stdexcept>
 //FreeGLUT:
 #include <GL/freeglut.h>
 

@@ -1,5 +1,5 @@
 #include "spotLight.h"
-
+#include <stdexcept>
 //FreeGLUT:
 #include <GL/freeglut.h>
 
