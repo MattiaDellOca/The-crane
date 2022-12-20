@@ -1,5 +1,5 @@
 # compile executed when no arguments are given to make.
-.PHONY : compile
+.PHONY : build
 
 ####
 #VARIABLES
@@ -53,7 +53,7 @@ OBJ_FILES_RELEASE = $(patsubst $(SRC_DIR)/%.cpp,$(OBJDIR_RELEASE)/%.o,$(SRC_FILE
 
 #GENERAL
 
-compile: compile_debug compile_release
+build: compile_debug compile_release
 clean: clean_debug clean_release
 
 	
