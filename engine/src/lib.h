@@ -8,7 +8,7 @@
 #ifdef _WINDOWS         
    // Export API:
    // Specifies i/o linkage (VC++ spec):
-#ifdef GRAPHICSENGINE_EXPORTS
+#ifdef ENGINE_EXPORTS
 #define LIB_API __declspec(dllexport)
 #else
 #define LIB_API __declspec(dllimport)

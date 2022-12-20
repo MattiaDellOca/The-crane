@@ -15,7 +15,7 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add directory="../graphicsEngine/bin/Debug" />
+					<Add directory="../engine/bin/Debug" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -28,19 +28,20 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add directory="../graphicsEngine/bin/Release" />
+					<Add directory="../engine/bin/Release" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="../graphicsEngine" />
+			<Add directory="../engine" />
+			<Add directory="../dependencies/glm/include" />
 		</Compiler>
 		<Linker>
-			<Add library="graphicsEngine" />
+			<Add library="engine" />
 		</Linker>
-		<Unit filename="main.cpp" />
-		<Unit filename="main.h" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/main.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
