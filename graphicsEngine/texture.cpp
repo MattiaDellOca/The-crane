@@ -12,19 +12,10 @@
 	//FreeImage:
 #include <FreeImage.h>
 
-bool Texture::m_is_init = false;
-
 LIB_API Texture::Texture(std::string name, std::string path) : Object{ name } {
 	// Load texture from filepath
 	glGenTextures(1, &m_texId);
 	glBindTexture(GL_TEXTURE_2D, m_texId);
-
-	// Load bitmap data from file path
-	if (!m_is_init) {
-		// init freeimage
-		FreeImage_Initialise();
-		m_is_init = true;
-	}
 
 	// Find filename
 	std::string tex_filename = path.substr(path.find_last_of("/\\") + 1);
