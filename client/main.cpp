@@ -38,6 +38,8 @@ int main(int argc, char* argv[]) {
    Engine::setKeyboardFunction(keyboardCallback);
    Engine::setBackgroundColor(0.0f, 0.0f, 0.0f);
 
+   Texture t{ "Teapot", R"(C:\Users\Luca\Desktop\cg_2dFileFormatsExamples\teapot.tga)" };
+
    // Instantiate material
    // EMERALD -> http://devernay.free.fr/cours/opengl/materials.html
    Material emerald{ "Emerald" };
