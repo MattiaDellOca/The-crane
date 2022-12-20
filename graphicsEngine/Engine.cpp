@@ -2,6 +2,7 @@
 // #INCLUDE //
 //////////////
 
+
 	// Project classes
 #include "engine.h"
 #include "perspectiveCamera.h"
@@ -20,6 +21,9 @@
 
    //FreeGLUT:
 #include <GL/freeglut.h>
+	
+	//FreeImage:
+#include "FreeImage.h"
 
 ////////////
 // STATIC //
@@ -71,13 +75,13 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 // PRIVATE //
 /////////////
 
-
 Engine::Engine() {};
+
 Engine::~Engine() {
 	delete m_scene_graph;
 	delete m_rendering_list;
+	FreeImage_DeInitialise();
 }
-
 
 void Engine::reshapeCallback(int width, int height) {
 	std::cout << "[Reshape callback called] -> " << width << "x" << height << std::endl;
@@ -151,6 +155,9 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 
 	// FIXME: DEBUG PUROSES - Setup Gauraud shading
 	glShadeModel(GL_SMOOTH);
+
+	// Init FreeImage for texture mapping
+	FreeImage_Initialise();
 	
 	// Set running state
 	m_isRunning = true;
