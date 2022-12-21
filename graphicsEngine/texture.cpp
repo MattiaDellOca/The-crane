@@ -15,28 +15,19 @@
 LIB_API Texture::Texture(std::string name, std::string path) : Object{ name } {
 	// Load texture from filepath
 	glGenTextures(1, &m_texId);
-	glBindTexture(GL_TEXTURE_2D, m_texId);
 
-	// Find filename
-	std::string tex_filename = path.substr(path.find_last_of("/\\") + 1);
-	
 	// Load image
-	m_data = FreeImage_Load(FreeImage_GetFileType(path.c_str(), 0), tex_filename.c_str());
+	m_data = FreeImage_Load(FreeImage_GetFileType(path.c_str(), 0), path.c_str());
 
 	// Load height + width
-	m_height = FreeImage_GetHeight(static_cast<FIBITMAP*>(m_data));
-	m_width = FreeImage_GetHeight(static_cast<FIBITMAP*>(m_data));
-};
-
-LIB_API Texture::Texture(std::string name, unsigned int width, unsigned int height, void* bitmap) : Object{ name }, m_width{ width }, m_height{ height }, m_data { bitmap } {
-	// Create and bind texture:
-	glGenTextures(1, &m_texId);
-	glBindTexture(GL_TEXTURE_2D, m_texId);
+	m_height = FreeImage_GetHeight((FIBITMAP*)m_data);
+	m_width = FreeImage_GetWidth((FIBITMAP*)m_data);
 };
 
 LIB_API Texture::~Texture() {
 	// Destroy texture
 	glDeleteTextures(1, &m_texId);
+	FreeImage_Unload((FIBITMAP*)m_data);
 }
 
 /// <summary>
@@ -44,7 +35,17 @@ LIB_API Texture::~Texture() {
 /// </summary>
 void LIB_API Texture::load() {
 	if (m_data != nullptr) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, m_data);
+		// Bind to current texture
+		glBindTexture(GL_TEXTURE_2D, m_id);
+		
+		// Set parameters
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+		// Generate texture
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, (void*)FreeImage_GetBits((FIBITMAP*)m_data));
 	}
 	else {
 		std::cout << "[ENGINE] Warning: cannot load texture, bitmap data is not set" << std::endl;

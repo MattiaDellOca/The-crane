@@ -10,7 +10,6 @@ private:
 	void* m_data;
 public:
 	Texture(std::string name, std::string path);
-	Texture(std::string name, unsigned int width, unsigned int height, void* bitmap);
 	~Texture();
 
 	void load();

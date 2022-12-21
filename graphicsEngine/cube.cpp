@@ -9,15 +9,12 @@
 LIB_API Cube::Cube(float edge, std::string name, glm::mat4 matrix, Material *material) : Mesh{ name,matrix, material }, m_edge{edge} {};
 
 void LIB_API Cube::render(glm::mat4 coords) {
-	// Render cube
-	std::cout << "CUBE: edge: " << m_edge << " Name: " << m_name << std::endl;
+	glEnable(GL_TEXTURE_2D);
 
 	// Load matrix
 	glLoadMatrixf(glm::value_ptr(coords));
 
 	// FIXME: Load material
 	m_material->apply();
-
-	// Show cube
 	glutSolidCube(m_edge);
 }

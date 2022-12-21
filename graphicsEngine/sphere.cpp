@@ -14,7 +14,7 @@ void LIB_API Sphere::render(glm::mat4 coords) {
 
 	// Load material
 	m_material->apply();
-
-	// Draw sphere
+	glEnable(GL_TEXTURE_2D);
 	glutSolidSphere(m_radius, (int)8 * 5, (int)8 * 5);
+	glDisable(GL_TEXTURE_2D);
 }

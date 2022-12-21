@@ -211,7 +211,6 @@ void LIB_API Engine::end3D() {
 	m_curr_camera = nullptr;
 }
 
-
 /**
 * Swap back-buffer and front-buffer to show current render result
 */
