@@ -47,10 +47,11 @@ int main(int argc, char* argv[]) {
    emerald.setShininess(0.6f * 128);
 
    
+   
    // Create scene graph
    glm::mat4 f = glm::mat4(1);
    Node root{ "Root",f };
-   glm::mat4 f2 = glm::translate(f, glm::vec3(0.0f, 0.0f, 0.0f));
+   glm::mat4 f2 = glm::translate(f, glm::vec3(0.0f, 0.0f, -20.0f));
    Sphere a{ 5.0f,  "A", f2, &emerald };
    //Light settings
    glm::vec4 ambientLight(1.f, 1.f, 1.f, 1.0f);
@@ -62,7 +63,8 @@ int main(int argc, char* argv[]) {
    root.addChild(&a);
    root.addChild(&omniLight);
 
-   Engine::load(&root);
+   //Engine::load(&root);
+   
 
    // Start rendering some figures..
    Engine::run(display);

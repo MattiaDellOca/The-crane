@@ -143,8 +143,8 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// FIXME: DEBUG PUROSES - Setup Gauraud shading
 	glShadeModel(GL_SMOOTH);
 
-	//Ovoreader ovoreader;
-	//m_scene_graph = ovoreader.readFile("C:\\Users\\matti\\OneDrive\\Desktop\\example.ovo");
+	Ovoreader ovoreader;
+	m_scene_graph = ovoreader.readFile("C:\\Users\\matti\\OneDrive\\Desktop\\Terza\\Quinto semestre\\Grafica\\labingsw022022202302cg\\assets\\simple3dScene.ovo");
 
 	// Set running state
 	m_isRunning = true;
@@ -183,9 +183,11 @@ void LIB_API Engine::begin3D(Camera* camera) {
 	// Save camera
 	m_curr_camera = camera;
 	// Pass to right coordinates based on requested camera
+	
 	glMatrixMode(GL_PROJECTION);
-		glLoadMatrixf(glm::value_ptr(camera->getMatrix()));
+		glLoadMatrixf(glm::value_ptr(camera->getProperties()));
 	glMatrixMode(GL_MODELVIEW);
+	
 }
 
 /**
@@ -255,6 +257,9 @@ void LIB_API Engine::render() {
 		std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
 	}
 	
+
+	glLoadMatrixf(glm::value_ptr(glm::translate(glm::mat4(1), glm::vec3(0, 0, -10))));
+	glutSolidSphere(2, 10, 10);
 
 	// force refresh
 	glutPostRedisplay();
