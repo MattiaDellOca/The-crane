@@ -20,6 +20,7 @@
 
 class LIB_API Camera : public Node {
 protected:
+	glm::mat4 m_properties;
 	unsigned int m_width;
 	unsigned int m_height;
 	float m_near;

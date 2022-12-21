@@ -96,6 +96,9 @@
     <ClCompile Include="src\ovoreader.cpp">
       <Filter>Source Files\src\utilities</Filter>
     </ClCompile>
+    <ClCompile Include="src\vertex.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cameraType.h">
@@ -157,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="src\ovoreader.h">
       <Filter>Header Files\src\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vertex.h">
+      <Filter>Header Files\src</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

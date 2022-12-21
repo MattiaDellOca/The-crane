@@ -11,9 +11,11 @@
 
 // C/C++:
 #include <vector>   
+#include <map>
 #include <iostream>
 #include <iomanip>   
 #include <limits.h>
+
 using namespace std;
 
 #include "lib.h"
@@ -21,6 +23,12 @@ using namespace std;
 #include "material.h"
 #include "mesh.h"
 #include "light.h"
+#include "directionalLight.h"
+#include "omnidirectionalLight.h"
+#include "positionalLight.h"
+#include "spotLight.h"
+#include "lightType.h"
+#include "vertex.h"
 
 
 /////////////
@@ -42,8 +50,7 @@ using namespace std;
 /////////////
 
 // Stripped-down redefinition of OvObject (just for the chunk IDs):
-class LIB_API OvObject
-{
+class LIB_API OvObject {
 public:
     enum class Type : int  ///< Type of entities
     {
@@ -87,7 +94,7 @@ public:
 
 
 // Stripped-down redefinition of OvMesh (just for the subtypes):
-class LIB_API OvMeshs
+class LIB_API OvMesh
 {
 public:
     enum class Subtype : int ///< Kind of mesh
@@ -120,10 +127,13 @@ public:
 
 class LIB_API Ovoreader {
 public:
-    Node* readFile(char* path);
-    void parseOject(char* data, unsigned int* position);
-    Node* parseNode(char* data, unsigned int* position, unsigned int* nChildren);
-    Material* parseMaterial();
-    Mesh* parseMesh();
-    Light* parseLight();
+    Node* readFile(const char* path);
+protected:
+    std::map<string, Material*> m_materials;
+    Node* recursiveLoad(FILE* dat, const char* path);
+    void parseOject(char* data, unsigned int& position);
+    Node* parseNode(char* data, unsigned int& position, unsigned int* nChildren);
+    Material* parseMaterial(char* data, unsigned int& position);
+    Mesh* parseMesh(char* data, unsigned int& position, unsigned int* nChildren);
+    Light* parseLight(char* data, unsigned int& position, unsigned int* nChildren);
 };

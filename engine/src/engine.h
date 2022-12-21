@@ -11,6 +11,7 @@
 #include "camera.h"
 #include "lib.h"
 #include "renderingList.h"
+#include "ovoreader.h"
 
 #include <queue>
 
