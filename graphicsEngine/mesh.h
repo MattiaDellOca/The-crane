@@ -15,7 +15,7 @@
 
 class LIB_API Mesh : public Node {
 protected:
-	std::vector<Vertex*> *m_vertices;
+	std::vector<Vertex*> m_vertices;
 	Material *m_material;
 public:
 	Mesh(std::string name, glm::mat4 matrix, Material *material);

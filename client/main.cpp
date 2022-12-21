@@ -1,8 +1,8 @@
 #include "main.h"
 
 // Create camera
-PerspectiveCamera camera3d{ "Main camera", 100, 100, 1, 100 };
-OrthographicCamera camera2d{ "2d Camera", 100, 100 }; // TODO: Write "wireframe" option in 2D UI (it is supported but not shown to the user)
+PerspectiveCamera camera3d{ "Main camera", glm::mat4(1), 100, 100, 1, 100 };
+OrthographicCamera camera2d{ "2d Camera", glm::mat4(1), 100, 100 }; // TODO: Write "wireframe" option in 2D UI (it is supported but not shown to the user)
 
 // ====== LISTA DI COSE DA FARE ======
 
@@ -46,6 +46,24 @@ int main(int argc, char* argv[]) {
    emerald.setDiffuse({ glm::vec4(0.07568f, 0.61424f, 0.07568f, 1.0f) });
    emerald.setSpecular({ glm::vec4(0.633f, 0.727811f, 0.633f, 1.0f) });
    emerald.setShininess(0.6f * 128);
+
+   
+   // Create scene graph
+   glm::mat4 f = glm::mat4(1);
+   Node root{ "Root",f };
+   glm::mat4 f2 = glm::translate(f, glm::vec3(0.0f, 0.0f, 0.0f));
+   Sphere a{ 5.0f,  "A", f2, &emerald };
+   //Light settings
+   glm::vec4 ambientLight(1.f, 1.f, 1.f, 1.0f);
+   glm::vec4 diffuseLight(0.8f, 0.8f, 0.8f, 1.0f);
+   glm::vec4 specularLight(0.8f, 0.8f, 0.8f, 1.0f);
+   glm::mat4 f3 = glm::translate(f, glm::vec3(0.2f, 0.0f, -0.2f));
+   OmnidirectionalLight omniLight{ "OmniLight",f3, ambientLight ,diffuseLight , specularLight,0.f,1.f };
+
+   root.addChild(&a);
+   root.addChild(&omniLight);
+
+   Engine::load(&root);
 
    // Start rendering some figures..
    Engine::run(display);

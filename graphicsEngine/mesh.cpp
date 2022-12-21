@@ -16,7 +16,7 @@ void LIB_API Mesh::setMaterial(Material *material) {
 
 void LIB_API Mesh::render(glm::mat4 matrix) {
 	std::cout << "MESH: name: " << m_name << "id: " << m_id << std::endl;
-	std::cout << "\tLoading " << m_vertices->size() << " vertices" << std::endl;
+	std::cout << "\tLoading " << m_vertices.size() << " vertices" << std::endl;
 
 	// Load material
 	m_material->apply();
@@ -25,7 +25,7 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 	glLoadMatrixf(glm::value_ptr(m_matrix));
 
 	glBegin(GL_TRIANGLES);
-	for (auto* v : *m_vertices) {
+	for (auto* v : m_vertices) {
 		glNormal3fv(glm::value_ptr(v->getNormal()));
 		glTexCoord2fv(glm::value_ptr(v->getTexture()));
 		glVertex3fv(glm::value_ptr(v->getPosition()));
@@ -34,8 +34,5 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 }
 
 void LIB_API Mesh::addVertex(Vertex* vertex) {
-	// Initialize vecor if null
-	if (m_vertices == nullptr)
-		m_vertices = new std::vector<Vertex*>();
-	m_vertices->push_back(vertex);
+	m_vertices.push_back(vertex);
 }

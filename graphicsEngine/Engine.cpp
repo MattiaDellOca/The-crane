@@ -116,53 +116,42 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	}
 	// Set flag
 	m_initFlag = true;
-
 	std::cout << "Initializing engine" << std::endl;
 	std::cout << std::endl;
 	glutInit(argc, argv); // FIXME: Should we pass parameters?
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-
 	// FreeGLUT init
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
-
 	// Global OpenGL settings:
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
-
 	glutInitWindowPosition(500, 500);
-
 	// Set window size
 	m_window_width = width;
 	m_window_height = height;
 	glutInitWindowSize(width, height);
-	
+
 	// Create the window with a specific title:
 	m_windowId = glutCreateWindow(title);
-
 	// Set reshape function
 	glutReshapeFunc(reshapeCallback);
-
 	// Enable Z-Buffer+Lighting+Face Culling
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 	// FIXME: glEnable(GL_CULL_FACE);
 	// FIXME: Remove temp light
 	glEnable(GL_NORMALIZE);
-
 	// FIXME: DEBUG PUROSES - Setup Gauraud shading
 	glShadeModel(GL_SMOOTH);
-	
+
+	//Ovoreader ovoreader;
+	//m_scene_graph = ovoreader.readFile("C:\\Users\\matti\\OneDrive\\Desktop\\example.ovo");
+
 	// Set running state
 	m_isRunning = true;
-
-
-
-	Ovoreader ovoreader;
-	m_scene_graph = ovoreader.readFile("C:\\Users\\matti\\OneDrive\\Desktop\\example.ovo");
-
-
 	// Succes!!
 	return true;
 }
+
 
 
 /**
