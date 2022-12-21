@@ -97,3 +97,5 @@ clean_release:
 	rm -rf $(OUTDIR_RELEASE)
 	rm -rf $(OBJDIR_RELEASE)
 
+test:
+	cd ../engine_test && make test

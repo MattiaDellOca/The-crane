@@ -64,7 +64,6 @@
 		<Unit filename="src/node.h" />
 		<Unit filename="src/object.cpp" />
 		<Unit filename="src/object.h" />
-		<Unit filename="src/objectToRender.h" />
 		<Unit filename="src/omnidirectionalLight.cpp" />
 		<Unit filename="src/omnidirectionalLight.h" />
 		<Unit filename="src/orthographicCamera.cpp" />
@@ -79,9 +78,6 @@
 		<Unit filename="src/sphere.h" />
 		<Unit filename="src/spotLight.cpp" />
 		<Unit filename="src/spotLight.h" />
-		<Unit filename="test/main.cpp" />
-		<Unit filename="test/node_test.cpp" />
-		<Unit filename="test/node_test.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

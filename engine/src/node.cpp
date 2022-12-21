@@ -10,24 +10,22 @@
 /////////////
 
 LIB_API Node::Node(std::string name, glm::mat4 matrix) :
-	Object(name), m_matrix{ matrix }, m_parent{ nullptr }, m_children{ nullptr } {  };
+	Object(name), m_matrix{ matrix }, m_parent{ nullptr } {};
 
 
 LIB_API Node::~Node() {
-	// Delete all allocated vars
-	//delete& m_matrix;
+	//if the node has no children remove the pointer to the parent
+	//else if delete them
 
-	// Empty each vector item + clear
-	if (m_children != nullptr) {
-		for (auto* node : *m_children) {
-			delete node;
+	if (m_children.size() > 0) {
+		for (Node* node : m_children) {
+			node->m_parent = nullptr;
+			//delete node;
 		}
-		m_children->clear();
-		delete& m_children;
 	}
-
-	// Delete parent node
-	delete m_parent;
+	else {
+		m_parent = nullptr;
+	}
 }
 
 const glm::mat4 LIB_API Node::getMatrix() const {
@@ -35,17 +33,15 @@ const glm::mat4 LIB_API Node::getMatrix() const {
 }
 
 const std::vector<Node*> LIB_API Node::getChildren() {
-	return *m_children;
+	return m_children;
 }
 
 int LIB_API Node::getNumberOfChildren() {
-	if(m_children != nullptr)
-		return static_cast<int>(m_children->size());
-	return 0;
+	return m_children.size();
 }
 
 Node* Node::getChild(int pos) {
-	return m_children->at(pos);
+	return m_children.at(pos);
 }
 
 const Node* Node::getParent() {
@@ -61,22 +57,17 @@ void LIB_API Node::setParent(Node* parent) {
 }
 
 void LIB_API Node::addChild(Node* child) {
-	if (m_children == nullptr) {
-		// create empty vector
-		m_children = new std::vector<Node*>();
-	}
-
-	// Set parent
+	// Set parent + recursive matrix
 	child->setParent(this);
 
 	// Check if children is nullptr
-	m_children->push_back(child);
+	m_children.push_back(child);
 }
 
 bool LIB_API Node::removeChild(Node* child) {
 	for (int i = 0; i < getNumberOfChildren(); i++) {
 		if (child->m_id == getChild(i)->m_id) {
-			m_children->erase(m_children->begin() + i);
+			m_children.erase(m_children.begin() + i);
 			return true;
 		}
 	}
