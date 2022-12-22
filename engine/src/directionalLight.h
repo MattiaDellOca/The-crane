@@ -3,7 +3,7 @@
 #include "light.h"
 
 /**
- * DirectionalLight class that describes a directional light (aka infinite light).
+ * DirectionalLight class that describes a directional light source (aka infinite light).
  */
 class LIB_API DirectionalLight : public Light {
 public:
