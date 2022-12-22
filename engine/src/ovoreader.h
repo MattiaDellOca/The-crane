@@ -49,9 +49,14 @@ using namespace std;
 // CLASSES //
 /////////////
 
-// Stripped-down redefinition of OvObject (just for the chunk IDs):
+/**
+ * Stripped-down redefinition of OvObject (just for the chunk IDs).
+ */
 class LIB_API OvObject {
 public:
+    /**
+     * OvObject subtypes enum.
+     */
     enum class Type : int  ///< Type of entities
     {
         // Foundation types:
@@ -92,11 +97,15 @@ public:
     };
 };
 
-
-// Stripped-down redefinition of OvMesh (just for the subtypes):
+/**
+ * Stripped-down redefinition of OvMesh (just for the subtypes).
+ */
 class LIB_API OvMesh
 {
 public:
+    /**
+     * OvMesh subtypes enum.
+     */
     enum class Subtype : int ///< Kind of mesh
     {
         // Foundation types:
@@ -109,10 +118,15 @@ public:
     };
 };
 
-// Stripped-down redefinition of OvLight (just for the subtypes):
+/**
+ * Stripped-down redefinition of OvLight (just for the subtypes).
+ */
 class LIB_API OvLight
 {
 public:
+    /**
+     * OvLight subtypes enum.
+     */
     enum class Subtype : int ///< Kind of light
     {
         // Foundation types:
@@ -125,8 +139,17 @@ public:
     };
 };
 
+/**
+ * OvoReader class that describes an .ovo 3D models parser.
+ */
 class LIB_API Ovoreader {
 public:
+    /**
+     * Parse a 3D Ovo model into a scene graph.
+     * 
+     * \param path Path of the Ovo 3D model file
+     * \return Scene graph that describes the read 3D model
+     */
     Node* readFile(const char* path);
 protected:
     std::map<string, Material*> m_materials;
