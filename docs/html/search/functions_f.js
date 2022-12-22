@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['setambient_0',['setAmbient',['../class_material.html#ab343d5692b650da74a86bbbcea41ad37',1,'Material']]],
+  ['setbackgroundcolor_1',['setBackgroundColor',['../class_engine.html#ae4f59e1b96d33dc8c86c19fedbaa7e66',1,'Engine']]],
+  ['setdiffuse_2',['setDiffuse',['../class_material.html#a19b407b53c93543b69c61f7b254a9ad4',1,'Material']]],
+  ['setemission_3',['setEmission',['../class_material.html#a567c4a4563c9c38d40c5df483c21570c',1,'Material']]],
+  ['setfar_4',['setFar',['../class_camera.html#abfffa16ad72f684b85a53beb14722aa6',1,'Camera']]],
+  ['setheight_5',['setHeight',['../class_camera.html#ac8dd2de9eac9d4fae7064743531c244f',1,'Camera']]],
+  ['setkeyboardfunction_6',['setKeyboardFunction',['../class_engine.html#acfcb08c5af78a0a017960dfe46489750',1,'Engine']]],
+  ['setmaterial_7',['setMaterial',['../class_mesh.html#a9c591402fc97fc3404cf0c28b525b1cd',1,'Mesh']]],
+  ['setmatrix_8',['setMatrix',['../class_node.html#ac56336245b800561d74f4c366d0cf692',1,'Node']]],
+  ['setname_9',['setName',['../class_object.html#ab4059537a17349f8160d6691cd3073f6',1,'Object']]],
+  ['setnear_10',['setNear',['../class_camera.html#a276bbd4e54f4031e6dac28201ca74868',1,'Camera']]],
+  ['setparent_11',['setParent',['../class_node.html#aae671df1cc9df1a56d8845a64812d1c1',1,'Node']]],
+  ['setshininess_12',['setShininess',['../class_material.html#a7c58cbe8105f2e921ddea9d24582ad56',1,'Material']]],
+  ['setspecialkeyboardfunction_13',['setSpecialKeyboardFunction',['../class_engine.html#ad86082fa89092101c6ced3b3168a3c34',1,'Engine']]],
+  ['setspecular_14',['setSpecular',['../class_material.html#a60dfc08d9a6d295d64cf0f1b81452efc',1,'Material']]],
+  ['setwidth_15',['setWidth',['../class_camera.html#a7dc63d0584b6b6941b79c89619ed1877',1,'Camera']]],
+  ['sphere_16',['Sphere',['../class_sphere.html#a46d066e1c56f438388792b2b2453fc99',1,'Sphere']]],
+  ['spotlight_17',['SpotLight',['../class_spot_light.html#a0373c500285c689bbcd91bcd6e93edea',1,'SpotLight']]],
+  ['swapbuffers_18',['swapBuffers',['../class_engine.html#a0544e301002dd8af6958796fee18430e',1,'Engine']]]
+];
