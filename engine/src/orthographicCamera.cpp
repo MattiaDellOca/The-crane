@@ -26,6 +26,6 @@ void LIB_API OrthographicCamera::updateWindowSize(unsigned int width, unsigned i
 	m_width = width;
 	m_height = height;
 
-	// Recalculate perspective matrix
-	m_matrix = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
+	// Recalculate orthographic matrix
+	m_properties = glm::ortho(0.0f, (float)width, 0.0f, (float)height, -1.0f, 1.0f);
 }
