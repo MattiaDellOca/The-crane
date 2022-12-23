@@ -16,11 +16,12 @@
 class LIB_API Mesh : public Node {
 protected:
 	std::vector<Vertex*> m_vertices;
+	unsigned int m_faces;
 	Material *m_material;
 public:
-	Mesh(std::string name, glm::mat4 matrix, Material *material);
+	Mesh(std::string name, glm::mat4 matrix, Material *material = nullptr);
 	void render(glm::mat4);
 	const Material *getMaterial();
 	void setMaterial(Material*);
-	void addVertex(Vertex* vertex);
+	void addFace(Vertex* v1, Vertex* v2, Vertex* v3);
 };

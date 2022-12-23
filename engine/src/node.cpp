@@ -4,6 +4,7 @@
 
 	// Library main include
 #include "node.h"
+#include <GL/freeglut.h>
 
 /////////////
 // CLASSES //
@@ -76,5 +77,5 @@ bool LIB_API Node::removeChild(Node* child) {
 }
 
 void LIB_API Node::render(glm::mat4 matrix) {
-	std::cout << "Rendering: " << m_name << std::endl;
+	glLoadMatrixf(glm::value_ptr(matrix));
 }

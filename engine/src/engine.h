@@ -34,8 +34,7 @@ private:
 	static void reshapeCallback(int, int);
 public:
 	static bool init(const char*, unsigned int, unsigned int, int*, char**);
-	static Node* load(std::string);
-	static void load(Node*);
+	static void load(std::string);
 	static void clear();
 	static void setBackgroundColor(float, float, float);
 	static void begin3D(Camera*);

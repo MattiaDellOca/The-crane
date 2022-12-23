@@ -14,6 +14,7 @@
 
 	// GLM
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class LIB_API Node : public Object {
 protected:
