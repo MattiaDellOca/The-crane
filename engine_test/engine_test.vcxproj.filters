@@ -7,6 +7,18 @@
     <ClCompile Include="node_test.cpp">
       <Filter>test</Filter>
     </ClCompile>
+    <ClCompile Include="object_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="light_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="engine_test.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="utilities">

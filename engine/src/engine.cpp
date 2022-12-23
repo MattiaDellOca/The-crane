@@ -118,7 +118,8 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	m_initFlag = true;
 	std::cout << "Initializing engine" << std::endl;
 	std::cout << std::endl;
-	glutInit(argc, argv); // FIXME: Should we pass parameters?
+	glutInit(argc, argv);
+
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	// FreeGLUT init
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
@@ -144,7 +145,7 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	glShadeModel(GL_SMOOTH);
 
 	Ovoreader ovoreader;
-	m_scene_graph = ovoreader.readFile("C:\\Users\\matti\\OneDrive\\Desktop\\Terza\\Quinto semestre\\Grafica\\labingsw022022202302cg\\assets\\simple3dScene.ovo");
+	//m_scene_graph = ovoreader.readFile("C:\\Users\\matti\\OneDrive\\Desktop\\Terza\\Quinto semestre\\Grafica\\labingsw022022202302cg\\assets\\simple3dScene.ovo");
 
 	// Set running state
 	m_isRunning = true;

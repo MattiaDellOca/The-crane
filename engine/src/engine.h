@@ -16,7 +16,7 @@
 #include <queue>
 
 /**
- * @brief Simple static class example.
+ * @brief static class
  */
 class LIB_API Engine {
 private:

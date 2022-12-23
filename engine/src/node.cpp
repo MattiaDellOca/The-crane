@@ -2,7 +2,7 @@
 // #INCLUDE //
 //////////////
 
-	// Library main include
+// Library main include
 #include "node.h"
 
 /////////////
@@ -17,15 +17,10 @@ LIB_API Node::~Node() {
 	//if the node has no children remove the pointer to the parent
 	//else if delete them
 
-	if (m_children.size() > 0) {
 		for (Node* node : m_children) {
-			node->m_parent = nullptr;
-			//delete node;
+			delete node;
 		}
-	}
-	else {
-		m_parent = nullptr;
-	}
+		m_children.clear();
 }
 
 const glm::mat4 LIB_API Node::getMatrix() const {
@@ -53,12 +48,13 @@ void LIB_API Node::setMatrix(glm::mat4 matrix) {
 }
 
 void LIB_API Node::setParent(Node* parent) {
-	m_parent = parent;
+	parent->addChild(this);
 }
 
 void LIB_API Node::addChild(Node* child) {
 	// Set parent + recursive matrix
-	child->setParent(this);
+	//child->setParent(this);
+	child->m_parent = this;
 
 	// Check if children is nullptr
 	m_children.push_back(child);

@@ -26,13 +26,22 @@ LIB_API Light::Light(std::string name, glm::mat4 matrix, LightType type, glm::ve
 			glGetIntegerv(GL_MAX_LIGHTS, &m_maxLights);
 		}
 		//Throw an exception if opengl can't manage the light
-		else if (m_incrementalLightId > m_maxLights - 1) {
+		else if (m_incrementalLightId > size_t(m_maxLights - 1)) {
 			throw std::runtime_error("Maximum number of lights possible reached: " + name);
 		}
 
 		//increment lightid
 		m_incrementalLightId++;
-
 		//enable light
 		glEnable(m_baseValueLights + m_lightId);
 	};
+
+
+const LIB_API unsigned int& Light::getLightId() {
+	return m_lightId;
+}
+
+const LIB_API LightType& Light::getLightType()
+{
+	return m_type;
+}
