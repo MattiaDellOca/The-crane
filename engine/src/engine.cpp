@@ -101,11 +101,6 @@ void Engine::reshapeCallback(int width, int height) {
 // PUBLIC //
 ////////////
 
-
-/**
- * Initialization method. Call this before any other Eureka function.
- * @return true on success, false on error
- */
 bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int height, int* argc, char** argv)
 {
 	// Prevent double init:
@@ -152,11 +147,6 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	return true;
 }
 
-
-
-/**
-* Clear buffers
-*/
 void LIB_API Engine::clear() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -176,9 +166,6 @@ void LIB_API Engine::toggleWireframe() {
 	}
 }
 
-/**
-* Start drawing something
-*/
 void LIB_API Engine::begin3D(Camera* camera) {
 	// Save camera
 	m_curr_camera = camera;
@@ -190,9 +177,7 @@ void LIB_API Engine::begin3D(Camera* camera) {
 	
 }
 
-/**
-* Stop drawing
-*/
+
 void LIB_API Engine::end3D() {
 	glEnd();
 
@@ -201,18 +186,12 @@ void LIB_API Engine::end3D() {
 }
 
 
-/**
-* Swap back-buffer and front-buffer to show current render result
-*/
+
 void LIB_API Engine::swapBuffers() {
 	// Swap back buffer <-> front buffer
 	glutSwapBuffers();
 }
 
-/**
- * Deinitialization method.
- * @return true on success, false on error
- */
 bool LIB_API Engine::free()
 {
 	// Really necessary?
@@ -278,17 +257,11 @@ void LIB_API Engine::run(void (*renderFunction)()) {
 // Callback setters
 //
 
-/**
-* Set special keyboard callback
-*/
 void LIB_API Engine::setSpecialKeyboardFunction(void (*callback)(int,int,int))
 {
 	glutSpecialFunc(callback);
 }
 
-/**
-* Set keyboard callback
-*/
 void LIB_API Engine::setKeyboardFunction(void (*callback)(unsigned char,int,int)) {
 	glutKeyboardFunc(callback);
 }

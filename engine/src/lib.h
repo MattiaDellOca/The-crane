@@ -3,7 +3,7 @@
 // VERSION //
 /////////////
        // Generic info:
-#define LIB_NAME      "GraphicsEngine v0.1a"  ///< Library credits
+#define LIB_NAME      "GraphicsEngine"  ///< Library credits
 #define LIB_VERSION   10                              ///< Library version (divide by 10)
 #ifdef _WINDOWS         
    // Export API:

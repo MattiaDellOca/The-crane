@@ -15,13 +15,7 @@ std::list<RenderNode *> LIB_API RenderingList::getRenderingList() {
 	return m_list;
 }
 
-/// <summary>
-/// Recursive method for popolating the rendering list given a root node.
-/// For each node, stores it in the list if its concrete class is either Mesh or Light
-/// </summary>
-/// <param name="node">Current node being rendered</param>
-/// <param name="parentMatrix">Parent matrix expressed in world coordinates</param>
-/// <returns></returns>
+
 void LIB_API RenderingList::pass(Node *node, glm::mat4 parentMatrix) {
 	if (node == NULL)
 		return;
@@ -48,11 +42,6 @@ void LIB_API RenderingList::clear() {
 	m_list.clear();
 }
 
-/// <summary>
-/// Render every RenderNode in the rendering list: the operation is done by calling the "render" method of each RenderNode
-/// </summary>
-/// <param name="cameraMatrix">The camera's matrix</param>
-/// <returns></returns>
 void LIB_API RenderingList::render(glm::mat4 cameraMatrix) {
 	for (auto it = m_list.begin(); it != m_list.end(); ++it) {
 		// call render method for each node
