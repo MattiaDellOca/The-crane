@@ -234,7 +234,7 @@ void LIB_API Engine::render() {
 		m_rendering_list->clear();
 		
 		if (m_curr_camera == nullptr) {
-			std::cout << "[ENGINE] Warning: trying to render not in a begin-end block. Skip frame rendering." << std::endl;
+			std::cout << "[ENGINE] WARNING: trying to render not in a begin-end block. Skip frame rendering." << std::endl;
 			return;
 		}
 
@@ -247,6 +247,7 @@ void LIB_API Engine::render() {
 	}
 	else {
 		std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
+		return;
 	}
 	
 
@@ -287,7 +288,7 @@ bool LIB_API Engine::isRunning() {
 	return m_isRunning;
 }
 
-// Load a scene graph from a given .ovo file
+// Load scene graph given a .ovo file
 void LIB_API Engine::load(std::string path) {
 	Ovoreader ovoreader;
 	m_scene_graph = ovoreader.readFile(path.c_str());

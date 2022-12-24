@@ -132,8 +132,8 @@ protected:
     std::map<string, Material*> m_materials;
     Node* recursiveLoad(FILE* dat, const char* path);
     void parseOject(char* data, unsigned int& position);
-    Node* parseNode(char* data, unsigned int& position, unsigned int* nChildren);
     Material* parseMaterial(char* data, unsigned int& position);
+    Node* parseNode(char* data, unsigned int& position, unsigned int* nChildren);
     Mesh* parseMesh(char* data, unsigned int& position, unsigned int* nChildren);
     Light* parseLight(char* data, unsigned int& position, unsigned int* nChildren);
 };

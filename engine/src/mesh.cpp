@@ -21,10 +21,14 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 	// Load matrix
 	glLoadMatrixf(glm::value_ptr(matrix));
 
+	// Load each face composing the mesh
 	for (int i = 0; i < m_faces; i++) {
+		// Load the three vertices composing a face
 		Vertex* v1 = m_vertices.at(i * 3);
 		Vertex* v2 = m_vertices.at(i * 3 + 1);
 		Vertex* v3 = m_vertices.at(i * 3 + 2);
+
+		// Draw face
 		glBegin(GL_TRIANGLES);
 			glNormal3fv(glm::value_ptr(v1->getNormal()));
 			glTexCoord2fv(glm::value_ptr(v1->getTexture()));
@@ -42,6 +46,8 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 
 }
 
+// Add one face to the mesh: a face is represented by three vertices.
+// Given the i-th face, it will be composed by vertices in i, i+1 and i+2 position in the vertices vector
 void LIB_API Mesh::addFace(Vertex* v1, Vertex* v2, Vertex* v3) {
 	m_vertices.push_back(v1);
 	m_vertices.push_back(v2);
