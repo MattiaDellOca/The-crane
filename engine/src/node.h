@@ -93,7 +93,7 @@ public:
 	 *
 	 * \return The child of the node at the given index. It is a pointer to a Node object.
 	 */
-	Node* getChild(int);
+	Node* getChild(int index);
 
 	/**
 	 * \brief Gets the parent of the node.
