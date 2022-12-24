@@ -78,6 +78,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>Base class for objects in the scene.  
+ <a href="class_object.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="object_8h_source.html">object.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Object:</div>
@@ -85,53 +88,65 @@ Inheritance diagram for Object:</div>
  <div class="center">
   <img src="class_object.png" usemap="#Object_map" alt=""/>
   <map id="Object_map" name="Object_map">
-<area href="class_material.html" alt="Material" shape="rect" coords="0,56,131,80"/>
-<area href="class_node.html" alt="Node" shape="rect" coords="352,56,483,80"/>
-<area href="class_rendering_list.html" alt="RenderingList" shape="rect" coords="493,56,624,80"/>
-<area href="class_camera.html" alt="Camera" shape="rect" coords="70,112,201,136"/>
-<area href="class_light.html" alt="Light" shape="rect" coords="352,112,483,136"/>
-<area href="class_mesh.html" alt="Mesh" shape="rect" coords="634,112,765,136"/>
+<area href="class_material.html" title="Class representing a material object in the scene." alt="Material" shape="rect" coords="0,56,131,80"/>
+<area href="class_node.html" title="Class representing a node in the scene." alt="Node" shape="rect" coords="352,56,483,80"/>
+<area href="class_rendering_list.html" title="A class for storing and rendering a list of nodes." alt="RenderingList" shape="rect" coords="493,56,624,80"/>
+<area href="class_camera.html" title="Defines a generic camera." alt="Camera" shape="rect" coords="70,112,201,136"/>
+<area href="class_light.html" title="Abstract class representing a light object in the scene." alt="Light" shape="rect" coords="352,112,483,136"/>
+<area href="class_mesh.html" title="Class representing a mesh object in the scene." alt="Mesh" shape="rect" coords="634,112,765,136"/>
 <area href="class_orthographic_camera.html" title="Class that describes an orthographic camera." alt="OrthographicCamera" shape="rect" coords="0,168,131,192"/>
 <area href="class_perspective_camera.html" title="Class that describes a perspective camera." alt="PerspectiveCamera" shape="rect" coords="141,168,272,192"/>
-<area href="class_directional_light.html" title="DirectionalLight class that describes a directional light (aka infinite light)." alt="DirectionalLight" shape="rect" coords="282,168,413,192"/>
-<area href="class_positional_light.html" alt="PositionalLight" shape="rect" coords="423,168,554,192"/>
+<area href="class_directional_light.html" title="DirectionalLight class that describes a directional light source (aka infinite light)." alt="DirectionalLight" shape="rect" coords="282,168,413,192"/>
+<area href="class_positional_light.html" title="PositionalLight abstract class that describes a light source with light attenuation features." alt="PositionalLight" shape="rect" coords="423,168,554,192"/>
 <area href="class_cube.html" title="Cube class that describes a 3D Cube mesh." alt="Cube" shape="rect" coords="564,168,695,192"/>
 <area href="class_sphere.html" title="Sphere class that describes a 3D sphere mesh." alt="Sphere" shape="rect" coords="705,168,836,192"/>
-<area href="class_omnidirectional_light.html" alt="OmnidirectionalLight" shape="rect" coords="352,224,483,248"/>
-<area href="class_spot_light.html" alt="SpotLight" shape="rect" coords="493,224,624,248"/>
+<area href="class_omnidirectional_light.html" title="OmnidirectionalLight class that describes an omnidirectional (positional) light source (aka point lig..." alt="OmnidirectionalLight" shape="rect" coords="352,224,483,248"/>
+<area href="class_spot_light.html" title="SpotLight class that describes a spotlight (positional) light source." alt="SpotLight" shape="rect" coords="493,224,624,248"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a71d404bec9dad4b939520bf521b84a09"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a71d404bec9dad4b939520bf521b84a09">Object</a> (std::string)</td></tr>
-<tr class="separator:a71d404bec9dad4b939520bf521b84a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75c6433877cbf9f7caf35bfb9dd54909"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a75c6433877cbf9f7caf35bfb9dd54909">Object</a> (std::string name)</td></tr>
+<tr class="memdesc:a75c6433877cbf9f7caf35bfb9dd54909"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for the <a class="el" href="class_object.html" title="Base class for objects in the scene.">Object</a> class.  <a href="class_object.html#a75c6433877cbf9f7caf35bfb9dd54909">More...</a><br /></td></tr>
+<tr class="separator:a75c6433877cbf9f7caf35bfb9dd54909"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac56bf4125a66db0c3e45173d6f396ac7"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#ac56bf4125a66db0c3e45173d6f396ac7">~Object</a> ()=0</td></tr>
+<tr class="memdesc:ac56bf4125a66db0c3e45173d6f396ac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor for the <a class="el" href="class_object.html" title="Base class for objects in the scene.">Object</a> class.  <a href="class_object.html#ac56bf4125a66db0c3e45173d6f396ac7">More...</a><br /></td></tr>
 <tr class="separator:ac56bf4125a66db0c3e45173d6f396ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4059537a17349f8160d6691cd3073f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#ab4059537a17349f8160d6691cd3073f6">setName</a> (std::string)</td></tr>
-<tr class="separator:ab4059537a17349f8160d6691cd3073f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a28dc3681656f3bb2d08cffae7f2e5e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a2a28dc3681656f3bb2d08cffae7f2e5e">setName</a> (std::string name)</td></tr>
+<tr class="memdesc:a2a28dc3681656f3bb2d08cffae7f2e5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the name of the object.  <a href="class_object.html#a2a28dc3681656f3bb2d08cffae7f2e5e">More...</a><br /></td></tr>
+<tr class="separator:a2a28dc3681656f3bb2d08cffae7f2e5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af95740905b6391c6d0587481eed67dfd"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#af95740905b6391c6d0587481eed67dfd">getName</a> ()</td></tr>
+<tr class="memdesc:af95740905b6391c6d0587481eed67dfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the name of the object.  <a href="class_object.html#af95740905b6391c6d0587481eed67dfd">More...</a><br /></td></tr>
 <tr class="separator:af95740905b6391c6d0587481eed67dfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f9a95477356bca8765297344268cd3e"><td class="memItemLeft" align="right" valign="top">const unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a5f9a95477356bca8765297344268cd3e">getId</a> ()</td></tr>
+<tr class="memdesc:a5f9a95477356bca8765297344268cd3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the unique identifier of the object.  <a href="class_object.html#a5f9a95477356bca8765297344268cd3e">More...</a><br /></td></tr>
 <tr class="separator:a5f9a95477356bca8765297344268cd3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f49bbe50de44694f4edbaac49bf130f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a0f49bbe50de44694f4edbaac49bf130f">render</a> (glm::mat4)=0</td></tr>
-<tr class="separator:a0f49bbe50de44694f4edbaac49bf130f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6eb46d5263fc8b70c99d0a96dd13f44"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#ad6eb46d5263fc8b70c99d0a96dd13f44">render</a> (glm::mat4 coords)=0</td></tr>
+<tr class="memdesc:ad6eb46d5263fc8b70c99d0a96dd13f44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders the object.  <a href="class_object.html#ad6eb46d5263fc8b70c99d0a96dd13f44">More...</a><br /></td></tr>
+<tr class="separator:ad6eb46d5263fc8b70c99d0a96dd13f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a50ff4bf85922f0c8ef5b9fb07e2f5846"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a50ff4bf85922f0c8ef5b9fb07e2f5846">m_id</a></td></tr>
-<tr class="separator:a50ff4bf85922f0c8ef5b9fb07e2f5846"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b83c95c705d2c3ba0d081fe1710f48d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a8b83c95c705d2c3ba0d081fe1710f48d">m_name</a></td></tr>
-<tr class="separator:a8b83c95c705d2c3ba0d081fe1710f48d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78efcb64f2ecabb6158b267cd8c3543c"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a78efcb64f2ecabb6158b267cd8c3543c">m_id</a></td></tr>
+<tr class="memdesc:a78efcb64f2ecabb6158b267cd8c3543c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The unique identifier of the object.  <a href="class_object.html#a78efcb64f2ecabb6158b267cd8c3543c">More...</a><br /></td></tr>
+<tr class="separator:a78efcb64f2ecabb6158b267cd8c3543c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b1a93b3ac021d124bdf9dc28a36cffe"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a2b1a93b3ac021d124bdf9dc28a36cffe">m_name</a></td></tr>
+<tr class="memdesc:a2b1a93b3ac021d124bdf9dc28a36cffe"><td class="mdescLeft">&#160;</td><td class="mdescRight">The name of the object.  <a href="class_object.html#a2b1a93b3ac021d124bdf9dc28a36cffe">More...</a><br /></td></tr>
+<tr class="separator:a2b1a93b3ac021d124bdf9dc28a36cffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
 <tr class="memitem:a88ef82a3b3b17596e693154667b27cac"><td class="memItemLeft" align="right" valign="top">static unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_object.html#a88ef82a3b3b17596e693154667b27cac">m_incemental_id</a> = 0</td></tr>
 <tr class="separator:a88ef82a3b3b17596e693154667b27cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a71d404bec9dad4b939520bf521b84a09" name="a71d404bec9dad4b939520bf521b84a09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71d404bec9dad4b939520bf521b84a09">&#9670;&#160;</a></span>Object()</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Base class for objects in the scene. </p>
+<p ><a class="el" href="class_object.html" title="Base class for objects in the scene.">Object</a> is the base class for objects in the scene. It has member variables and functions that are common to all objects. It has a name and a unique identifier.</p>
+<p >The <a class="el" href="class_object.html" title="Base class for objects in the scene.">Object</a> class also has functions to set and get the name and identifier of the object, and a virtual function to render the object in the scene. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a75c6433877cbf9f7caf35bfb9dd54909" name="a75c6433877cbf9f7caf35bfb9dd54909"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75c6433877cbf9f7caf35bfb9dd54909">&#9670;&#160;</a></span>Object()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -145,6 +160,14 @@ Static Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Constructor for the <a class="el" href="class_object.html" title="Base class for objects in the scene.">Object</a> class. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>The name of the object. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -171,6 +194,8 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Destructor for the <a class="el" href="class_object.html" title="Base class for objects in the scene.">Object</a> class. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -189,6 +214,9 @@ Static Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Gets the unique identifier of the object. </p>
+<dl class="section return"><dt>Returns</dt><dd>The unique identifier of the object. It is an unsigned integer value. </dd></dl>
+
 </div>
 </div>
 <a id="af95740905b6391c6d0587481eed67dfd" name="af95740905b6391c6d0587481eed67dfd"></a>
@@ -206,10 +234,13 @@ Static Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Gets the name of the object. </p>
+<dl class="section return"><dt>Returns</dt><dd>The name of the object. It is a string value. </dd></dl>
+
 </div>
 </div>
-<a id="a0f49bbe50de44694f4edbaac49bf130f" name="a0f49bbe50de44694f4edbaac49bf130f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f49bbe50de44694f4edbaac49bf130f">&#9670;&#160;</a></span>render()</h2>
+<a id="ad6eb46d5263fc8b70c99d0a96dd13f44" name="ad6eb46d5263fc8b70c99d0a96dd13f44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6eb46d5263fc8b70c99d0a96dd13f44">&#9670;&#160;</a></span>render()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -221,7 +252,7 @@ Static Protected Attributes</h2></td></tr>
           <td class="memname">virtual void Object::render </td>
           <td>(</td>
           <td class="paramtype">glm::mat4&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><em>coords</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -232,12 +263,21 @@ Static Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_cube.html#a93e4cdf933dba218d10a3f480b7b9927">Cube</a>, <a class="el" href="class_directional_light.html#aa3c54a83bb96ba5cc20fe57ef0b2c678">DirectionalLight</a>, <a class="el" href="class_orthographic_camera.html#af3b69ea76a27032d9b2df5b092d22d93">OrthographicCamera</a>, <a class="el" href="class_perspective_camera.html#aa4dc0a1c7f733a3af70491d8736756c5">PerspectiveCamera</a>, <a class="el" href="class_sphere.html#a0fb8c25022a9a30d1651099d960dbb03">Sphere</a>, <a class="el" href="class_material.html#af70b2496031f4515e501e6420a451095">Material</a>, <a class="el" href="class_mesh.html#a3616f8fb7c3d780b29d9f08be4182e0b">Mesh</a>, <a class="el" href="class_node.html#aee7713e586fa20f7e34c1ef0a6d48c16">Node</a>, <a class="el" href="class_omnidirectional_light.html#a8659e5b6a5806caec6e84b9c982e3457">OmnidirectionalLight</a>, <a class="el" href="class_rendering_list.html#a29b5d7eded74af4b5f00f83a1afe6c62">RenderingList</a>, <a class="el" href="class_spot_light.html#a2fc1510b2f3a56bc6f8a9bd0c3ff3b60">SpotLight</a>, <a class="el" href="class_camera.html#a83e01a99816227b6f4b4e6ddcf0063d4">Camera</a>, <a class="el" href="class_light.html#acb064f7fb011196e54c63940259466e3">Light</a>, and <a class="el" href="class_positional_light.html#abd503d9f5377adff64d896cd17ccb170">PositionalLight</a>.</p>
+<p>Renders the object. </p>
+<p >This is a virtual function that is called to render the object in the scene. It must be overridden in derived classes to perform specific rendering tasks for different types of objects.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">coords</td><td>The pre-computed world coordinates of the object. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="class_rendering_list.html#a807e88a3eec12ad7ae9684ac2a3f09dd">RenderingList</a>, <a class="el" href="class_cube.html#a93e4cdf933dba218d10a3f480b7b9927">Cube</a>, <a class="el" href="class_directional_light.html#aa3c54a83bb96ba5cc20fe57ef0b2c678">DirectionalLight</a>, <a class="el" href="class_material.html#ae2019b0f3f04ec4f14bc371d38bf8808">Material</a>, <a class="el" href="class_mesh.html#ae32efed9fb34424510674452ba106e83">Mesh</a>, <a class="el" href="class_node.html#a137c3a6c0c9050bdd35cf995d51e581e">Node</a>, <a class="el" href="class_omnidirectional_light.html#a4c3ef0983da34786680d06a1f023a1ce">OmnidirectionalLight</a>, <a class="el" href="class_orthographic_camera.html#af3b69ea76a27032d9b2df5b092d22d93">OrthographicCamera</a>, <a class="el" href="class_perspective_camera.html#aa4dc0a1c7f733a3af70491d8736756c5">PerspectiveCamera</a>, <a class="el" href="class_sphere.html#a0fb8c25022a9a30d1651099d960dbb03">Sphere</a>, <a class="el" href="class_spot_light.html#a0a4af2e045cc65ff4e483531d50dd7a6">SpotLight</a>, <a class="el" href="class_positional_light.html#a73f6c0f18166553bef5f9285d6d3a10c">PositionalLight</a>, <a class="el" href="class_camera.html#a9f4031c15a6d730fb04d18ce63e76e91">Camera</a>, and <a class="el" href="class_light.html#a741d09960a89478a9f19b5faede69ef3">Light</a>.</p>
 
 </div>
 </div>
-<a id="ab4059537a17349f8160d6691cd3073f6" name="ab4059537a17349f8160d6691cd3073f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4059537a17349f8160d6691cd3073f6">&#9670;&#160;</a></span>setName()</h2>
+<a id="a2a28dc3681656f3bb2d08cffae7f2e5e" name="a2a28dc3681656f3bb2d08cffae7f2e5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a28dc3681656f3bb2d08cffae7f2e5e">&#9670;&#160;</a></span>setName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -252,11 +292,19 @@ Static Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Sets the name of the object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>The name to be set. It is a string value. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a50ff4bf85922f0c8ef5b9fb07e2f5846" name="a50ff4bf85922f0c8ef5b9fb07e2f5846"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50ff4bf85922f0c8ef5b9fb07e2f5846">&#9670;&#160;</a></span>m_id</h2>
+<a id="a78efcb64f2ecabb6158b267cd8c3543c" name="a78efcb64f2ecabb6158b267cd8c3543c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78efcb64f2ecabb6158b267cd8c3543c">&#9670;&#160;</a></span>m_id</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -265,7 +313,7 @@ Static Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int Object::m_id</td>
+          <td class="memname">Object::m_id</td>
         </tr>
       </table>
   </td>
@@ -274,6 +322,9 @@ Static Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>The unique identifier of the object. </p>
+<p >m_id is a member variable that holds the unique identifier of the object. It is an unsigned integer value. </p>
 
 </div>
 </div>
@@ -299,8 +350,8 @@ Static Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a8b83c95c705d2c3ba0d081fe1710f48d" name="a8b83c95c705d2c3ba0d081fe1710f48d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b83c95c705d2c3ba0d081fe1710f48d">&#9670;&#160;</a></span>m_name</h2>
+<a id="a2b1a93b3ac021d124bdf9dc28a36cffe" name="a2b1a93b3ac021d124bdf9dc28a36cffe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b1a93b3ac021d124bdf9dc28a36cffe">&#9670;&#160;</a></span>m_name</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -309,7 +360,7 @@ Static Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string Object::m_name</td>
+          <td class="memname">Object::m_name</td>
         </tr>
       </table>
   </td>
@@ -318,6 +369,9 @@ Static Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>The name of the object. </p>
+<p >m_name is a member variable that holds the name of the object. It is a string value. </p>
 
 </div>
 </div>

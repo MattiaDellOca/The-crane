@@ -76,6 +76,9 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>A structure that holds a node and its transformation matrix.  
+ <a href="struct_render_node.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="rendering_list_8h_source.html">renderingList.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -85,7 +88,14 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a30c15de8a49413a8fd33cd2c1bfab8de"><td class="memItemLeft" align="right" valign="top">glm::mat4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_render_node.html#a30c15de8a49413a8fd33cd2c1bfab8de">m_mat</a></td></tr>
 <tr class="separator:a30c15de8a49413a8fd33cd2c1bfab8de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >A structure that holds a node and its transformation matrix. </p>
+<p ><a class="el" href="struct_render_node.html" title="A structure that holds a node and its transformation matrix.">RenderNode</a> is a structure that holds a node and its transformation matrix. It is used to store nodes that need to be rendered in the scene.</p>
+<p >The <a class="el" href="struct_render_node.html" title="A structure that holds a node and its transformation matrix.">RenderNode</a> structure has two member variables:</p><ul>
+<li>m_node: a pointer to an <a class="el" href="class_object.html" title="Base class for objects in the scene.">Object</a> object. It represents the node to be rendered.</li>
+<li>m_mat: a 4x4 matrix that represents the transformation of the node. </li>
+</ul>
+</div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a30c15de8a49413a8fd33cd2c1bfab8de" name="a30c15de8a49413a8fd33cd2c1bfab8de"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a30c15de8a49413a8fd33cd2c1bfab8de">&#9670;&#160;</a></span>m_mat</h2>
 

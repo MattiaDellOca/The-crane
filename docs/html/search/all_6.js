@@ -1,7 +1,7 @@
 var searchData=
 [
   ['getambient_0',['getAmbient',['../class_material.html#a9599198f33109dfe0933acab70121a69',1,'Material']]],
-  ['getchild_1',['getChild',['../class_node.html#a4dd6b0283132adfa306cd8507e1ecff7',1,'Node']]],
+  ['getchild_1',['getChild',['../class_node.html#a92b9f0948db6b1ff84c04ddcb3e7c166',1,'Node']]],
   ['getchildren_2',['getChildren',['../class_node.html#a6a35012adb0ac010246bca2d1d83e34d',1,'Node']]],
   ['getdiffuse_3',['getDiffuse',['../class_material.html#a08d6baf7c2d7b3138a305559ac0af953',1,'Material']]],
   ['getemission_4',['getEmission',['../class_material.html#a740f5d858f12878cf1026ed29d165307',1,'Material']]],

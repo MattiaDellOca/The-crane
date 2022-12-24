@@ -92,26 +92,32 @@ $(function() {
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">// CLASSES //</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"></span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="class_object.html">   21</a></span><span class="keyword">class </span><a class="code hl_define" href="lib_8h.html#a77278c8cc96e39fb27b5d0a347c8fb3d">LIB_API</a> <a class="code hl_class" href="class_object.html">Object</a> {</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="class_object.html#a50ff4bf85922f0c8ef5b9fb07e2f5846">   23</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="class_object.html#a50ff4bf85922f0c8ef5b9fb07e2f5846">m_id</a>;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="class_object.html#a8b83c95c705d2c3ba0d081fe1710f48d">   24</a></span>    std::string <a class="code hl_variable" href="class_object.html#a8b83c95c705d2c3ba0d081fe1710f48d">m_name</a>;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="class_object.html#a88ef82a3b3b17596e693154667b27cac">   25</a></span>    <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="class_object.html#a88ef82a3b3b17596e693154667b27cac">m_incemental_id</a>;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <a class="code hl_class" href="class_object.html">Object</a>(std::string);</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keyword">virtual</span> <a class="code hl_class" href="class_object.html">~Object</a>() = 0;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordtype">void</span> setName(std::string);</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keyword">const</span> std::string getName();</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> getId();</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="comment">// render with parameters</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="class_object.html#a0f49bbe50de44694f4edbaac49bf130f">   34</a></span>    <span class="keywordtype">void</span> <span class="keyword">virtual</span> <a class="code hl_function" href="class_object.html#a0f49bbe50de44694f4edbaac49bf130f">render</a>(glm::mat4) = 0;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>};</div>
-<div class="ttc" id="aclass_object_html"><div class="ttname"><a href="class_object.html">Object</a></div><div class="ttdef"><b>Definition:</b> object.h:21</div></div>
-<div class="ttc" id="aclass_object_html_a0f49bbe50de44694f4edbaac49bf130f"><div class="ttname"><a href="class_object.html#a0f49bbe50de44694f4edbaac49bf130f">Object::render</a></div><div class="ttdeci">virtual void render(glm::mat4)=0</div></div>
-<div class="ttc" id="aclass_object_html_a50ff4bf85922f0c8ef5b9fb07e2f5846"><div class="ttname"><a href="class_object.html#a50ff4bf85922f0c8ef5b9fb07e2f5846">Object::m_id</a></div><div class="ttdeci">unsigned int m_id</div><div class="ttdef"><b>Definition:</b> object.h:23</div></div>
-<div class="ttc" id="aclass_object_html_a88ef82a3b3b17596e693154667b27cac"><div class="ttname"><a href="class_object.html#a88ef82a3b3b17596e693154667b27cac">Object::m_incemental_id</a></div><div class="ttdeci">static unsigned int m_incemental_id</div><div class="ttdef"><b>Definition:</b> object.h:25</div></div>
-<div class="ttc" id="aclass_object_html_a8b83c95c705d2c3ba0d081fe1710f48d"><div class="ttname"><a href="class_object.html#a8b83c95c705d2c3ba0d081fe1710f48d">Object::m_name</a></div><div class="ttdeci">std::string m_name</div><div class="ttdef"><b>Definition:</b> object.h:24</div></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="class_object.html">   29</a></span><span class="keyword">class </span><a class="code hl_define" href="lib_8h.html#a77278c8cc96e39fb27b5d0a347c8fb3d">LIB_API</a> <a class="code hl_class" href="class_object.html">Object</a> {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="class_object.html#a78efcb64f2ecabb6158b267cd8c3543c">   37</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="class_object.html#a78efcb64f2ecabb6158b267cd8c3543c">m_id</a>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="class_object.html#a2b1a93b3ac021d124bdf9dc28a36cffe">   45</a></span>    std::string <a class="code hl_variable" href="class_object.html#a2b1a93b3ac021d124bdf9dc28a36cffe">m_name</a>;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="class_object.html#a88ef82a3b3b17596e693154667b27cac">   53</a></span>    <span class="keyword">static</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="class_object.html#a88ef82a3b3b17596e693154667b27cac">m_incemental_id</a>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <a class="code hl_class" href="class_object.html">Object</a>(std::string name);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keyword">virtual</span> <a class="code hl_class" href="class_object.html">~Object</a>() = 0;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordtype">void</span> setName(std::string name);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keyword">const</span> std::string getName();</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> getId();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="class_object.html#ad6eb46d5263fc8b70c99d0a96dd13f44">   96</a></span>    <span class="keywordtype">void</span> <span class="keyword">virtual</span> <a class="code hl_function" href="class_object.html#ad6eb46d5263fc8b70c99d0a96dd13f44">render</a>(glm::mat4 coords) = 0;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>};</div>
+<div class="ttc" id="aclass_object_html"><div class="ttname"><a href="class_object.html">Object</a></div><div class="ttdoc">Base class for objects in the scene.</div><div class="ttdef"><b>Definition:</b> object.h:29</div></div>
+<div class="ttc" id="aclass_object_html_a2b1a93b3ac021d124bdf9dc28a36cffe"><div class="ttname"><a href="class_object.html#a2b1a93b3ac021d124bdf9dc28a36cffe">Object::m_name</a></div><div class="ttdeci">std::string m_name</div><div class="ttdoc">The name of the object.</div><div class="ttdef"><b>Definition:</b> object.h:45</div></div>
+<div class="ttc" id="aclass_object_html_a78efcb64f2ecabb6158b267cd8c3543c"><div class="ttname"><a href="class_object.html#a78efcb64f2ecabb6158b267cd8c3543c">Object::m_id</a></div><div class="ttdeci">unsigned int m_id</div><div class="ttdoc">The unique identifier of the object.</div><div class="ttdef"><b>Definition:</b> object.h:37</div></div>
+<div class="ttc" id="aclass_object_html_a88ef82a3b3b17596e693154667b27cac"><div class="ttname"><a href="class_object.html#a88ef82a3b3b17596e693154667b27cac">Object::m_incemental_id</a></div><div class="ttdeci">static unsigned int m_incemental_id</div><div class="ttdef"><b>Definition:</b> object.h:53</div></div>
+<div class="ttc" id="aclass_object_html_ad6eb46d5263fc8b70c99d0a96dd13f44"><div class="ttname"><a href="class_object.html#ad6eb46d5263fc8b70c99d0a96dd13f44">Object::render</a></div><div class="ttdeci">virtual void render(glm::mat4 coords)=0</div><div class="ttdoc">Renders the object.</div></div>
 <div class="ttc" id="alib_8h_html"><div class="ttname"><a href="lib_8h.html">lib.h</a></div></div>
 <div class="ttc" id="alib_8h_html_a77278c8cc96e39fb27b5d0a347c8fb3d"><div class="ttname"><a href="lib_8h.html#a77278c8cc96e39fb27b5d0a347c8fb3d">LIB_API</a></div><div class="ttdeci">#define LIB_API</div><div class="ttdef"><b>Definition:</b> lib.h:17</div></div>
 </div><!-- fragment --></div><!-- contents -->

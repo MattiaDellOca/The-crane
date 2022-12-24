@@ -76,57 +76,65 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Simple static class example.  
+<p>The main class of the graphic engine.  
  <a href="class_engine.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="engine_8h_source.html">engine.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a88f704908d1e972b6df7e0178c90f845"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#a88f704908d1e972b6df7e0178c90f845">init</a> (const char *, unsigned int, unsigned int, int *, char **)</td></tr>
-<tr class="memdesc:a88f704908d1e972b6df7e0178c90f845"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_engine.html#a88f704908d1e972b6df7e0178c90f845">More...</a><br /></td></tr>
-<tr class="separator:a88f704908d1e972b6df7e0178c90f845"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a665e1796a21605a2c531134729d01412"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#a665e1796a21605a2c531134729d01412">load</a> (std::string)</td></tr>
-<tr class="separator:a665e1796a21605a2c531134729d01412"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e1d8a462590c935b694b2339d99669b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#a4e1d8a462590c935b694b2339d99669b">load</a> (<a class="el" href="class_node.html">Node</a> *)</td></tr>
-<tr class="separator:a4e1d8a462590c935b694b2339d99669b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e65f9ca9b3ef92b084b89178083c44e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#a7e65f9ca9b3ef92b084b89178083c44e">init</a> (const char *title, unsigned int width, unsigned int height, int *argc, char **argv)</td></tr>
+<tr class="memdesc:a7e65f9ca9b3ef92b084b89178083c44e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the engine.  <a href="class_engine.html#a7e65f9ca9b3ef92b084b89178083c44e">More...</a><br /></td></tr>
+<tr class="separator:a7e65f9ca9b3ef92b084b89178083c44e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa52ceef49fd18900bb38e57067317d73"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#aa52ceef49fd18900bb38e57067317d73">load</a> (std::string filepath)</td></tr>
+<tr class="memdesc:aa52ceef49fd18900bb38e57067317d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a 3D model from a file.  <a href="class_engine.html#aa52ceef49fd18900bb38e57067317d73">More...</a><br /></td></tr>
+<tr class="separator:aa52ceef49fd18900bb38e57067317d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa14407745393c0db7e31e44e8ac5ea00"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#aa14407745393c0db7e31e44e8ac5ea00">load</a> (<a class="el" href="class_node.html">Node</a> *root)</td></tr>
+<tr class="memdesc:aa14407745393c0db7e31e44e8ac5ea00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a 3D model from a scene graph.  <a href="class_engine.html#aa14407745393c0db7e31e44e8ac5ea00">More...</a><br /></td></tr>
+<tr class="separator:aa14407745393c0db7e31e44e8ac5ea00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6dca0497c63e7e6601a29769f894f84"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#ae6dca0497c63e7e6601a29769f894f84">clear</a> ()</td></tr>
-<tr class="memdesc:ae6dca0497c63e7e6601a29769f894f84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear buffers.  <a href="class_engine.html#ae6dca0497c63e7e6601a29769f894f84">More...</a><br /></td></tr>
+<tr class="memdesc:ae6dca0497c63e7e6601a29769f894f84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the scene.  <a href="class_engine.html#ae6dca0497c63e7e6601a29769f894f84">More...</a><br /></td></tr>
 <tr class="separator:ae6dca0497c63e7e6601a29769f894f84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4f59e1b96d33dc8c86c19fedbaa7e66"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#ae4f59e1b96d33dc8c86c19fedbaa7e66">setBackgroundColor</a> (float, float, float)</td></tr>
-<tr class="separator:ae4f59e1b96d33dc8c86c19fedbaa7e66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e4395893a44575565234b26e257708c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#a4e4395893a44575565234b26e257708c">begin3D</a> (<a class="el" href="class_camera.html">Camera</a> *)</td></tr>
-<tr class="memdesc:a4e4395893a44575565234b26e257708c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start drawing something.  <a href="class_engine.html#a4e4395893a44575565234b26e257708c">More...</a><br /></td></tr>
-<tr class="separator:a4e4395893a44575565234b26e257708c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2fec50a58bcc1239ec355bf9a1602a8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#ab2fec50a58bcc1239ec355bf9a1602a8">setBackgroundColor</a> (float r, float g, float b)</td></tr>
+<tr class="memdesc:ab2fec50a58bcc1239ec355bf9a1602a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the background color of the window.  <a href="class_engine.html#ab2fec50a58bcc1239ec355bf9a1602a8">More...</a><br /></td></tr>
+<tr class="separator:ab2fec50a58bcc1239ec355bf9a1602a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab35743950e67ddfe4c0adaf39c027d23"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#ab35743950e67ddfe4c0adaf39c027d23">begin3D</a> (<a class="el" href="class_camera.html">Camera</a> *camera)</td></tr>
+<tr class="memdesc:ab35743950e67ddfe4c0adaf39c027d23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Begin rendering in 3D using the specified camera.  <a href="class_engine.html#ab35743950e67ddfe4c0adaf39c027d23">More...</a><br /></td></tr>
+<tr class="separator:ab35743950e67ddfe4c0adaf39c027d23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d77ed766011c885ae1019a1d83d8757"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#a1d77ed766011c885ae1019a1d83d8757">end3D</a> ()</td></tr>
-<tr class="memdesc:a1d77ed766011c885ae1019a1d83d8757"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop drawing.  <a href="class_engine.html#a1d77ed766011c885ae1019a1d83d8757">More...</a><br /></td></tr>
+<tr class="memdesc:a1d77ed766011c885ae1019a1d83d8757"><td class="mdescLeft">&#160;</td><td class="mdescRight">End rendering in 3D.  <a href="class_engine.html#a1d77ed766011c885ae1019a1d83d8757">More...</a><br /></td></tr>
 <tr class="separator:a1d77ed766011c885ae1019a1d83d8757"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0544e301002dd8af6958796fee18430e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#a0544e301002dd8af6958796fee18430e">swapBuffers</a> ()</td></tr>
-<tr class="memdesc:a0544e301002dd8af6958796fee18430e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swap back-buffer and front-buffer to show current render result.  <a href="class_engine.html#a0544e301002dd8af6958796fee18430e">More...</a><br /></td></tr>
+<tr class="memdesc:a0544e301002dd8af6958796fee18430e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swap the front and back buffers.  <a href="class_engine.html#a0544e301002dd8af6958796fee18430e">More...</a><br /></td></tr>
 <tr class="separator:a0544e301002dd8af6958796fee18430e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b6af1eeae9fb7dc360be846f68d5541"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#a8b6af1eeae9fb7dc360be846f68d5541">free</a> ()</td></tr>
-<tr class="memdesc:a8b6af1eeae9fb7dc360be846f68d5541"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deinitialization method.  <a href="class_engine.html#a8b6af1eeae9fb7dc360be846f68d5541">More...</a><br /></td></tr>
+<tr class="memdesc:a8b6af1eeae9fb7dc360be846f68d5541"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free the resources used by the engine.  <a href="class_engine.html#a8b6af1eeae9fb7dc360be846f68d5541">More...</a><br /></td></tr>
 <tr class="separator:a8b6af1eeae9fb7dc360be846f68d5541"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab48f7c79b39ed583b0568c381d444944"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#ab48f7c79b39ed583b0568c381d444944">render</a> ()</td></tr>
+<tr class="memdesc:ab48f7c79b39ed583b0568c381d444944"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render the scene.  <a href="class_engine.html#ab48f7c79b39ed583b0568c381d444944">More...</a><br /></td></tr>
 <tr class="separator:ab48f7c79b39ed583b0568c381d444944"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b82ff9434b10c1b8960f5c6eccd9cb7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#a3b82ff9434b10c1b8960f5c6eccd9cb7">run</a> (void(*)())</td></tr>
-<tr class="separator:a3b82ff9434b10c1b8960f5c6eccd9cb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad61b811860ab5371b548dec2d71fa6a9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#ad61b811860ab5371b548dec2d71fa6a9">run</a> (void(*updateFunction)())</td></tr>
+<tr class="memdesc:ad61b811860ab5371b548dec2d71fa6a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the engine loop.  <a href="class_engine.html#ad61b811860ab5371b548dec2d71fa6a9">More...</a><br /></td></tr>
+<tr class="separator:ad61b811860ab5371b548dec2d71fa6a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1882c40cc11da8376fd89121a72b944"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#ac1882c40cc11da8376fd89121a72b944">toggleWireframe</a> ()</td></tr>
+<tr class="memdesc:ac1882c40cc11da8376fd89121a72b944"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle wireframe rendering.  <a href="class_engine.html#ac1882c40cc11da8376fd89121a72b944">More...</a><br /></td></tr>
 <tr class="separator:ac1882c40cc11da8376fd89121a72b944"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfcb08c5af78a0a017960dfe46489750"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#acfcb08c5af78a0a017960dfe46489750">setKeyboardFunction</a> (void(*callback)(unsigned char, int, int))</td></tr>
-<tr class="memdesc:acfcb08c5af78a0a017960dfe46489750"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set keyboard callback.  <a href="class_engine.html#acfcb08c5af78a0a017960dfe46489750">More...</a><br /></td></tr>
+<tr class="memdesc:acfcb08c5af78a0a017960dfe46489750"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the keyboard callback function.  <a href="class_engine.html#acfcb08c5af78a0a017960dfe46489750">More...</a><br /></td></tr>
 <tr class="separator:acfcb08c5af78a0a017960dfe46489750"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad86082fa89092101c6ced3b3168a3c34"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#ad86082fa89092101c6ced3b3168a3c34">setSpecialKeyboardFunction</a> (void(*callback)(int, int, int))</td></tr>
-<tr class="memdesc:ad86082fa89092101c6ced3b3168a3c34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set special keyboard callback.  <a href="class_engine.html#ad86082fa89092101c6ced3b3168a3c34">More...</a><br /></td></tr>
+<tr class="memdesc:ad86082fa89092101c6ced3b3168a3c34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the special keyboard callback function.  <a href="class_engine.html#ad86082fa89092101c6ced3b3168a3c34">More...</a><br /></td></tr>
 <tr class="separator:ad86082fa89092101c6ced3b3168a3c34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a949c9fb1ca964cfcc9d29ed553c559ff"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#a949c9fb1ca964cfcc9d29ed553c559ff">isRunning</a> ()</td></tr>
+<tr class="memdesc:a949c9fb1ca964cfcc9d29ed553c559ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the engine is running.  <a href="class_engine.html#a949c9fb1ca964cfcc9d29ed553c559ff">More...</a><br /></td></tr>
 <tr class="separator:a949c9fb1ca964cfcc9d29ed553c559ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Simple static class example. </p>
+<div class="textblock"><p >The main class of the graphic engine. </p>
+<p >This class contains the main functions for initializing and running the engine, as well as functions for loading and rendering 3D models and setting the camera. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4e4395893a44575565234b26e257708c" name="a4e4395893a44575565234b26e257708c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e4395893a44575565234b26e257708c">&#9670;&#160;</a></span>begin3D()</h2>
+<a id="ab35743950e67ddfe4c0adaf39c027d23" name="ab35743950e67ddfe4c0adaf39c027d23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab35743950e67ddfe4c0adaf39c027d23">&#9670;&#160;</a></span>begin3D()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -149,7 +157,13 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Start drawing something. </p>
+<p>Begin rendering in 3D using the specified camera. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">camera</td><td>The camera to use for rendering. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -176,7 +190,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Clear buffers. </p>
+<p>Clear the scene. </p>
 
 </div>
 </div>
@@ -203,7 +217,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Stop drawing. </p>
+<p>End rendering in 3D. </p>
 
 </div>
 </div>
@@ -230,13 +244,13 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Deinitialization method. </p>
-<dl class="section return"><dt>Returns</dt><dd>true on success, false on error </dd></dl>
+<p>Free the resources used by the engine. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if the resources were successfully freed, false otherwise. </dd></dl>
 
 </div>
 </div>
-<a id="a88f704908d1e972b6df7e0178c90f845" name="a88f704908d1e972b6df7e0178c90f845"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a88f704908d1e972b6df7e0178c90f845">&#9670;&#160;</a></span>init()</h2>
+<a id="a7e65f9ca9b3ef92b084b89178083c44e" name="a7e65f9ca9b3ef92b084b89178083c44e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e65f9ca9b3ef92b084b89178083c44e">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -287,8 +301,18 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Initialization method. </p>
-<p >Call this before any other Eureka function. </p><dl class="section return"><dt>Returns</dt><dd>true on success, false on error </dd></dl>
+<p>Initialize the engine. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">title</td><td>The title of the window. </td></tr>
+    <tr><td class="paramname">width</td><td>The width of the window. </td></tr>
+    <tr><td class="paramname">height</td><td>The height of the window. </td></tr>
+    <tr><td class="paramname">argc</td><td>Pointer to the number of command-line arguments. </td></tr>
+    <tr><td class="paramname">argv</td><td>Array of command-line arguments. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the initialization was successful, false otherwise. </dd></dl>
 
 </div>
 </div>
@@ -315,10 +339,13 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Check if the engine is running. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if the engine is running, false otherwise. </dd></dl>
+
 </div>
 </div>
-<a id="a4e1d8a462590c935b694b2339d99669b" name="a4e1d8a462590c935b694b2339d99669b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e1d8a462590c935b694b2339d99669b">&#9670;&#160;</a></span>load() <span class="overload">[1/2]</span></h2>
+<a id="aa14407745393c0db7e31e44e8ac5ea00" name="aa14407745393c0db7e31e44e8ac5ea00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa14407745393c0db7e31e44e8ac5ea00">&#9670;&#160;</a></span>load() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -330,7 +357,7 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">void <a class="el" href="lib_8h.html#a77278c8cc96e39fb27b5d0a347c8fb3d">LIB_API</a> Engine::load </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_node.html">Node</a> *&#160;</td>
-          <td class="paramname"><em>newScene</em></td><td>)</td>
+          <td class="paramname"><em>root</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -341,10 +368,18 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Load a 3D model from a scene graph. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">root</td><td>The root node of the model's scene graph. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="a665e1796a21605a2c531134729d01412" name="a665e1796a21605a2c531134729d01412"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a665e1796a21605a2c531134729d01412">&#9670;&#160;</a></span>load() <span class="overload">[2/2]</span></h2>
+<a id="aa52ceef49fd18900bb38e57067317d73" name="aa52ceef49fd18900bb38e57067317d73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa52ceef49fd18900bb38e57067317d73">&#9670;&#160;</a></span>load() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -356,7 +391,7 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">static <a class="el" href="class_node.html">Node</a> * Engine::load </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramname"><em>filepath</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -366,6 +401,15 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Load a 3D model from a file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filepath</td><td>The path to the file containing the 3D model. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The root node of the model's scene graph. </dd></dl>
 
 </div>
 </div>
@@ -392,10 +436,12 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Render the scene. </p>
+
 </div>
 </div>
-<a id="a3b82ff9434b10c1b8960f5c6eccd9cb7" name="a3b82ff9434b10c1b8960f5c6eccd9cb7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b82ff9434b10c1b8960f5c6eccd9cb7">&#9670;&#160;</a></span>run()</h2>
+<a id="ad61b811860ab5371b548dec2d71fa6a9" name="ad61b811860ab5371b548dec2d71fa6a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad61b811860ab5371b548dec2d71fa6a9">&#9670;&#160;</a></span>run()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -407,7 +453,7 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">void <a class="el" href="lib_8h.html#a77278c8cc96e39fb27b5d0a347c8fb3d">LIB_API</a> Engine::run </td>
           <td>(</td>
           <td class="paramtype">void(*)()&#160;</td>
-          <td class="paramname"><em>renderFunction</em></td><td>)</td>
+          <td class="paramname"><em>updateFunction</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -418,10 +464,18 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Run the engine loop. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">updateFunction</td><td>The function to call for updating the scene. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="ae4f59e1b96d33dc8c86c19fedbaa7e66" name="ae4f59e1b96d33dc8c86c19fedbaa7e66"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4f59e1b96d33dc8c86c19fedbaa7e66">&#9670;&#160;</a></span>setBackgroundColor()</h2>
+<a id="ab2fec50a58bcc1239ec355bf9a1602a8" name="ab2fec50a58bcc1239ec355bf9a1602a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2fec50a58bcc1239ec355bf9a1602a8">&#9670;&#160;</a></span>setBackgroundColor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -460,6 +514,16 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Set the background color of the window. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td>The red component of the background color (range: 0.0 to 1.0). </td></tr>
+    <tr><td class="paramname">g</td><td>The green component of the background color (range: 0.0 to 1.0). </td></tr>
+    <tr><td class="paramname">b</td><td>The blue component of the background color (range: 0.0 to 1.0). </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="acfcb08c5af78a0a017960dfe46489750" name="acfcb08c5af78a0a017960dfe46489750"></a>
@@ -486,7 +550,13 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Set keyboard callback. </p>
+<p>Set the keyboard callback function. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>The callback function to set. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -514,7 +584,13 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Set special keyboard callback. </p>
+<p>Set the special keyboard callback function. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>The callback function to set. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -541,7 +617,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Swap back-buffer and front-buffer to show current render result. </p>
+<p>Swap the front and back buffers. </p>
 
 </div>
 </div>
@@ -567,6 +643,8 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Toggle wireframe rendering. </p>
 
 </div>
 </div>

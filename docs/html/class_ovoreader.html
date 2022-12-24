@@ -78,11 +78,15 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>OvoReader class that describes an .ovo 3D models parser.  
+ <a href="class_ovoreader.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="ovoreader_8h_source.html">ovoreader.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad85e4beb7b60cb411525bb0595996da9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#ad85e4beb7b60cb411525bb0595996da9">readFile</a> (const char *path)</td></tr>
+<tr class="memdesc:ad85e4beb7b60cb411525bb0595996da9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a 3D Ovo model into a scene graph.  <a href="class_ovoreader.html#ad85e4beb7b60cb411525bb0595996da9">More...</a><br /></td></tr>
 <tr class="separator:ad85e4beb7b60cb411525bb0595996da9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
@@ -105,7 +109,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:aaa0ca9921eba2c0e7e2058a6da5fdac3"><td class="memItemLeft" align="right" valign="top">std::map&lt; string, <a class="el" href="class_material.html">Material</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#aaa0ca9921eba2c0e7e2058a6da5fdac3">m_materials</a></td></tr>
 <tr class="separator:aaa0ca9921eba2c0e7e2058a6da5fdac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >OvoReader class that describes an .ovo 3D models parser. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0401bd0342ff10aa9df48dc0c0657209" name="a0401bd0342ff10aa9df48dc0c0657209"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0401bd0342ff10aa9df48dc0c0657209">&#9670;&#160;</a></span>parseLight()</h2>
 
@@ -223,7 +229,7 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p ><a class="el" href="class_mesh.html">Mesh</a> physics properties.</p>
+<p ><a class="el" href="class_mesh.html" title="Class representing a mesh object in the scene.">Mesh</a> physics properties.</p>
 
 </div>
 </div>
@@ -320,6 +326,15 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Parse a 3D Ovo model into a scene graph. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>Path of the Ovo 3D model file </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Scene graph that describes the read 3D model </dd></dl>
 
 </div>
 </div>
