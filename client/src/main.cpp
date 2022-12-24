@@ -62,7 +62,7 @@ int main(int argc, char* argv[]) {
    Engine::init("CRANE - An OpenGL crane simulator", 650, 650, &argc, argv);
    Engine::setKeyboardFunction(keyboardCallback);
    Engine::setBackgroundColor(0.647f, 0.898f, 1.0f);
-   Engine::load("..\\assets\\crane.ovo");
+   Engine::load("..\\assets\\crane\\crane.ovo");
 
    // Start rendering some figures..
    Engine::run(display);
