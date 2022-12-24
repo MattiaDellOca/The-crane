@@ -24,6 +24,8 @@ protected:
 public:
 	Node(std::string, glm::mat4);
 	virtual ~Node();
+	Node(const Node& o) = delete; //copy constructor
+	Node& operator=(const Node& o) = delete; //copy assignment operator
 
 	const glm::mat4 getMatrix() const;
 	const std::vector<Node*> getChildren();

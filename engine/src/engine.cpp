@@ -118,7 +118,8 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	m_initFlag = true;
 	std::cout << "Initializing engine" << std::endl;
 	std::cout << std::endl;
-	glutInit(argc, argv); // FIXME: Should we pass parameters?
+	glutInit(argc, argv);
+
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	// FreeGLUT init
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);

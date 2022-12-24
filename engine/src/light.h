@@ -17,4 +17,6 @@ protected:
 
 public:
 	void virtual render(glm::mat4) = 0;
+	const unsigned int& getLightId();
+	const LightType& getLightType();
 };
