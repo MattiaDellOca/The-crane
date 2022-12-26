@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['getambient_0',['getAmbient',['../class_material.html#a9599198f33109dfe0933acab70121a69',1,'Material']]],
+  ['getchild_1',['getChild',['../class_node.html#a92b9f0948db6b1ff84c04ddcb3e7c166',1,'Node']]],
+  ['getchildren_2',['getChildren',['../class_node.html#a6a35012adb0ac010246bca2d1d83e34d',1,'Node']]],
+  ['getdiffuse_3',['getDiffuse',['../class_material.html#a08d6baf7c2d7b3138a305559ac0af953',1,'Material']]],
+  ['getemission_4',['getEmission',['../class_material.html#a740f5d858f12878cf1026ed29d165307',1,'Material']]],
+  ['getfar_5',['getFar',['../class_camera.html#a5707d8bca7ea751e60cc54916fb9c792',1,'Camera']]],
+  ['getheight_6',['getHeight',['../class_camera.html#ac4cd9668f1c21c7ef32a666c3d135280',1,'Camera']]],
+  ['getid_7',['getId',['../class_object.html#a5f9a95477356bca8765297344268cd3e',1,'Object']]],
+  ['getmaterial_8',['getMaterial',['../class_mesh.html#aa129613d8e60cdce826e47661272fda2',1,'Mesh']]],
+  ['getmatrix_9',['getMatrix',['../class_node.html#a1552df3ffef983760d0d74dc4abc9781',1,'Node']]],
+  ['getname_10',['getName',['../class_object.html#af95740905b6391c6d0587481eed67dfd',1,'Object']]],
+  ['getnear_11',['getNear',['../class_camera.html#a18a9b85993a99d02d2a0d8a1e12262ce',1,'Camera']]],
+  ['getnormal_12',['getNormal',['../class_vertex.html#aa1cba364de7116f90582726679143d52',1,'Vertex']]],
+  ['getnumberofchildren_13',['getNumberOfChildren',['../class_node.html#ab989c573678c9ec26dcc0c14514138f3',1,'Node']]],
+  ['getparent_14',['getParent',['../class_node.html#a49daaae1b52319f52a286e199c2cda93',1,'Node']]],
+  ['getposition_15',['getPosition',['../class_vertex.html#a88658a91ae1b33329926abbb329ec32f',1,'Vertex']]],
+  ['getproperties_16',['getProperties',['../class_camera.html#abc78b470f764ff30c1df9b5426b681e5',1,'Camera']]],
+  ['getrenderinglist_17',['getRenderingList',['../class_rendering_list.html#a766a073e9569878866656c3d4a2bbfe3',1,'RenderingList']]],
+  ['getshininess_18',['getShininess',['../class_material.html#a8a56e2d0b4f123ac25010b9aa526fbfc',1,'Material']]],
+  ['getspecular_19',['getSpecular',['../class_material.html#a2385fa91ba8ad36ef4eefcdd1e8464cc',1,'Material']]],
+  ['gettangent_20',['getTangent',['../class_vertex.html#a03f1cab4eeb089e32e786f81c65a09ac',1,'Vertex']]],
+  ['gettexture_21',['getTexture',['../class_vertex.html#ad7aae872201794fe596499680bf9f46b',1,'Vertex']]],
+  ['getwidth_22',['getWidth',['../class_camera.html#ae67d4a9cc47c6ac56a4eba29f5d52802',1,'Camera']]],
+  ['glm_5fforce_5fctor_5finit_23',['GLM_FORCE_CTOR_INIT',['../ovoreader_8h.html#ac627c73454e4c96daef4a3fa6b2408fc',1,'ovoreader.h']]]
+];
