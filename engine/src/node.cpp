@@ -2,8 +2,9 @@
 // #INCLUDE //
 //////////////
 
-	// Library main include
+// Library main include
 #include "node.h"
+#include <GL/freeglut.h>
 
 /////////////
 // CLASSES //
@@ -17,15 +18,10 @@ LIB_API Node::~Node() {
 	//if the node has no children remove the pointer to the parent
 	//else if delete them
 
-	if (m_children.size() > 0) {
 		for (Node* node : m_children) {
-			node->m_parent = nullptr;
-			//delete node;
+			delete node;
 		}
-	}
-	else {
-		m_parent = nullptr;
-	}
+		m_children.clear();
 }
 
 const glm::mat4 LIB_API Node::getMatrix() const {
@@ -36,8 +32,8 @@ const std::vector<Node*> LIB_API Node::getChildren() {
 	return m_children;
 }
 
-int LIB_API Node::getNumberOfChildren() {
-	return m_children.size();
+unsigned int LIB_API Node::getNumberOfChildren() {
+	return static_cast<unsigned int>(m_children.size());
 }
 
 Node* Node::getChild(int pos) {
@@ -53,19 +49,20 @@ void LIB_API Node::setMatrix(glm::mat4 matrix) {
 }
 
 void LIB_API Node::setParent(Node* parent) {
-	m_parent = parent;
+	parent->addChild(this);
 }
 
 void LIB_API Node::addChild(Node* child) {
 	// Set parent + recursive matrix
-	child->setParent(this);
+	//child->setParent(this);
+	child->m_parent = this;
 
 	// Check if children is nullptr
 	m_children.push_back(child);
 }
 
 bool LIB_API Node::removeChild(Node* child) {
-	for (int i = 0; i < getNumberOfChildren(); i++) {
+	for (int i = 0; static_cast<unsigned int>(i) < getNumberOfChildren(); i++) {
 		if (child->m_id == getChild(i)->m_id) {
 			m_children.erase(m_children.begin() + i);
 			return true;
@@ -76,5 +73,5 @@ bool LIB_API Node::removeChild(Node* child) {
 }
 
 void LIB_API Node::render(glm::mat4 matrix) {
-	std::cout << "Rendering: " << m_name << std::endl;
+	glLoadMatrixf(glm::value_ptr(matrix));
 }

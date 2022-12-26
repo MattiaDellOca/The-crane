@@ -103,4 +103,6 @@ public:
 	 * @param viewMatrix The view matrix for the scene.
 	 */
 	void virtual render(glm::mat4 viewMatrix) = 0;
+	const unsigned int& getLightId();
+	const LightType& getLightType();
 };

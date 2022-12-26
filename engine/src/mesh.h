@@ -38,6 +38,7 @@ protected:
 	 * m_material is a member variable that holds the material of the mesh. It is a pointer to a Material object.
 	 */
 	Material *m_material;
+	unsigned int m_faces;
 public:
 	/**
 	 * \brief Constructor for the Mesh class.
@@ -46,7 +47,7 @@ public:
 	 * \param matrix The transformation matrix of the mesh object.
 	 * \param material The material of the mesh. It is a pointer to a Material object.
 	 */
-	Mesh(std::string name, glm::mat4 matrix, Material* material);
+	Mesh(std::string name, glm::mat4 matrix, Material* material = nullptr);
 
 	/**
 	 * \brief Renders the mesh object.
@@ -78,4 +79,6 @@ public:
 	 * \param vertex The vertex to be added. It is a pointer to a Vertex object.
 	 */
 	void addVertex(Vertex* vertex);
+
+	void addFace(Vertex* v1, Vertex* v2, Vertex* v3);
 };

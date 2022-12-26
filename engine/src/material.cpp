@@ -11,7 +11,6 @@
 LIB_API Material::Material(std::string name) : Object{ name } {};
 
 void LIB_API Material::apply() {
-	std::cout << "APPLING MATERIAL: name: " << m_name << "id: " << m_id << std::endl;
 	// Set material properties:
 	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, m_shininess);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(m_ambient));
@@ -56,6 +55,10 @@ glm::vec4 LIB_API Material::getSpecular() const {
 
 float LIB_API Material::getShininess() const {
 	return m_shininess;
+}
+
+void LIB_API Material::render(glm::mat4 coords)
+{
 }
 
 glm::vec4 LIB_API Material::getEmission() const {

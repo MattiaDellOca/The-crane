@@ -71,14 +71,6 @@ public:
 	 * This function sets the values of the material's member variables in opengl settings, so that they can be used to render the objects in the scene.
 	 */
 	void apply();
-
-	/**
-	* UNUSED.
-	* 
-	* \param coords Pre-computed world coordinates
-	*/
-	void render(glm::mat4 coords);
-
 	
 	void setAmbient(glm::vec4 ambient);
 
@@ -144,4 +136,7 @@ public:
 	 * \return The shininess value of the material. It is a float value that determines the specular highlight size and intensity.
 	 */
 	float getShininess() const;
+
+	// Inherited via Object
+	virtual void render(glm::mat4 coords) override;
 };

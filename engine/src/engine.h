@@ -103,9 +103,8 @@ public:
 	 * Load a 3D model from a file.
 	 *
 	 * @param filepath The path to the file containing the 3D model.
-	 * @return The root node of the model's scene graph.
 	 */
-	static Node* load(std::string filepath);
+	static void load(std::string filepath);
 
 	/**
 	* Load a 3D model from a scene graph.

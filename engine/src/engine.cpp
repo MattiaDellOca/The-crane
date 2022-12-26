@@ -113,7 +113,8 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	m_initFlag = true;
 	std::cout << "Initializing engine" << std::endl;
 	std::cout << std::endl;
-	glutInit(argc, argv); // FIXME: Should we pass parameters?
+	glutInit(argc, argv);
+
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	// FreeGLUT init
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
@@ -137,9 +138,6 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	glEnable(GL_NORMALIZE);
 	// FIXME: DEBUG PUROSES - Setup Gauraud shading
 	glShadeModel(GL_SMOOTH);
-
-	Ovoreader ovoreader;
-	m_scene_graph = ovoreader.readFile("C:\\Users\\matti\\OneDrive\\Desktop\\Terza\\Quinto semestre\\Grafica\\labingsw022022202302cg\\assets\\simple3dScene.ovo");
 
 	// Set running state
 	m_isRunning = true;
@@ -208,37 +206,29 @@ bool LIB_API Engine::free()
 
 
 void LIB_API Engine::render() {
-	std::cout << std::endl;
-	std::cout << "RENDERING Scene Graph..." << std::endl;
 	
 	// Start rendering
 	if (m_scene_graph != nullptr) {
 		// Clear rendering list
 		m_rendering_list->clear();
-
-		std::cout << "Loading nodes..." << std::endl;
 		
 		if (m_curr_camera == nullptr) {
-			std::cout << "[ENGINE] Warning: trying to render not in a begin-end block. Skip frame rendering." << std::endl;
+			std::cout << "[ENGINE] WARNING: trying to render not in a begin-end block. Skip frame rendering." << std::endl;
 			return;
 		}
 
 		// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
 		// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
 		m_rendering_list->pass(m_scene_graph, glm::mat4(1));
-
-		std::cout << "Rendering nodes..." << std::endl;
 		
 		// Render
 		m_rendering_list->render(m_curr_camera->getMatrix());
 	}
 	else {
 		std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
+		return;
 	}
 	
-
-	glLoadMatrixf(glm::value_ptr(glm::translate(glm::mat4(1), glm::vec3(0, 0, -10))));
-	glutSolidSphere(2, 10, 10);
 
 	// force refresh
 	glutPostRedisplay();
@@ -271,7 +261,9 @@ bool LIB_API Engine::isRunning() {
 	return m_isRunning;
 }
 
-void LIB_API Engine::load(Node* newScene) {
-	m_scene_graph = newScene;
+// Load scene graph given a .ovo file
+void LIB_API Engine::load(std::string path) {
+	Ovoreader ovoreader;
+	m_scene_graph = ovoreader.readFile(path.c_str());
 }
 

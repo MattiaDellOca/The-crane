@@ -46,6 +46,5 @@ void LIB_API RenderingList::render(glm::mat4 cameraMatrix) {
 	for (auto it = m_list.begin(); it != m_list.end(); ++it) {
 		// call render method for each node
 		(*it)->m_node->render(glm::inverse(cameraMatrix) * (*it)->m_mat);
-		std::cout << glm::to_string((*it)->m_mat) << std::endl;
 	}
 }

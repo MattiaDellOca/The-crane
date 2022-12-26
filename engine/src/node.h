@@ -14,6 +14,7 @@
 
 	// GLM
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 
 /**
@@ -64,6 +65,8 @@ public:
 	 * \brief Destructor for the Node class.
 	 */
 	virtual ~Node();
+	Node(const Node& o) = delete; //copy constructor
+	Node& operator=(const Node& o) = delete; //copy assignment operator
 
 	/**
 	 * \brief Gets the transformation matrix of the node.
@@ -84,7 +87,7 @@ public:
 	 *
 	 * \return The number of children of the node. It is an integer value.
 	 */
-	int getNumberOfChildren();
+	unsigned int getNumberOfChildren();
 
 	/**
 	 * \brief Gets a child of the node.
