@@ -1,6 +1,16 @@
 #pragma once
 
 /**
- * CameraType enum that specifies the kind of camera
+ * \enum CameraType
+ * \brief Enumeration of the different types of cameras.
  */
-enum LIB_API CameraType { PERSPECTIVE, ORTHOGRAPHIC };
+enum LIB_API CameraType {
+    /**
+    * \brief Perspective camera.
+    */
+    PERSPECTIVE,
+    /**
+    * \brief Orthographic camera.
+    */
+    ORTHOGRAPHIC
+};

@@ -74,7 +74,12 @@ public:
 	 * This function sets the values of the material's member variables in opengl settings, so that they can be used to render the objects in the scene.
 	 */
 	void apply();
-	
+
+	/**
+	* \brief Sets the ambient color of the material.
+	*
+	* \param ambient The ambient color to be set. It is a 4D vector with the red, green, blue, and alpha channel values.
+	*/
 	void setAmbient(glm::vec4 ambient);
 
 	/**
@@ -140,9 +145,24 @@ public:
 	 */
 	float getShininess() const;
 
+	/**
+	 * \brief Gets the texture of the material.
+	 *
+	 * \returns The texture of the material.
+	 */
 	Texture* getTexture() const;
+	
+	/**
+	 * \brief Sets the texture of the material.
+	 *
+	 * \param texture The texture to be set.
+	 */
 	void setTexture(Texture* texture);
 
-	// Inherited via Object
+	/**
+	 * \brief Renders the material.
+	 *
+	 * \param coords Pre-computed world coordinates
+	 */
 	virtual void render(glm::mat4 coords) override;
 };

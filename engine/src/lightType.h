@@ -1,6 +1,20 @@
 #pragma once
 
 /**
- * LightType enum that describes a kind of light source.
+ * \enum LightType
+ * \brief Enumeration of the different types of lights.
  */
-enum LIB_API LightType { DIRECTIONAL, OMNIDIRECTIONAL, SPOT };
+enum LIB_API LightType {
+    /**
+     * \brief Directional light.
+     */
+    DIRECTIONAL,
+    /**
+    * \brief Omnidirectional light.
+    */
+    OMNIDIRECTIONAL,
+    /**
+    * \brief Spot light.
+    */
+    SPOT
+};

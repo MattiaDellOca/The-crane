@@ -103,6 +103,18 @@ public:
 	 * @param viewMatrix The view matrix for the scene.
 	 */
 	void virtual render(glm::mat4 viewMatrix) = 0;
+	
+	/**
+	* \brief Gets the ID of the light.
+	*
+	* \returns The ID of the light.
+	*/
 	const unsigned int& getLightId();
+
+	/**
+	* \brief Gets the type of the light.
+	*
+	* \returns The type of the light (DIRECTIONAL, OMNIDIRECTIONAL, or SPOT).
+	*/
 	const LightType& getLightType();
 };

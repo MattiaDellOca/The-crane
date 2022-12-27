@@ -65,8 +65,21 @@ public:
 	 * \brief Destructor for the Node class.
 	 */
 	virtual ~Node();
-	Node(const Node& o) = delete; //copy constructor
-	Node& operator=(const Node& o) = delete; //copy assignment operator
+
+	/**
+	* \brief Copy constructor for the Node class.
+	*
+	* \param o The Node object to copy.
+	*/
+	Node(const Node& o) = delete;
+
+	/**
+	* \brief Copy assignment operator for the Node class.
+	*
+	* \param o The Node object to copy.
+	* \returns A reference to the Node object.
+	*/
+	Node& operator=(const Node& o) = delete;
 
 	/**
 	 * \brief Gets the transformation matrix of the node.

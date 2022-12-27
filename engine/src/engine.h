@@ -16,12 +16,35 @@
 
 #include <queue>
 
-
+/**
+ * \struct EngineGraphics
+ * \brief Struct containing graphics settings for the engine.
+ */
 struct LIB_API EngineGraphics {
+	/**
+	 * \var filter
+	 * The texture filter to use when rendering textures.
+	 */
 	Filter filter;
+	/**
+	 * \var wrap
+	 * The texture wrap mode to use when rendering textures.
+	 */
 	TextureWrap wrap;
+	/**
+	 * \var mipmap
+	 * The texture mipmap to use when rendering textures.
+	 */
 	TextureMipmap mipmap;
+	/**
+	 * \var useAnisotropicFiltering
+	 * Flag indicating whether to use anisotropic filtering when rendering textures.
+	 */
 	bool useAnisotropicFiltering;
+	/**
+	 * \var anisotropicFilteringValue
+	 * The level of anisotropic filtering to use when rendering textures.
+	 */
 	unsigned int anisotropicFilteringValue;
 };
 
@@ -93,7 +116,6 @@ private:
 	* Graphics settings
 	*/
 	static EngineGraphics* m_graphics_settings;
-
 
 	/**
 	 * Callback function for reshaping the window.
@@ -208,7 +230,11 @@ public:
 	 */
 	static bool isRunning();
 
-
+	/**
+	* Set new graphics settings profile
+	* 
+	* @param g EngineGraphics instance containing the actual graphic profile
+	*/
 	static void setGraphics(EngineGraphics& g);
 };
 

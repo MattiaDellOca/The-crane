@@ -38,6 +38,13 @@ protected:
 	 * m_material is a member variable that holds the material of the mesh. It is a pointer to a Material object.
 	 */
 	Material *m_material;
+
+	/**
+	* \var m_faces
+	* \brief The number of faces of the mesh.
+	* 
+	* m_faces is a member variable that holds the number of faces of this mesh.
+	*/
 	unsigned int m_faces;
 public:
 	/**
@@ -80,5 +87,12 @@ public:
 	 */
 	void addVertex(Vertex* vertex);
 
+	/**
+	* \brief Adds a new face (a triangle) to the list of faces.
+	* 
+	* \param v1 Pointer to the first Vertex object.
+	* \param v2 Pointer to the second Vertex object.
+	* \param v3 Pointer to the third Vertex object.
+	*/
 	void addFace(Vertex* v1, Vertex* v2, Vertex* v3);
 };
