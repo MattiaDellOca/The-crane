@@ -2,6 +2,7 @@
 
 #include "lib.h"
 #include "object.h"
+#include "texture.h"
 
 #include <iostream>
 
@@ -57,6 +58,8 @@ private:
 	 * m_shininess is a member variable that holds the shininess value of the material. It is a float value that determines the specular highlight size and intensity.
 	 */
 	float m_shininess = 0.0f;
+
+	Texture* m_texture;
 public:
 	/**
 	 * \brief Constructor for the Material class.
@@ -136,6 +139,9 @@ public:
 	 * \return The shininess value of the material. It is a float value that determines the specular highlight size and intensity.
 	 */
 	float getShininess() const;
+
+	Texture* getTexture() const;
+	void setTexture(Texture* texture);
 
 	// Inherited via Object
 	virtual void render(glm::mat4 coords) override;

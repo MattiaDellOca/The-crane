@@ -4,11 +4,12 @@
 
    //GLM:
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
    //FreeGLUT:
 #include <GL/freeglut.h>
 
-LIB_API Material::Material(std::string name) : Object{ name } {};
+LIB_API Material::Material(std::string name) : Object{ name }, m_texture{nullptr} {};
 
 void LIB_API Material::apply() {
 	// Set material properties:
@@ -20,7 +21,7 @@ void LIB_API Material::apply() {
 
 	// Apply texture if present
 	if (m_texture != nullptr) {
-		m_texture->load();
+		m_texture->render(glm::mat4(1.0f));
 	}
 }
 

@@ -148,14 +148,15 @@ public:
      * Parse a 3D Ovo model into a scene graph.
      * 
      * \param path Path of the Ovo 3D model file
+     * \param texturesDirectory (Optional) Path where textures are stored, default '.\\assets'
      * \return Scene graph that describes the read 3D model
      */
-    Node* readFile(const char* path);
+    Node* readFile(const char* path, const char* texturesDir="..\\assets");
 protected:
     std::map<string, Material*> m_materials;
     Node* recursiveLoad(FILE* dat, const char* path);
     void parseOject(char* data, unsigned int& position);
-    Material* parseMaterial(char* data, unsigned int& position);
+    Material* parseMaterial(char* data, unsigned int& position, const char* textureDir);
     Node* parseNode(char* data, unsigned int& position, unsigned int* nChildren);
     Mesh* parseMesh(char* data, unsigned int& position, unsigned int* nChildren);
     Light* parseLight(char* data, unsigned int& position, unsigned int* nChildren);

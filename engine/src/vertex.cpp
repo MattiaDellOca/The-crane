@@ -1,6 +1,6 @@
 #include "vertex.h"
 
-LIB_API Vertex::Vertex(glm::vec3 position, glm::vec4 normal, glm::vec2 texture, glm::vec4 tangent) :
+LIB_API Vertex::Vertex(glm::vec3& position, glm::vec4& normal, glm::vec2& texture, glm::vec4& tangent) :
 	m_position{ position }, m_normal{ normal }, m_texture{ texture }, m_tangent{ tangent } {};
 
 const glm::vec3 LIB_API Vertex::getPosition() {

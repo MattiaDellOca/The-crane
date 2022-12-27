@@ -4,7 +4,7 @@
 	#include <GL/freeglut.h>
 
 
-LIB_API Mesh::Mesh(std::string name, glm::mat4 matrix, Material* material) : Node(name, matrix), m_material{ material } {};
+LIB_API Mesh::Mesh(std::string name, glm::mat4 matrix, Material* material) : Node(name, matrix), m_material{ material }, m_faces{ 0 } {};
 
 const Material LIB_API *Mesh::getMaterial() {
 	return m_material;
@@ -17,6 +17,11 @@ void LIB_API Mesh::setMaterial(Material *material) {
 void LIB_API Mesh::render(glm::mat4 matrix) {
 	// Load material
 	m_material->apply();
+
+	// Check if a texture has been set
+	if (m_material->getTexture() != nullptr) {
+		glEnable(GL_TEXTURE_2D);
+	}
 
 	// Load matrix
 	glLoadMatrixf(glm::value_ptr(matrix));
@@ -44,6 +49,10 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 		glEnd();
 	}
 
+	// Check if a texture has been set
+	if (m_material->getTexture() != nullptr) {
+		glDisable(GL_TEXTURE_2D);
+	}
 }
 
 // Add one face to the mesh: a face is represented by three vertices.

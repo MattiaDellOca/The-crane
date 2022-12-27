@@ -56,7 +56,7 @@ public:
 	 * \param texture The texture coordinates of the vertex. It is a 2D vector represented by a glm::vec2 object.
 	 * \param tangent The tangent of the vertex. It is a 3D vector represented by a glm::vec4 object. The fourth component of the vector is used to store the handedness of the tangent.
 	 */
-	Vertex(glm::vec3 position, glm::vec4 normal, glm::vec2 texture, glm::vec4 tangent);
+	Vertex(glm::vec3& position, glm::vec4& normal, glm::vec2& texture, glm::vec4& tangent);
 	
 	/**
 	 * \brief Gets the position of the vertex.

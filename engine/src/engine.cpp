@@ -117,37 +117,41 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	m_initFlag = true;
 	std::cout << "Initializing engine" << std::endl;
 	std::cout << std::endl;
-	glutInit(argc, argv);
-
+	
+	// Init context
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-	// FreeGLUT init
-	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
-	// Global OpenGL settings:
-	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
 	glutInitWindowPosition(500, 500);
-	// Set window size
+	
 	m_window_width = width;
 	m_window_height = height;
 	glutInitWindowSize(width, height);
 
+	// FreeGLUT init
+	glutInit(argc, argv);
+
+	// Global OpenGL settings:
+	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
+	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
+	
 	// Create the window with a specific title:
 	m_windowId = glutCreateWindow(title);
-	// Set reshape function
-	glutReshapeFunc(reshapeCallback);
+	
 	// Enable Z-Buffer+Lighting+Face Culling
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
-	// FIXME: glEnable(GL_CULL_FACE);
-	// FIXME: Remove temp light
+	glEnable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);
-	// FIXME: DEBUG PUROSES - Setup Gauraud shading
 	glShadeModel(GL_SMOOTH);
+
+	// Set reshape function
+	glutReshapeFunc(reshapeCallback);
 
 	// Init FreeImage for texture mapping
 	FreeImage_Initialise();
 	
 	// Set running state
 	m_isRunning = true;
+
 	// Succes!!
 	return true;
 }
@@ -270,8 +274,15 @@ bool LIB_API Engine::isRunning() {
 }
 
 // Load scene graph given a .ovo file
-void LIB_API Engine::load(std::string path) {
+void LIB_API Engine::load(std::string path, std::string texturesDir) {
+
+	// Check if the path ends with a '\\' sequence
+	if (texturesDir.back() != '\\') {
+		// Add a '\\' sequence to the end of the path
+		texturesDir += "\\";
+	}
+
 	Ovoreader ovoreader;
-	m_scene_graph = ovoreader.readFile(path.c_str());
+	m_scene_graph = ovoreader.readFile(path.c_str(), texturesDir.c_str());
 }
 

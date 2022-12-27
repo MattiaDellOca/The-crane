@@ -55,7 +55,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>FREEGLUT_STATIC;_CRT_SECURE_NO_WARNINGS;_DEBUG;_WINDOWS;_USRDLL;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FREEIMAGE_LIB;FREEGLUT_STATIC;_CRT_SECURE_NO_WARNINGS;_DEBUG;_WINDOWS;_USRDLL;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\glm\include;..\dependencies\freeimage\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -73,7 +73,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>FREEGLUT_STATIC;_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;_USRDLL;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FREEIMAGE_LIB;FREEGLUT_STATIC;_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;_USRDLL;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\dependencies\freeglut\include;..\dependencies\freeimage\include;..\dependencies\glm\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -104,6 +104,7 @@
     <ClCompile Include="src\renderingList.cpp" />
     <ClCompile Include="src\sphere.cpp" />
     <ClCompile Include="src\spotLight.cpp" />
+    <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +128,7 @@
     <ClInclude Include="src\renderingList.h" />
     <ClInclude Include="src\sphere.h" />
     <ClInclude Include="src\spotLight.h" />
+    <ClInclude Include="src\texture.h" />
     <ClInclude Include="src\vertex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,6 +1,6 @@
 #include "ovoreader.h"
 
-Node LIB_API* Ovoreader::readFile(const char* path) {
+Node LIB_API* Ovoreader::readFile(const char* path, const char* texturesDir) {
 	// Open file:
 	FILE* dat = fopen(path, "rb");
 	if (dat == nullptr)
@@ -44,7 +44,7 @@ Node LIB_API* Ovoreader::readFile(const char* path) {
 				break;
 
 			case OvObject::Type::MATERIAL:
-                material = parseMaterial(data, position);
+                material = parseMaterial(data, position, texturesDir);
 				m_materials.insert(make_pair(material->getName(), material));
 				break;
 
@@ -161,7 +161,7 @@ void LIB_API Ovoreader::parseOject(char* data, unsigned int& position) {
     cout << "   Version . . . :  " << versionId << endl;
 }
 
-Material LIB_API* Ovoreader::parseMaterial(char* data, unsigned int& position) {
+Material LIB_API* Ovoreader::parseMaterial(char* data, unsigned int& position, const char* textureDir) {
     cout << "material]" << endl;
 
     // Material name:
@@ -222,6 +222,10 @@ Material LIB_API* Ovoreader::parseMaterial(char* data, unsigned int& position) {
     material->setSpecular(tmp * 0.4f);
     material->setShininess((1 - sqrt(roughness)) * 128);
     material->setEmission(glm::vec4(emission.x, emission.y, emission.z, 1.0f));
+
+    // Load texture from assets path
+    Texture* t = new Texture{textureName, std::string{textureDir} + std::string{textureName} };
+    material->setTexture(t);
 
     return material;
 }
@@ -417,10 +421,9 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
         memcpy(&tangentData, data + position, sizeof(unsigned int));
         glm::vec4 tangent = glm::unpackSnorm3x10_1x2(tangentData);
         position += sizeof(unsigned int);
-
+        
         // Add vertex to the vertices vector
-        Vertex* v = new Vertex{ vertex, normal, uv, tangent };
-        verticesVec.push_back(v);
+        verticesVec.push_back(new Vertex{ vertex, normal, uv, tangent });
     }
 
     // Faces:
