@@ -12,8 +12,18 @@
 #include "lib.h"
 #include "renderingList.h"
 #include "ovoreader.h"
+#include "texture.h"
 
 #include <queue>
+
+
+struct LIB_API EngineGraphics {
+	Filter filter;
+	TextureWrap wrap;
+	TextureMipmap mipmap;
+	bool useAnisotropicFiltering;
+	unsigned int anisotropicFilteringValue;
+};
 
 /**
  * @brief The main class of the graphic engine.
@@ -22,6 +32,7 @@
  * as well as functions for loading and rendering 3D models and setting the camera.
  */
 class LIB_API Engine {
+
 private:
 	/**
 	 * Private constructor to prevent instantiation of the class.
@@ -79,6 +90,12 @@ private:
 	static bool m_render_wireframe;
 
 	/**
+	* Graphics settings
+	*/
+	static EngineGraphics* m_graphics_settings;
+
+
+	/**
 	 * Callback function for reshaping the window.
 	 *
 	 * @param width The new window width.
@@ -87,6 +104,7 @@ private:
 	static void reshapeCallback(int width, int height);
 
 public:
+
 	/**
 	 * Initialize the engine.
 	 *
@@ -189,5 +207,8 @@ public:
 	 * @return True if the engine is running, false otherwise.
 	 */
 	static bool isRunning();
+
+
+	static void setGraphics(EngineGraphics& g);
 };
 

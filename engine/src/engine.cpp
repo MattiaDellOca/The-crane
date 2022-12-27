@@ -39,6 +39,7 @@ int Engine::m_window_width = -1;
 int Engine::m_windowId = NULL;
 Camera* Engine::m_curr_camera = nullptr;
 bool Engine::m_render_wireframe = false;
+EngineGraphics* Engine::m_graphics_settings = nullptr;
 
 //////////////
 // DLL MAIN //
@@ -286,3 +287,27 @@ void LIB_API Engine::load(std::string path, std::string texturesDir) {
 	m_scene_graph = ovoreader.readFile(path.c_str(), texturesDir.c_str());
 }
 
+void LIB_API Engine::setGraphics(EngineGraphics& g) {
+	// Save new configuration
+	m_graphics_settings = &g;
+
+	// Apply settings
+	Texture::setFilter(g.filter, g.mipmap);
+	Texture::setTextureWrap(g.wrap);
+
+	// If anisotropicFiltering is enabled
+	if (g.useAnisotropicFiltering) {
+		try {
+			Texture::enableAnisotropicFiltering(g.anisotropicFilteringValue);
+		}
+		catch (std::invalid_argument ex) {
+			std::cout << "WARNING: Error while enabling anisotropic filtering. " << ex.what() << std::endl;
+
+			// Disable anisotropic filtering
+			Texture::disableAnisotropicFiltering();
+		}
+	}
+	else {
+		Texture::disableAnisotropicFiltering();
+	}
+}

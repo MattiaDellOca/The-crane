@@ -62,6 +62,16 @@ int main(int argc, char* argv[]) {
    Engine::init("CRANE - An OpenGL crane simulator", 650, 650, &argc, argv);
    Engine::setKeyboardFunction(keyboardCallback);
    Engine::setBackgroundColor(0.647f, 0.898f, 1.0f);
+
+   // Create graphics profile
+   EngineGraphics profile{};
+   profile.filter = Filter::LINEAR;
+   profile.mipmap = TextureMipmap::MIPMAP_LINEAR;
+   profile.useAnisotropicFiltering = true;
+   profile.anisotropicFilteringValue = 2;
+
+   // Set Texture settings
+   Engine::setGraphics(profile);
    Engine::load("..\\assets\\crane\\crane.ovo", "..\\assets\\crane");
 
    // Start rendering some figures..
