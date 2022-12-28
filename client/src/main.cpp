@@ -1,9 +1,9 @@
 #include "main.h"
 
 // Create camera
-PerspectiveCamera camera3d{ "Main camera", glm::mat4(1), 100, 100, 1, 1000, 90};
+PerspectiveCamera camera3d{ "Main camera", glm::mat4(1), 100, 100, 1, 10000, 90};
 OrthographicCamera camera2d{ "2d Camera", glm::mat4(1), 100, 100 }; // TODO: Write "wireframe" option in 2D UI (it is supported but not shown to the user)
-float cameraSpeed = 10.0f;
+float cameraSpeed = 100.0f;
 
 // ====== LISTA DI COSE DA FARE ======
 // 1 - Aggiornare parametri della camera al reshape
