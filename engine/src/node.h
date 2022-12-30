@@ -86,7 +86,10 @@ public:
 	 *
 	 * \return The transformation matrix of the node. It is a 4x4 matrix that represents the translation, rotation, and scale of the node in the scene.
 	 */
-	const glm::mat4 getMatrix() const;
+	const glm::mat4 getMatrix();
+
+
+	const glm::mat4 getWorldCoordinateMatrix();
 
 	/**
 	 * \brief Gets the children of the node.
@@ -116,7 +119,7 @@ public:
 	 *
 	 * \return The parent of the node. It is a pointer to a Node object.
 	 */
-	const Node* getParent();
+	Node* getParent();
 
 	/**
 	 * \brief Sets the transformation matrix of the node.
@@ -156,4 +159,13 @@ public:
 	 * \param coords The pre-computed world coordinates of the node.
 	 */
 	void virtual render(glm::mat4 coords);
+
+	/**
+ * \brief Search a node based on his name
+ *
+ * This function is recursive and search on all child
+ *
+ * \param name of the node to be found
+ */
+	Node* searchNode(const char* name);
 };

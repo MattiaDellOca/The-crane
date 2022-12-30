@@ -24,7 +24,7 @@ LIB_API Node::~Node() {
 		m_children.clear();
 }
 
-const glm::mat4 LIB_API Node::getMatrix() const {
+const glm::mat4 LIB_API Node::getMatrix() {
 	return m_matrix;
 }
 
@@ -40,7 +40,7 @@ Node* Node::getChild(int pos) {
 	return m_children.at(pos);
 }
 
-const Node* Node::getParent() {
+Node* Node::getParent() {
 	return m_parent;
 }
 
@@ -75,3 +75,42 @@ bool LIB_API Node::removeChild(Node* child) {
 void LIB_API Node::render(glm::mat4 matrix) {
 	glLoadMatrixf(glm::value_ptr(matrix));
 }
+
+
+ Node LIB_API* Node::searchNode(const char* name) {
+
+	 //if the names match returns
+	if (name == m_name) {
+		return this;
+	}
+	
+	//search in each children
+	for (Node* node : m_children) {
+
+		//recurive call (BFS)
+		Node* result = node->searchNode(name);
+
+		//check for result
+		if (result != nullptr) {
+			return result;
+		}
+	}
+	
+	//if the node is not found return null
+	return nullptr;
+}
+
+
+ const glm::mat4 LIB_API Node::getWorldCoordinateMatrix() {
+
+		 glm::mat4 worldCoordinate(1.f);
+
+		 Node* currentNode = this;
+		 while (currentNode != nullptr) {
+			 worldCoordinate = currentNode->m_matrix * worldCoordinate;
+			 currentNode = currentNode->m_parent;
+		 }
+
+		 return worldCoordinate;
+	 
+ }

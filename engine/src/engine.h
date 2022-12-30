@@ -236,5 +236,12 @@ public:
 	* @param g EngineGraphics instance containing the actual graphic profile
 	*/
 	static void setGraphics(EngineGraphics& g);
+
+	/**
+	* Search and return the first node found in the scene
+	*
+	* @param name Name of the node
+	*/
+	static Node* getNode(std::string name);
 };
 

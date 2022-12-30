@@ -133,7 +133,7 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Global OpenGL settings:
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f);
-	
+
 	// Create the window with a specific title:
 	m_windowId = glutCreateWindow(title);
 	
@@ -310,4 +310,16 @@ void LIB_API Engine::setGraphics(EngineGraphics& g) {
 	else {
 		Texture::disableAnisotropicFiltering();
 	}
+}
+
+Node LIB_API* Engine::getNode(std::string name)
+{	
+	//if the scene is not setted return null
+	if (m_scene_graph == nullptr) {
+		return nullptr;
+	}
+	
+	//convert std::string to a const char pointer to avoid copy
+	const char* searchName = name.c_str();
+	return m_scene_graph->searchNode(searchName);
 }

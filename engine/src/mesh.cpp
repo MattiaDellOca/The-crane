@@ -15,6 +15,10 @@ void LIB_API Mesh::setMaterial(Material *material) {
 }
 
 void LIB_API Mesh::render(glm::mat4 matrix) {
+	if (m_name == "Hook" || m_name == "Container1" || m_name == "Container2") {
+		//std::cout << m_name << glm::to_string(matrix) << std::endl;
+	}
+
 	// Load material
 	m_material->apply();
 

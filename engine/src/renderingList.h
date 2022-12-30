@@ -19,7 +19,7 @@
  *
  * The RenderNode structure has two member variables:
  *  - m_node: a pointer to an Object object. It represents the node to be rendered.
- *  - m_mat: a 4x4 matrix that represents the transformation of the node.
+ *  - m_mat: a 4x4 matrix that represents the transformation of the node. (World Coordinates)
  */
 struct RenderNode {
 	Object* m_node;

@@ -20,6 +20,12 @@ LIB_API void DirectionalLight::render(glm::mat4 matrix)
 	//Values for omnidirectional light
 	glm::vec4 objectCoordPosition(0.f, 0.f, 0.f, 0.f); //w = 0
 
+	//Reset attenuation
+	glLightf(m_baseValueLights + m_lightId, GL_CONSTANT_ATTENUATION, 1.f);
+	glLightf(m_baseValueLights + m_lightId, GL_LINEAR_ATTENUATION, 0.f);
+	glLightf(m_baseValueLights + m_lightId, GL_QUADRATIC_ATTENUATION, 0.f);
+
+
 	//Load matrix
 	glLoadMatrixf(glm::value_ptr(matrix));
 
