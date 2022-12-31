@@ -1,10 +1,26 @@
 #include "main.h"
 
+
+// -- Movable camera -- 
+bool invertedCamera = true;
+glm::vec3 camera_eye = glm::vec3(-50.f, 100.0f, 0.0f);
+glm::vec3 camera_center = glm::vec3(0.f, 100.f, -1.f);
+glm::vec3 camera_up = glm::vec3(0.f, 100.f, 0.f);
+
 // Create camera
-//glm::mat4 startCamera = glm::translate(glm::mat4(1.f), glm::vec3(600.f,900.f,1500.f));
-glm::mat4 startCamera = glm::translate(glm::mat4(1.f), glm::vec3(631.f, 806.f, 1979.f));
+	// glm::mat4 startCamera = glm::translate(glm::mat4(1.f), glm::vec3(631.f, 806.f, 1979.f));
+glm::mat4 startCamera = glm::lookAt(camera_eye, camera_eye + camera_center, camera_up);
 PerspectiveCamera camera3d{ "Main camera", startCamera, 100, 100, 1, 10000, 90 };
 OrthographicCamera camera2d{ "2d Camera", glm::mat4(1), 100, 100 }; // TODO: Write "wireframe" option in 2D UI (it is supported but not shown to the user)
+
+// Dynamic camera parameters
+float cameraSpeed = 10.0f;
+float camera_sensitivity = 0.2f;
+
+int pre_mouseX = -1.0f;
+int pre_mouseY = -1.0f;
+float camera_yaw = -90.0f;
+float camera_pitch = 0.0f;
 
 // SceneObject objects
 Node* root;
@@ -20,7 +36,6 @@ const float heightContainer = 181.391907f;
 Node* plane;
 
 // Settings
-float cameraSpeed = 100.0f;
 float craneRotationSpeed = 1.f;
 float cablesScaleSpeed = 0.05f;
 float trolleySpeed = 0.5f;
@@ -36,6 +51,11 @@ float movementTrolleyCount = 0;
 const float minTrolley = -50;
 const float maxTrolley = 6;
 const float maxExtensionsCable = 50;
+
+void updateCamera3D() {
+	glm::mat4 startCamera = glm::lookAt(camera_eye, camera_eye + camera_center, camera_up);
+	camera3d.setMatrix(startCamera);
+}
 
 // ====== LISTA DI COSE DA FARE ======
 // 1 - Aggiornare parametri della camera al reshape
@@ -53,6 +73,53 @@ void display() {
 	Engine::swapBuffers();
 }
 
+void mouseMotionCallback(int x, int y) {
+	// Compute 
+	if (Engine::isRunning()) {
+		if (pre_mouseX < 0 || pre_mouseY < 0) {
+			// Assign current x/y pair
+			pre_mouseX = Engine::getWindowWidth() / 2;
+			pre_mouseY = Engine::getWindowHeight() / 2;
+		}
+		else {
+			// update deltaAngle
+			const float deltaX = (x - pre_mouseX) * camera_sensitivity;
+			const float deltaY = (y - pre_mouseY) * camera_sensitivity;
+
+			// Overwrite pre values
+			pre_mouseX = x;
+			pre_mouseY = y;
+
+			// Compute yaw and pitch
+			if (invertedCamera) {
+				camera_yaw += deltaX;
+				camera_pitch -= deltaY;
+			}
+			else {
+				camera_yaw += deltaX;
+				camera_pitch -= deltaY;
+			}
+			
+			// Limit camera pitch to ]-90°;90°[
+			if (camera_pitch > 89.0f)
+			     camera_pitch = 89.0f;
+			if (camera_pitch < -89.0f)
+				camera_pitch = -89.0f;
+			
+			// Update camera direction vector
+			camera_center.x = cos(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
+			camera_center.y = sin(glm::radians(camera_pitch));
+			camera_center.z = sin(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
+			
+			// Update 3D camera matrix
+			updateCamera3D();
+
+			// Force engine to re-render
+			Engine::redisplay();
+		}
+	}
+}
+
 void keyboardCallback(unsigned char key, int x, int y) {
 	if (key == 'x') {
 		cout << "[CRANE] Info: Toggling wireframe.." << endl;
@@ -60,27 +127,46 @@ void keyboardCallback(unsigned char key, int x, int y) {
 	}
 	else if (key == 'w') {
 		cout << "[CRANE] Camera: moving frontward" << endl;
-		camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(0.0f, 0.0f, -cameraSpeed)));
+		// camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(0.0f, 0.0f, -cameraSpeed)));
+		camera_eye += camera_center * cameraSpeed;
+		camera_center.z -= cameraSpeed;
+		updateCamera3D();
 	}
 	else if (key == 'a') {
 		cout << "[CRANE] Camera: moving left" << endl;
-		camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(-cameraSpeed, 0.0f, 0.0f)));
+		// camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(-cameraSpeed, 0.0f, 0.0f)));
+		camera_eye += glm::normalize(glm::cross(camera_center, glm::vec3(0.f, 1.0f, 0.0f))) * cameraSpeed;
+		updateCamera3D();
 	}
 	else if (key == 's') {
 		cout << "[CRANE] Camera: moving backward" << endl;
-		camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(0.0f, 0.0f, cameraSpeed)));
+		// camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(0.0f, 0.0f, cameraSpeed)));
+		camera_eye -= camera_center * cameraSpeed;
+		camera_center.z += cameraSpeed;
+		updateCamera3D();
 	}
 	else if (key == 'd') {
 		cout << "[CRANE] Camera: moving right" << endl;
-		camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(cameraSpeed, 0.0f, 0.0f)));
+		// camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(cameraSpeed, 0.0f, 0.0f)));
+		camera_eye -= glm::normalize(glm::cross(camera_center, glm::vec3(0.f, 1.0f, 0.0f))) * cameraSpeed;
+		updateCamera3D();
 	}
 	else if (key == ' ') {
 		cout << "[CRANE] Camera: moving up" << endl;
-		camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(0.0f, cameraSpeed, 0.0f)));
+		// camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(0.0f, cameraSpeed, 0.0f)));
+		camera_eye.y -= cameraSpeed;
+		// camera_center.y += cameraSpeed;
+		
+		updateCamera3D();
 	}
 	else if (key == 'q') {
+		//FIXME: BUGGED
+
 		cout << "[CRANE] Camera: moving down" << endl;
-		camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(0.0f, -cameraSpeed, 0.0f)));
+		// camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(0.0f, -cameraSpeed, 0.0f)));
+		camera_eye.y += cameraSpeed;
+		// camera_center.y += cameraSpeed;
+		updateCamera3D();
 	}
 	else if (key == 'g') {
 		//rotate crane clockwise
@@ -119,7 +205,6 @@ void keyboardCallback(unsigned char key, int x, int y) {
 	}
 	else if (key == 'u') {
 		// move cable up
-
 		if (extensionsCableCount > 0) {
 			cout << "[CRANE] Cables: moving up" << endl;
  
@@ -140,7 +225,6 @@ void keyboardCallback(unsigned char key, int x, int y) {
 	}
 	else if (key == 'j') {
 		// move cable down
-
 		if (maxExtensionsCable > extensionsCableCount + 1) {
 			cout << "[CRANE] Cables: moving down" << endl;
 
@@ -244,6 +328,7 @@ int main(int argc, char* argv[]) {
 	// Initialize Engine
 	Engine::init("CRANE - An OpenGL crane simulator", 650, 650, &argc, argv);
 	Engine::setKeyboardFunction(keyboardCallback);
+	Engine::setMouseMotionFunction(mouseMotionCallback);
 	Engine::setBackgroundColor(0.647f, 0.898f, 1.0f);
 
 	// Create graphics profile
@@ -256,7 +341,7 @@ int main(int argc, char* argv[]) {
 	// Set Texture settings
 	Engine::setGraphics(profile);
 	Engine::load("..\\assets\\crane\\crane.ovo", "..\\assets\\crane");
-
+	
 	// Searching nodes
 	root = Engine::getNode("[root]");
 	crane = Engine::getNode("Crane");
