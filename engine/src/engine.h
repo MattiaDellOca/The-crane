@@ -243,5 +243,31 @@ public:
 	* @param name Name of the node
 	*/
 	static Node* getNode(std::string name);
+
+	static unsigned int getWindowHeight();
+	static unsigned int getWindowWidth();
+
+	static void redisplay();
+
+	/**
+	 * Set mouse callback function.
+	 * 
+	 * \param callback Callback function pointer
+	 */
+	static void setMouseFunction(void (*callback)(int, int, int, int));
+
+	/**
+	 * Set mouse wheel callback function.
+	 * 
+	 * \param callback Callback function pointer
+	 */
+	static void setMouseWheelFunction(void (*callback)(int, int, int, int));
+
+	/**
+	 * Set mouse motion callback function. This event is fired every time the mouse moves on the screen.
+	 *
+	 * \param callback Callback function pointer
+	 */
+	static void setMouseMotionFunction(void (*callback)(int, int));
 };
 
