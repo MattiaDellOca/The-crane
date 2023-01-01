@@ -9,6 +9,8 @@
  // CLASSES //
  /////////////
 #include "camera.h"
+#include "orthographicCamera.h"
+#include "perspectiveCamera.h"
 #include "lib.h"
 #include "renderingList.h"
 #include "ovoreader.h"
@@ -105,12 +107,12 @@ private:
 	/**
 	 * The current camera being used by the engine.
 	 */
-	static Camera* m_curr_camera;
+	static Camera* m_curr_3Dcamera;
 
 	/**
-	 * Flag indicating whether wireframe rendering is enabled.
-	 */
-	static bool m_render_wireframe;
+	* The current 2D camera being used by the engine.
+	*/
+	static OrthographicCamera* m_curr_2Dcamera;
 
 	/**
 	* Graphics settings
@@ -124,6 +126,13 @@ private:
 	 * @param height The new window height.
 	 */
 	static void reshapeCallback(int width, int height);
+
+	/**
+	* Callback function for timer the window.
+	*
+	* @param value passepartout value
+	*/
+	static void timerCallback(int value);
 
 public:
 
@@ -173,12 +182,25 @@ public:
 	 *
 	 * @param camera The camera to use for rendering.
 	 */
-	static void begin3D(Camera* camera);
+	static void begin3D(PerspectiveCamera* camera);
 
 	/**
 	 * End rendering in 3D.
 	 */
 	static void end3D();
+
+
+	/**
+	* Begin rendering in 32 using the specified camera.
+	*
+	* @param camera The orthographic camera to use for rendering.
+	*/
+	static void begin2D(OrthographicCamera* OrthographicCamera);
+
+	/**
+	* End rendering in 3D.
+	*/
+	static void end2D();
 
 	/**
 	 * Swap the front and back buffers.
@@ -195,8 +217,14 @@ public:
 	/**
 	 * Render the scene.
 	 */
-	static void render();
+	static void render3D();
 
+	/**
+	* Render the 2D information.
+	* 
+	* @param list list of text and position.
+	*/
+	static void render2D(const std::list<std::tuple<std::string, int>>& list);
 	/**
 	 * Run the engine loop.
 	 *
@@ -205,10 +233,25 @@ public:
 	static void run(void (*updateFunction)());
 
 	/**
-	 * Toggle wireframe rendering.
+	 * Enable wireframe rendering.
 	 */
-	static void toggleWireframe();
+	static void enableWireframe();
 
+	/**
+	* Disable wireframe rendering.
+	*/
+	static void disableWireframe();
+
+
+	/**
+	 * Enable Gouraund shading.
+	 */
+	static void enableGouraund();
+
+	/**
+	* Disable Gouraund shading.
+	*/
+	static void disableGouraund();
 	/**
 	 * Set the keyboard callback function.
 	 *
@@ -222,6 +265,14 @@ public:
 	 * @param callback The callback function to set.
 	 */
 	static void setSpecialKeyboardFunction(void (*callback)(int, int, int));
+
+
+	/**
+	* Set the timer callback function.
+	*
+	* @param callback The callback function to set.
+	*/
+	static void setTimerFunction(void (*callback)(int));
 
 	/**
 	 * Check if the engine is running.

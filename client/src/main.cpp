@@ -1,10 +1,9 @@
 #include "main.h"
 
 // Create camera
-//glm::mat4 startCamera = glm::translate(glm::mat4(1.f), glm::vec3(600.f,900.f,1500.f));
-glm::mat4 startCamera = glm::translate(glm::mat4(1.f), glm::vec3(631.f, 806.f, 1979.f));
-PerspectiveCamera camera3d{ "Main camera", startCamera, 100, 100, 1, 10000, 90 };
-OrthographicCamera camera2d{ "2d Camera", glm::mat4(1), 100, 100 }; // TODO: Write "wireframe" option in 2D UI (it is supported but not shown to the user)
+glm::mat4 startCamera = glm::translate(glm::mat4(1.f), glm::vec3(600.f,900.f,1500.f));
+PerspectiveCamera* camera3d = new PerspectiveCamera{ "Main camera", startCamera, 650, 650, 1, 10000, 90 };
+OrthographicCamera camera2d{ "2d Camera", glm::mat4(1), 650, 650 }; // TODO: Write "wireframe" option in 2D UI (it is supported but not shown to the user)
 
 // SceneObject objects
 Node* root;
@@ -32,64 +31,140 @@ Node* hookedNode = nullptr;
 float extensionsCableCount = 0;
 float movementTrolleyCount = 0;
 
+// settings flags
+bool isWireframe = false;
+bool isGouraund = true;
+
 // Range of movement
 const float minTrolley = -50;
 const float maxTrolley = 6;
 const float maxExtensionsCable = 50;
 
-// ====== LISTA DI COSE DA FARE ======
-// 1 - Aggiornare parametri della camera al reshape
+// FPS
+int fps = 0;
+int frames = 0;
+
+// 2D information
+// string = text to write
+// int = heigh position
+std::list<std::tuple<std::string, int>> information2D;
 
 void display() {
 	// Clear image
 	Engine::clear();
 
 	// Render scene
-	Engine::begin3D(&camera3d); // set camera
-	Engine::render(); // render scene
+	Engine::begin3D(camera3d); // set camera
+	Engine::render3D(); // render scene
 	Engine::end3D(); // remove camera
+
+	Engine::begin2D(&camera2d);
+
+	information2D.clear();
+	// top 2D information 
+	unsigned int currPos = camera2d.getHeight();
+	information2D.emplace_back("======= Commands =======", currPos - 20);
+	information2D.emplace_back("[ w a s d ] move camera", currPos - 35);
+	information2D.emplace_back("[ g ] rotate crane counterclockwise", currPos - 50);
+	information2D.emplace_back("[ l ] rotate crane clockwise", currPos - 65);
+	information2D.emplace_back("[ h ] move trolley backward", currPos - 80);
+	information2D.emplace_back("[ k ] move trolley forward", currPos - 95);
+	information2D.emplace_back("[ u ] move cable up", currPos - 110);
+	information2D.emplace_back("[ j ] move cable down", currPos - 125);
+
+	if (hooked) {
+		information2D.emplace_back("[ m ] release container", currPos - 140);
+	}
+	else {
+		information2D.emplace_back("[ m ] hook container", currPos - 140);
+	}
+	information2D.emplace_back("========================", currPos - 155);
+
+	// center 2D information
+	currPos = (camera2d.getHeight() - 20) / 2;
+	information2D.emplace_back("======= Settings =======", currPos);
+	if (isWireframe) {
+		information2D.emplace_back("[ 1 ] Disable wireframe", currPos - 15);
+	}
+	else {
+		information2D.emplace_back("[ 1 ] Enable wireframe", currPos - 15);
+	}
+	if (isGouraund) {
+		information2D.emplace_back("[ 2 ] Disable Gouraund", currPos - 30);
+	}
+	else {
+		information2D.emplace_back("[ 2 ] Enable Gouraund", currPos - 30);
+	}
+	information2D.emplace_back("========================", currPos - 45);
+
+	// bottom 2D information
+	information2D.emplace_back("======= Information =======", 40);
+	information2D.emplace_back(to_string(fps) + " fps", 25);
+	information2D.emplace_back("===========================", 10);
+
+	Engine::render2D(information2D);
+	Engine::end2D();
+
+	// Increment frame
+	frames++;
 
 	// Swap buffers to show rendered image
 	Engine::swapBuffers();
 }
 
 void keyboardCallback(unsigned char key, int x, int y) {
-	if (key == 'x') {
-		cout << "[CRANE] Info: Toggling wireframe.." << endl;
-		Engine::toggleWireframe();
+	if (key == '1' && isWireframe) {
+		cout << "[CRANE] Settings: Disable wireframe" << endl;
+		Engine::disableWireframe();
+		isWireframe = !isWireframe;
+	} 
+	else if (key == '1' && !isWireframe) {
+		cout << "[CRANE] Settings: Enable wireframe" << endl;
+		Engine::enableWireframe();
+		isWireframe = !isWireframe;
+	}
+	else if (key == '2' && isGouraund) {
+		cout << "[CRANE] Settings: Enable Gouraund shading" << endl;
+		Engine::enableGouraund();
+		isGouraund = !isGouraund;
+	}
+	else if (key == '2' && !isGouraund) {
+		cout << "[CRANE] Settings: Gouraund shading" << endl;
+		Engine::enableGouraund();
+		isGouraund = !isGouraund;
 	}
 	else if (key == 'w') {
 		cout << "[CRANE] Camera: moving frontward" << endl;
-		camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(0.0f, 0.0f, -cameraSpeed)));
+		camera3d->setMatrix(glm::translate(camera3d->getMatrix(), glm::vec3(0.0f, 0.0f, -cameraSpeed)));
 	}
 	else if (key == 'a') {
 		cout << "[CRANE] Camera: moving left" << endl;
-		camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(-cameraSpeed, 0.0f, 0.0f)));
+		camera3d->setMatrix(glm::translate(camera3d->getMatrix(), glm::vec3(-cameraSpeed, 0.0f, 0.0f)));
 	}
 	else if (key == 's') {
 		cout << "[CRANE] Camera: moving backward" << endl;
-		camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(0.0f, 0.0f, cameraSpeed)));
+		camera3d->setMatrix(glm::translate(camera3d->getMatrix(), glm::vec3(0.0f, 0.0f, cameraSpeed)));
 	}
 	else if (key == 'd') {
 		cout << "[CRANE] Camera: moving right" << endl;
-		camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(cameraSpeed, 0.0f, 0.0f)));
+		camera3d->setMatrix(glm::translate(camera3d->getMatrix(), glm::vec3(cameraSpeed, 0.0f, 0.0f)));
 	}
 	else if (key == ' ') {
 		cout << "[CRANE] Camera: moving up" << endl;
-		camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(0.0f, cameraSpeed, 0.0f)));
+		camera3d->setMatrix(glm::translate(camera3d->getMatrix(), glm::vec3(0.0f, cameraSpeed, 0.0f)));
 	}
 	else if (key == 'q') {
 		cout << "[CRANE] Camera: moving down" << endl;
-		camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(0.0f, -cameraSpeed, 0.0f)));
+		camera3d->setMatrix(glm::translate(camera3d->getMatrix(), glm::vec3(0.0f, -cameraSpeed, 0.0f)));
 	}
 	else if (key == 'g') {
-		//rotate crane clockwise
-		cout << "[CRANE] SleewingUnit: rotating clockwise" << endl;
+		//rotate crane counterclockwise
+		cout << "[CRANE] SleewingUnit: rotating counterclockwise" << endl;
 		slewingUnit->setMatrix(glm::rotate(slewingUnit->getMatrix(), glm::radians(craneRotationSpeed), glm::vec3(0.0f, 1.f, 0.f)));
 	}
 	else if (key == 'l') {
 		// rotate crane counter clockwise
-		cout << "[CRANE] SleewingUnit: rotating counterclockwise" << endl;
+		cout << "[CRANE] SleewingUnit: rotating clockwise" << endl;
 		slewingUnit->setMatrix(glm::rotate(slewingUnit->getMatrix(), glm::radians(-craneRotationSpeed), glm::vec3(0.0f, 1.f, 0.f)));
 	}
 	else if (key == 'h') {
@@ -238,12 +313,19 @@ void keyboardCallback(unsigned char key, int x, int y) {
 	}
 }
 
+void timerCallback(int value) {
+	fps = frames;
+	frames = 0;
+}
+
 int main(int argc, char* argv[]) {
 	cout << "[Crane - SUPSI]" << endl;
 
 	// Initialize Engine
 	Engine::init("CRANE - An OpenGL crane simulator", 650, 650, &argc, argv);
 	Engine::setKeyboardFunction(keyboardCallback);
+	Engine::setTimerFunction(timerCallback);  // Set up timer
+
 	Engine::setBackgroundColor(0.647f, 0.898f, 1.0f);
 
 	// Create graphics profile

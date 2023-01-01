@@ -29,7 +29,7 @@
 // STATIC //
 ////////////
 
-	// Reserved pointer:
+// Reserved pointer:
 Node* Engine::m_scene_graph = nullptr;
 RenderingList* Engine::m_rendering_list = new RenderingList{"Rendering list"};
 bool Engine::m_initFlag = false;
@@ -37,9 +37,14 @@ bool Engine::m_isRunning = false;
 int Engine::m_window_height = -1;
 int Engine::m_window_width = -1;
 int Engine::m_windowId = NULL;
-Camera* Engine::m_curr_camera = nullptr;
-bool Engine::m_render_wireframe = false;
+Camera* Engine::m_curr_3Dcamera = nullptr;
+OrthographicCamera* Engine::m_curr_2Dcamera = nullptr;
 EngineGraphics* Engine::m_graphics_settings = nullptr;
+
+
+	// timer function defined by user
+void(*userTimerCallback)(int);
+
 
 //////////////
 // DLL MAIN //
@@ -88,19 +93,35 @@ void Engine::reshapeCallback(int width, int height) {
 	std::cout << "[Reshape callback called] -> " << width << "x" << height << std::endl;
 
 	// Update viewport size:
-	glViewport(0, 0, width, height);
+	//glViewport(0, 0, width, height);
 
 	// Width + Height fields
 	m_window_width = width;
 	m_window_height = height;
 
-	// If current camera is set, update width / height
-	if (m_curr_camera != nullptr) {
-		m_curr_camera->updateWindowSize(width, height);
+	// If current 3D camera is set, update width / height
+	if (m_curr_3Dcamera != nullptr) {
+		m_curr_3Dcamera->updateWindowSize(width, height);
+		std::cout << "[3D] -> " << width << "x" << height << std::endl;
+
 	}
+
+	// If current 2D camera is set, update width / height
+	if (m_curr_2Dcamera != nullptr) {
+		m_curr_2Dcamera->updateWindowSize(width, height);
+		std::cout << "[2D] -> " << width << "x" << height << std::endl;
+
+	}
+
+	// Update viewport size:
+	glViewport(0, 0, width, height);
+
 }
 
-
+void LIB_API Engine::timerCallback(int value) {
+	(*userTimerCallback)(value);
+	glutTimerFunc(1000, timerCallback, 0);
+}
 
 ////////////
 // PUBLIC //
@@ -153,9 +174,16 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Set running state
 	m_isRunning = true;
 
-	// Succes!!
+	// Print information
+	std::cout << "OpenGL context" << std::endl;
+	std::cout << "   version  . . : " << glGetString(GL_VERSION) << std::endl;
+	std::cout << "   vendor . . . : " << glGetString(GL_VENDOR) << std::endl;
+	std::cout << "   renderer . . : " << glGetString(GL_RENDERER) << std::endl;
+
+	// Success!!
 	return true;
 }
+
 
 void LIB_API Engine::clear() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -166,33 +194,58 @@ void LIB_API Engine::setBackgroundColor(float r, float g, float b) {
 }
 
 
-void LIB_API Engine::toggleWireframe() {
-	m_render_wireframe = !m_render_wireframe;
-	if (m_render_wireframe) {
+void LIB_API Engine::enableWireframe() {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	}
-	else {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
 }
 
-void LIB_API Engine::begin3D(Camera* camera) {
+void LIB_API Engine::disableWireframe() {
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void LIB_API Engine::enableGouraund() {
+	glShadeModel(GL_SMOOTH);
+}
+
+void LIB_API Engine::disableGouraund() {
+	glShadeModel(GL_FLAT);
+}
+
+void LIB_API Engine::begin3D(PerspectiveCamera* camera) {
 	// Save camera
-	m_curr_camera = camera;
+	m_curr_3Dcamera = camera;
 	// Pass to right coordinates based on requested camera
 	
 	glMatrixMode(GL_PROJECTION);
-		glLoadMatrixf(glm::value_ptr(camera->getProperties()));
+		glLoadMatrixf(glm::value_ptr(m_curr_3Dcamera->getProperties()));
 	glMatrixMode(GL_MODELVIEW);
 	
 }
 
 
 void LIB_API Engine::end3D() {
-	glEnd();
+	//glEnd();
+}
 
-	// Clear camera
-	m_curr_camera = nullptr;
+
+void LIB_API Engine::begin2D(OrthographicCamera* camera) {
+	// Save camera
+	m_curr_2Dcamera = camera;
+	// Pass to right coordinates based on requested camera
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(glm::value_ptr(m_curr_2Dcamera->getProperties()));
+	glMatrixMode(GL_MODELVIEW);
+
+	glLoadMatrixf(glm::value_ptr(glm::mat4(1.0f)));
+	glDisable(GL_LIGHTING);
+
+
+}
+
+
+void LIB_API Engine::end2D() {
+	// Reactivate lighting:
+	glEnable(GL_LIGHTING);
 }
 
 /**
@@ -218,14 +271,14 @@ bool LIB_API Engine::free()
 }
 
 
-void LIB_API Engine::render() {
+void LIB_API Engine::render3D() {
 	
 	// Start rendering
 	if (m_scene_graph != nullptr) {
 		// Clear rendering list
 		m_rendering_list->clear();
 		
-		if (m_curr_camera == nullptr) {
+		if (m_curr_3Dcamera == nullptr) {
 			std::cout << "[ENGINE] WARNING: trying to render not in a begin-end block. Skip frame rendering." << std::endl;
 			return;
 		}
@@ -235,13 +288,33 @@ void LIB_API Engine::render() {
 		m_rendering_list->pass(m_scene_graph, glm::mat4(1));
 		
 		// Render
-		m_rendering_list->render(m_curr_camera->getMatrix());
+		m_rendering_list->render(m_curr_3Dcamera->getMatrix());
 	}
 	else {
 		std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
 		return;
 	}
 	
+
+	// force refresh
+	glutPostRedisplay();
+}
+
+
+void LIB_API Engine::render2D(const std::list<std::tuple<std::string, int>>& list) {
+
+	if (m_curr_3Dcamera == nullptr) {
+		std::cout << "[ENGINE] WARNING: trying to render not in a begin-end block. Skip frame rendering." << std::endl;
+		return;
+	}
+	
+	glColor3f(0.4f, 0.4f, 0.4f);
+
+
+	for (const auto& element : list) {
+		glRasterPos2f(10.0f,std::get<1>(element));
+		glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char*)std::get<0>(element).c_str());
+	}
 
 	// force refresh
 	glutPostRedisplay();
@@ -267,6 +340,12 @@ void LIB_API Engine::setSpecialKeyboardFunction(void (*callback)(int,int,int))
 
 void LIB_API Engine::setKeyboardFunction(void (*callback)(unsigned char,int,int)) {
 	glutKeyboardFunc(callback);
+}
+
+
+void LIB_API Engine::setTimerFunction(void (*callback)(int)) {
+	userTimerCallback = callback;
+	glutTimerFunc(1000, timerCallback, 0);
 }
 
 

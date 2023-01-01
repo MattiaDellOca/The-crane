@@ -10,7 +10,7 @@
 /////////////
 
 LIB_API PerspectiveCamera::PerspectiveCamera(std::string name, glm::mat4 matrix, unsigned int width, unsigned int height, float near, float far, float fov) :
-	Camera(CameraType::PERSPECTIVE, name, matrix, near, far, width, height) {
+	Camera(CameraType::PERSPECTIVE, name, matrix, near, far, width, height), m_fov{ fov } {
 	m_properties = glm::perspective(glm::radians(fov), (float)width / (float)height, near, far);
 };
 
@@ -24,5 +24,5 @@ void LIB_API PerspectiveCamera::updateWindowSize(unsigned int width, unsigned in
 	m_height = height;
 
 	// Recalculate perspective matrix
-	m_properties = glm::perspective(glm::radians(45.0f), (float)width / (float)height, m_near, m_far);
+	m_properties = glm::perspective(glm::radians(m_fov), (float)width / (float)height, m_near, m_far);
 }
