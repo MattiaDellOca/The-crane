@@ -134,9 +134,6 @@ void keyboardCallback(unsigned char key, int x, int y) {
 		}
 		isGouraund = !isGouraund;
 	}
-	else if (key == '2' && !isGouraund) {
-		isGouraund = !isGouraund;
-	}
 	else if (key == 'w') {
 		cout << "[CRANE] Camera: moving frontward" << endl;
 		camera3d->setMatrix(glm::translate(camera3d->getMatrix(), glm::vec3(0.0f, 0.0f, -cameraSpeed)));
