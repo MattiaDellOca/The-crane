@@ -2,15 +2,14 @@
 
 
 // -- Movable camera -- 
-bool invertedCamera = true;
+bool invertedCamera = false;
 glm::vec3 camera_eye = glm::vec3(-50.f, 100.0f, 0.0f);
-glm::vec3 camera_center = glm::vec3(0.f, 100.f, -1.f);
-glm::vec3 camera_up = glm::vec3(0.f, 100.f, 0.f);
+glm::vec3 camera_direction = glm::vec3(0.f, 0.f, -1.f);
+glm::vec3 camera_up = glm::vec3(0.f, 1.f, 0.f);
 
 // Create camera
 	// glm::mat4 startCamera = glm::translate(glm::mat4(1.f), glm::vec3(631.f, 806.f, 1979.f));
-glm::mat4 startCamera = glm::lookAt(camera_eye, camera_eye + camera_center, camera_up);
-PerspectiveCamera camera3d{ "Main camera", startCamera, 100, 100, 1, 10000, 90 };
+PerspectiveCamera camera3d{ "Main camera", glm::lookAt(camera_eye, camera_eye + camera_direction, camera_up), 100, 100, 1, 10000, 90 };
 OrthographicCamera camera2d{ "2d Camera", glm::mat4(1), 100, 100 }; // TODO: Write "wireframe" option in 2D UI (it is supported but not shown to the user)
 
 // Dynamic camera parameters
@@ -53,8 +52,8 @@ const float maxTrolley = 6;
 const float maxExtensionsCable = 50;
 
 void updateCamera3D() {
-	glm::mat4 startCamera = glm::lookAt(camera_eye, camera_eye + camera_center, camera_up);
-	camera3d.setMatrix(startCamera);
+	glm::mat4 newCameraMatrix = glm::lookAt(camera_eye, camera_eye + glm::normalize(camera_direction), camera_up);
+	camera3d.setMatrix(newCameraMatrix);
 }
 
 // ====== LISTA DI COSE DA FARE ======
@@ -84,7 +83,7 @@ void mouseMotionCallback(int x, int y) {
 		else {
 			// update deltaAngle
 			const float deltaX = (x - pre_mouseX) * camera_sensitivity;
-			const float deltaY = (y - pre_mouseY) * camera_sensitivity;
+			const float deltaY = (pre_mouseY - y) * camera_sensitivity; // reversed since y-coordinates range from bottom to top
 
 			// Overwrite pre values
 			pre_mouseX = x;
@@ -92,12 +91,12 @@ void mouseMotionCallback(int x, int y) {
 
 			// Compute yaw and pitch
 			if (invertedCamera) {
-				camera_yaw += deltaX;
+				camera_yaw -= deltaX;
 				camera_pitch -= deltaY;
 			}
 			else {
 				camera_yaw += deltaX;
-				camera_pitch -= deltaY;
+				camera_pitch += deltaY;
 			}
 			
 			// Limit camera pitch to ]-90°;90°[
@@ -107,10 +106,12 @@ void mouseMotionCallback(int x, int y) {
 				camera_pitch = -89.0f;
 			
 			// Update camera direction vector
-			camera_center.x = cos(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
-			camera_center.y = sin(glm::radians(camera_pitch));
-			camera_center.z = sin(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
-			
+			glm::vec3 dir;
+			dir.x = cos(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
+			dir.y = sin(glm::radians(camera_pitch));
+			//dir.z = sin(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
+			camera_direction = glm::normalize(dir);
+
 			// Update 3D camera matrix
 			updateCamera3D();
 
@@ -127,45 +128,31 @@ void keyboardCallback(unsigned char key, int x, int y) {
 	}
 	else if (key == 'w') {
 		cout << "[CRANE] Camera: moving frontward" << endl;
-		// camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(0.0f, 0.0f, -cameraSpeed)));
-		camera_eye += camera_center * cameraSpeed;
-		camera_center.z -= cameraSpeed;
+		camera_eye -= camera_direction * cameraSpeed;
 		updateCamera3D();
 	}
 	else if (key == 'a') {
 		cout << "[CRANE] Camera: moving left" << endl;
-		// camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(-cameraSpeed, 0.0f, 0.0f)));
-		camera_eye += glm::normalize(glm::cross(camera_center, glm::vec3(0.f, 1.0f, 0.0f))) * cameraSpeed;
+		camera_eye += glm::normalize(glm::cross(camera_direction, camera_up)) * cameraSpeed;
 		updateCamera3D();
 	}
 	else if (key == 's') {
-		cout << "[CRANE] Camera: moving backward" << endl;
-		// camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(0.0f, 0.0f, cameraSpeed)));
-		camera_eye -= camera_center * cameraSpeed;
-		camera_center.z += cameraSpeed;
+		camera_eye += camera_direction * cameraSpeed;
 		updateCamera3D();
 	}
 	else if (key == 'd') {
 		cout << "[CRANE] Camera: moving right" << endl;
-		// camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(cameraSpeed, 0.0f, 0.0f)));
-		camera_eye -= glm::normalize(glm::cross(camera_center, glm::vec3(0.f, 1.0f, 0.0f))) * cameraSpeed;
+		camera_eye -= glm::normalize(glm::cross(camera_direction, camera_up)) * cameraSpeed;
 		updateCamera3D();
 	}
 	else if (key == ' ') {
 		cout << "[CRANE] Camera: moving up" << endl;
-		// camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(0.0f, cameraSpeed, 0.0f)));
 		camera_eye.y -= cameraSpeed;
-		// camera_center.y += cameraSpeed;
-		
 		updateCamera3D();
 	}
 	else if (key == 'q') {
-		//FIXME: BUGGED
-
 		cout << "[CRANE] Camera: moving down" << endl;
-		// camera3d.setMatrix(glm::translate(camera3d.getMatrix(), glm::vec3(0.0f, -cameraSpeed, 0.0f)));
 		camera_eye.y += cameraSpeed;
-		// camera_center.y += cameraSpeed;
 		updateCamera3D();
 	}
 	else if (key == 'g') {
@@ -180,7 +167,6 @@ void keyboardCallback(unsigned char key, int x, int y) {
 	}
 	else if (key == 'h') {
 		// move trolley backward
-
 		if (minTrolley < movementTrolleyCount - 1) {
 			cout << "[CRANE] Trolley: moving backward" << endl;
 			trolley->setMatrix(glm::translate(trolley->getMatrix(), glm::vec3(-trolleySpeed, 0.0f, 0.0f)));
@@ -318,7 +304,7 @@ void keyboardCallback(unsigned char key, int x, int y) {
 		//hooked = !hooked;
 	}
 	else {
-		cout << key << " not supported" << endl;
+		cout << "[CRANE] Warning: option '" << key  << "' not supported" << endl;
 	}
 }
 
