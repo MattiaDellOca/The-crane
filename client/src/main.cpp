@@ -123,14 +123,18 @@ void keyboardCallback(unsigned char key, int x, int y) {
 		Engine::enableWireframe();
 		isWireframe = !isWireframe;
 	}
-	else if (key == '2' && isGouraund) {
-		cout << "[CRANE] Settings: Enable Gouraund shading" << endl;
-		Engine::enableGouraund();
+	else if (key == '2') {
+		if (!isGouraund) {
+			cout << "[CRANE] Settings: Gouraund shading enabled" << endl;
+			Engine::enableGouraund();
+		}
+		else {
+			cout << "[CRANE] Settings: Gouraund shading disabled" << endl;
+			Engine::disableGouraund();
+		}
 		isGouraund = !isGouraund;
 	}
 	else if (key == '2' && !isGouraund) {
-		cout << "[CRANE] Settings: Gouraund shading" << endl;
-		Engine::enableGouraund();
 		isGouraund = !isGouraund;
 	}
 	else if (key == 'w') {
