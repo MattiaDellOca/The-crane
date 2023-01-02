@@ -106,11 +106,9 @@ void mouseMotionCallback(int x, int y) {
 				camera_pitch = -89.0f;
 			
 			// Update camera direction vector
-			glm::vec3 dir;
-			dir.x = cos(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
-			dir.y = sin(glm::radians(camera_pitch));
-			//dir.z = sin(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
-			camera_direction = glm::normalize(dir);
+			camera_direction.x = cos(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
+			camera_direction.y = sin(glm::radians(camera_pitch));
+			camera_direction.z = sin(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
 
 			// Update 3D camera matrix
 			updateCamera3D();
