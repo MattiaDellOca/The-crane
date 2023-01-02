@@ -12,4 +12,6 @@
 #include "src/omnidirectionalLight.h"
 #include "src/spotLight.h"
 
+#include "cameraNode.h"
+
 using namespace std; 

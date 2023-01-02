@@ -8,9 +8,14 @@ glm::vec3 camera_direction = glm::vec3(0.f, 0.f, -1.f);
 glm::vec3 camera_up = glm::vec3(0.f, 1.f, 0.f);
 
 // Create camera
-	// glm::mat4 startCamera = glm::translate(glm::mat4(1.f), glm::vec3(631.f, 806.f, 1979.f));
-PerspectiveCamera* camera3d = new PerspectiveCamera{ "Main camera", glm::lookAt(camera_eye, camera_eye + camera_direction, camera_up), 650, 650, 1, 10000, 90 };
-OrthographicCamera camera2d{ "2d Camera", glm::mat4(1), 100, 100 }; // TODO: Write "wireframe" option in 2D UI (it is supported but not shown to the user)
+glm::mat4 startCameraCoordinate = glm::translate(glm::mat4(1.f), glm::vec3(600.f, 900.f, 1500.f));
+PerspectiveCamera* camera3D = new PerspectiveCamera{ "Main camera", startCameraCoordinate, 650, 650, 1, 10000, 90 };
+PerspectiveCamera* camera3DHook;
+PerspectiveCamera* camera3DCabine;
+OrthographicCamera* camera2D = new OrthographicCamera{ "2d Camera", glm::mat4(1), 650, 650 };
+
+// Current camera
+CameraNode* currentCamera;
 
 // Dynamic camera parameters
 float cameraSpeed = 10.0f;
@@ -33,6 +38,7 @@ Node* container1;
 Node* container2;
 const float heightContainer = 181.391907f;
 Node* plane;
+Node* cabine;
 
 // Settings
 float craneRotationSpeed = 1.f;
@@ -57,7 +63,7 @@ const float maxExtensionsCable = 50;
 
 void updateCamera3D() {
 	glm::mat4 newCameraMatrix = glm::lookAt(camera_eye, camera_eye + glm::normalize(camera_direction), camera_up);
-	camera3d->setMatrix(newCameraMatrix);
+	camera3D->setMatrix(newCameraMatrix);
 }
 
 // FPS
@@ -74,15 +80,13 @@ void display() {
 	Engine::clear();
 
 	// Render scene
-	Engine::begin3D(camera3d); // set camera
-	Engine::render3D(); // render scene
-	Engine::end3D(); // remove camera
+	Engine::render3D(currentCamera->getCamera());
 
-	Engine::begin2D(&camera2d);
-
+	// Preparation list 2D information
 	information2D.clear();
+
 	// top 2D information 
-	unsigned int currPos = camera2d.getHeight();
+	unsigned int currPos = camera2D->getHeight();
 	information2D.emplace_back("======= Commands =======", currPos - 20);
 	information2D.emplace_back("[ w a s d ] move camera", currPos - 35);
 	information2D.emplace_back("[ g ] rotate crane counterclockwise", currPos - 50);
@@ -101,7 +105,7 @@ void display() {
 	information2D.emplace_back("========================", currPos - 155);
 
 	// center 2D information
-	currPos = (camera2d.getHeight() - 20) / 2;
+	currPos = (camera2D->getHeight() - 20) / 2;
 	information2D.emplace_back("======= Settings =======", currPos);
 	if (isWireframe) {
 		information2D.emplace_back("[ 1 ] Disable wireframe", currPos - 15);
@@ -115,15 +119,17 @@ void display() {
 	else {
 		information2D.emplace_back("[ 2 ] Enable Gouraund", currPos - 30);
 	}
-	information2D.emplace_back("========================", currPos - 45);
+	information2D.emplace_back("[ c ] Switch camera to " + currentCamera->getNext()->getCamera()->getName(), currPos - 45);
+
+	information2D.emplace_back("========================", currPos - 60);
 
 	// bottom 2D information
 	information2D.emplace_back("======= Information =======", 40);
 	information2D.emplace_back(to_string(fps) + " fps", 25);
 	information2D.emplace_back("===========================", 10);
 
-	Engine::render2D(information2D);
-	Engine::end2D();
+	// Render 2D information
+	Engine::render2D(camera2D, information2D);
 
 	// Increment frame
 	frames++;
@@ -200,6 +206,10 @@ void keyboardCallback(unsigned char key, int x, int y) {
 			Engine::disableGouraund();
 		}
 		isGouraund = !isGouraund;
+	}
+	else if (key == 'c') {
+		currentCamera->getNext()->getCamera()->updateWindowSize(currentCamera->getCamera()->getWidth(), currentCamera->getCamera()->getHeight());
+		currentCamera = currentCamera->getNext();
 	}
 	else if (key == 'w') {
 		cout << "[CRANE] Camera: moving frontward" << endl;
@@ -377,11 +387,14 @@ void keyboardCallback(unsigned char key, int x, int y) {
 		else {
 			cout << "[CRANE] Hook: the container is too far from the plane" << endl;
 		}
-		//hooked = !hooked;
 	}
 	else {
 		cout << "[CRANE] Warning: option '" << key  << "' not supported" << endl;
 	}
+
+	// Update cameras coordinate
+	camera3DHook->setMatrix(glm::rotate(hook->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(-1.0f, 0.f,0.f)) * glm::rotate(glm::mat4(1.0f), glm::radians(90.f), glm::vec3(0.0f, 0.0f, -1.0f)));
+	camera3DCabine->setMatrix(glm::rotate(cabine->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(0.0f, -1.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(-1.0f, 0.0f, 0.0f)));
 }
 
 void timerCallback(int value) {
@@ -422,10 +435,29 @@ int main(int argc, char* argv[]) {
 	container1 = Engine::getNode("Container1");
 	container2 = Engine::getNode("Container2");
 	plane = Engine::getNode("Plane");
+	cabine = Engine::getNode("Cabine");
+
+	// Additional cameras
+	camera3DHook = new PerspectiveCamera{ "Hook camera", glm::rotate(hook->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(-1.0f, 0.f, 0.f)) * glm::rotate(glm::mat4(1.0f), glm::radians(90.f), glm::vec3(0.0f, 0.0f, -1.0f)), camera3D->getWidth(), camera3D->getHeight(), 1, 10000, 90 };
+	hook->addChild(camera3DHook);
+
+	// Calculate cabine matrix
+	camera3DCabine = new PerspectiveCamera{ "Cabine camera", glm::rotate(cabine->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(0.0f, -1.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(-1.0f, 0.0f, 0.0f)), camera3D->getWidth(), camera3D->getHeight(), 1, 10000, 90 };
+	cabine->addChild(camera3DCabine);
+
+	// Populate cameras list
+	currentCamera = new CameraNode{ camera3D, nullptr };
+	CameraNode* thirdCamera = new CameraNode{ camera3DCabine, currentCamera };
+	CameraNode* secondCamera = new CameraNode{ camera3DHook, thirdCamera };
+	currentCamera->setNext(secondCamera);
 
 	// Start rendering some figures..
 	Engine::run(display);
 
 	// Free engine
 	Engine::free();
+	delete camera2D;
+	delete camera3D;
+	delete camera3DHook;
+	delete camera3DCabine;
 }	

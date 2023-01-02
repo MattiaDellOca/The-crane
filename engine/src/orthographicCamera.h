@@ -35,9 +35,9 @@ public:
 	/**
 	 * Render method used to render the camera.
 	 * 
-	 * \param coords World coordinates of the camera
+	 * \param matrix projection matrix
 	 */
-	virtual void render(glm::mat4 coords);
+	virtual void render(glm::mat4 matrix);
 
 	/**
 	 * Updates the current orthographic matrix using new width and height.

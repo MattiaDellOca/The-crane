@@ -26,8 +26,7 @@ void LIB_API RenderingList::pass(Node *node, glm::mat4 parentMatrix) {
 
 	// If concrete type of node is either Mesh or Light (therefore NOT Camera), load it in the rendering list,
 	// otherwise skip the operation!
-	if (dynamic_cast<const Camera*>(node) == nullptr && 
-		dynamic_cast<const Light*>(node) != nullptr || dynamic_cast<const Node*>(node) != nullptr) {
+	if (dynamic_cast<const Camera*>(node) == nullptr && (dynamic_cast<const Light*>(node) != nullptr || dynamic_cast<const Node*>(node) != nullptr)) {
 		loadRenderNode(new RenderNode{ node, wcMatrix });
 	}
 

@@ -210,44 +210,6 @@ void LIB_API Engine::disableGouraund() {
 	glShadeModel(GL_FLAT);
 }
 
-void LIB_API Engine::begin3D(PerspectiveCamera* camera) {
-	// Save camera
-	m_curr_3Dcamera = camera;
-	// Pass to right coordinates based on requested camera
-	
-	glMatrixMode(GL_PROJECTION);
-		glLoadMatrixf(glm::value_ptr(m_curr_3Dcamera->getProperties()));
-	glMatrixMode(GL_MODELVIEW);
-	
-}
-
-
-void LIB_API Engine::end3D() {
-	//glEnd();
-}
-
-
-void LIB_API Engine::begin2D(OrthographicCamera* camera) {
-	// Save camera
-	m_curr_2Dcamera = camera;
-	// Pass to right coordinates based on requested camera
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(glm::value_ptr(m_curr_2Dcamera->getProperties()));
-	glMatrixMode(GL_MODELVIEW);
-
-	glLoadMatrixf(glm::value_ptr(glm::mat4(1.0f)));
-	glDisable(GL_LIGHTING);
-
-
-}
-
-
-void LIB_API Engine::end2D() {
-	// Reactivate lighting:
-	glEnable(GL_LIGHTING);
-}
-
 /**
 * Swap back-buffer and front-buffer to show current render result
 */
@@ -270,19 +232,21 @@ bool LIB_API Engine::free()
 	return true;
 }
 
+void LIB_API Engine::render3D(PerspectiveCamera* camera) {
+	// Save camera
+	m_curr_3Dcamera = camera;
 
-void LIB_API Engine::render3D() {
-	
+	// Set properties
+	m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
+
+	// Activate lighting
+	glEnable(GL_LIGHTING);
+
 	// Start rendering
 	if (m_scene_graph != nullptr) {
 		// Clear rendering list
 		m_rendering_list->clear();
 		
-		if (m_curr_3Dcamera == nullptr) {
-			std::cout << "[ENGINE] WARNING: trying to render not in a begin-end block. Skip frame rendering." << std::endl;
-			return;
-		}
-
 		// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
 		// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
 		m_rendering_list->pass(m_scene_graph, glm::mat4(1));
@@ -301,15 +265,18 @@ void LIB_API Engine::render3D() {
 }
 
 
-void LIB_API Engine::render2D(const std::list<std::tuple<std::string, int>>& list) {
+void LIB_API Engine::render2D(OrthographicCamera* camera, const std::list<std::tuple<std::string, int>>& list) {
 
-	if (m_curr_3Dcamera == nullptr) {
-		std::cout << "[ENGINE] WARNING: trying to render not in a begin-end block. Skip frame rendering." << std::endl;
-		return;
-	}
-	
+	// Save camera
+	m_curr_2Dcamera = camera;
+
+	// Disable lighting
+	glDisable(GL_LIGHTING);
+
+	// Set properties
+	m_curr_2Dcamera->render(m_curr_2Dcamera->getProperties());
+
 	glColor3f(0.4f, 0.4f, 0.4f);
-
 
 	for (const auto& element : list) {
 		glRasterPos2f(10.0f,std::get<1>(element));

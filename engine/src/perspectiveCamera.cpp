@@ -4,18 +4,23 @@
 
 	// Library main include
 #include "perspectiveCamera.h"
+#include <GL/freeglut.h>
+#include <glm/gtc/type_ptr.hpp>
+
 
 /////////////
 // CLASSES //
 /////////////
 
-LIB_API PerspectiveCamera::PerspectiveCamera(std::string name, glm::mat4 matrix, unsigned int width, unsigned int height, float near, float far, float fov) :
-	Camera(CameraType::PERSPECTIVE, name, matrix, near, far, width, height), m_fov{ fov } {
-	m_properties = glm::perspective(glm::radians(fov), (float)width / (float)height, near, far);
+LIB_API PerspectiveCamera::PerspectiveCamera(std::string name, glm::mat4 matrix, unsigned int width, unsigned int height, float nearPlane, float farPlane, float fov) :
+	Camera(CameraType::PERSPECTIVE, name, matrix, nearPlane, farPlane, width, height), m_fov{ fov } {
+	m_properties = glm::perspective(glm::radians(fov), (float)width / (float)height, nearPlane, farPlane);
 };
 
 void LIB_API PerspectiveCamera::render(glm::mat4 matrix) {
-	std::cout << "Rendering perspective camera" << std::endl;
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(glm::value_ptr(matrix));
+	glMatrixMode(GL_MODELVIEW);
 }
 
 void LIB_API PerspectiveCamera::updateWindowSize(unsigned int width, unsigned int height) {

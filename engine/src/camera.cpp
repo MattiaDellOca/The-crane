@@ -40,6 +40,3 @@ void LIB_API Camera::setFar(float f) {
 glm::mat4 Camera::getProperties() {
     return m_properties;
 }
-void LIB_API Camera::render(glm::mat4 matrix) {
-    glLoadMatrixf(glm::value_ptr(matrix));
-}

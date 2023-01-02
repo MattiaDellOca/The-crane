@@ -5,7 +5,7 @@
 
 	// Library main include
 #include "orthographicCamera.h"
-
+#include <GL/freeglut.h>
 #include <glm/gtc/type_ptr.hpp>
 
 /////////////
@@ -18,7 +18,12 @@ LIB_API OrthographicCamera::OrthographicCamera(std::string name, glm::mat4 matri
 }
 
 void LIB_API OrthographicCamera::render(glm::mat4 matrix) {
-	std::cout << "Rendering perspective camera" << std::endl;
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(glm::value_ptr(matrix));
+	glMatrixMode(GL_MODELVIEW);
+
+	glLoadMatrixf(glm::value_ptr(glm::mat4(1.0f)));
+
 }
 
 void LIB_API OrthographicCamera::updateWindowSize(unsigned int width, unsigned int height) {

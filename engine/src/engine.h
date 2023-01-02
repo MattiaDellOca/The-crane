@@ -178,31 +178,6 @@ public:
 	static void setBackgroundColor(float r, float g, float b);
 
 	/**
-	 * Begin rendering in 3D using the specified camera.
-	 *
-	 * @param camera The camera to use for rendering.
-	 */
-	static void begin3D(PerspectiveCamera* camera);
-
-	/**
-	 * End rendering in 3D.
-	 */
-	static void end3D();
-
-
-	/**
-	* Begin rendering in 32 using the specified camera.
-	*
-	* @param camera The orthographic camera to use for rendering.
-	*/
-	static void begin2D(OrthographicCamera* OrthographicCamera);
-
-	/**
-	* End rendering in 3D.
-	*/
-	static void end2D();
-
-	/**
 	 * Swap the front and back buffers.
 	 */
 	static void swapBuffers();
@@ -216,15 +191,18 @@ public:
 
 	/**
 	 * Render the scene.
+	 * 
+	* @param camera with which render the scene.
 	 */
-	static void render3D();
+	static void render3D(PerspectiveCamera* camera);
 
 	/**
 	* Render the 2D information.
 	* 
+	* @param camera with which render the information.
 	* @param list list of text and position.
 	*/
-	static void render2D(const std::list<std::tuple<std::string, int>>& list);
+	static void render2D(OrthographicCamera* camera, const std::list<std::tuple<std::string, int>>& list);
 	/**
 	 * Run the engine loop.
 	 *
