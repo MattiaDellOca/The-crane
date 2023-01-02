@@ -186,24 +186,25 @@ void mouseMotionCallback(int x, int y) {
 }
 
 void keyboardCallback(unsigned char key, int x, int y) {
-	if (key == '1' && isWireframe) {
+	if (key == '1') {
+		if (isWireframe){
 		cout << "[CRANE] Settings: Disable wireframe" << endl;
 		Engine::disableWireframe();
-		isWireframe = !isWireframe;
-	} 
-	else if (key == '1' && !isWireframe) {
-		cout << "[CRANE] Settings: Enable wireframe" << endl;
-		Engine::enableWireframe();
-		isWireframe = !isWireframe;
-	}
-	else if (key == '2') {
-		if (!isGouraund) {
-			cout << "[CRANE] Settings: Gouraund shading enabled" << endl;
-			Engine::enableGouraund();
 		}
 		else {
+			cout << "[CRANE] Settings: Enable wireframe" << endl;
+			Engine::enableWireframe();
+		}
+		isWireframe = !isWireframe;
+	} 
+	else if (key == '2') {
+		if (isGouraund) {
 			cout << "[CRANE] Settings: Gouraund shading disabled" << endl;
 			Engine::disableGouraund();
+		}
+		else {
+			cout << "[CRANE] Settings: Gouraund shading enabled" << endl;
+			Engine::enableGouraund();
 		}
 		isGouraund = !isGouraund;
 	}
