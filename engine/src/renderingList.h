@@ -43,7 +43,13 @@ protected:
 	 * m_list is a member variable that holds the list of nodes to be rendered. It is a list of pointers to RenderNode structures.
 	 */
 	std::list<RenderNode *> m_list;
-	void loadRenderNode(RenderNode*);
+
+	/**
+	 * \brief Load a RenderNode in the rendering list, putting Lights first.
+	 *
+	 * \param node The node to be rendered.
+	 */
+	void loadRenderNode(RenderNode* node);
 public:
 	/**
 	 * \brief Constructor for the RenderingList class.
@@ -62,7 +68,8 @@ public:
 	/**
 	 * \brief Adds nodes and their transformation matrices to the list.
 	 *
-	 * This function is used to recursively add nodes and their transformation matrices to the rendering list. It traverses the hierarchy of nodes and adds each node and its transformation matrix to the list.
+	 * This function is used to recursively add nodes and their transformation matrices to the rendering list. 
+	 * It traverses the hierarchy of nodes and adds each node and its transformation matrix to the list.
 	 *
 	 * \param node The root node of the hierarchy to be added to the list.
 	 * \param parentMatrix The transformation matrix of the root node.

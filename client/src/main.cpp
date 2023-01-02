@@ -1,11 +1,12 @@
 #include "main.h"
 
-
-// -- Movable camera -- 
-bool invertedCamera = false;
-glm::vec3 camera_eye = glm::vec3(-50.f, 100.0f, 0.0f);
-glm::vec3 camera_direction = glm::vec3(0.f, 0.f, -1.f);
-glm::vec3 camera_up = glm::vec3(0.f, 1.f, 0.f);
+// Special key definition
+#define KEY_LEFT					0x0064
+#define KEY_UP						0x0065
+#define KEY_RIGHT					0x0066
+#define KEY_DOWN					0x0067
+#define KEY_SHIFT_L					0x0070
+#define KEY_CTRL_L					0x0072
 
 // Create camera
 glm::mat4 startCameraCoordinate = glm::translate(glm::mat4(1.f), glm::vec3(600.f, 900.f, 1500.f));
@@ -19,12 +20,7 @@ CameraNode* currentCamera;
 
 // Dynamic camera parameters
 float cameraSpeed = 10.0f;
-float camera_sensitivity = 0.2f;
-
-int pre_mouseX = -1.0f;
-int pre_mouseY = -1.0f;
-float camera_yaw = -90.0f;
-float camera_pitch = 0.0f;
+float camera_sensitivity = 1.0f;
 
 // SceneObject objects
 Node* root;
@@ -61,11 +57,6 @@ const float minTrolley = -50;
 const float maxTrolley = 6;
 const float maxExtensionsCable = 50;
 
-void updateCamera3D() {
-	glm::mat4 newCameraMatrix = glm::lookAt(camera_eye, camera_eye + glm::normalize(camera_direction), camera_up);
-	camera3D->setMatrix(newCameraMatrix);
-}
-
 // FPS
 int fps = 0;
 int frames = 0;
@@ -88,13 +79,12 @@ void display() {
 	// top 2D information 
 	unsigned int currPos = camera2D->getHeight();
 	information2D.emplace_back("======= Commands =======", currPos - 20);
-	information2D.emplace_back("[ w a s d ] move camera", currPos - 35);
-	information2D.emplace_back("[ g ] rotate crane counterclockwise", currPos - 50);
-	information2D.emplace_back("[ l ] rotate crane clockwise", currPos - 65);
-	information2D.emplace_back("[ h ] move trolley backward", currPos - 80);
-	information2D.emplace_back("[ k ] move trolley forward", currPos - 95);
-	information2D.emplace_back("[ u ] move cable up", currPos - 110);
-	information2D.emplace_back("[ j ] move cable down", currPos - 125);
+	information2D.emplace_back("[ g ] rotate crane counterclockwise", currPos - 35);
+	information2D.emplace_back("[ l ] rotate crane clockwise", currPos - 50);
+	information2D.emplace_back("[ h ] move trolley backward", currPos - 65);
+	information2D.emplace_back("[ k ] move trolley forward", currPos - 80);
+	information2D.emplace_back("[ u ] move cable up", currPos - 95);
+	information2D.emplace_back("[ j ] move cable down", currPos - 110);
 
 	if (hooked) {
 		information2D.emplace_back("[ m ] release container", currPos - 140);
@@ -102,7 +92,18 @@ void display() {
 	else {
 		information2D.emplace_back("[ m ] hook container", currPos - 140);
 	}
-	information2D.emplace_back("========================", currPos - 155);
+
+	if (currentCamera->getCamera()->getName() == "Main camera") {
+		information2D.emplace_back("[ w a s d ] move camera", currPos - 170);
+		information2D.emplace_back("[ space / q ] move camera up or down", currPos - 185);
+		information2D.emplace_back("[ directional keys ] rotate camera", currPos - 200);
+		information2D.emplace_back("[ LCTRL ] replace camera", currPos - 215);
+		information2D.emplace_back("========================", currPos - 230);
+	} else {
+		information2D.emplace_back("========================", currPos - 155);
+	}
+
+	
 
 	// center 2D information
 	currPos = (camera2D->getHeight() - 20) / 2;
@@ -138,53 +139,6 @@ void display() {
 	Engine::swapBuffers();
 }
 
-void mouseMotionCallback(int x, int y) {
-	// Compute 
-	if (Engine::isRunning()) {
-		if (pre_mouseX < 0 || pre_mouseY < 0) {
-			// Assign current x/y pair
-			pre_mouseX = Engine::getWindowWidth() / 2;
-			pre_mouseY = Engine::getWindowHeight() / 2;
-		}
-		else {
-			// update deltaAngle
-			const float deltaX = (x - pre_mouseX) * camera_sensitivity;
-			const float deltaY = (pre_mouseY - y) * camera_sensitivity; // reversed since y-coordinates range from bottom to top
-
-			// Overwrite pre values
-			pre_mouseX = x;
-			pre_mouseY = y;
-
-			// Compute yaw and pitch
-			if (invertedCamera) {
-				camera_yaw -= deltaX;
-				camera_pitch -= deltaY;
-			}
-			else {
-				camera_yaw += deltaX;
-				camera_pitch += deltaY;
-			}
-			
-			// Limit camera pitch to ]-90°;90°[
-			if (camera_pitch > 89.0f)
-			     camera_pitch = 89.0f;
-			if (camera_pitch < -89.0f)
-				camera_pitch = -89.0f;
-			
-			// Update camera direction vector
-			camera_direction.x = cos(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
-			camera_direction.y = sin(glm::radians(camera_pitch));
-			camera_direction.z = sin(glm::radians(camera_yaw)) * cos(glm::radians(camera_pitch));
-
-			// Update 3D camera matrix
-			updateCamera3D();
-
-			// Force engine to re-render
-			Engine::redisplay();
-		}
-	}
-}
-
 void keyboardCallback(unsigned char key, int x, int y) {
 	if (key == '1') {
 		if (isWireframe){
@@ -212,36 +166,7 @@ void keyboardCallback(unsigned char key, int x, int y) {
 		currentCamera->getNext()->getCamera()->updateWindowSize(currentCamera->getCamera()->getWidth(), currentCamera->getCamera()->getHeight());
 		currentCamera = currentCamera->getNext();
 	}
-	else if (key == 'w') {
-		cout << "[CRANE] Camera: moving frontward" << endl;
-		camera_eye -= camera_direction * cameraSpeed;
-		updateCamera3D();
-	}
-	else if (key == 'a') {
-		cout << "[CRANE] Camera: moving left" << endl;
-		camera_eye += glm::normalize(glm::cross(camera_direction, camera_up)) * cameraSpeed;
-		updateCamera3D();
-	}
-	else if (key == 's') {
-		cout << "[CRANE] Camera: moving backward" << endl;
-		camera_eye += camera_direction * cameraSpeed;
-		updateCamera3D();
-	}
-	else if (key == 'd') {
-		cout << "[CRANE] Camera: moving right" << endl;
-		camera_eye -= glm::normalize(glm::cross(camera_direction, camera_up)) * cameraSpeed;
-		updateCamera3D();
-	}
-	else if (key == ' ') {
-		cout << "[CRANE] Camera: moving up" << endl;
-		camera_eye.y -= cameraSpeed;
-		updateCamera3D();
-	}
-	else if (key == 'q') {
-		cout << "[CRANE] Camera: moving down" << endl;
-		camera_eye.y += cameraSpeed;
-		updateCamera3D();
-	}
+	
 	else if (key == 'g') {
 		//rotate crane counterclockwise
 		cout << "[CRANE] SleewingUnit: rotating counterclockwise" << endl;
@@ -389,6 +314,42 @@ void keyboardCallback(unsigned char key, int x, int y) {
 			cout << "[CRANE] Hook: the container is too far from the plane" << endl;
 		}
 	}
+
+	// Moving operaions for main camera
+	else if (currentCamera->getCamera()->getName() == "Main camera") {
+		switch (key) {
+		case 'w':
+			cout << "[CRANE] Camera: moving frontward" << endl;
+			camera3D->setMatrix(glm::translate(camera3D->getMatrix(), glm::vec3(0.0f, 0.0f, -cameraSpeed)));
+			break;
+
+		case 'a':
+			cout << "[CRANE] Camera: moving left" << endl;
+			camera3D->setMatrix(glm::translate(camera3D->getMatrix(), glm::vec3(-cameraSpeed, 0.0f, 0.0f)));
+			break;
+
+		case 's':
+			cout << "[CRANE] Camera: moving backward" << endl;
+			camera3D->setMatrix(glm::translate(camera3D->getMatrix(), glm::vec3(0.0f, 0.0f, cameraSpeed)));
+			break;
+
+		case 'd':
+			cout << "[CRANE] Camera: moving right" << endl;
+			camera3D->setMatrix(glm::translate(camera3D->getMatrix(), glm::vec3(cameraSpeed, 0.0f, 0.0f)));
+			break;
+
+		case ' ':
+			cout << "[CRANE] Camera: moving up" << endl;
+			camera3D->setMatrix(glm::translate(camera3D->getMatrix(), glm::vec3(0.0f, cameraSpeed, 0.0f)));
+			break;
+
+		case 'q':
+			cout << "[CRANE] Camera: moving down" << endl;
+			camera3D->setMatrix(glm::translate(camera3D->getMatrix(), glm::vec3(0.0f, -cameraSpeed, 0.0f)));
+			break;
+		}
+	}
+
 	else {
 		cout << "[CRANE] Warning: option '" << key  << "' not supported" << endl;
 	}
@@ -396,6 +357,30 @@ void keyboardCallback(unsigned char key, int x, int y) {
 	// Update cameras coordinate
 	camera3DHook->setMatrix(glm::rotate(hook->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(-1.0f, 0.f,0.f)) * glm::rotate(glm::mat4(1.0f), glm::radians(90.f), glm::vec3(0.0f, 0.0f, -1.0f)));
 	camera3DCabine->setMatrix(glm::rotate(cabine->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(0.0f, -1.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(-1.0f, 0.0f, 0.0f)));
+}
+
+void specialKeyboardCallback(int key, int mouseX, int mouseY) {
+	switch (key) {
+	case KEY_UP:
+		camera3D->setMatrix(glm::rotate(camera3D->getMatrix(), glm::radians(camera_sensitivity), glm::vec3(1.0f, 0.0f, 0.0f)));
+		break;
+
+	case KEY_DOWN:
+		camera3D->setMatrix(glm::rotate(camera3D->getMatrix(), glm::radians(-camera_sensitivity), glm::vec3(1.0f, 0.0f, 0.0f)));
+		break;
+
+	case KEY_LEFT:
+		camera3D->setMatrix(glm::rotate(camera3D->getMatrix(), glm::radians(camera_sensitivity), glm::vec3(0.0f, 1.0f, 0.0f)));
+		break;
+
+	case KEY_RIGHT:
+		camera3D->setMatrix(glm::rotate(camera3D->getMatrix(), glm::radians(-camera_sensitivity), glm::vec3(0.0f, 1.0f, 0.0f)));
+		break;
+
+	case KEY_CTRL_L:
+		camera3D->setMatrix(startCameraCoordinate);
+		break;
+	}
 }
 
 void timerCallback(int value) {
@@ -409,7 +394,7 @@ int main(int argc, char* argv[]) {
 	// Initialize Engine
 	Engine::init("CRANE - An OpenGL crane simulator", 650, 650, &argc, argv);
 	Engine::setKeyboardFunction(keyboardCallback);
-	Engine::setMouseMotionFunction(mouseMotionCallback);
+	Engine::setSpecialKeyboardFunction(specialKeyboardCallback);
 	Engine::setTimerFunction(timerCallback);  // Set up timer
 
 	Engine::setBackgroundColor(0.647f, 0.898f, 1.0f);

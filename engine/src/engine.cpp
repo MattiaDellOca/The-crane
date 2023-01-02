@@ -41,7 +41,6 @@ Camera* Engine::m_curr_3Dcamera = nullptr;
 OrthographicCamera* Engine::m_curr_2Dcamera = nullptr;
 EngineGraphics* Engine::m_graphics_settings = nullptr;
 
-
 	// timer function defined by user
 void(*userTimerCallback)(int);
 
