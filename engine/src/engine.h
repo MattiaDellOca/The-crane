@@ -294,5 +294,45 @@ public:
 	* @param name Name of the node
 	*/
 	static Node* getNode(std::string name);
+
+	/**
+	 * Returns the current window height. The engine must be initialized before calling this method.
+	 * 
+	 * \return Height of the window 
+	 */
+	static unsigned int getWindowHeight();
+
+	/**
+	 * Returns the current window height. The engine must be initialized before calling this method
+	 * 
+	 * \return Width of the window
+	 */
+	static unsigned int getWindowWidth();
+
+	/**
+	 * Force rendering.
+	 */
+	static void redisplay();
+
+	/**
+	 * Set mouse callback function.
+	 * 
+	 * \param callback Callback function pointer
+	 */
+	static void setMouseFunction(void (*callback)(int, int, int, int));
+
+	/**
+	 * Set mouse wheel callback function.
+	 * 
+	 * \param callback Callback function pointer
+	 */
+	static void setMouseWheelFunction(void (*callback)(int, int, int, int));
+
+	/**
+	 * Set mouse motion callback function. This event is fired every time the mouse moves on the screen.
+	 *
+	 * \param callback Callback function pointer
+	 */
+	static void setMouseMotionFunction(void (*callback)(int, int));
 };
 

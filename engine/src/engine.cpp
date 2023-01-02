@@ -342,6 +342,18 @@ void LIB_API Engine::setKeyboardFunction(void (*callback)(unsigned char,int,int)
 	glutKeyboardFunc(callback);
 }
 
+void LIB_API Engine::setMouseFunction(void (*callback)(int, int, int, int)) {
+	glutMouseFunc(callback);
+}
+
+void LIB_API Engine::setMouseWheelFunction(void (*callback)(int, int, int, int)) {
+	glutMouseWheelFunc(callback);
+}
+
+void LIB_API Engine::setMouseMotionFunction(void (*callback)(int, int)) {
+	glutPassiveMotionFunc(callback);
+}
+
 
 void LIB_API Engine::setTimerFunction(void (*callback)(int)) {
 	userTimerCallback = callback;
@@ -401,4 +413,21 @@ Node LIB_API* Engine::getNode(std::string name)
 	//convert std::string to a const char pointer to avoid copy
 	const char* searchName = name.c_str();
 	return m_scene_graph->searchNode(searchName);
+}
+
+unsigned int LIB_API Engine::getWindowWidth() {
+	return m_window_height;
+}
+
+unsigned int LIB_API Engine::getWindowHeight() {
+	return m_window_width;
+}
+
+void LIB_API Engine::redisplay() {
+	if (Engine::isRunning()) {
+		glutPostRedisplay();
+	}
+	else {
+		cout << "[ENGINE] Warning: The engine should be initialized before calling redisplay function" << endl;
+	}
 }
