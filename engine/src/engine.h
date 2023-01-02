@@ -244,9 +244,23 @@ public:
 	*/
 	static Node* getNode(std::string name);
 
+	/**
+	 * Returns the current window height. The engine must be initialized before calling this method.
+	 * 
+	 * \return Height of the window 
+	 */
 	static unsigned int getWindowHeight();
+
+	/**
+	 * Returns the current window height. The engine must be initialized before calling this method
+	 * 
+	 * \return Width of the window
+	 */
 	static unsigned int getWindowWidth();
 
+	/**
+	 * Force rendering.
+	 */
 	static void redisplay();
 
 	/**
