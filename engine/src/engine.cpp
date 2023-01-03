@@ -344,6 +344,11 @@ void LIB_API Engine::load(std::string path, std::string texturesDir) {
 	m_scene_graph = ovoreader.readFile(path.c_str(), texturesDir.c_str());
 }
 
+// Load scene graph given a pointer to node
+void LIB_API Engine::load(Node* root) {
+	m_scene_graph = root;
+}
+
 void LIB_API Engine::setGraphics(EngineGraphics& g) {
 	// Save new configuration
 	m_graphics_settings = &g;

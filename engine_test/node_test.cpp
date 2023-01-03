@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "src/node.h"
+#include "src/engine.h"
 
 /*
 Test addChild and getChildren
@@ -68,6 +69,16 @@ TEST(NODE_TEST, SEARCH) {
 	child1->addChild(nephew2);
 	child2->addChild(nephew3);
 
+	Engine::load(parent);
+
+	EXPECT_EQ(Engine::getNode("parent"), parent);
+	EXPECT_EQ(Engine::getNode("child1"), child1);
+	EXPECT_EQ(Engine::getNode("child2"), child2);
+	EXPECT_EQ(Engine::getNode("nephew1"), nephew1);
+	EXPECT_EQ(Engine::getNode("nephew2"), nephew2);
+	EXPECT_EQ(Engine::getNode("nephew3"), nephew3);
+
+
 	EXPECT_EQ(parent->searchNode("child1"), child1);
 	EXPECT_EQ(parent->searchNode("child2"), child2);
 	EXPECT_EQ(parent->searchNode("nephew1"), nephew1);
@@ -78,4 +89,6 @@ TEST(NODE_TEST, SEARCH) {
 	EXPECT_EQ(child1->searchNode("nephew2"), nephew2);
 
 	EXPECT_EQ(child2->searchNode("nephew3"), nephew3);
+
+
 }
