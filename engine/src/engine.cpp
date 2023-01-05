@@ -278,7 +278,7 @@ void LIB_API Engine::render2D(OrthographicCamera* camera, const std::list<std::t
 	glColor3f(0.4f, 0.4f, 0.4f);
 
 	for (const auto& element : list) {
-		glRasterPos2f(10.0f,std::get<1>(element));
+		glRasterPos2f(10.0f, static_cast<float>(std::get<1>(element)));
 		glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char*)std::get<0>(element).c_str());
 	}
 

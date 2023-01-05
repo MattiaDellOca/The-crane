@@ -2,16 +2,7 @@
 
 #include "lib.h"
 #include "object.h" // include the header for the Object class
-
-
-/////////////
-// #DEFINE //
-/////////////
-
-#pragma once
-
-#include "lib.h"
-#include "object.h" // include the header for the Object class
+#include <vector>
 
 /**
  * \def GL_TEXTURE_MAX_ANISOTROPY_EXT
@@ -121,9 +112,22 @@ private:
      *
      * \param file The path to the image file to use for the texture.
      * \param textureId A pointer to the texture ID to store the result.
-     * \returns True if the texture was loaded successfully, false otherwise.
+     * \throws 
      */
-    bool static loadTexture(std::string file, unsigned int* textureId);
+    void static loadTexture(std::string file, unsigned int* textureId);
+
+
+    /**
+    * \var m_textures
+    * Static list of pointers to all the created Texture objects. 
+    */
+    static std::vector<Texture*> m_textures;
+
+    /**
+    * \var m_reload_request
+    * Flag that defines if this texture needs to be reloaded on next render.
+    */
+    bool m_reload_request = false;
 
     /**
      * \var m_texture_id
@@ -162,8 +166,8 @@ private:
     static TextureWrap m_settings_wrap;
 
     /**
-     * \var m_needs_reload
-     * Flag indicating whether the textures need to be reloaded.
+     * \var m_settings_dirty
+     * Flag indicating whether the graphics settings have been changed from the default configuration.
      */
-    static bool m_needs_reload;
+    static bool m_settings_dirty;
 };

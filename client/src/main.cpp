@@ -402,9 +402,9 @@ int main(int argc, char* argv[]) {
 	// Create graphics profile
 	EngineGraphics profile{};
 	profile.filter = Filter::LINEAR;
+	profile.wrap = TextureWrap::CLAMP_TO_EDGE;
 	profile.mipmap = TextureMipmap::MIPMAP_LINEAR;
-	profile.useAnisotropicFiltering = true;
-	profile.anisotropicFilteringValue = 2;
+	profile.useAnisotropicFiltering = false; // NOT SUPPORTED ON VmWare Fusion...
 
 	// Set Texture settings
 	Engine::setGraphics(profile);
