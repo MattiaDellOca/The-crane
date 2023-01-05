@@ -36,7 +36,7 @@
  * \enum Filter
  * Constants for specifying the filter to use when rendering a texture.
  */
-const enum LIB_API Filter {
+enum LIB_API Filter {
     NEAREST,
     LINEAR
 };
@@ -45,7 +45,7 @@ const enum LIB_API Filter {
  * \enum TextureMipmap
  * Constants for specifying the mipmap to use when rendering a texture.
  */
-const enum LIB_API TextureMipmap {
+enum LIB_API TextureMipmap {
     _DISABLED,
     MIPMAP_NEAREST,
     MIPMAP_LINEAR
@@ -55,7 +55,7 @@ const enum LIB_API TextureMipmap {
  * \enum TextureWrap
  * Constants for specifying the wrap mode to use when rendering a texture.
  */
-const enum LIB_API TextureWrap {
+enum LIB_API TextureWrap {
     REPEAT,
     CLAMP_TO_EDGE
 };
