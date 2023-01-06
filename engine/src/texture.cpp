@@ -23,8 +23,12 @@ LIB_API Texture::Texture(std::string name, std::string file_path) : Object(name)
 
 LIB_API Texture::~Texture() {
     // Remove this texture from the m_textures vector
-    m_textures.erase(std::remove(m_textures.begin(), m_textures.end(), this), m_textures.end());
-        
+    for (int i = 0; static_cast<unsigned int>(i) < m_textures.size(); i++) {
+        if (this->m_id == m_textures.at(i)->m_id) {
+            m_textures.erase(m_textures.begin() + i);
+        }
+    }
+    
     // delete texture
     glDeleteTextures(1, &m_texture_id);
 }
