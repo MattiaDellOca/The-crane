@@ -161,11 +161,11 @@ public:
 	void virtual render(glm::mat4 coords);
 
 	/**
- * \brief Search a node based on his name
- *
- * This function is recursive and search on all child
- *
- * \param name of the node to be found
- */
+	 * \brief Search a node based on his name
+	 *
+	 * This function is recursive and search on all child
+	 *
+	 * \param name of the node to be found
+	 */
 	Node* searchNode(const char* name);
 };
