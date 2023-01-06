@@ -96,27 +96,43 @@ $(function() {
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="class_mesh.html#a8fbcaff930cf98b1af4f7972d4c23ab6">   32</a></span>    std::vector&lt;Vertex*&gt; <a class="code hl_variable" href="class_mesh.html#a8fbcaff930cf98b1af4f7972d4c23ab6">m_vertices</a>;</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    </div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="class_mesh.html#a706816e3b2aa40aa5f6bd939dcbdf7f2">   40</a></span>    <a class="code hl_class" href="class_material.html">Material</a> *<a class="code hl_variable" href="class_mesh.html#a706816e3b2aa40aa5f6bd939dcbdf7f2">m_material</a>;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_class" href="class_mesh.html">Mesh</a>(std::string name, glm::mat4 matrix, <a class="code hl_class" href="class_material.html">Material</a>* material);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="class_mesh.html#a03c1ffbbe21a4d2e292a39448bc51aaa">   48</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_variable" href="class_mesh.html#a03c1ffbbe21a4d2e292a39448bc51aaa">m_faces</a>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_node.html#a137c3a6c0c9050bdd35cf995d51e581e">render</a>(glm::mat4 coords);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keyword">const</span> <a class="code hl_class" href="class_material.html">Material</a>* getMaterial();</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordtype">void</span> setMaterial(<a class="code hl_class" href="class_material.html">Material</a>* material);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordtype">void</span> addVertex(<a class="code hl_class" href="class_vertex.html">Vertex</a>* vertex);</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>};</div>
-<div class="ttc" id="aclass_material_html"><div class="ttname"><a href="class_material.html">Material</a></div><div class="ttdoc">Class representing a material object in the scene.</div><div class="ttdef"><b>Definition:</b> material.h:19</div></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="class_mesh.html#aba134a98a8f47f08d7cb44fab509b304">   57</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="class_mesh.html#aba134a98a8f47f08d7cb44fab509b304">m_cast_shadows</a>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <a class="code hl_class" href="class_mesh.html">Mesh</a>(std::string name, glm::mat4 matrix, <a class="code hl_class" href="class_material.html">Material</a>* material = <span class="keyword">nullptr</span>, <span class="keywordtype">bool</span> cast_shadows = <span class="keyword">true</span>);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_node.html#a137c3a6c0c9050bdd35cf995d51e581e">render</a>(glm::mat4 coords);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keyword">const</span> <a class="code hl_class" href="class_material.html">Material</a>* getMaterial();</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordtype">void</span> setMaterial(<a class="code hl_class" href="class_material.html">Material</a>* material);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="class_mesh.html#ae2077068278c1bc4745a7040b5ce7dfe">   98</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="class_mesh.html#ae2077068278c1bc4745a7040b5ce7dfe">addVertex</a>(<a class="code hl_class" href="class_vertex.html">Vertex</a>* vertex);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordtype">void</span> addFace(<a class="code hl_class" href="class_vertex.html">Vertex</a>* v1, <a class="code hl_class" href="class_vertex.html">Vertex</a>* v2, <a class="code hl_class" href="class_vertex.html">Vertex</a>* v3);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordtype">void</span> setShadowCast(<span class="keywordtype">bool</span> enabled);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keywordtype">bool</span> isShadowCastEnabled() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keywordtype">void</span> renderShadow(glm::mat4 cameraInv, glm::mat4 parentRelativeCoords);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>};</div>
+<div class="ttc" id="aclass_material_html"><div class="ttname"><a href="class_material.html">Material</a></div><div class="ttdoc">Class representing a material object in the scene.</div><div class="ttdef"><b>Definition:</b> material.h:20</div></div>
 <div class="ttc" id="aclass_mesh_html"><div class="ttname"><a href="class_mesh.html">Mesh</a></div><div class="ttdoc">Class representing a mesh object in the scene.</div><div class="ttdef"><b>Definition:</b> mesh.h:24</div></div>
+<div class="ttc" id="aclass_mesh_html_a03c1ffbbe21a4d2e292a39448bc51aaa"><div class="ttname"><a href="class_mesh.html#a03c1ffbbe21a4d2e292a39448bc51aaa">Mesh::m_faces</a></div><div class="ttdeci">unsigned int m_faces</div><div class="ttdoc">The number of faces of the mesh.</div><div class="ttdef"><b>Definition:</b> mesh.h:48</div></div>
 <div class="ttc" id="aclass_mesh_html_a706816e3b2aa40aa5f6bd939dcbdf7f2"><div class="ttname"><a href="class_mesh.html#a706816e3b2aa40aa5f6bd939dcbdf7f2">Mesh::m_material</a></div><div class="ttdeci">Material * m_material</div><div class="ttdoc">The material of the mesh.</div><div class="ttdef"><b>Definition:</b> mesh.h:40</div></div>
 <div class="ttc" id="aclass_mesh_html_a8fbcaff930cf98b1af4f7972d4c23ab6"><div class="ttname"><a href="class_mesh.html#a8fbcaff930cf98b1af4f7972d4c23ab6">Mesh::m_vertices</a></div><div class="ttdeci">std::vector&lt; Vertex * &gt; m_vertices</div><div class="ttdoc">The vertices of the mesh.</div><div class="ttdef"><b>Definition:</b> mesh.h:32</div></div>
-<div class="ttc" id="aclass_node_html"><div class="ttname"><a href="class_node.html">Node</a></div><div class="ttdoc">Class representing a node in the scene.</div><div class="ttdef"><b>Definition:</b> node.h:27</div></div>
-<div class="ttc" id="aclass_node_html_a137c3a6c0c9050bdd35cf995d51e581e"><div class="ttname"><a href="class_node.html#a137c3a6c0c9050bdd35cf995d51e581e">Node::render</a></div><div class="ttdeci">virtual void render(glm::mat4 coords)</div><div class="ttdoc">Renders the node and its children.</div><div class="ttdef"><b>Definition:</b> node.cpp:78</div></div>
+<div class="ttc" id="aclass_mesh_html_aba134a98a8f47f08d7cb44fab509b304"><div class="ttname"><a href="class_mesh.html#aba134a98a8f47f08d7cb44fab509b304">Mesh::m_cast_shadows</a></div><div class="ttdeci">bool m_cast_shadows</div><div class="ttdoc">Indicates whether the mesh should cast shadows.</div><div class="ttdef"><b>Definition:</b> mesh.h:57</div></div>
+<div class="ttc" id="aclass_mesh_html_ae2077068278c1bc4745a7040b5ce7dfe"><div class="ttname"><a href="class_mesh.html#ae2077068278c1bc4745a7040b5ce7dfe">Mesh::addVertex</a></div><div class="ttdeci">void addVertex(Vertex *vertex)</div><div class="ttdoc">Adds a vertex to the mesh.</div></div>
+<div class="ttc" id="aclass_node_html"><div class="ttname"><a href="class_node.html">Node</a></div><div class="ttdoc">Class representing a node in the scene.</div><div class="ttdef"><b>Definition:</b> node.h:28</div></div>
+<div class="ttc" id="aclass_node_html_a137c3a6c0c9050bdd35cf995d51e581e"><div class="ttname"><a href="class_node.html#a137c3a6c0c9050bdd35cf995d51e581e">Node::render</a></div><div class="ttdeci">virtual void render(glm::mat4 coords)</div><div class="ttdoc">Renders the node and its children.</div><div class="ttdef"><b>Definition:</b> node.cpp:75</div></div>
 <div class="ttc" id="aclass_vertex_html"><div class="ttname"><a href="class_vertex.html">Vertex</a></div><div class="ttdoc">A class for representing a vertex in 3D space.</div><div class="ttdef"><b>Definition:</b> vertex.h:14</div></div>
 <div class="ttc" id="alib_8h_html"><div class="ttname"><a href="lib_8h.html">lib.h</a></div></div>
-<div class="ttc" id="alib_8h_html_a77278c8cc96e39fb27b5d0a347c8fb3d"><div class="ttname"><a href="lib_8h.html#a77278c8cc96e39fb27b5d0a347c8fb3d">LIB_API</a></div><div class="ttdeci">#define LIB_API</div><div class="ttdef"><b>Definition:</b> lib.h:17</div></div>
+<div class="ttc" id="alib_8h_html_a77278c8cc96e39fb27b5d0a347c8fb3d"><div class="ttname"><a href="lib_8h.html#a77278c8cc96e39fb27b5d0a347c8fb3d">LIB_API</a></div><div class="ttdeci">#define LIB_API</div><div class="ttdef"><b>Definition:</b> lib.h:23</div></div>
 <div class="ttc" id="amaterial_8h_html"><div class="ttname"><a href="material_8h.html">material.h</a></div></div>
 <div class="ttc" id="anode_8h_html"><div class="ttname"><a href="node_8h.html">node.h</a></div></div>
 <div class="ttc" id="avertex_8h_html"><div class="ttname"><a href="vertex_8h.html">vertex.h</a></div></div>

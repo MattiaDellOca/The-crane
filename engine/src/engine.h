@@ -1,8 +1,8 @@
 #pragma once
 
 /**
- * @file         engine.h
- * @brief        An OpenGL-based graphic engine .dll/.so dynamic library
+ * \file         engine.h
+ * \brief        An OpenGL-based graphic engine .dll/.so dynamic library
  */
 
  /////////////
@@ -51,7 +51,7 @@ struct LIB_API EngineGraphics {
 };
 
 /**
- * @brief The main class of the graphic engine.
+ * \brief The main class of the graphic engine.
  *
  * This class contains the main functions for initializing and running the engine,
  * as well as functions for loading and rendering 3D models and setting the camera.
@@ -122,8 +122,8 @@ private:
 	/**
 	 * Callback function for reshaping the window.
 	 *
-	 * @param width The new window width.
-	 * @param height The new window height.
+	 * \param width The new window width.
+	 * \param height The new window height.
 	 */
 	static void reshapeCallback(int width, int height);
 
@@ -140,27 +140,27 @@ public:
 	/**
 	 * Initialize the engine.
 	 *
-	 * @param title The title of the window.
-	 * @param width The width of the window.
-	 * @param height The height of the window.
-	 * @param argc Pointer to the number of command-line arguments.
-	 * @param argv Array of command-line arguments.
-	 * @return True if the initialization was successful, false otherwise.
+	 * \param title The title of the window.
+	 * \param width The width of the window.
+	 * \param height The height of the window.
+	 * \param argc Pointer to the number of command-line arguments.
+	 * \param argv Array of command-line arguments.
+	 * \return True if the initialization was successful, false otherwise.
 	 */
 	static bool init(const char* title, unsigned int width, unsigned int height, int* argc, char** argv);
 
 	/**
 	 * Load a 3D model from a file.
 	 *
-	 * @param filepath The path to the file containing the 3D model.
-	 * @param texturesDir The path to the directory containing the texture resources
+	 * \param filepath The path to the file containing the 3D model.
+	 * \param texturesDir The path to the directory containing the texture resources
 	 */
 	static void load(std::string filepath, std::string texturesDir = "..\\assets");
 
 	/**
 	* Load a 3D model from a scene graph.
 	*
-	* @param root The root node of the model's scene graph.
+	* \param root The root node of the model's scene graph.
 	*/
 	static void load(Node* root);
 
@@ -172,9 +172,9 @@ public:
 	/**
 	 * Set the background color of the window.
 	 *
-	 * @param r The red component of the background color (range: 0.0 to 1.0).
-	 * @param g The green component of the background color (range: 0.0 to 1.0).
-	 * @param b The blue component of the background color (range: 0.0 to 1.0).
+	 * \param r The red component of the background color (range: 0.0 to 1.0).
+	 * \param g The green component of the background color (range: 0.0 to 1.0).
+	 * \param b The blue component of the background color (range: 0.0 to 1.0).
 	 */
 	static void setBackgroundColor(float r, float g, float b);
 
@@ -186,28 +186,28 @@ public:
 	/**
 	 * Free the resources used by the engine.
 	 *
-	 * @return True if the resources were successfully freed, false otherwise.
+	 * \return True if the resources were successfully freed, false otherwise.
 	 */
 	static bool free();
 
 	/**
 	 * Render the scene.
 	 * 
-	* @param camera with which render the scene.
+	 * \param camera with which render the scene.
 	 */
 	static void render3D(PerspectiveCamera* camera);
 
 	/**
 	* Render the 2D information.
 	* 
-	* @param camera with which render the information.
-	* @param list list of text and position.
+	* \param camera with which render the information.
+	* \param list list of text and position.
 	*/
 	static void render2D(OrthographicCamera* camera, const std::list<std::tuple<std::string, int>>& list);
 	/**
 	 * Run the engine loop.
 	 *
-	 * @param updateFunction The function to call for updating the scene.
+	 * \param updateFunction The function to call for updating the scene.
 	 */
 	static void run(void (*updateFunction)());
 
@@ -234,14 +234,14 @@ public:
 	/**
 	 * Set the keyboard callback function.
 	 *
-	 * @param callback The callback function to set.
+	 * \param callback The callback function to set.
 	 */
 	static void setKeyboardFunction(void (*callback)(unsigned char, int, int));
 
 	/**
 	 * Set the special keyboard callback function.
 	 *
-	 * @param callback The callback function to set.
+	 * \param callback The callback function to set.
 	 */
 	static void setSpecialKeyboardFunction(void (*callback)(int, int, int));
 
@@ -249,14 +249,14 @@ public:
 	/**
 	* Set the timer callback function.
 	*
-	* @param callback The callback function to set.
+	* \param callback The callback function to set.
 	*/
 	static void setTimerFunction(void (*callback)(int));
 
 	/**
 	 * Check if the engine is running.
 	 *
-	 * @return True if the engine is running, false otherwise.
+	 * \return True if the engine is running, false otherwise.
 	 */
 	static bool isRunning();
 

@@ -81,26 +81,26 @@ protected:
 	glm::vec4 m_lightSpecular;
 
 	/**
-	 * @brief Constructor for the Light class.
+	 * \brief Constructor for the Light class.
 	 *
-	 * @param name The name of the light object.
-	 * @param transform The transformation matrix for the light object.
-	 * @param type The type of light. It can be one of the following values:
+	 * \param name The name of the light object.
+	 * \param transform The transformation matrix for the light object.
+	 * \param type The type of light. It can be one of the following values:
 	 * - POINT_LIGHT
 	 * - DIRECTIONAL_LIGHT
 	 * - SPOT_LIGHT
-	 * @param ambient The ambient color of the light. It is a 4D vector with the red, green, blue, and alpha channel values.
-	 * @param diffuse The diffuse color of the light. It is a 4D vector with the red, green, blue, and alpha channel values.
-	 * @param specular The specular color of the light. It is a 4D vector with the red, green, blue, and alpha channel values.
+	 * \param ambient The ambient color of the light. It is a 4D vector with the red, green, blue, and alpha channel values.
+	 * \param diffuse The diffuse color of the light. It is a 4D vector with the red, green, blue, and alpha channel values.
+	 * \param specular The specular color of the light. It is a 4D vector with the red, green, blue, and alpha channel values.
 	 */
 	Light(std::string name, glm::mat4 transform, LightType type, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular);
 public:
 	/**
-	 * @brief Renders the light object.
+	 * \brief Renders the light object.
 	 *
 	 * This is a pure virtual function that must be implemented in the derived classes. It is called to render the light object in the scene.
 	 *
-	 * @param viewMatrix The view matrix for the scene.
+	 * \param viewMatrix The view matrix for the scene.
 	 */
 	void virtual render(glm::mat4 viewMatrix) = 0;
 	

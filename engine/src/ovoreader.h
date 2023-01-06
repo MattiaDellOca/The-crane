@@ -162,7 +162,7 @@ public:
      * \brief Parse a 3D Ovo model into a scene graph.
      * 
      * \param path Path of the Ovo 3D model file.
-     * \param texturesDirectory (Optional) Path where textures are stored, default '.\\assets'.
+     * \param texturesDir (Optional) Path where textures are stored, default '.\\assets'.
      * \return Scene graph that describes the read 3D model.
      */
     Node* readFile(const char* path, const char* texturesDir="..\\assets");

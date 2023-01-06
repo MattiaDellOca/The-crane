@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['test_0',['TEST',['../node__test_8cpp.html#a44d97db2bd9ae958e99c72f4e87eda54',1,'node_test.cpp']]],
-  ['togglewireframe_1',['toggleWireframe',['../class_engine.html#ac1882c40cc11da8376fd89121a72b944',1,'Engine']]]
+  ['updatewindowsize_0',['updateWindowSize',['../class_camera.html#a7d83d9f5badd417743b75d6e61ea12c0',1,'Camera::updateWindowSize()'],['../class_orthographic_camera.html#a5a557d0cafe91e7629d9d70c4dc4df1d',1,'OrthographicCamera::updateWindowSize()'],['../class_perspective_camera.html#a9899c476b77f7c82d66ef4cf228cffe8',1,'PerspectiveCamera::updateWindowSize()']]]
 ];

@@ -85,32 +85,40 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad85e4beb7b60cb411525bb0595996da9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#ad85e4beb7b60cb411525bb0595996da9">readFile</a> (const char *path)</td></tr>
-<tr class="memdesc:ad85e4beb7b60cb411525bb0595996da9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a 3D Ovo model into a scene graph.  <a href="class_ovoreader.html#ad85e4beb7b60cb411525bb0595996da9">More...</a><br /></td></tr>
-<tr class="separator:ad85e4beb7b60cb411525bb0595996da9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e3ec88809169823e220179f0c1f67e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#a1e3ec88809169823e220179f0c1f67e1">readFile</a> (const char *path, const char *texturesDir=&quot;..\\assets&quot;)</td></tr>
+<tr class="memdesc:a1e3ec88809169823e220179f0c1f67e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a 3D Ovo model into a scene graph.  <a href="class_ovoreader.html#a1e3ec88809169823e220179f0c1f67e1">More...</a><br /></td></tr>
+<tr class="separator:a1e3ec88809169823e220179f0c1f67e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:ace222295a6b8e25066d4eeeb2ecc4a67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#ace222295a6b8e25066d4eeeb2ecc4a67">recursiveLoad</a> (FILE *dat, const char *path)</td></tr>
+<tr class="memdesc:ace222295a6b8e25066d4eeeb2ecc4a67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively load all nodes of a 3D Ovo model.  <a href="class_ovoreader.html#ace222295a6b8e25066d4eeeb2ecc4a67">More...</a><br /></td></tr>
 <tr class="separator:ace222295a6b8e25066d4eeeb2ecc4a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a518384c0c59614e7fa18a96245a9690e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#a518384c0c59614e7fa18a96245a9690e">parseOject</a> (char *data, unsigned int &amp;position)</td></tr>
+<tr class="memdesc:a518384c0c59614e7fa18a96245a9690e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse chunk with ID '<a class="el" href="class_object.html" title="Base class for objects in the scene.">Object</a>'.  <a href="class_ovoreader.html#a518384c0c59614e7fa18a96245a9690e">More...</a><br /></td></tr>
 <tr class="separator:a518384c0c59614e7fa18a96245a9690e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3af6ce52ed296ea33ab40a6456d8dd7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_material.html">Material</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#aa3af6ce52ed296ea33ab40a6456d8dd7">parseMaterial</a> (char *data, unsigned int &amp;position, const char *textureDir)</td></tr>
+<tr class="memdesc:aa3af6ce52ed296ea33ab40a6456d8dd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse chunk with ID '<a class="el" href="class_material.html" title="Class representing a material object in the scene.">Material</a>'.  <a href="class_ovoreader.html#aa3af6ce52ed296ea33ab40a6456d8dd7">More...</a><br /></td></tr>
+<tr class="separator:aa3af6ce52ed296ea33ab40a6456d8dd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff00ef57730136b0105203a15f5445b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#aff00ef57730136b0105203a15f5445b3">parseNode</a> (char *data, unsigned int &amp;position, unsigned int *nChildren)</td></tr>
+<tr class="memdesc:aff00ef57730136b0105203a15f5445b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse chunk with ID '<a class="el" href="class_node.html" title="Class representing a node in the scene.">Node</a>'.  <a href="class_ovoreader.html#aff00ef57730136b0105203a15f5445b3">More...</a><br /></td></tr>
 <tr class="separator:aff00ef57730136b0105203a15f5445b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad18073198b1a08cfa14aacdf32cb4fe9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_material.html">Material</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#ad18073198b1a08cfa14aacdf32cb4fe9">parseMaterial</a> (char *data, unsigned int &amp;position)</td></tr>
-<tr class="separator:ad18073198b1a08cfa14aacdf32cb4fe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae31f487ff24a693db0c29a63c83c20aa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_mesh.html">Mesh</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#ae31f487ff24a693db0c29a63c83c20aa">parseMesh</a> (char *data, unsigned int &amp;position, unsigned int *nChildren)</td></tr>
+<tr class="memdesc:ae31f487ff24a693db0c29a63c83c20aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse chunk with ID '<a class="el" href="class_mesh.html" title="Class representing a mesh object in the scene.">Mesh</a>'.  <a href="class_ovoreader.html#ae31f487ff24a693db0c29a63c83c20aa">More...</a><br /></td></tr>
 <tr class="separator:ae31f487ff24a693db0c29a63c83c20aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0401bd0342ff10aa9df48dc0c0657209"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_light.html">Light</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#a0401bd0342ff10aa9df48dc0c0657209">parseLight</a> (char *data, unsigned int &amp;position, unsigned int *nChildren)</td></tr>
+<tr class="memdesc:a0401bd0342ff10aa9df48dc0c0657209"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse chunk with ID '<a class="el" href="class_light.html" title="Abstract class representing a light object in the scene.">Light</a>'.  <a href="class_ovoreader.html#a0401bd0342ff10aa9df48dc0c0657209">More...</a><br /></td></tr>
 <tr class="separator:a0401bd0342ff10aa9df48dc0c0657209"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:aaa0ca9921eba2c0e7e2058a6da5fdac3"><td class="memItemLeft" align="right" valign="top">std::map&lt; string, <a class="el" href="class_material.html">Material</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#aaa0ca9921eba2c0e7e2058a6da5fdac3">m_materials</a></td></tr>
-<tr class="separator:aaa0ca9921eba2c0e7e2058a6da5fdac3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea6cc3518ab13d38cd2df51ef022141b"><td class="memItemLeft" align="right" valign="top">std::map&lt; string, <a class="el" href="class_material.html">Material</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#aea6cc3518ab13d38cd2df51ef022141b">m_materials</a></td></tr>
+<tr class="memdesc:aea6cc3518ab13d38cd2df51ef022141b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map composed by tuple &lt;<a class="el" href="class_material.html" title="Class representing a material object in the scene.">Material</a> name, Material*&gt; containing all the read materials.  <a href="class_ovoreader.html#aea6cc3518ab13d38cd2df51ef022141b">More...</a><br /></td></tr>
+<tr class="separator:aea6cc3518ab13d38cd2df51ef022141b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >OvoReader class that describes an .ovo 3D models parser. </p>
+<p >The OvoReader class is responsible for reading and parsing a given .ovo file. It returns a scene graph generated by the .ovo file, containing the read Nodes, Meshes, Lights, Materials and Textures. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0401bd0342ff10aa9df48dc0c0657209" name="a0401bd0342ff10aa9df48dc0c0657209"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0401bd0342ff10aa9df48dc0c0657209">&#9670;&#160;</a></span>parseLight()</h2>
@@ -152,10 +160,21 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Parse chunk with ID '<a class="el" href="class_light.html" title="Abstract class representing a light object in the scene.">Light</a>'. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>char* containing the chunk's data. </td></tr>
+    <tr><td class="paramname">position</td><td>Pointer used for parsing the chunk. </td></tr>
+    <tr><td class="paramname">nChildren</td><td>Number of children owned by the <a class="el" href="class_light.html" title="Abstract class representing a light object in the scene.">Light</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Light* containing the read <a class="el" href="class_light.html" title="Abstract class representing a light object in the scene.">Light</a>. </dd></dl>
+
 </div>
 </div>
-<a id="ad18073198b1a08cfa14aacdf32cb4fe9" name="ad18073198b1a08cfa14aacdf32cb4fe9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad18073198b1a08cfa14aacdf32cb4fe9">&#9670;&#160;</a></span>parseMaterial()</h2>
+<a id="aa3af6ce52ed296ea33ab40a6456d8dd7" name="aa3af6ce52ed296ea33ab40a6456d8dd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3af6ce52ed296ea33ab40a6456d8dd7">&#9670;&#160;</a></span>parseMaterial()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -173,7 +192,13 @@ Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">unsigned int &amp;&#160;</td>
-          <td class="paramname"><em>position</em>&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>textureDir</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -187,6 +212,17 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Parse chunk with ID '<a class="el" href="class_material.html" title="Class representing a material object in the scene.">Material</a>'. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>char* containing the chunk's data. </td></tr>
+    <tr><td class="paramname">position</td><td>Pointer used for parsing the chunk. </td></tr>
+    <tr><td class="paramname">textureDir</td><td>Path where textures are stored. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Material* containing the read <a class="el" href="class_material.html" title="Class representing a material object in the scene.">Material</a>. </dd></dl>
 
 </div>
 </div>
@@ -229,6 +265,17 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Parse chunk with ID '<a class="el" href="class_mesh.html" title="Class representing a mesh object in the scene.">Mesh</a>'. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>char* containing the chunk's data. </td></tr>
+    <tr><td class="paramname">position</td><td>Pointer used for parsing the chunk. </td></tr>
+    <tr><td class="paramname">nChildren</td><td>Number of children owned by the <a class="el" href="class_mesh.html" title="Class representing a mesh object in the scene.">Mesh</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Mesh* containing the read <a class="el" href="class_mesh.html" title="Class representing a mesh object in the scene.">Mesh</a>. </dd></dl>
 <p ><a class="el" href="class_mesh.html" title="Class representing a mesh object in the scene.">Mesh</a> physics properties.</p>
 
 </div>
@@ -273,6 +320,17 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Parse chunk with ID '<a class="el" href="class_node.html" title="Class representing a node in the scene.">Node</a>'. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>char* containing the chunk's data. </td></tr>
+    <tr><td class="paramname">position</td><td>Pointer used for parsing the chunk. </td></tr>
+    <tr><td class="paramname">nChildren</td><td>Number of children owned by the <a class="el" href="class_node.html" title="Class representing a node in the scene.">Node</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Node* containing the read <a class="el" href="class_node.html" title="Class representing a node in the scene.">Node</a>. </dd></dl>
+
 </div>
 </div>
 <a id="a518384c0c59614e7fa18a96245a9690e" name="a518384c0c59614e7fa18a96245a9690e"></a>
@@ -309,10 +367,19 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Parse chunk with ID '<a class="el" href="class_object.html" title="Base class for objects in the scene.">Object</a>'. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>char* containing the chunk's data. </td></tr>
+    <tr><td class="paramname">position</td><td>Pointer used for parsing the chunk. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="ad85e4beb7b60cb411525bb0595996da9" name="ad85e4beb7b60cb411525bb0595996da9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad85e4beb7b60cb411525bb0595996da9">&#9670;&#160;</a></span>readFile()</h2>
+<a id="a1e3ec88809169823e220179f0c1f67e1" name="a1e3ec88809169823e220179f0c1f67e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e3ec88809169823e220179f0c1f67e1">&#9670;&#160;</a></span>readFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -321,8 +388,18 @@ Protected Attributes</h2></td></tr>
           <td class="memname"><a class="el" href="class_node.html">Node</a> <a class="el" href="lib_8h.html#a77278c8cc96e39fb27b5d0a347c8fb3d">LIB_API</a> * Ovoreader::readFile </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
+          <td class="paramname"><em>path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>texturesDir</em> = <code>&quot;..\\assets&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -330,11 +407,12 @@ Protected Attributes</h2></td></tr>
 <p>Parse a 3D Ovo model into a scene graph. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">path</td><td>Path of the Ovo 3D model file </td></tr>
+    <tr><td class="paramname">path</td><td>Path of the Ovo 3D model file. </td></tr>
+    <tr><td class="paramname">texturesDir</td><td>(Optional) Path where textures are stored, default '.\assets'. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Scene graph that describes the read 3D model </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Scene graph that describes the read 3D model. </dd></dl>
 
 </div>
 </div>
@@ -372,11 +450,21 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Recursively load all nodes of a 3D Ovo model. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dat</td><td>FILE* containing the 3D Ovo model. </td></tr>
+    <tr><td class="paramname">path</td><td>Path of the Ovo 3D model file (only used for file name). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Scene graph that describes the read 3D model. </dd></dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="aaa0ca9921eba2c0e7e2058a6da5fdac3" name="aaa0ca9921eba2c0e7e2058a6da5fdac3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa0ca9921eba2c0e7e2058a6da5fdac3">&#9670;&#160;</a></span>m_materials</h2>
+<a id="aea6cc3518ab13d38cd2df51ef022141b" name="aea6cc3518ab13d38cd2df51ef022141b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea6cc3518ab13d38cd2df51ef022141b">&#9670;&#160;</a></span>m_materials</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -385,7 +473,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt;string, <a class="el" href="class_material.html">Material</a>*&gt; Ovoreader::m_materials</td>
+          <td class="memname">Ovoreader::m_materials</td>
         </tr>
       </table>
   </td>
@@ -394,6 +482,9 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Map composed by tuple &lt;<a class="el" href="class_material.html" title="Class representing a material object in the scene.">Material</a> name, Material*&gt; containing all the read materials. </p>
+<p >m_materials is a member variable used for storing all the read materials. Since materials are specified at the beginning of a .ovo file and are then referenced by Meshes through the material name, the materials need to be stored independently. </p>
 
 </div>
 </div>
