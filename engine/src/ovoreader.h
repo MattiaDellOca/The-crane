@@ -165,7 +165,7 @@ public:
      * \param texturesDir (Optional) Path where textures are stored, default '.\\assets'.
      * \return Scene graph that describes the read 3D model.
      */
-    Node* readFile(const char* path, const char* texturesDir="..\\assets");
+    Node* readFile(const char* path, const char* texturesDir);
 protected:
 
     /**

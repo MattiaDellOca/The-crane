@@ -107,7 +107,7 @@ private:
 	/**
 	 * The current camera being used by the engine.
 	 */
-	static Camera* m_curr_3Dcamera;
+	static PerspectiveCamera* m_curr_3Dcamera;
 
 	/**
 	* The current 2D camera being used by the engine.

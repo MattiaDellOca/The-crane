@@ -37,7 +37,7 @@ bool Engine::m_isRunning = false;
 int Engine::m_window_height = -1;
 int Engine::m_window_width = -1;
 int Engine::m_windowId = NULL;
-Camera* Engine::m_curr_3Dcamera = nullptr;
+PerspectiveCamera* Engine::m_curr_3Dcamera = nullptr;
 OrthographicCamera* Engine::m_curr_2Dcamera = nullptr;
 EngineGraphics* Engine::m_graphics_settings = nullptr;
 
@@ -85,6 +85,9 @@ Engine::Engine() {};
 Engine::~Engine() {
 	delete m_scene_graph;
 	delete m_rendering_list;
+	delete m_curr_2Dcamera;
+	delete m_curr_3Dcamera;
+	delete m_graphics_settings;
 	FreeImage_DeInitialise();
 }
 
