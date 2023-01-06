@@ -46,6 +46,15 @@ protected:
 	* m_faces is a member variable that holds the number of faces of this mesh.
 	*/
 	unsigned int m_faces;
+
+
+	/**
+	 * \var m_cast_shadows
+	 * \brief Indicates whether the mesh should cast shadows.
+	 *
+	 * m_cast_shadows is a member variable that holds a boolean value indicating whether the mesh should cast shadows. If set to true, the mesh will cast shadows when rendered in a scene. If set to false, the mesh will not cast shadows.
+	 */
+	bool m_cast_shadows;
 public:
 	/**
 	 * \brief Constructor for the Mesh class.
@@ -53,8 +62,9 @@ public:
 	 * \param name The name of the mesh object.
 	 * \param matrix The transformation matrix of the mesh object.
 	 * \param material The material of the mesh. It is a pointer to a Material object.
+	 * \param cast_shadows If true, the mesh will block light therefore creates a shadow.
 	 */
-	Mesh(std::string name, glm::mat4 matrix, Material* material = nullptr);
+	Mesh(std::string name, glm::mat4 matrix, Material* material = nullptr, bool m_cast_shadows = true);
 
 	/**
 	 * \brief Renders the mesh object.
@@ -95,4 +105,28 @@ public:
 	* \param v3 Pointer to the third Vertex object.
 	*/
 	void addFace(Vertex* v1, Vertex* v2, Vertex* v3);
+
+	/**
+	* \brief Enables or disables shadow casting for the mesh object.
+	*
+	* \param enabled Set to true to enable shadow casting for the mesh, or false to disable it.
+	*/
+	void setShadowCast(bool enabled);
+	
+	/**
+	* \brief Returns whether shadow casting is enabled for the mesh object.
+	*
+	* \return True if shadow casting is enabled for the mesh, false if it is disabled.
+	*/
+	bool isShadowCastEnabled() const;
+	
+	/**
+	* \brief Renders a shadow for the mesh object.
+	*
+	* This function is called to render a shadow for the mesh object in the scene. It is used to create the appearance of a shadow being cast by the mesh.
+	*
+	* \param cameraInv The inverse of the camera matrix.
+	* \param parentRelativeCoords The parent-relative coordinates of the mesh object.
+	*/
+	void renderShadow(glm::mat4 cameraInv, glm::mat4 parentRelativeCoords);
 };

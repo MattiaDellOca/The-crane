@@ -23,8 +23,12 @@ LIB_API Texture::Texture(std::string name, std::string file_path) : Object(name)
 
 LIB_API Texture::~Texture() {
     // Remove this texture from the m_textures vector
-    m_textures.erase(std::remove(m_textures.begin(), m_textures.end(), this), m_textures.end());
-        
+    for (int i = 0; static_cast<unsigned int>(i) < m_textures.size(); i++) {
+        if (this->m_id == m_textures.at(i)->m_id) {
+            m_textures.erase(m_textures.begin() + i);
+        }
+    }
+    
     // delete texture
     glDeleteTextures(1, &m_texture_id);
 }
@@ -149,9 +153,9 @@ void LIB_API Texture::loadTexture(std::string file, unsigned int* textureID) {
     if (Texture::m_settings_mipmap != _DISABLED) {
         // gluBuild2DMipmaps method is available only on Windows
 #ifdef _WINDOWS
-        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, width, height, GL_BGRA_EXT, GL_UNSIGNED_BYTE, data);
-#else
         gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, width, height, GL_BGRA_EXT, GL_UNSIGNED_BYTE, (void*)data);
+#else
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, (void*)data);
 #endif
     }
     else {
