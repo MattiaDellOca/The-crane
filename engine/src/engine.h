@@ -155,7 +155,7 @@ public:
 	 * \param filepath The path to the file containing the 3D model.
 	 * \param texturesDir The path to the directory containing the texture resources
 	 */
-	static void load(std::string filepath, std::string texturesDir = "..\\assets");
+	static void load(std::string filepath, std::string texturesDir);
 
 	/**
 	* Load a 3D model from a scene graph.

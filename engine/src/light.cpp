@@ -7,7 +7,7 @@
 //GL_LIGHT0 = 0x4000
 //GL_LIGHT5 = 0x4005
 //LI_LIGHTX = 0x4000 + X
-unsigned int Light::m_baseValueLights = 0x4000;
+unsigned int Light::m_baseValueLights = GL_LIGHT0;
 
 //Incremental value used in openGL for identify the light
 unsigned int Light::m_incrementalLightId = 0;
