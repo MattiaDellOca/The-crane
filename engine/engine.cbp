@@ -38,10 +38,13 @@
 			<Add option="-std=c++11" />
 			<Add option="-fexceptions" />
 			<Add directory="../dependencies/glm/include" />
+			<Add directory="../dependencies/freeimage/include" />
 		</Compiler>
 		<Linker>
 			<Add library="glut" />
 			<Add library="GL" />
+			<Add library="GLU" />
+			<Add library="freeimage" />
 		</Linker>
 		<Unit filename="src/camera.cpp" />
 		<Unit filename="src/camera.h" />
@@ -68,6 +71,8 @@
 		<Unit filename="src/omnidirectionalLight.h" />
 		<Unit filename="src/orthographicCamera.cpp" />
 		<Unit filename="src/orthographicCamera.h" />
+		<Unit filename="src/ovoreader.cpp" />
+		<Unit filename="src/ovoreader.h" />
 		<Unit filename="src/perspectiveCamera.cpp" />
 		<Unit filename="src/perspectiveCamera.h" />
 		<Unit filename="src/positionalLight.cpp" />
@@ -78,6 +83,10 @@
 		<Unit filename="src/sphere.h" />
 		<Unit filename="src/spotLight.cpp" />
 		<Unit filename="src/spotLight.h" />
+		<Unit filename="src/texture.cpp" />
+		<Unit filename="src/texture.h" />
+		<Unit filename="src/vertex.cpp" />
+		<Unit filename="src/vertex.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

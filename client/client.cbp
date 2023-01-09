@@ -40,6 +40,8 @@
 		<Linker>
 			<Add library="engine" />
 		</Linker>
+		<Unit filename="src/cameraNode.cpp" />
+		<Unit filename="src/cameraNode.h" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/main.h" />
 		<Extensions>
