@@ -29,7 +29,7 @@ TEST_SOURCES = $(wildcard $(TEST_FOLDER)/*_test.cpp)
 
 # Specify the C++ compiler and flags
 CXX = g++
-CXXFLAGS = -c -fPIC -std=c++14
+CXXFLAGS = -c -fPIC -std=c++11
 CXXFLAGS += -I../dependencies/glm/include/ -I../dependencies/freeimage/include/ #add glm and freeimage path
 LDFLAGS = -shared
 LIB = -lglut -lGL -lGLU -lfreeimage

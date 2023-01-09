@@ -26,7 +26,7 @@ OBJ_FILES = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(TEST_FILES))
 
 # Specify the C++ compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++14
+CXXFLAGS = -std=c++11
 CXXFLAGS += -I../dependencies/glm/include/ #add glm path
 CXXFLAGS += -I../engine
 CXXFLAGS += -I../dependencies/googletest/include

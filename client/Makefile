@@ -27,7 +27,7 @@ OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
 # Specify the C++ compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++14
+CXXFLAGS = -std=c++11
 CXXFLAGS += -I../dependencies/glm/include/ #add glm path
 CXXFLAGS += -I../engine
 
