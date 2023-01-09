@@ -1,5 +1,6 @@
 #include "texture.h"
 
+#include <cstring>
 #include <iostream>
 #include <GL/freeglut.h>
 #include "FreeImage.h"
@@ -28,7 +29,7 @@ LIB_API Texture::~Texture() {
             m_textures.erase(m_textures.begin() + i);
         }
     }
-    
+
     // delete texture
     glDeleteTextures(1, &m_texture_id);
 }
@@ -46,11 +47,11 @@ void LIB_API Texture::render(glm::mat4 coords) {
         // Set loaded to true if false
         if (!m_loaded)
             m_loaded = true;
-        // Reset reload request if was requested 
+        // Reset reload request if was requested
         if (m_reload_request)
             m_reload_request = false;
     }
-    
+
     // bind the texture object to the current texture unit
     glBindTexture(GL_TEXTURE_2D, m_texture_id);
 }
@@ -151,12 +152,7 @@ void LIB_API Texture::loadTexture(std::string file, unsigned int* textureID) {
 
     // Check if mipmap is enabled
     if (Texture::m_settings_mipmap != _DISABLED) {
-        // gluBuild2DMipmaps method is available only on Windows
-#ifdef _WINDOWS
         gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, width, height, GL_BGRA_EXT, GL_UNSIGNED_BYTE, (void*)data);
-#else
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, (void*)data);
-#endif
     }
     else {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, (void*) data);
@@ -188,7 +184,7 @@ void LIB_API Texture::enableAnisotropicFiltering(unsigned int level)
         // Check if level is supported
         int maxAntisotropicLevel;
         glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAntisotropicLevel);
-        
+
         // Set new level if possible
         if (level <= static_cast<unsigned int>(maxAntisotropicLevel)) {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, level);

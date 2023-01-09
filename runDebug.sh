@@ -1,9 +1,9 @@
 #!/bin/bash
 cd engine
 make clean
-make
+make compile_debug
 cd ../client
 make clean
-make
-cd bin/Debug
-LD_LIBRARY_PATH=../../../engine/bin/Debug/ ./client
+make compile_debug
+cd ../Debug
+LD_LIBRARY_PATH=. ./client

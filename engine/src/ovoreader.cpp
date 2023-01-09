@@ -15,6 +15,7 @@ Node LIB_API* Ovoreader::readFile(const char* path, const char* texturesDir) {
     // This types don't have children and therefore can't be read with a recursive function
 	unsigned int chunkId, chunkSize;
     bool isHeader = true;
+    int rollback = 0;
 	while (isHeader) {
 		// Read chunkId and chunkSize while checking if file has ended
 		fread(&chunkId, sizeof(unsigned int), 1, dat);
@@ -58,10 +59,11 @@ Node LIB_API* Ovoreader::readFile(const char* path, const char* texturesDir) {
 
                 // Rollback file pointer to the last chunk:
                 // this operation is necessary as the last chunk need to be read again in the recursive load
-                fseek(dat, -1 * (chunkSize + 8), SEEK_CUR);
+                rollback = -1 * (chunkSize + 8);
+                fseek(dat, rollback, SEEK_CUR);
 				break;
 
-            default: 
+            default:
                 cout << "UNKNOWN]" << endl;
                 cout << "ERROR: corrupted or bad data in file " << path << endl;
                 fclose(dat);
@@ -101,7 +103,7 @@ Node LIB_API* Ovoreader::recursiveLoad(FILE* dat, const char* path) {
         delete[] data;
         return nullptr;
     }
-   
+
     // Parse chunk information according to its type:
     unsigned int position = 0;
     unsigned int nChildren = 0;
@@ -139,11 +141,11 @@ Node LIB_API* Ovoreader::recursiveLoad(FILE* dat, const char* path) {
 
     // If the node has children, load them
     if (nChildren) {
-        while (thisNode->getNumberOfChildren() < nChildren) { 
+        while (thisNode->getNumberOfChildren() < nChildren) {
             Node* childNode = recursiveLoad(dat, path);
 
             // childNode is nullptr when the file has ended
-            if(childNode != nullptr) 
+            if(childNode != nullptr)
                 thisNode->addChild(childNode);
         }
     }
@@ -320,7 +322,7 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
          */
         struct PhysProps
         {
-            // Pay attention to 16 byte alignement (use padding):      
+            // Pay attention to 16 byte alignement (use padding):
             unsigned char type;
             unsigned char contCollisionDetection;
             unsigned char collideWithRBodies;
@@ -384,7 +386,7 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
 
 
     // Always load only first LOD (level of detail)...:
-   
+
     // Nr. of vertices:
     unsigned int vertices, faces;
     memcpy(&vertices, data + position, sizeof(unsigned int));
@@ -397,9 +399,9 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     position += sizeof(unsigned int);
 
 
-    // Interleaved and compressed vertex/normal/UV/tangent data:                    
+    // Interleaved and compressed vertex/normal/UV/tangent data:
     for (unsigned int c = 0; c < vertices; c++) {
-        // Vertex coords:    
+        // Vertex coords:
         glm::vec3 vertex;
         memcpy(&vertex, data + position, sizeof(glm::vec3));
         position += sizeof(glm::vec3);
@@ -421,7 +423,7 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
         memcpy(&tangentData, data + position, sizeof(unsigned int));
         glm::vec4 tangent = glm::unpackSnorm3x10_1x2(tangentData);
         position += sizeof(unsigned int);
-        
+
         // Add vertex to the vertices vector
         verticesVec.push_back(new Vertex{ vertex, normal, uv, tangent });
     }
@@ -441,7 +443,7 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
 
         mesh->addFace(v1, v2, v3);
     }
-    
+
     // Load Material class given the name of the material
     auto material = m_materials.find(materialName);
     if (material == m_materials.end()) {
@@ -537,7 +539,7 @@ Light LIB_API* Ovoreader::parseLight(char* data, unsigned int& position, unsigne
             attenuation = glm::clamp(10.0f / radius, 0.0f, 1.0f);
             light = new OmnidirectionalLight{ lightName, matrix, tmp, tmp, tmp, 1.0f, attenuation };
             break;
-        case OvLight::Subtype::SPOT: 
+        case OvLight::Subtype::SPOT:
             attenuation = glm::clamp(10.0f / radius, 0.0f, 1.0f);
             light = new SpotLight{ lightName, matrix, tmp, tmp, tmp, cutoff, direction, 1.0f, attenuation };
             break;

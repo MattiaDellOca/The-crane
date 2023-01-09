@@ -76,7 +76,7 @@ void display() {
 	// Preparation list 2D information
 	information2D.clear();
 
-	// top 2D information 
+	// top 2D information
 	unsigned int currPos = camera2D->getHeight();
 	information2D.emplace_back("======= Commands =======", currPos - 20);
 	information2D.emplace_back("[ g ] rotate crane counterclockwise", currPos - 35);
@@ -103,7 +103,7 @@ void display() {
 		information2D.emplace_back("========================", currPos - 155);
 	}
 
-	
+
 
 	// center 2D information
 	currPos = (camera2D->getHeight() - 20) / 2;
@@ -150,7 +150,7 @@ void keyboardCallback(unsigned char key, int x, int y) {
 			Engine::enableWireframe();
 		}
 		isWireframe = !isWireframe;
-	} 
+	}
 	else if (key == '2') {
 		if (isGouraund) {
 			cout << "[CRANE] Settings: Gouraund shading disabled" << endl;
@@ -166,7 +166,7 @@ void keyboardCallback(unsigned char key, int x, int y) {
 		currentCamera->getNext()->getCamera()->updateWindowSize(currentCamera->getCamera()->getWidth(), currentCamera->getCamera()->getHeight());
 		currentCamera = currentCamera->getNext();
 	}
-	
+
 	else if (key == 'g') {
 		//rotate crane counterclockwise
 		cout << "[CRANE] SleewingUnit: rotating counterclockwise" << endl;
@@ -205,7 +205,7 @@ void keyboardCallback(unsigned char key, int x, int y) {
 		// move cable up
 		if (extensionsCableCount > 0) {
 			cout << "[CRANE] Cables: moving up" << endl;
- 
+
 			// There is an object between the hook and the cable
 			Node* hookParent = cable1->getChildren().at(0);
 
@@ -408,8 +408,9 @@ int main(int argc, char* argv[]) {
 
 	// Set Texture settings
 	Engine::setGraphics(profile);
-	Engine::load("..\\assets\\crane\\crane.ovo", "..\\assets\\crane");
-	
+	//Engine::load("..\\assets\\crane\\crane.ovo", "..\\assets\\crane");
+	Engine::load("../assets/crane/crane.ovo", "../assets/crane/");
+
 	// Searching nodes
 	root = Engine::getNode("[root]");
 	crane = Engine::getNode("Crane");
@@ -449,4 +450,4 @@ int main(int argc, char* argv[]) {
 	delete camera3D;
 	delete camera3DHook;
 	delete camera3DCabine;
-}	
+}

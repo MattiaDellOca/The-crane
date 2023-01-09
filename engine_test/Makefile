@@ -14,7 +14,7 @@ TARGET = test #name of the executable
 #Release
 OBJDIR_RELEASE = obj/Release
 OUTDIR_RELEASE = bin/Release
-
+COPY_DIR_RELEASE = ../Release
 
 ####
 #SETTINGS
@@ -26,7 +26,7 @@ OBJ_FILES = $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(TEST_FILES))
 
 # Specify the C++ compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra 
+CXXFLAGS = -std=c++14
 CXXFLAGS += -I../dependencies/glm/include/ #add glm path
 CXXFLAGS += -I../engine
 CXXFLAGS += -I../dependencies/googletest/include
@@ -60,13 +60,16 @@ $(OBJDIR_RELEASE)/%.o: %.cpp
 before_release: 
 	test -d $(OUTDIR_RELEASE) || mkdir -p $(OUTDIR_RELEASE)
 	test -d $(OBJDIR_RELEASE) || mkdir -p $(OBJDIR_RELEASE)
+	test -d $(COPY_DIR_RELEASE) || mkdir -p $(COPY_DIR_RELEASE)
 
 out_release: $(OBJ_FILES_RELEASE)
 	$(CXX) $(CXXFLAGS_RELEASE) -o  $(OUT_RELEASE) $^ $(LDFLAGS_RELEASE) 
+	cp $(OUTDIR_RELEASE)/$(TARGET) $(COPY_DIR_RELEASE)/  #copy result to destination folder
 
 compile_release: before_release out_release
 	
 clean_release: 
+	rm -f $(COPY_DIR_RELEASE)/$(TARGET)
 	rm -f $(OUT_RELEASE) $(OBJDIR_RELEASE)/*.o
 	rm -rf $(OUTDIR_RELEASE)
 	rm -rf $(OBJDIR_RELEASE)

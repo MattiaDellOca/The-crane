@@ -1,9 +1,10 @@
 #!/bin/bash
 cd engine
 make clean
-make
+make compile_release
+make test
 cd ../client
 make clean
-make
-cd bin/Release
-LD_LIBRARY_PATH=../../../engine/bin/Release/ ./client
+make compile_release
+cd ../Release
+LD_LIBRARY_PATH=. ./client

@@ -21,7 +21,7 @@
 
    //FreeGLUT:
 #include <GL/freeglut.h>
-	
+
 	//FreeImage:
 #include "FreeImage.h"
 
@@ -36,7 +36,7 @@ bool Engine::m_initFlag = false;
 bool Engine::m_isRunning = false;
 int Engine::m_window_height = -1;
 int Engine::m_window_width = -1;
-int Engine::m_windowId = NULL;
+int Engine::m_windowId = -1;
 PerspectiveCamera* Engine::m_curr_3Dcamera = nullptr;
 OrthographicCamera* Engine::m_curr_2Dcamera = nullptr;
 EngineGraphics* Engine::m_graphics_settings = nullptr;
@@ -141,11 +141,11 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	m_initFlag = true;
 	std::cout << "Initializing engine" << std::endl;
 	std::cout << std::endl;
-	
+
 	// Init context
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowPosition(500, 500);
-	
+
 	m_window_width = width;
 	m_window_height = height;
 	glutInitWindowSize(width, height);
@@ -159,7 +159,7 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 
 	// Create the window with a specific title:
 	m_windowId = glutCreateWindow(title);
-	
+
 	// Enable Z-Buffer+Lighting+Face Culling
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
@@ -172,7 +172,7 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 
 	// Init FreeImage for texture mapping
 	FreeImage_Initialise();
-	
+
 	// Set running state
 	m_isRunning = true;
 
@@ -248,11 +248,11 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	if (m_scene_graph != nullptr) {
 		// Clear rendering list
 		m_rendering_list->clear();
-		
+
 		// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
 		// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
 		m_rendering_list->pass(m_scene_graph, glm::mat4(1));
-		
+
 		// Render
 		m_rendering_list->render(m_curr_3Dcamera->getMatrix());
 	}
@@ -260,7 +260,7 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 		std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
 		return;
 	}
-	
+
 
 	// force refresh
 	glutPostRedisplay();
@@ -336,13 +336,6 @@ bool LIB_API Engine::isRunning() {
 
 // Load scene graph given a .ovo file
 void LIB_API Engine::load(std::string path, std::string texturesDir) {
-
-	// Check if the path ends with a '\\' sequence
-	if (texturesDir.back() != '\\') {
-		// Add a '\\' sequence to the end of the path
-		texturesDir += "\\";
-	}
-
 	Ovoreader ovoreader;
 	m_scene_graph = ovoreader.readFile(path.c_str(), texturesDir.c_str());
 }
@@ -378,12 +371,12 @@ void LIB_API Engine::setGraphics(EngineGraphics& g) {
 }
 
 Node LIB_API* Engine::getNode(std::string name)
-{	
+{
 	//if the scene is not setted return null
 	if (m_scene_graph == nullptr) {
 		return nullptr;
 	}
-	
+
 	//convert std::string to a const char pointer to avoid copy
 	const char* searchName = name.c_str();
 	return m_scene_graph->searchNode(searchName);
