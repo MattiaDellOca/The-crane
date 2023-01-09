@@ -2,7 +2,7 @@
 
 #include <cstring>
 #include <iostream>
-#include <stdexcept>
+#include <stdexcept> 
 #include <GL/freeglut.h>
 #include "FreeImage.h"
 
