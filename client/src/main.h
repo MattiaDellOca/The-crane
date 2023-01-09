@@ -6,7 +6,6 @@
 #include "src/perspectiveCamera.h"
 #include "src/sphere.h"
 #include "src/cube.h"
-#include "src/renderingList.h"
 #include "src/light.h"
 #include "src/directionalLight.h"
 #include "src/omnidirectionalLight.h"
