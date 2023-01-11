@@ -6,6 +6,7 @@
 ####
 
 TARGET = libengine.so #name of the .so
+TARGET_STATIC = libengine.a #name of the .so
 SRC_DIR = src
 COPY_DIR_DEBUG = ../Debug
 COPY_DIR_RELEASE = ../Release
@@ -74,10 +75,15 @@ out_debug: $(OBJ_FILES_DEBUG)
 	$(CXX) -fPIC $(LDFLAGS_DEBUG) -o  $(OUT_DEBUG) $^ $(LIB_DEBUG)
 	cp $(OUTDIR_DEBUG)/$(TARGET) $(COPY_DIR_DEBUG)/ #copy result to destination folder
 
-compile_debug: before_debug out_debug
+out_debug_static: $(OBJ_FILES_DEBUG)
+	ar rcs -o $(OUTDIR_DEBUG)/$(TARGET_STATIC) $^
+	cp $(OUTDIR_DEBUG)/$(TARGET_STATIC) $(COPY_DIR_DEBUG)/ #copy result to destination folder
+
+compile_debug: before_debug out_debug out_debug_static
 	
 clean_debug: 
-	rm -f $(COPY_DIR_DEBUG)/$(TARGET)
+	rm -f $(COPY_DIR_DEBUG)/$(TARGET)	
+	rm -f $(COPY_DIR_DEBUG)/$(TARGET_STATIC)
 	rm -f $(OUT_DEBUG) $(OBJDIR_DEBUG)/*.o
 	rm -rf $(OUTDIR_DEBUG)
 	rm -rf $(OBJDIR_DEBUG)
@@ -97,10 +103,16 @@ out_release: $(OBJ_FILES_RELEASE)
 	$(CXX) -fPIC $(LDFLAGS_RELEASE) -o  $(OUT_RELEASE) $^ $(LIB_RELEASE)
 	cp $(OUTDIR_RELEASE)/$(TARGET) $(COPY_DIR_RELEASE)/  #copy result to destination folder
 	
-compile_release: before_release out_release
+	
+out_release_static: $(OBJ_FILES_RELEASE)
+	ar rcs -o $(OUTDIR_RELEASE)/$(TARGET_STATIC) $^
+	cp $(OUTDIR_RELEASE)/$(TARGET_STATIC) $(COPY_DIR_RELEASE)/ #copy result to destination folder
+	
+compile_release: before_release out_release out_release_static
 	
 clean_release: 
 	rm -f $(COPY_DIR_RELEASE)/$(TARGET)
+	rm -f $(COPY_DIR_RELEASE)/$(TARGET_STATIC)
 	rm -f $(OUT_RELEASE) $(OBJDIR_RELEASE)/*.o
 	rm -rf $(OUTDIR_RELEASE)
 	rm -rf $(OBJDIR_RELEASE)

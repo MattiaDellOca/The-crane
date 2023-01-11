@@ -6,6 +6,7 @@
 #VARIABLES
 ####
 TARGET = client #name of the executable
+TARGET_STATIC = client_static #name of the executable
 SRC_DIR = src
 COPY_DIR_DEBUG = ../Debug
 COPY_DIR_RELEASE = ../Release
@@ -55,7 +56,7 @@ clean: clean_debug clean_release
 #Debug
 #create .o file
 $(OBJDIR_DEBUG)/%.o: $(SRC_DIR)/%.cpp
-	$(CXX) -c $(CXXFLAGS_DEBUG) -o $@ $(LDFLAGS_DEBUG)  $<
+	$(CXX) -c $(CXXFLAGS_DEBUG) -o $@ $(LDFLAGS_DEBUG) $<
 
 before_debug: 
 	test -d $(OUTDIR_DEBUG) || mkdir -p $(OUTDIR_DEBUG)
@@ -66,9 +67,15 @@ out_debug: $(OBJ_FILES_DEBUG)
 	$(CXX) $(CXXFLAGS_DEBUG) -o  $(OUT_DEBUG) $^ $(LDFLAGS_DEBUG)
 	cp $(OUTDIR_DEBUG)/$(TARGET) $(COPY_DIR_DEBUG)/ #copy result to destination folder
 
-compile_debug: before_debug out_debug
+#engine is static, GL, freeglut, freeimage are dynamic
+out_debug_static: $(OBJ_FILES_DEBUG) 
+	$(CXX) -o  $(OUTDIR_DEBUG)/$(TARGET_STATIC) $^ -Wl,-Bdynamic ../engine/bin/Debug/libengine.a -lGL -lglut -lGLU -lfreeimage 
+	cp $(OUTDIR_DEBUG)/$(TARGET_STATIC) $(COPY_DIR_DEBUG)/ #copy result to destination folder
+	
+compile_debug: before_debug out_debug out_debug_static
 	
 clean_debug: 
+	rm -f $(COPY_DIR_DEBUG)/$(TARGET_STATIC)
 	rm -f $(COPY_DIR_DEBUG)/$(TARGET)
 	rm -f $(OUT_DEBUG) $(OBJDIR_DEBUG)/*.o
 	rm -rf $(OUTDIR_DEBUG)
@@ -88,9 +95,18 @@ out_release: $(OBJ_FILES_RELEASE)
 	$(CXX) $(CXXFLAGS_RELEASE) -o  $(OUT_RELEASE) $^ $(LDFLAGS_RELEASE)
 	cp $(OUTDIR_RELEASE)/$(TARGET) $(COPY_DIR_RELEASE)/  #copy result to destination folder
 
-compile_release: before_release out_release
+#engine is static, GL, freeglut, freeimage are dynamic
+out_release_static: $(OBJ_FILES_RELEASE) 
+	$(CXX) -o  $(OUTDIR_RELEASE)/$(TARGET_STATIC) $^ -Wl,-Bdynamic ../engine/bin/Release/libengine.a -lGL -lglut -lGLU -lfreeimage 
+	cp $(OUTDIR_RELEASE)/$(TARGET_STATIC) $(COPY_DIR_RELEASE)/ #copy result to destination folder
+	
+#requirements of static library
+compile : out_release_static
+	
+compile_release: before_release out_release out_release_static
 	
 clean_release: 
+	rm -f $(COPY_DIR_RELEASE)/$(TARGET_STATIC)
 	rm -f $(COPY_DIR_RELEASE)/$(TARGET)
 	rm -f $(OUT_RELEASE) $(OBJDIR_RELEASE)/*.o
 	rm -rf $(OUTDIR_RELEASE)
