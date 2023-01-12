@@ -30,7 +30,7 @@ public:
 	 * \param width Width of the viewport of the camera
 	 * \param height Height of the viewport of the camera
 	 */
-	OrthographicCamera(std::string name, glm::mat4 matrix, unsigned int width, unsigned int height);
+	OrthographicCamera(const std::string& name, glm::mat4 matrix, unsigned int width, unsigned int height);
 
 	/**
 	 * Render method used to render the camera.

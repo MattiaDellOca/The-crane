@@ -59,7 +59,7 @@ public:
 	 * \param name The name of the node.
 	 * \param matrix The transformation matrix of the node.
 	 */
-	Node(std::string name, glm::mat4 matrix);
+	Node(const std::string& name, glm::mat4 matrix);
 
 	/**
 	 * \brief Destructor for the Node class.

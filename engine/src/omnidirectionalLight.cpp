@@ -7,7 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 
-LIB_API OmnidirectionalLight::OmnidirectionalLight(std::string name, glm::mat4 matrix, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, float constantAttenuation, float linearAttenuation, float quadraticAttenuation)
+LIB_API OmnidirectionalLight::OmnidirectionalLight(const std::string& name, glm::mat4 matrix, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, float constantAttenuation, float linearAttenuation, float quadraticAttenuation)
 	: PositionalLight(name, matrix, LightType::OMNIDIRECTIONAL, ambient, diffuse, specular, constantAttenuation,linearAttenuation, quadraticAttenuation)
 {};
 

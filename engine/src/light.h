@@ -93,7 +93,7 @@ protected:
 	 * \param diffuse The diffuse color of the light. It is a 4D vector with the red, green, blue, and alpha channel values.
 	 * \param specular The specular color of the light. It is a 4D vector with the red, green, blue, and alpha channel values.
 	 */
-	Light(std::string name, glm::mat4 transform, LightType type, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular);
+	Light(const std::string& name, glm::mat4 transform, LightType type, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular);
 public:
 	/**
 	 * \brief Renders the light object.

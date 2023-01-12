@@ -1,7 +1,7 @@
 #include "renderingList.h"
 
 
-LIB_API RenderingList::RenderingList(std::string name) :
+LIB_API RenderingList::RenderingList(const std::string& name) :
 	Object(name) { };
 
 void RenderingList::loadRenderNode(RenderNode* node) {

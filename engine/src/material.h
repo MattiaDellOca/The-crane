@@ -66,7 +66,7 @@ public:
 	 *
 	 * \param name The name of the material.
 	 */
-	explicit Material(std::string name);
+	explicit Material(const std::string& name);
 
 	/**
 	 * \brief Applies the material.

@@ -58,7 +58,7 @@ public:
 	 *
 	 * \param name The name of the object.
 	 */
-	Object(std::string name);
+	Object(const std::string& name);
 
 	/**
 	 * \brief Destructor for the Object class.
@@ -70,7 +70,7 @@ public:
 	 *
 	 * \param name The name to be set. It is a string value.
 	 */
-	void setName(std::string name);
+	void setName(const std::string& name);
 
 	/**
 	 * \brief Gets the name of the object.

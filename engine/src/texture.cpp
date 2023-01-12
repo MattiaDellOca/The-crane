@@ -14,7 +14,7 @@ TextureWrap LIB_API Texture::m_settings_wrap = TextureWrap::REPEAT;
 bool LIB_API Texture::m_settings_dirty = false;
 std::vector<Texture*> LIB_API Texture::m_textures{};
 
-LIB_API Texture::Texture(std::string name, std::string file_path) : Object(name), m_file_path(file_path), m_loaded{ false } {
+LIB_API Texture::Texture(const std::string& name, const std::string& file_path) : Object(name), m_file_path(file_path), m_loaded{ false } {
     // Load texture from file
     loadTexture(file_path, &m_texture_id);
     m_loaded = true;
@@ -153,10 +153,10 @@ void LIB_API Texture::loadTexture(std::string file, unsigned int* textureID) {
 
     // Check if mipmap is enabled
     if (Texture::m_settings_mipmap != _DISABLED) {
-        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, width, height, GL_BGRA_EXT, GL_UNSIGNED_BYTE, (void*)data);
+        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, width, height, GL_BGRA_EXT, GL_UNSIGNED_BYTE, static_cast<void*>(data));
     }
     else {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, (void*) data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, static_cast<void*>(data));
     }
 
     // free loaded image

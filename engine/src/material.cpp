@@ -9,7 +9,7 @@
    //FreeGLUT:
 #include <GL/freeglut.h>
 
-LIB_API Material::Material(std::string name) : Object{ name }, m_texture{nullptr} {};
+LIB_API Material::Material(const std::string& name) : Object{ name }, m_texture{nullptr} {};
 
 void LIB_API Material::apply() {
 	// Set material properties:

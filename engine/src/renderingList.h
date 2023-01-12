@@ -56,7 +56,7 @@ public:
 	 *
 	 * \param name The name of the rendering list.
 	 */
-	explicit RenderingList(std::string name);
+	explicit RenderingList(const std::string& name);
 
 	/**
 	 * \brief Gets the list of nodes to be rendered.

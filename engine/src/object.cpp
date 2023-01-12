@@ -11,13 +11,13 @@
 
 unsigned int LIB_API Object::m_incemental_id = 0;
 
-LIB_API Object::Object(std::string name) :
+LIB_API Object::Object(const std::string& name) :
 	m_id{ m_incemental_id++ },
 	m_name{ name } {};
 
 LIB_API Object::~Object() {}
 
-void LIB_API Object::setName(std::string name) {
+void LIB_API Object::setName(const std::string& name) {
 	m_name = name;
 }
 

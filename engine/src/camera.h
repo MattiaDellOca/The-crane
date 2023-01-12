@@ -135,7 +135,7 @@ public:
 	 *
 	 * @param transform The transform to apply to the object before rendering it.
 	 */
-	void virtual render(glm::mat4 transform) = 0;
+	void virtual render(glm::mat4 transform) override = 0;
 
 	/**
 	 * Update the window size.

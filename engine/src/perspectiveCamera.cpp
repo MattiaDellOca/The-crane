@@ -12,7 +12,7 @@
 // CLASSES //
 /////////////
 
-LIB_API PerspectiveCamera::PerspectiveCamera(std::string name, glm::mat4 matrix, unsigned int width, unsigned int height, float nearPlane, float farPlane, float fov) :
+LIB_API PerspectiveCamera::PerspectiveCamera(const std::string& name, glm::mat4 matrix, unsigned int width, unsigned int height, float nearPlane, float farPlane, float fov) :
 	Camera(CameraType::PERSPECTIVE, name, matrix, nearPlane, farPlane, width, height), m_fov{ fov } {
 	m_properties = glm::perspective(glm::radians(fov), (float)width / (float)height, nearPlane, farPlane);
 };

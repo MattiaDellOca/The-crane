@@ -64,7 +64,7 @@ public:
 	 * \param material The material of the mesh. It is a pointer to a Material object.
 	 * \param cast_shadows If true, the mesh will block light therefore creates a shadow.
 	 */
-	Mesh(std::string name, glm::mat4 matrix, Material* material = nullptr, bool cast_shadows = true);
+	Mesh(const std::string& name, glm::mat4 matrix, Material* material = nullptr, bool cast_shadows = true);
 
 	/**
 	 * \brief Renders the mesh object.

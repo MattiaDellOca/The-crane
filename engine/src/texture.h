@@ -66,7 +66,7 @@ public:
      * \param name The name of the texture.
      * \param file_path The path to the image file to use for the texture.
      */
-    Texture(std::string name, std::string file_path);
+    Texture(const std::string& name, const std::string& file_path);
 
     /**
     * \brief Deconstructor.

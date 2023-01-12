@@ -5,7 +5,7 @@
 
 
 
-LIB_API Mesh::Mesh(std::string name, glm::mat4 matrix, Material* material, bool m_cast_shadows) : Node(name, matrix), m_material{ material }, m_faces{ 0 }, m_cast_shadows{ m_cast_shadows } {};
+LIB_API Mesh::Mesh(const std::string& name, glm::mat4 matrix, Material* material, bool m_cast_shadows) : Node(name, matrix), m_material{ material }, m_faces{ 0 }, m_cast_shadows{ m_cast_shadows } {};
 
 const Material LIB_API *Mesh::getMaterial() {
 	return m_material;
