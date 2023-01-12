@@ -86,9 +86,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a7e65f9ca9b3ef92b084b89178083c44e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#a7e65f9ca9b3ef92b084b89178083c44e">init</a> (const char *title, unsigned int width, unsigned int height, int *argc, char **argv)</td></tr>
 <tr class="memdesc:a7e65f9ca9b3ef92b084b89178083c44e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the engine.  <a href="class_engine.html#a7e65f9ca9b3ef92b084b89178083c44e">More...</a><br /></td></tr>
 <tr class="separator:a7e65f9ca9b3ef92b084b89178083c44e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01c5d360517b0f0553d1d3dfe0873285"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#a01c5d360517b0f0553d1d3dfe0873285">load</a> (std::string filepath, std::string texturesDir=&quot;..\\assets&quot;)</td></tr>
-<tr class="memdesc:a01c5d360517b0f0553d1d3dfe0873285"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a 3D model from a file.  <a href="class_engine.html#a01c5d360517b0f0553d1d3dfe0873285">More...</a><br /></td></tr>
-<tr class="separator:a01c5d360517b0f0553d1d3dfe0873285"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66493cea23e38374b9afea323cb18bec"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#a66493cea23e38374b9afea323cb18bec">load</a> (const std::string &amp;filepath, const std::string &amp;texturesDir)</td></tr>
+<tr class="memdesc:a66493cea23e38374b9afea323cb18bec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a 3D model from a file.  <a href="class_engine.html#a66493cea23e38374b9afea323cb18bec">More...</a><br /></td></tr>
+<tr class="separator:a66493cea23e38374b9afea323cb18bec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa14407745393c0db7e31e44e8ac5ea00"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#aa14407745393c0db7e31e44e8ac5ea00">load</a> (<a class="el" href="class_node.html">Node</a> *<a class="el" href="client_2src_2main_8cpp.html#a3f7db53410d0f3007de60cc3d64a0c09">root</a>)</td></tr>
 <tr class="memdesc:aa14407745393c0db7e31e44e8ac5ea00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a 3D model from a scene graph.  <a href="class_engine.html#aa14407745393c0db7e31e44e8ac5ea00">More...</a><br /></td></tr>
 <tr class="separator:aa14407745393c0db7e31e44e8ac5ea00"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,9 +140,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a44fa3d5b2a6e76cc7af7b1537abb576f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#a44fa3d5b2a6e76cc7af7b1537abb576f">setGraphics</a> (<a class="el" href="struct_engine_graphics.html">EngineGraphics</a> &amp;g)</td></tr>
 <tr class="memdesc:a44fa3d5b2a6e76cc7af7b1537abb576f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set new graphics settings profile.  <a href="class_engine.html#a44fa3d5b2a6e76cc7af7b1537abb576f">More...</a><br /></td></tr>
 <tr class="separator:a44fa3d5b2a6e76cc7af7b1537abb576f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5292c2f35c3c3bff370e7ac4e2246cfc"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#a5292c2f35c3c3bff370e7ac4e2246cfc">getNode</a> (std::string name)</td></tr>
-<tr class="memdesc:a5292c2f35c3c3bff370e7ac4e2246cfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search and return the first node found in the scene.  <a href="class_engine.html#a5292c2f35c3c3bff370e7ac4e2246cfc">More...</a><br /></td></tr>
-<tr class="separator:a5292c2f35c3c3bff370e7ac4e2246cfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae29a269a30915599400056cbcd42f7ba"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#ae29a269a30915599400056cbcd42f7ba">getNode</a> (const std::string &amp;name)</td></tr>
+<tr class="memdesc:ae29a269a30915599400056cbcd42f7ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Search and return the first node found in the scene.  <a href="class_engine.html#ae29a269a30915599400056cbcd42f7ba">More...</a><br /></td></tr>
+<tr class="separator:ae29a269a30915599400056cbcd42f7ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bc2cca6ce9b2d5682de975f72669bbe"><td class="memItemLeft" align="right" valign="top">static unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_engine.html#a0bc2cca6ce9b2d5682de975f72669bbe">getWindowHeight</a> ()</td></tr>
 <tr class="memdesc:a0bc2cca6ce9b2d5682de975f72669bbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current window height.  <a href="class_engine.html#a0bc2cca6ce9b2d5682de975f72669bbe">More...</a><br /></td></tr>
 <tr class="separator:a0bc2cca6ce9b2d5682de975f72669bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -329,8 +329,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a5292c2f35c3c3bff370e7ac4e2246cfc" name="a5292c2f35c3c3bff370e7ac4e2246cfc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5292c2f35c3c3bff370e7ac4e2246cfc">&#9670;&#160;</a></span>getNode()</h2>
+<a id="ae29a269a30915599400056cbcd42f7ba" name="ae29a269a30915599400056cbcd42f7ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae29a269a30915599400056cbcd42f7ba">&#9670;&#160;</a></span>getNode()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -341,7 +341,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="class_node.html">Node</a> <a class="el" href="lib_8h.html#a77278c8cc96e39fb27b5d0a347c8fb3d">LIB_API</a> * Engine::getNode </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
@@ -516,8 +516,53 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a66493cea23e38374b9afea323cb18bec" name="a66493cea23e38374b9afea323cb18bec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66493cea23e38374b9afea323cb18bec">&#9670;&#160;</a></span>load() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="lib_8h.html#a77278c8cc96e39fb27b5d0a347c8fb3d">LIB_API</a> Engine::load </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filepath</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>texturesDir</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Load a 3D model from a file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filepath</td><td>The path to the file containing the 3D model. </td></tr>
+    <tr><td class="paramname">texturesDir</td><td>The path to the directory containing the texture resources </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="aa14407745393c0db7e31e44e8ac5ea00" name="aa14407745393c0db7e31e44e8ac5ea00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa14407745393c0db7e31e44e8ac5ea00">&#9670;&#160;</a></span>load() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa14407745393c0db7e31e44e8ac5ea00">&#9670;&#160;</a></span>load() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -544,51 +589,6 @@ Static Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">root</td><td>The root node of the model's scene graph. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a01c5d360517b0f0553d1d3dfe0873285" name="a01c5d360517b0f0553d1d3dfe0873285"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01c5d360517b0f0553d1d3dfe0873285">&#9670;&#160;</a></span>load() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="lib_8h.html#a77278c8cc96e39fb27b5d0a347c8fb3d">LIB_API</a> Engine::load </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>filepath</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>texturesDir</em> = <code>&quot;..\\assets&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Load a 3D model from a file. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">filepath</td><td>The path to the file containing the 3D model. </td></tr>
-    <tr><td class="paramname">texturesDir</td><td>The path to the directory containing the texture resources </td></tr>
   </table>
   </dd>
 </dl>

@@ -50,7 +50,7 @@ protected:
 	 *
 	 * m_incremental_id is a static member variable that is used to assign unique identifiers to objects. It is an unsigned integer value.
 	 */
-	static unsigned int m_incemental_id;
+	static unsigned int m_incremental_id;
 public:
 
 	/**

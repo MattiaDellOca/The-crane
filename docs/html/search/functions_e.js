@@ -15,7 +15,7 @@ var searchData=
   ['setmousefunction_12',['setMouseFunction',['../class_engine.html#acc8a5adb8a17ef38e312a21b9595df01',1,'Engine']]],
   ['setmousemotionfunction_13',['setMouseMotionFunction',['../class_engine.html#ab4231fc74330224af87595fb5ec45ee0',1,'Engine']]],
   ['setmousewheelfunction_14',['setMouseWheelFunction',['../class_engine.html#a37e33c75178fe114729d866f29878aa6',1,'Engine']]],
-  ['setname_15',['setName',['../class_object.html#a2a28dc3681656f3bb2d08cffae7f2e5e',1,'Object']]],
+  ['setname_15',['setName',['../class_object.html#a991745195bac2a5198228cb21b23e7ce',1,'Object']]],
   ['setnear_16',['setNear',['../class_camera.html#a56bbc2916fd2e2895fe26ea41e3085ff',1,'Camera']]],
   ['setnext_17',['setNext',['../class_camera_node.html#ad458a6b5338a442b9f77e0eb0ce812ab',1,'CameraNode']]],
   ['setparent_18',['setParent',['../class_node.html#a6c1e8939341a89d0fcd1f4413ce0dd0f',1,'Node']]],
@@ -28,7 +28,6 @@ var searchData=
   ['settimerfunction_25',['setTimerFunction',['../class_engine.html#a25756fe4c06c02a355aa81c8901848b5',1,'Engine']]],
   ['setwidth_26',['setWidth',['../class_camera.html#afb45da03991ffa720c816003bfe8edd8',1,'Camera']]],
   ['specialkeyboardcallback_27',['specialKeyboardCallback',['../client_2src_2main_8cpp.html#a6116fdd0bb8e5e369532362eaf968d22',1,'main.cpp']]],
-  ['sphere_28',['Sphere',['../class_sphere.html#a46d066e1c56f438388792b2b2453fc99',1,'Sphere']]],
-  ['spotlight_29',['SpotLight',['../class_spot_light.html#add1294c991584454f1473e2ee4a91d11',1,'SpotLight']]],
-  ['swapbuffers_30',['swapBuffers',['../class_engine.html#a0544e301002dd8af6958796fee18430e',1,'Engine']]]
+  ['spotlight_28',['SpotLight',['../class_spot_light.html#a2ad94e79110ece3a5a9ced51ca5b612b',1,'SpotLight']]],
+  ['swapbuffers_29',['swapBuffers',['../class_engine.html#a0544e301002dd8af6958796fee18430e',1,'Engine']]]
 ];

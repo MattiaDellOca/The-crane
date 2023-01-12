@@ -196,14 +196,14 @@ $(function() {
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="class_ovoreader.html">  158</a></span><span class="keyword">class </span><a class="code hl_define" href="lib_8h.html#a77278c8cc96e39fb27b5d0a347c8fb3d">LIB_API</a> <a class="code hl_class" href="class_ovoreader.html">Ovoreader</a> {</div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <a class="code hl_class" href="class_node.html">Node</a>* readFile(<span class="keyword">const</span> <span class="keywordtype">char</span>* path, <span class="keyword">const</span> <span class="keywordtype">char</span>* texturesDir=<span class="stringliteral">&quot;..\\assets&quot;</span>);</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <a class="code hl_class" href="class_node.html">Node</a>* readFile(<span class="keyword">const</span> <span class="keywordtype">char</span>* path, <span class="keyword">const</span> <span class="keywordtype">char</span>* texturesDir);</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="keyword">protected</span>:</div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="class_ovoreader.html#aea6cc3518ab13d38cd2df51ef022141b">  178</a></span>    std::map&lt;string, Material*&gt; <a class="code hl_variable" href="class_ovoreader.html#aea6cc3518ab13d38cd2df51ef022141b">m_materials</a>;</div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <a class="code hl_class" href="class_node.html">Node</a>* recursiveLoad(FILE* dat, <span class="keyword">const</span> <span class="keywordtype">char</span>* path);</div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="keywordtype">void</span> parseOject(<span class="keywordtype">char</span>* data, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>&amp; position);</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="keywordtype">void</span> parseOject(<span class="keywordtype">char</span>* data, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>&amp; position);</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <a class="code hl_class" href="class_material.html">Material</a>* parseMaterial(<span class="keywordtype">char</span>* data, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>&amp; position, <span class="keyword">const</span> <span class="keywordtype">char</span>* textureDir);</div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
@@ -227,10 +227,10 @@ $(function() {
 <div class="ttc" id="aclass_ovoreader_html_aea6cc3518ab13d38cd2df51ef022141b"><div class="ttname"><a href="class_ovoreader.html#aea6cc3518ab13d38cd2df51ef022141b">Ovoreader::m_materials</a></div><div class="ttdeci">std::map&lt; string, Material * &gt; m_materials</div><div class="ttdoc">Map composed by tuple &lt;Material name, Material*&gt; containing all the read materials.</div><div class="ttdef"><b>Definition:</b> ovoreader.h:178</div></div>
 <div class="ttc" id="adirectional_light_8h_html"><div class="ttname"><a href="directional_light_8h.html">directionalLight.h</a></div></div>
 <div class="ttc" id="alib_8h_html"><div class="ttname"><a href="lib_8h.html">lib.h</a></div></div>
-<div class="ttc" id="alib_8h_html_a77278c8cc96e39fb27b5d0a347c8fb3d"><div class="ttname"><a href="lib_8h.html#a77278c8cc96e39fb27b5d0a347c8fb3d">LIB_API</a></div><div class="ttdeci">#define LIB_API</div><div class="ttdef"><b>Definition:</b> lib.h:23</div></div>
+<div class="ttc" id="alib_8h_html_a77278c8cc96e39fb27b5d0a347c8fb3d"><div class="ttname"><a href="lib_8h.html#a77278c8cc96e39fb27b5d0a347c8fb3d">LIB_API</a></div><div class="ttdeci">#define LIB_API</div><div class="ttdef"><b>Definition:</b> lib.h:24</div></div>
 <div class="ttc" id="alight_8h_html"><div class="ttname"><a href="light_8h.html">light.h</a></div></div>
 <div class="ttc" id="alight_type_8h_html"><div class="ttname"><a href="light_type_8h.html">lightType.h</a></div></div>
-<div class="ttc" id="alight_type_8h_html_a1fa2988e536d546893c7a9a42e8dc93e"><div class="ttname"><a href="light_type_8h.html#a1fa2988e536d546893c7a9a42e8dc93e">DIRECTIONAL</a></div><div class="ttdeci">DIRECTIONAL</div><div class="ttdoc">Directional light.</div><div class="ttdef"><b>Definition:</b> lightType.h:11</div></div>
+<div class="ttc" id="alight_type_8h_html_a1fa2988e536d546893c7a9a42e8dc93e"><div class="ttname"><a href="light_type_8h.html#a1fa2988e536d546893c7a9a42e8dc93e">DIRECTIONAL</a></div><div class="ttdeci">DIRECTIONAL</div><div class="ttdoc">Directional light.</div><div class="ttdef"><b>Definition:</b> lightType.h:8</div></div>
 <div class="ttc" id="amaterial_8h_html"><div class="ttname"><a href="material_8h.html">material.h</a></div></div>
 <div class="ttc" id="amesh_8h_html"><div class="ttname"><a href="mesh_8h.html">mesh.h</a></div></div>
 <div class="ttc" id="anode_8h_html"><div class="ttname"><a href="node_8h.html">node.h</a></div></div>

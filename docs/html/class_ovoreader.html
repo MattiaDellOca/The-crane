@@ -85,18 +85,18 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1e3ec88809169823e220179f0c1f67e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#a1e3ec88809169823e220179f0c1f67e1">readFile</a> (const char *path, const char *texturesDir=&quot;..\\assets&quot;)</td></tr>
-<tr class="memdesc:a1e3ec88809169823e220179f0c1f67e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a 3D Ovo model into a scene graph.  <a href="class_ovoreader.html#a1e3ec88809169823e220179f0c1f67e1">More...</a><br /></td></tr>
-<tr class="separator:a1e3ec88809169823e220179f0c1f67e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebff77359312d233bd91e460fc27d239"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#aebff77359312d233bd91e460fc27d239">readFile</a> (const char *path, const char *texturesDir)</td></tr>
+<tr class="memdesc:aebff77359312d233bd91e460fc27d239"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse a 3D Ovo model into a scene graph.  <a href="class_ovoreader.html#aebff77359312d233bd91e460fc27d239">More...</a><br /></td></tr>
+<tr class="separator:aebff77359312d233bd91e460fc27d239"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:ace222295a6b8e25066d4eeeb2ecc4a67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#ace222295a6b8e25066d4eeeb2ecc4a67">recursiveLoad</a> (FILE *dat, const char *path)</td></tr>
 <tr class="memdesc:ace222295a6b8e25066d4eeeb2ecc4a67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively load all nodes of a 3D Ovo model.  <a href="class_ovoreader.html#ace222295a6b8e25066d4eeeb2ecc4a67">More...</a><br /></td></tr>
 <tr class="separator:ace222295a6b8e25066d4eeeb2ecc4a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a518384c0c59614e7fa18a96245a9690e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#a518384c0c59614e7fa18a96245a9690e">parseOject</a> (char *data, unsigned int &amp;position)</td></tr>
-<tr class="memdesc:a518384c0c59614e7fa18a96245a9690e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse chunk with ID '<a class="el" href="class_object.html" title="Base class for objects in the scene.">Object</a>'.  <a href="class_ovoreader.html#a518384c0c59614e7fa18a96245a9690e">More...</a><br /></td></tr>
-<tr class="separator:a518384c0c59614e7fa18a96245a9690e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b0c7fecca44cd5db3feda72a2a2e31e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#a4b0c7fecca44cd5db3feda72a2a2e31e">parseOject</a> (char *data, const unsigned int &amp;position)</td></tr>
+<tr class="memdesc:a4b0c7fecca44cd5db3feda72a2a2e31e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse chunk with ID '<a class="el" href="class_object.html" title="Base class for objects in the scene.">Object</a>'.  <a href="class_ovoreader.html#a4b0c7fecca44cd5db3feda72a2a2e31e">More...</a><br /></td></tr>
+<tr class="separator:a4b0c7fecca44cd5db3feda72a2a2e31e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3af6ce52ed296ea33ab40a6456d8dd7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_material.html">Material</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_ovoreader.html#aa3af6ce52ed296ea33ab40a6456d8dd7">parseMaterial</a> (char *data, unsigned int &amp;position, const char *textureDir)</td></tr>
 <tr class="memdesc:aa3af6ce52ed296ea33ab40a6456d8dd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse chunk with ID '<a class="el" href="class_material.html" title="Class representing a material object in the scene.">Material</a>'.  <a href="class_ovoreader.html#aa3af6ce52ed296ea33ab40a6456d8dd7">More...</a><br /></td></tr>
 <tr class="separator:aa3af6ce52ed296ea33ab40a6456d8dd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -333,8 +333,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a518384c0c59614e7fa18a96245a9690e" name="a518384c0c59614e7fa18a96245a9690e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a518384c0c59614e7fa18a96245a9690e">&#9670;&#160;</a></span>parseOject()</h2>
+<a id="a4b0c7fecca44cd5db3feda72a2a2e31e" name="a4b0c7fecca44cd5db3feda72a2a2e31e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b0c7fecca44cd5db3feda72a2a2e31e">&#9670;&#160;</a></span>parseOject()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -351,7 +351,7 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int &amp;&#160;</td>
+          <td class="paramtype">const unsigned int &amp;&#160;</td>
           <td class="paramname"><em>position</em>&#160;</td>
         </tr>
         <tr>
@@ -378,8 +378,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1e3ec88809169823e220179f0c1f67e1" name="a1e3ec88809169823e220179f0c1f67e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e3ec88809169823e220179f0c1f67e1">&#9670;&#160;</a></span>readFile()</h2>
+<a id="aebff77359312d233bd91e460fc27d239" name="aebff77359312d233bd91e460fc27d239"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebff77359312d233bd91e460fc27d239">&#9670;&#160;</a></span>readFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -394,7 +394,7 @@ Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>texturesDir</em> = <code>&quot;..\\assets&quot;</code>&#160;</td>
+          <td class="paramname"><em>texturesDir</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

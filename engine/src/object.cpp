@@ -9,10 +9,10 @@
 // CLASSES //
 /////////////
 
-unsigned int LIB_API Object::m_incemental_id = 0;
+unsigned int LIB_API Object::m_incremental_id = 0;
 
 LIB_API Object::Object(const std::string& name) :
-	m_id{ m_incemental_id++ },
+	m_id{ m_incremental_id++ },
 	m_name{ name } {};
 
 LIB_API Object::~Object() {}

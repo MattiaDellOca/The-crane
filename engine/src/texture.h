@@ -23,29 +23,20 @@
     #define GL_CLAMP_TO_EDGE 0x812F
 #endif
 
-/**
- * \enum Filter
- * Constants for specifying the filter to use when rendering a texture.
- */
+/// Constants for specifying the filter to use when rendering a texture.
 enum LIB_API Filter {
     NEAREST,
     LINEAR
 };
 
-/**
- * \enum TextureMipmap
- * Constants for specifying the mipmap to use when rendering a texture.
- */
+/// Constants for specifying the mipmap to use when rendering a texture.
 enum LIB_API TextureMipmap {
     _DISABLED,
     MIPMAP_NEAREST,
     MIPMAP_LINEAR
 };
 
-/**
- * \enum TextureWrap
- * Constants for specifying the wrap mode to use when rendering a texture.
- */
+/// Constants for specifying the wrap mode to use when rendering a texture.
 enum LIB_API TextureWrap {
     REPEAT,
     CLAMP_TO_EDGE

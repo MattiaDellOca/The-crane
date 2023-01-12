@@ -1,9 +1,6 @@
 #pragma once
 
-/**
- * \enum LightType
- * \brief Enumeration of the different types of lights.
- */
+/// Enumeration of the different types of lights.
 enum LIB_API LightType {
     /**
      * \brief Directional light.
