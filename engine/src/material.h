@@ -69,6 +69,42 @@ public:
 	explicit Material(const std::string& name);
 
 	/**
+	* \brief Destructor for the Material class.
+	*/
+	~Material();
+
+	/**
+	* \brief Copy constructor for the Material class.
+	*
+	* \param o The Material object to copy.
+	*/
+	Material(const Material& o) = delete;
+
+	/**
+	* \brief Copy assignment operator for the Material class.
+	*
+	* \param o The Material object to copy.
+	* \returns A reference to the Material object.
+	*/
+	Material& operator=(const Material& o) = delete;
+
+	/**
+	* \brief Move constructor for the Material class.
+	*
+	* \param o The Material object to move.
+	*/
+	Material(Material&& o) = delete;
+
+	/**
+	* \brief move assignment operator for the Material class.
+	*
+	* \param o The Material object to move.
+	* \returns A reference to the Material object.
+	*/
+	Material& operator=(Material&& o) = delete;
+
+	
+	/**
 	 * \brief Applies the material.
 	 *
 	 * This function sets the values of the material's member variables in opengl settings, so that they can be used to render the objects in the scene.

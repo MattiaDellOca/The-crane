@@ -82,6 +82,21 @@ public:
 	Node& operator=(const Node& o) = delete;
 
 	/**
+	* \brief Move constructor for the Node class.
+	*
+	* \param o The Node object to move.
+	*/
+	Node(Node&& o) = delete;
+
+	/**
+	* \brief move assignment operator for the Node class.
+	*
+	* \param o The Node object to move.
+	* \returns A reference to the Node object.
+	*/
+	Node& operator=(Node&& o) = delete;
+
+	/**
 	 * \brief Gets the transformation matrix of the node.
 	 *
 	 * \return The transformation matrix of the node. It is a 4x4 matrix that represents the translation, rotation, and scale of the node in the scene.

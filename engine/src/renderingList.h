@@ -58,6 +58,44 @@ public:
 	 */
 	explicit RenderingList(const std::string& name);
 
+
+
+	/**
+	* \brief Destructor for the RenderingList class.
+	*/
+	~RenderingList();
+
+	/**
+	* \brief Copy constructor for the RenderingList class.
+	*
+	* \param o The RenderingList object to copy.
+	*/
+	RenderingList(const RenderingList& o) = delete;
+
+	/**
+	* \brief Copy assignment operator for the RenderingList class.
+	*
+	* \param o The RenderingList object to copy.
+	* \returns A reference to the RenderingList object.
+	*/
+	RenderingList& operator=(const RenderingList& o) = delete;
+
+	/**
+	* \brief Move constructor for the RenderingList class.
+	*
+	* \param o The RenderingList object to move.
+	*/
+	RenderingList(RenderingList&& o) = delete;
+
+	/**
+	* \brief move assignment operator for the RenderingList class.
+	*
+	* \param o The RenderingList object to move.
+	* \returns A reference to the RenderingList object.
+	*/
+	RenderingList& operator=(RenderingList&& o) = delete;
+
+
 	/**
 	 * \brief Gets the list of nodes to be rendered.
 	 *

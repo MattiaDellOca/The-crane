@@ -65,6 +65,37 @@ public:
     ~Texture();
 
     /**
+   * \brief Copy constructor for the Texture class.
+   *
+   * \param o The Texture object to copy.
+   */
+    Texture(const Texture& o) = delete;
+
+    /**
+    * \brief Copy assignment operator for the Texture class.
+    *
+    * \param o The Texture object to copy.
+    * \returns A reference to the Texture object.
+    */
+    Texture& operator=(const Texture& o) = delete;
+
+    /**
+    * \brief Move constructor for the Texture class.
+    *
+    * \param o The Texture object to move.
+    */
+    Texture(Texture&& o) = delete;
+
+    /**
+    * \brief move assignment operator for the Texture class.
+    *
+    * \param o The Texture object to move.
+    * \returns A reference to the Texture object.
+    */
+    Texture& operator=(Texture o) = delete;
+
+
+    /**
      * \brief Renders the texture.
      *
      * \param coords UNUSED.

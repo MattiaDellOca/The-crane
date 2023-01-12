@@ -11,6 +11,9 @@
 
 LIB_API Material::Material(const std::string& name) : Object{ name }, m_texture{nullptr} {};
 
+LIB_API Material::~Material() {}
+
+
 void LIB_API Material::apply() {
 	// Set material properties:
 	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, m_shininess);

@@ -4,6 +4,8 @@
 LIB_API RenderingList::RenderingList(const std::string& name) :
 	Object(name) { };
 
+LIB_API RenderingList::~RenderingList() {}
+
 void RenderingList::loadRenderNode(RenderNode* node) {
 	if (dynamic_cast<const Light*>(node->m_node) != nullptr)
 		m_list.push_front(node);

@@ -66,6 +66,43 @@ public:
 	 */
 	Mesh(const std::string& name, glm::mat4 matrix, Material* material = nullptr, bool cast_shadows = true);
 
+
+	/**
+	* \brief Destructor for the Mesh class.
+	*/
+	~Mesh();
+
+	/**
+	* \brief Copy constructor for the Mesh class.
+	*
+	* \param o The Mesh object to copy.
+	*/
+	Mesh(const Mesh& o) = delete;
+
+	/**
+	* \brief Copy assignment operator for the Mesh class.
+	*
+	* \param o The Mesh object to copy.
+	* \returns A reference to the Mesh object.
+	*/
+	Mesh& operator=(const Mesh& o) = delete;
+
+	/**
+	* \brief Move constructor for the Mesh class.
+	*
+	* \param o The Mesh object to move.
+	*/
+	Mesh(Mesh&& o) = delete;
+
+	/**
+	* \brief move assignment operator for the Mesh class.
+	*
+	* \param o The Mesh object to move.
+	* \returns A reference to the Mesh object.
+	*/
+	Mesh& operator=(Mesh&& o) = delete;
+
+
 	/**
 	 * \brief Renders the mesh object.
 	 *

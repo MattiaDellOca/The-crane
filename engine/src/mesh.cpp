@@ -7,6 +7,11 @@
 
 LIB_API Mesh::Mesh(const std::string& name, glm::mat4 matrix, Material* material, bool m_cast_shadows) : Node(name, matrix), m_material{ material }, m_faces{ 0 }, m_cast_shadows{ m_cast_shadows } {};
 
+LIB_API Mesh::~Mesh(){
+	for (auto v : m_vertices)
+		delete v;
+}
+
 const Material LIB_API *Mesh::getMaterial() {
 	return m_material;
 }
@@ -14,6 +19,8 @@ const Material LIB_API *Mesh::getMaterial() {
 void LIB_API Mesh::setMaterial(Material *material) {
 	m_material = material;
 }
+
+
 
 void LIB_API Mesh::render(glm::mat4 matrix) {
 	// Load material
