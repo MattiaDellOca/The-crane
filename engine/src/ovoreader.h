@@ -192,7 +192,7 @@ protected:
      * \param data char* containing the chunk's data.
      * \param position Pointer used for parsing the chunk.
      */
-    void parseOject(char* data, unsigned int& position);
+    void parseOject(char* data, const unsigned int& position);
 
     /**
      * \brief Parse chunk with ID 'Material'.

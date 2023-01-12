@@ -155,7 +155,7 @@ public:
 	 * \param filepath The path to the file containing the 3D model.
 	 * \param texturesDir The path to the directory containing the texture resources
 	 */
-	static void load(std::string filepath, std::string texturesDir);
+	static void load(const std::string& filepath, const std::string& texturesDir);
 
 	/**
 	* Load a 3D model from a scene graph.
@@ -272,7 +272,7 @@ public:
 	*
 	* @param name Name of the node
 	*/
-	static Node* getNode(std::string name);
+	static Node* getNode(const std::string& name);
 
 	/**
 	 * Returns the current window height. The engine must be initialized before calling this method.

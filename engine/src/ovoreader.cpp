@@ -59,7 +59,7 @@ Node LIB_API* Ovoreader::readFile(const char* path, const char* texturesDir) {
 
                 // Rollback file pointer to the last chunk:
                 // this operation is necessary as the last chunk need to be read again in the recursive load
-                rollback = -1 * (chunkSize + 8);
+                rollback = -1 * static_cast<int>(chunkSize + 8);
                 fseek(dat, rollback, SEEK_CUR);
 				break;
 
@@ -154,7 +154,7 @@ Node LIB_API* Ovoreader::recursiveLoad(FILE* dat, const char* path) {
     return thisNode;
 }
 
-void LIB_API Ovoreader::parseOject(char* data, unsigned int& position) {
+void LIB_API Ovoreader::parseOject(char* data, const unsigned int& position) {
     cout << "version]" << endl;
 
     // OVO revision number:
@@ -361,13 +361,13 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
                 // Hull centroid:
                 position += sizeof(glm::vec3);
                 // Iterate through hull vertices:
-                for (unsigned int c = 0; c < nrOfVertices; c++)
+                for (unsigned int i = 0; i < nrOfVertices; i++)
                 {
                     // Vertex coords:
                     position += sizeof(glm::vec3);
                 }
                 // Iterate through hull faces:
-                for (unsigned int c = 0; c < nrOfFaces; c++)
+                for (unsigned int i = 0; i < nrOfFaces; i++)
                 {
                     position += sizeof(unsigned int) * 3;
                 }

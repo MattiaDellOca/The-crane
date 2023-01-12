@@ -181,7 +181,7 @@ void LIB_API Texture::setTextureWrap(TextureWrap wrap) {
 void LIB_API Texture::enableAnisotropicFiltering(unsigned int level)
 {
     // Check if supported
-    if (strstr((const char*)glGetString(GL_EXTENSIONS), "GL_EXT_texture_filter_anisotropic")) {
+    if (strstr(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)), "GL_EXT_texture_filter_anisotropic")) {
         // Check if level is supported
         int maxAntisotropicLevel;
         glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAntisotropicLevel);

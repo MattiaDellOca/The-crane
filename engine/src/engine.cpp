@@ -282,7 +282,7 @@ void LIB_API Engine::render2D(OrthographicCamera* camera, const std::list<std::t
 
 	for (const auto& element : list) {
 		glRasterPos2f(10.0f, static_cast<float>(std::get<1>(element)));
-		glutBitmapString(GLUT_BITMAP_8_BY_13, (unsigned char*)std::get<0>(element).c_str());
+		glutBitmapString(GLUT_BITMAP_8_BY_13, reinterpret_cast<const unsigned char*>(std::get<0>(element).c_str()));
 	}
 
 	// force refresh
@@ -335,7 +335,7 @@ bool LIB_API Engine::isRunning() {
 }
 
 // Load scene graph given a .ovo file
-void LIB_API Engine::load(std::string path, std::string texturesDir) {
+void LIB_API Engine::load(const std::string& path, const std::string& texturesDir) {
 	Ovoreader ovoreader;
 	m_scene_graph = ovoreader.readFile(path.c_str(), texturesDir.c_str());
 }
@@ -358,7 +358,7 @@ void LIB_API Engine::setGraphics(EngineGraphics& g) {
 		try {
 			Texture::enableAnisotropicFiltering(g.anisotropicFilteringValue);
 		}
-		catch (std::invalid_argument ex) {
+		catch (std::invalid_argument& ex) {
 			std::cout << "WARNING: Error while enabling anisotropic filtering. " << ex.what() << std::endl;
 
 			// Disable anisotropic filtering
@@ -370,7 +370,7 @@ void LIB_API Engine::setGraphics(EngineGraphics& g) {
 	}
 }
 
-Node LIB_API* Engine::getNode(std::string name)
+Node LIB_API* Engine::getNode(const std::string& name)
 {
 	//if the scene is not setted return null
 	if (m_scene_graph == nullptr) {
