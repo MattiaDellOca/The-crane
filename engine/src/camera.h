@@ -65,7 +65,7 @@ public:
 	* \param width Camera viewport width
 	* \param height Camera viewport height
 	*/
-	Camera(CameraType type, std::string name, glm::mat4 matrix, float near, float far, unsigned int width, unsigned int height);
+	Camera(CameraType type, const std::string& name, glm::mat4 matrix, float near, float far, unsigned int width, unsigned int height);
 
 	/**
  * Get the near plane value.

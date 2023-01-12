@@ -78,7 +78,7 @@ public:
      *
      * \param coords UNUSED.
      */
-    virtual void render(glm::mat4 coords);
+    virtual void render(glm::mat4 coords) override;
     
     /**
      * \brief Sets the filter and mipmap to use when rendering textures.

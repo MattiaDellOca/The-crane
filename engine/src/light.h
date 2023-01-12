@@ -102,7 +102,7 @@ public:
 	 *
 	 * \param viewMatrix The view matrix for the scene.
 	 */
-	void virtual render(glm::mat4 viewMatrix) = 0;
+	void virtual render(glm::mat4 viewMatrix) override = 0;
 	
 	/**
 	* \brief Gets the ID of the light.

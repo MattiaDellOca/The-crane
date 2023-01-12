@@ -40,5 +40,5 @@ public:
 	 * 
 	 * \param coords Pre-computed world coordinates
 	 */
-	virtual void render(glm::mat4 coords);
+	virtual void render(glm::mat4 coords) override;
 };

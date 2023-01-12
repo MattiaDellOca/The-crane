@@ -158,7 +158,7 @@ public:
 	 *
 	 * \param coords The pre-computed world coordinates of the node.
 	 */
-	void virtual render(glm::mat4 coords);
+	void virtual render(glm::mat4 coords) override;
 
 	/**
 	 * \brief Search a node based on his name

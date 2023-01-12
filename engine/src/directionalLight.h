@@ -16,12 +16,12 @@ public:
 	 * \param diffuse Diffuse term vector
 	 * \param specular Specular term vector
 	 */
-	DirectionalLight(std::string name, glm::mat4 matrix, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular);
+	DirectionalLight(const std::string& name, glm::mat4 matrix, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular);
 
 	/**
 	 * Render the light in the scene.
 	 * 
 	 * \param coords pre-computed world coordinates
 	 */
-	virtual void render(glm::mat4 coords);
+	virtual void render(glm::mat4 coords) override;
 };

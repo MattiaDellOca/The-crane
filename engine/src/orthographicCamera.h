@@ -37,7 +37,7 @@ public:
 	 * 
 	 * \param matrix projection matrix
 	 */
-	virtual void render(glm::mat4 matrix);
+	virtual void render(glm::mat4 matrix) override;
 
 	/**
 	 * Updates the current orthographic matrix using new width and height.
@@ -45,5 +45,5 @@ public:
 	 * \param width New width of the viewport
 	 * \param height New height of the viewport
 	 */
-	virtual void updateWindowSize(unsigned int width, unsigned int height);
+	virtual void updateWindowSize(unsigned int width, unsigned int height) override;
 };

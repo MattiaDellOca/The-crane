@@ -56,7 +56,7 @@ public:
 	 *
 	 * \param name The name of the rendering list.
 	 */
-	RenderingList(std::string name);
+	explicit RenderingList(std::string name);
 
 	/**
 	 * \brief Gets the list of nodes to be rendered.
@@ -90,5 +90,5 @@ public:
 	 *
 	 * \param cameraMatrix The camera matrix of the scene. It is a 4x4 matrix that represents the position and orientation of the camera in the scene.
 	 */
-	void render(glm::mat4 cameraMatrix);
+	void render(glm::mat4 cameraMatrix) override;
 };

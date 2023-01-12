@@ -73,7 +73,7 @@ public:
 	 *
 	 * \param coords The pre-computed world coordinates of the mesh object.
 	 */
-	void render(glm::mat4 coords);
+	void render(glm::mat4 coords) override;
 
 	/**
 	 * \brief Gets the material of the mesh.
