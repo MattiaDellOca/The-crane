@@ -408,7 +408,7 @@ int main(int argc, char* argv[]) {
 
 	// Set Texture settings
 	Engine::setGraphics(profile);
-	Engine::load("../assets/crane/crane-high-quality.ovo", "../assets/crane/");
+	Engine::load("../assets/crane/crane.ovo", "../assets/crane/");
 
 	// Searching nodes
 	root = Engine::getNode("[root]");
