@@ -15,9 +15,8 @@ bool LIB_API Texture::m_settings_dirty = false;
 std::vector<Texture*> LIB_API Texture::m_textures{};
 
 LIB_API Texture::Texture(const std::string& name, const std::string& file_path) : Object(name), m_file_path(file_path), m_loaded{ false } {
-    // Load texture from file
-    loadTexture(file_path, &m_texture_id);
-    m_loaded = true;
+    // Lazy loading of textures
+    m_loaded = false;
 
     // Append this object to the m_textures list
     m_textures.push_back(this);
