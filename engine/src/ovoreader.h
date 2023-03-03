@@ -9,6 +9,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/packing.hpp>
 
+#include <GL/glew.h>
+
 // C/C++:
 #include <vector>   
 #include <map>

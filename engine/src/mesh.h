@@ -47,6 +47,13 @@ protected:
 	*/
 	unsigned int m_faces;
 
+	unsigned int m_vertex_vbo;
+	unsigned int m_normal_vbo;
+	unsigned int m_texture_vbo;
+	unsigned int m_face_index_vbo;
+
+	unsigned int m_vao;
+
 
 	/**
 	 * \var m_cast_shadows
@@ -127,12 +134,6 @@ public:
 	 */
 	void setMaterial(Material* material);
 
-	/**
-	 * \brief Adds a vertex to the mesh.
-	 *
-	 * \param vertex The vertex to be added. It is a pointer to a Vertex object.
-	 */
-	void addVertex(Vertex* vertex);
 
 	/**
 	* \brief Adds a new face (a triangle) to the list of faces.

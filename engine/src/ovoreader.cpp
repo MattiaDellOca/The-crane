@@ -381,16 +381,16 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     memcpy(&LODs, data + position, sizeof(unsigned int));
     position += sizeof(unsigned int);
 
-    vector<Vertex*> verticesVec;
+    float* vertices = nullptr;
     Mesh* mesh = new Mesh{ meshName, matrix };
 
 
     // Always load only first LOD (level of detail)...:
 
     // Nr. of vertices:
-    unsigned int vertices, faces;
-    memcpy(&vertices, data + position, sizeof(unsigned int));
-    cout << "   Nr. vertices  :  " << vertices << endl;
+    unsigned int nVertices, faces;
+    memcpy(&nVertices, data + position, sizeof(unsigned int));
+    cout << "   Nr. vertices  :  " << nVertices << endl;
     position += sizeof(unsigned int);
 
     // ...and faces:
@@ -398,9 +398,12 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     cout << "   Nr. faces . . :  " << faces << endl;
     position += sizeof(unsigned int);
 
+    // Allocate dimension of vertices array
+    vertices = new float[nVertices * 3];
+
 
     // Interleaved and compressed vertex/normal/UV/tangent data:
-    for (unsigned int c = 0; c < vertices; c++) {
+    for (unsigned int c = 0; c < nVertices; c++) {
         // Vertex coords:
         glm::vec3 vertex;
         memcpy(&vertex, data + position, sizeof(glm::vec3));
@@ -424,8 +427,11 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
         glm::vec4 tangent = glm::unpackSnorm3x10_1x2(tangentData);
         position += sizeof(unsigned int);
 
-        // Add vertex to the vertices vector
-        verticesVec.push_back(new Vertex{ vertex, normal, uv, tangent });
+        // Populate arrays
+        vertices[c * 3] = vertex.x;
+        vertices[c * 3 + 1] = vertex.y;
+        vertices[c * 3 + 2] = vertex.z;
+
     }
 
     // Faces:
@@ -450,6 +456,17 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
         cout << "ERROR: material '" << materialName << "' doesn't exists in file" << endl;
         return nullptr;
     }
+
+
+    // Generate a vertex buffer and bind it
+    unsigned int vertexVbo;
+    glGenBuffers(1, &vertexVbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexVbo);
+
+    // Copy the vertex data from system to video memory:
+    glBufferData(GL_ARRAY_BUFFER, nVertices * 3 * sizeof(float), vertices, GL_STATIC_DRAW);
+
+    
 
     mesh->setMaterial(material->second);
 
