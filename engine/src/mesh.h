@@ -11,6 +11,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+
 #include <vector>
 
 /**
@@ -47,9 +48,36 @@ protected:
 	*/
 	unsigned int m_faces;
 
+	/**
+	* \var m_vertex_vbo
+	* \brief The VBO id for vertices.
+	*
+	* m_vertex_vbo is a member variable that holds the VBO id of the vertices of this mesh.
+	*/
 	unsigned int m_vertex_vbo;
+
+	/**
+	* \var m_normal_vbo
+	* \brief The VBO id for normals.
+	*
+	* m_normal_vbo is a member variable that holds the VBO id of the normals of this mesh.
+	*/
 	unsigned int m_normal_vbo;
+
+	/**
+	* \var m_texture_vbo
+	* \brief The VBO id for textures.
+	*
+	* m_texture_vbo is a member variable that holds the VBO id of the textures of this mesh.
+	*/
 	unsigned int m_texture_vbo;
+
+	/**
+	* \var m_face_index_vbo
+	* \brief The VBO id for face indexes.
+	*
+	* m_face_index_vbo is a member variable that holds the VBO id of the face indexes of this mesh.
+	*/
 	unsigned int m_face_index_vbo;
 
 	unsigned int m_vao;
@@ -133,6 +161,41 @@ public:
 	 * \param material The material to be set. It is a pointer to a Material object.
 	 */
 	void setMaterial(Material* material);
+
+	/**
+	 * \brief Sets the number of faces of the mesh.
+	 *
+	 * \param nFaces The number to be set.
+	 */
+	void setNFaces(unsigned int nFaces);
+
+	/**
+	 * \brief Sets the vertexVbo of the mesh.
+	 *
+	 * \param vertexVbo The vertexVbo to be set.
+	 */
+	void setVertexVbo(unsigned int vertexVbo);
+
+	/**
+	 * \brief Sets the normalVbo of the mesh.
+	 *
+	 * \param normalVbo The normalVbo to be set.
+	 */
+	void setNormalVbo(unsigned int normalVbo);
+
+	/**
+	 * \brief Sets the textureVbo of the mesh.
+	 *
+	 * \param textureVbo The textureVbo to be set.
+	 */
+	void setTextureVbo(unsigned int textureVbo);
+
+	/**
+	 * \brief Sets the faceIndexVbo of the mesh.
+	 *
+	 * \param faceIndexVbo The faceIndexVbo to be set.
+	 */
+	void setFaceIndexVbo(unsigned int faceIndexVbo);
 
 
 	/**

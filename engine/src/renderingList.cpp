@@ -55,7 +55,7 @@ void LIB_API RenderingList::render(glm::mat4 cameraMatrix) {
 		Mesh* m = dynamic_cast<Mesh*>((*it)->m_node);
 		if (m != nullptr && m->isShadowCastEnabled()) {
 			// call render method for each node
-			m->renderShadow(inverseCameraMatrix, (*it)->m_mat);
+			//m->renderShadow(inverseCameraMatrix, (*it)->m_mat);
 		}
 	}
 }

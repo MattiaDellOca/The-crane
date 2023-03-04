@@ -1,5 +1,8 @@
 #include "ovoreader.h"
 
+// GLEW
+#include <GL/glew.h>
+
 Node LIB_API* Ovoreader::readFile(const char* path, const char* texturesDir) {
 	// Open file:
 	FILE* dat = fopen(path, "rb");
@@ -377,29 +380,25 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
 
 
     // Nr. of LODs:
-    unsigned int LODs;
-    memcpy(&LODs, data + position, sizeof(unsigned int));
     position += sizeof(unsigned int);
-
-    float* vertices = nullptr;
-    Mesh* mesh = new Mesh{ meshName, matrix };
-
-
     // Always load only first LOD (level of detail)...:
 
     // Nr. of vertices:
-    unsigned int nVertices, faces;
+    unsigned int nVertices, nFaces;
     memcpy(&nVertices, data + position, sizeof(unsigned int));
     cout << "   Nr. vertices  :  " << nVertices << endl;
     position += sizeof(unsigned int);
 
     // ...and faces:
-    memcpy(&faces, data + position, sizeof(unsigned int));
-    cout << "   Nr. faces . . :  " << faces << endl;
+    memcpy(&nFaces, data + position, sizeof(unsigned int));
+    cout << "   Nr. faces . . :  " << nFaces << endl;
     position += sizeof(unsigned int);
 
-    // Allocate dimension of vertices array
-    vertices = new float[nVertices * 3];
+    // Allocate VBOs arrays
+    float* vertices = new float[nVertices * 3];
+    float* normals = new float[nVertices * 3];
+    float* textures = new float[nVertices * 2];
+    unsigned int* faces = new unsigned int[nFaces * 3];
 
 
     // Interleaved and compressed vertex/normal/UV/tangent data:
@@ -422,9 +421,6 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
         position += sizeof(unsigned int);
 
         // Tangent vector:
-        unsigned int tangentData;
-        memcpy(&tangentData, data + position, sizeof(unsigned int));
-        glm::vec4 tangent = glm::unpackSnorm3x10_1x2(tangentData);
         position += sizeof(unsigned int);
 
         // Populate arrays
@@ -432,22 +428,26 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
         vertices[c * 3 + 1] = vertex.y;
         vertices[c * 3 + 2] = vertex.z;
 
+        normals[c * 3] = normal.x;
+        normals[c * 3 + 1] = normal.y;
+        normals[c * 3 + 2] = normal.z;
+
+        textures[c * 2] = uv.x;
+        textures[c * 2 + 1] = uv.y;
+
     }
 
     // Faces:
-    // every face is composed by three vector. Given the i-th face, it will be composed by vertices in i, i+1 and i+2
-    // position in the vertices vector
-    for (unsigned int c = 0; c < faces; c++) {
+    // every face is composed by three vertices.
+    for (unsigned int c = 0; c < nFaces; c++) {
         // Face indexes:
         unsigned int face[3];       // store all points
         memcpy(face, data + position, sizeof(unsigned int) * 3);
         position += sizeof(unsigned int) * 3;
 
-        Vertex* v1 = verticesVec.at(face[0]);
-        Vertex* v2 = verticesVec.at(face[1]);
-        Vertex* v3 = verticesVec.at(face[2]);
-
-        mesh->addFace(v1, v2, v3);
+        faces[c * 3] = face[0];
+        faces[c * 3 + 1] = face[1];
+        faces[c * 3 + 2] = face[2];
     }
 
     // Load Material class given the name of the material
@@ -463,13 +463,37 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     glGenBuffers(1, &vertexVbo);
     glBindBuffer(GL_ARRAY_BUFFER, vertexVbo);
 
-    // Copy the vertex data from system to video memory:
+    // Generate a normal buffer and bind it
+    unsigned int normalVbo;
+    glGenBuffers(1, &normalVbo);
+    glBindBuffer(GL_ARRAY_BUFFER, normalVbo);
+
+    // Generate a texture buffer and bind it
+    unsigned int textureVbo;
+    glGenBuffers(1, &textureVbo);
+    glBindBuffer(GL_ARRAY_BUFFER, textureVbo);
+
+    // Generate a face buffer and bind it
+    unsigned int faceVbo;
+    glGenBuffers(1, &faceVbo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, faceVbo);
+
+    // Copy the VBOs data from system to video memory:
     glBufferData(GL_ARRAY_BUFFER, nVertices * 3 * sizeof(float), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, nVertices * 3 * sizeof(float), normals, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, nVertices * 2 * sizeof(float), textures, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, nFaces * 3 * sizeof(unsigned int), faces, GL_STATIC_DRAW);
 
     
-
+    // Create mesh
+    Mesh* mesh = new Mesh{ meshName, matrix };
     mesh->setMaterial(material->second);
-
+    mesh->setNFaces(nFaces);
+    mesh->setVertexVbo(vertexVbo);
+    mesh->setNormalVbo(normalVbo);
+    mesh->setTextureVbo(textureVbo);
+    mesh->setFaceIndexVbo(faceVbo);
+    
     return mesh;
 }
 

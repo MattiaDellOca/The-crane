@@ -12,17 +12,20 @@
 #include <thread>
 
 
-   //GLM:
+   // GLM:
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+	// GLEW:
+#include <GL/glew.h>
 
-   //FreeGLUT:
+
+	// FreeGLUT:
 #include <GL/freeglut.h>
 
-	//FreeImage:
+	// FreeImage:
 #include "FreeImage.h"
 
 ////////////
@@ -160,12 +163,28 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Create the window with a specific title:
 	m_windowId = glutCreateWindow(title);
 
+	// Init Glew
+	glewExperimental = GL_TRUE;
+	GLenum err = glewInit();
+	if (err != GLEW_OK) {
+		cout << "Error while initializing Glew, aborting." << endl;
+		return 0;
+	}
+
+	// OpenGL 2.1 is required:
+	if (!glewIsSupported("GL_VERSION_2_1")) {
+		std::cout << "OpenGL 2.1 not supported" << std::endl;
+		return 0;
+	}
+
 	// Enable Z-Buffer+Lighting+Face Culling
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);
 	glShadeModel(GL_SMOOTH);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
 
 	// Set reshape function
 	glutReshapeFunc(reshapeCallback);
