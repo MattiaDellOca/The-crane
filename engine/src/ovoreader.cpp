@@ -434,7 +434,6 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
 
         textures[c * 2] = uv.x;
         textures[c * 2 + 1] = uv.y;
-
     }
 
     // Faces:
@@ -462,27 +461,26 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     unsigned int vertexVbo;
     glGenBuffers(1, &vertexVbo);
     glBindBuffer(GL_ARRAY_BUFFER, vertexVbo);
+    glBufferData(GL_ARRAY_BUFFER, nVertices * 3 * sizeof(float), vertices, GL_STATIC_DRAW); // Copy the VBO data from system to video memory
+
 
     // Generate a normal buffer and bind it
     unsigned int normalVbo;
     glGenBuffers(1, &normalVbo);
     glBindBuffer(GL_ARRAY_BUFFER, normalVbo);
+    glBufferData(GL_ARRAY_BUFFER, nVertices * 3 * sizeof(float), normals, GL_STATIC_DRAW); // Copy the VBO data from system to video memory
 
     // Generate a texture buffer and bind it
     unsigned int textureVbo;
     glGenBuffers(1, &textureVbo);
     glBindBuffer(GL_ARRAY_BUFFER, textureVbo);
+    glBufferData(GL_ARRAY_BUFFER, nVertices * 2 * sizeof(float), textures, GL_STATIC_DRAW); // Copy the VBO data from system to video memory
 
     // Generate a face buffer and bind it
     unsigned int faceVbo;
     glGenBuffers(1, &faceVbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, faceVbo);
-
-    // Copy the VBOs data from system to video memory:
-    glBufferData(GL_ARRAY_BUFFER, nVertices * 3 * sizeof(float), vertices, GL_STATIC_DRAW);
-    glBufferData(GL_ARRAY_BUFFER, nVertices * 3 * sizeof(float), normals, GL_STATIC_DRAW);
-    glBufferData(GL_ARRAY_BUFFER, nVertices * 2 * sizeof(float), textures, GL_STATIC_DRAW);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, nFaces * 3 * sizeof(unsigned int), faces, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, nFaces * 3 * sizeof(unsigned int), faces, GL_STATIC_DRAW); // Copy the VBO data from system to video memory
 
     
     // Create mesh
@@ -493,7 +491,10 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     mesh->setNormalVbo(normalVbo);
     mesh->setTextureVbo(textureVbo);
     mesh->setFaceIndexVbo(faceVbo);
-    
+
+    // Delete unused resources
+    //TODO
+
     return mesh;
 }
 
