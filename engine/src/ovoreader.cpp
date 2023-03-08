@@ -484,16 +484,13 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
 
     
     // Create mesh
-    Mesh* mesh = new Mesh{ meshName, matrix };
-    mesh->setMaterial(material->second);
-    mesh->setNFaces(nFaces);
-    mesh->setVertexVbo(vertexVbo);
-    mesh->setNormalVbo(normalVbo);
-    mesh->setTextureVbo(textureVbo);
-    mesh->setFaceIndexVbo(faceVbo);
+    Mesh* mesh = new Mesh{ meshName, matrix,nFaces, vertexVbo, normalVbo, textureVbo, faceVbo, 0, material->second }; // 0 = vao
 
     // Delete unused resources
-    //TODO
+    delete[] vertices;
+    delete[] normals;
+    delete[] textures;
+    delete[] faces;
 
     return mesh;
 }

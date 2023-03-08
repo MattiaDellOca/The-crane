@@ -96,10 +96,16 @@ public:
 	 *
 	 * \param name The name of the mesh object.
 	 * \param matrix The transformation matrix of the mesh object.
+	 * \param faces The number of faces in the mesh.
+	 * \param vertexVbo The vertex buffer object (VBO) containing the vertices of the mesh.
+	 * \param normalVbo The VBO containing the normals of the mesh.
+	 * \param textureVbo The VBO containing the texture coordinates of the mesh.
+	 * \param faceIndexVbo The VBO containing the indices of the faces of the mesh.
+	 * \param vao The vertex array object (VAO) of the mesh.
 	 * \param material The material of the mesh. It is a pointer to a Material object.
 	 * \param cast_shadows If true, the mesh will block light therefore creates a shadow.
 	 */
-	Mesh(const std::string& name, glm::mat4 matrix, Material* material = nullptr, bool cast_shadows = true);
+	Mesh(const std::string& name, glm::mat4 matrix,unsigned int faces, unsigned int vertexVbo, unsigned int normalVbo, unsigned int textureVbo, unsigned int faceIndexVbo, unsigned int vao, Material* material = nullptr, bool cast_shadows = true);
 
 
 	/**
