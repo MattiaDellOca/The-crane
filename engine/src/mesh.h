@@ -82,7 +82,6 @@ protected:
 
 	unsigned int m_vao;
 
-
 	/**
 	 * \var m_cast_shadows
 	 * \brief Indicates whether the mesh should cast shadows.
@@ -152,66 +151,6 @@ public:
 	 * \param coords The pre-computed world coordinates of the mesh object.
 	 */
 	void render(glm::mat4 coords) override;
-
-	/**
-	 * \brief Gets the material of the mesh.
-	 *
-	 * \return The material of the mesh. It is a pointer to a Material object.
-	 */
-	const Material* getMaterial();
-
-
-	/**
-	 * \brief Sets the material of the mesh.
-	 *
-	 * \param material The material to be set. It is a pointer to a Material object.
-	 */
-	void setMaterial(Material* material);
-
-	/**
-	 * \brief Sets the number of faces of the mesh.
-	 *
-	 * \param nFaces The number to be set.
-	 */
-	void setNFaces(unsigned int nFaces);
-
-	/**
-	 * \brief Sets the vertexVbo of the mesh.
-	 *
-	 * \param vertexVbo The vertexVbo to be set.
-	 */
-	void setVertexVbo(unsigned int vertexVbo);
-
-	/**
-	 * \brief Sets the normalVbo of the mesh.
-	 *
-	 * \param normalVbo The normalVbo to be set.
-	 */
-	void setNormalVbo(unsigned int normalVbo);
-
-	/**
-	 * \brief Sets the textureVbo of the mesh.
-	 *
-	 * \param textureVbo The textureVbo to be set.
-	 */
-	void setTextureVbo(unsigned int textureVbo);
-
-	/**
-	 * \brief Sets the faceIndexVbo of the mesh.
-	 *
-	 * \param faceIndexVbo The faceIndexVbo to be set.
-	 */
-	void setFaceIndexVbo(unsigned int faceIndexVbo);
-
-
-	/**
-	* \brief Adds a new face (a triangle) to the list of faces.
-	* 
-	* \param v1 Pointer to the first Vertex object.
-	* \param v2 Pointer to the second Vertex object.
-	* \param v3 Pointer to the third Vertex object.
-	*/
-	void addFace(Vertex* v1, Vertex* v2, Vertex* v3);
 
 	/**
 	* \brief Enables or disables shadow casting for the mesh object.
