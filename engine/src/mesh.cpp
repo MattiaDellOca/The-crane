@@ -10,7 +10,7 @@
 
 
 LIB_API Mesh::Mesh(const std::string& name, glm::mat4 matrix, unsigned int faces, unsigned int vertexVbo, unsigned int normalVbo, unsigned int textureVbo, unsigned int faceIndexVbo, unsigned int vao, Material* material, bool cast_shadows)
-	: Node(name, matrix), m_material{ material }, m_cast_shadows{ m_cast_shadows }, m_faces{ faces }, m_vertex_vbo{ vertexVbo }, m_normal_vbo{ normalVbo }, m_texture_vbo{ textureVbo }, m_face_index_vbo{ faceIndexVbo }, m_vao{ vao } {};
+	: Node(name, matrix), m_material{ material }, m_cast_shadows{ cast_shadows }, m_faces{ faces }, m_vertex_vbo{ vertexVbo }, m_normal_vbo{ normalVbo }, m_texture_vbo{ textureVbo }, m_face_index_vbo{ faceIndexVbo }, m_vao{ vao } {};
 
 
 LIB_API Mesh::~Mesh(){
@@ -88,27 +88,19 @@ void LIB_API Mesh::renderShadow(glm::mat4 cameraInv, glm::mat4 parentRelativeCoo
 	// Compute + load world coordinate 
 	glLoadMatrixf(glm::value_ptr(cameraInv * shadowCastMatrix));
 
-	// Draw shadow for each face composing the mesh
-	for (int i = 0; static_cast<unsigned int>(i) < m_faces; i++) {
-		// Load the three vertices composing a face
-		Vertex* v1 = m_vertices.at(i * 3);
-		Vertex* v2 = m_vertices.at(i * 3 + 1);
-		Vertex* v3 = m_vertices.at(i * 3 + 2);
 
-		// Draw face flat on y=0
-		glBegin(GL_TRIANGLES);
+	// Render
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
 
-		// Scalar distance + distance point * plane
-		glNormal3fv(glm::value_ptr(planeNormal));
-		glVertex3fv(glm::value_ptr(v1->getPosition()));
+	glBindBuffer(GL_ARRAY_BUFFER, m_vertex_vbo);
+	glVertexPointer(3, GL_FLOAT, 0, nullptr);
 
-		glNormal3fv(glm::value_ptr(planeNormal));
-		glVertex3fv(glm::value_ptr(v2->getPosition()));
+	glBindBuffer(GL_ARRAY_BUFFER, m_normal_vbo);
+	glNormalPointer(GL_FLOAT, 0, nullptr);
 
-		glNormal3fv(glm::value_ptr(planeNormal));
-		glVertex3fv(glm::value_ptr(v3->getPosition()));
-		glEnd();
-	}
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_face_index_vbo);
+	glDrawElements(GL_TRIANGLES, m_faces * 3, GL_UNSIGNED_INT, nullptr);
 
 	// Reset
 	glDepthFunc(GL_LESS);

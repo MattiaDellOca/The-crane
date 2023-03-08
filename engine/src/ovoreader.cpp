@@ -491,7 +491,7 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     delete[] normals;
     delete[] textures;
     delete[] faces;
-
+    
     return mesh;
 }
 

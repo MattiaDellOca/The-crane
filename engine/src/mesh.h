@@ -106,7 +106,6 @@ public:
 	 */
 	Mesh(const std::string& name, glm::mat4 matrix,unsigned int faces, unsigned int vertexVbo, unsigned int normalVbo, unsigned int textureVbo, unsigned int faceIndexVbo, unsigned int vao, Material* material = nullptr, bool cast_shadows = true);
 
-
 	/**
 	* \brief Destructor for the Mesh class.
 	*/
@@ -141,7 +140,6 @@ public:
 	* \returns A reference to the Mesh object.
 	*/
 	Mesh& operator=(Mesh&& o) = delete;
-
 
 	/**
 	 * \brief Renders the mesh object.
