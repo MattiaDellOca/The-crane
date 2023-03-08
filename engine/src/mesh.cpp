@@ -62,6 +62,8 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 	glLoadMatrixf(glm::value_ptr(matrix));
 
 	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertex_vbo);
 	glVertexPointer(3, GL_FLOAT, 0, nullptr);
