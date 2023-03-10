@@ -78,6 +78,19 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 }
 #endif
 
+#ifdef _DEBUG
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	  
+/**
+ * Debug message callback for OpenGL. See https://www.opengl.org/wiki/Debug_Output
+ */
+void __stdcall DebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam)
+{
+	// Ignore NVIDIA on VBO allocation
+	if(id != 131185 && type != 33361)
+		std::cout << "OpenGL says: \"" << std::string(message) << "\"" << std::endl;
+}
+#endif
+
 
 /////////////
 // PRIVATE //
@@ -150,6 +163,13 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitContextVersion(4, 4);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
+
+#ifdef _DEBUG
+	// Enable debug flag
+	glutInitContextFlags(GLUT_DEBUG);
+	std::cout << "Running in FreeGLUT debugging mode" << std::endl;
+#endif
+	
 	
 	// Init FreeGLUT window
 	glutInitWindowPosition(500, 500);
@@ -166,18 +186,23 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	m_windowId = glutCreateWindow(title);
 
 	// Init Glew
-	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 	if (err != GLEW_OK) {
 		cout << "Error while initializing Glew, aborting." << endl;
 		return 0;
 	}
 
-	// OpenGL 2.1 is required:
-	if (!glewIsSupported("GL_VERSION_2_1")) {
-		std::cout << "OpenGL 2.1 not supported" << std::endl;
+	// OpenGL 4.4 is required:
+	if (!glewIsSupported("GL_VERSION_4_4")) {
+		std::cout << "OpenGL 4.4 not supported" << std::endl;
 		return 0;
 	}
+
+#ifdef _DEBUG
+	// Register OpenGL debug callback:
+	glDebugMessageCallback((GLDEBUGPROC)DebugCallback, nullptr);
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+#endif
 
 	// Enable Z-Buffer+Lighting+Face Culling
 	glEnable(GL_DEPTH_TEST);
