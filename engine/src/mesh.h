@@ -80,6 +80,12 @@ protected:
 	*/
 	unsigned int m_face_index_vbo;
 
+	/**
+	* \var m_vao
+	* \brief The VAO id for thish mesh.
+	*
+	* m_face_index_vbo is a member variable that holds the VAO id of this mesh.
+	*/
 	unsigned int m_vao;
 
 
@@ -196,6 +202,13 @@ public:
 	 * \param faceIndexVbo The faceIndexVbo to be set.
 	 */
 	void setFaceIndexVbo(unsigned int faceIndexVbo);
+
+	/**
+	 * \brief Sets the VAO of the mesh.
+	 *
+	 * \param faceIndexVbo The VAO to be set.
+	 */
+	void setVao(unsigned int vao);
 
 
 	/**

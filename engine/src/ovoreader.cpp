@@ -456,13 +456,16 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
         return nullptr;
     }
 
+    // Generate and bind the VAO
+    unsigned int vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
 
     // Generate a vertex buffer and bind it
     unsigned int vertexVbo;
     glGenBuffers(1, &vertexVbo);
     glBindBuffer(GL_ARRAY_BUFFER, vertexVbo);
     glBufferData(GL_ARRAY_BUFFER, nVertices * 3 * sizeof(float), vertices, GL_STATIC_DRAW); // Copy the VBO data from system to video memory
-
 
     // Generate a normal buffer and bind it
     unsigned int normalVbo;
@@ -482,7 +485,9 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, faceVbo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, nFaces * 3 * sizeof(unsigned int), faces, GL_STATIC_DRAW); // Copy the VBO data from system to video memory
 
-    
+    // Unbind the VAO
+    glBindVertexArray(0);
+
     // Create mesh
     Mesh* mesh = new Mesh{ meshName, matrix };
     mesh->setMaterial(material->second);

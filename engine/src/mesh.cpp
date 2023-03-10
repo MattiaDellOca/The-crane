@@ -19,6 +19,8 @@ LIB_API Mesh::~Mesh(){
 	glDeleteBuffers(1, &m_normal_vbo);
 	glDeleteBuffers(1, &m_texture_vbo);
 	glDeleteBuffers(1, &m_face_index_vbo);
+
+	glDeleteVertexArrays(1, &m_vao);
 }
 
 const Material LIB_API *Mesh::getMaterial() {
@@ -49,6 +51,10 @@ void LIB_API Mesh::setFaceIndexVbo(unsigned int faceIndexVbo) {
 	m_face_index_vbo = faceIndexVbo;
 }
 
+void LIB_API Mesh::setVao(unsigned int vao) {
+	m_vao = vao;
+}
+
 void LIB_API Mesh::render(glm::mat4 matrix) {
 	// Load material
 	m_material->apply();
@@ -61,6 +67,7 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 	// Load matrix
 	glLoadMatrixf(glm::value_ptr(matrix));
 
+	
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -76,6 +83,12 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_face_index_vbo);
 	glDrawElements(GL_TRIANGLES, m_faces * 3, GL_UNSIGNED_INT, nullptr);
+	
+	/*
+	glBindVertexArray(m_vao);
+	glDrawElements(GL_TRIANGLES, m_faces * 3, GL_UNSIGNED_INT, nullptr);
+	glBindVertexArray(0);
+	*/
 
 	// Check if a texture has been set
 	if (m_material->getTexture() != nullptr) {
