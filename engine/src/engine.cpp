@@ -145,16 +145,18 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	std::cout << "Initializing engine" << std::endl;
 	std::cout << std::endl;
 
-	// Init context
+	// FreeGLUT init
+	glutInit(argc, argv);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
+	glutInitContextVersion(4, 4);
+	glutInitContextProfile(GLUT_CORE_PROFILE);
+	
+	// Init FreeGLUT window
 	glutInitWindowPosition(500, 500);
-
 	m_window_width = width;
 	m_window_height = height;
 	glutInitWindowSize(width, height);
 
-	// FreeGLUT init
-	glutInit(argc, argv);
 
 	// Global OpenGL settings:
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
@@ -200,6 +202,7 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	std::cout << "   version  . . : " << glGetString(GL_VERSION) << std::endl;
 	std::cout << "   vendor . . . : " << glGetString(GL_VENDOR) << std::endl;
 	std::cout << "   renderer . . : " << glGetString(GL_RENDERER) << std::endl;
+	std::cout << "   GLSL . . . . : " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 
 	// Success!!
 	return true;
