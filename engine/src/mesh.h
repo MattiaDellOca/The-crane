@@ -3,7 +3,6 @@
 #include "lib.h"
 #include "node.h"
 #include "material.h"
-#include "vertex.h"
 
 //GLM:
 #include <glm/glm.hpp>
@@ -11,8 +10,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-
-#include <vector>
 
 /**
  * \class Mesh
@@ -24,13 +21,6 @@
  */
 class LIB_API Mesh : public Node {
 protected:
-	/**
-	 * \var m_vertices
-	 * \brief The vertices of the mesh.
-	 *
-	 * m_vertices is a member variable that holds the vertices of the mesh. It is a vector of pointers to Vertex objects.
-	 */
-	std::vector<Vertex*> m_vertices;
 	
 	/**
 	 * \var m_material

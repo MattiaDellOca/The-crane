@@ -169,43 +169,31 @@ void keyboardCallback(unsigned char key, int x, int y) {
 
 	else if (key == 'g') {
 		//rotate crane counterclockwise
-		cout << "[CRANE] SleewingUnit: rotating counterclockwise" << endl;
 		slewingUnit->setMatrix(glm::rotate(slewingUnit->getMatrix(), glm::radians(craneRotationSpeed), glm::vec3(0.0f, 1.f, 0.f)));
 	}
 	else if (key == 'l') {
 		// rotate crane counter clockwise
-		cout << "[CRANE] SleewingUnit: rotating clockwise" << endl;
 		slewingUnit->setMatrix(glm::rotate(slewingUnit->getMatrix(), glm::radians(-craneRotationSpeed), glm::vec3(0.0f, 1.f, 0.f)));
 	}
 	else if (key == 'h') {
 		// move trolley backward
 		if (minTrolley < movementTrolleyCount - 1) {
-			cout << "[CRANE] Trolley: moving backward" << endl;
 			trolley->setMatrix(glm::translate(trolley->getMatrix(), glm::vec3(-trolleySpeed, 0.0f, 0.0f)));
 
 			movementTrolleyCount--;
-		}
-		else {
-			cout << "[CRANE] Trolley: can't moving backward" << endl;
 		}
 	}
 	else if (key == 'k') {
 		// move trolley forward
 		if (maxTrolley > movementTrolleyCount + 1) {
-			cout << "[CRANE] Trolley: moving forward" << endl;
 			trolley->setMatrix(glm::translate(trolley->getMatrix(), glm::vec3(trolleySpeed, 0.0f, 0.0f)));
 
 			movementTrolleyCount++;
-		}
-		else {
-			cout << "[CRANE] Trolley: can't moving forward" << endl;
 		}
 	}
 	else if (key == 'u') {
 		// move cable up
 		if (extensionsCableCount > 0) {
-			cout << "[CRANE] Cables: moving up" << endl;
-
 			// There is an object between the hook and the cable
 			Node* hookParent = cable1->getChildren().at(0);
 
@@ -217,15 +205,10 @@ void keyboardCallback(unsigned char key, int x, int y) {
 
 			extensionsCableCount--;
 		}
-		else {
-			cout << "[CRANE] Cables: can't moving up" << endl;
-		}
 	}
 	else if (key == 'j') {
 		// move cable down
 		if (maxExtensionsCable > extensionsCableCount + 1) {
-			cout << "[CRANE] Cables: moving down" << endl;
-
 			// There is an object between the hook and the cable
 			Node* hookParent = cable1->getChildren().at(0);
 
@@ -236,9 +219,6 @@ void keyboardCallback(unsigned char key, int x, int y) {
 			hookParent->setMatrix(glm::scale(hookParent->getMatrix(), glm::vec3(1.0f, 1.0f - cablesScaleSpeed, 1.0f)));
 
 			extensionsCableCount++;
-		}
-		else {
-			cout << "[CRANE] Cables: can't moving down" << endl;
 		}
 	}
 	else if (key == 'm' && !hooked) {
@@ -255,8 +235,6 @@ void keyboardCallback(unsigned char key, int x, int y) {
 
 		// Hook the object if is it near
 		if (distanceHookContainer1 < thresholdHook) {
-			cout << "[CRANE] Hook: hooking container1" << endl;
-
 			// Calculate matrix of the container hooked
 			glm::mat4 matrixContainer1 = glm::inverse(hook->getWorldCoordinateMatrix()) * container1->getWorldCoordinateMatrix();
 			// Reset world coordinates
@@ -270,8 +248,6 @@ void keyboardCallback(unsigned char key, int x, int y) {
 			hookedNode = container1;
 		}
 		else if (distanceHookContainer2 < thresholdHook) {
-			cout << "[CRANE] Hook: hooking container2" << endl;
-
 			// Calculate matrix of the container hooked
 			glm::mat4 matrixContainer2 = glm::inverse(hook->getWorldCoordinateMatrix()) * container2->getWorldCoordinateMatrix();
 			// Reset world coordinates
@@ -284,9 +260,6 @@ void keyboardCallback(unsigned char key, int x, int y) {
 			hooked = !hooked;
 			hookedNode = container2;
 		}
-		else {
-			cout << "[CRANE] Hook: The containers are too far apart" << endl;
-		}
 	}
 	else if (key == 'm' && hooked) {
 		// Get world coordinates
@@ -294,11 +267,8 @@ void keyboardCallback(unsigned char key, int x, int y) {
 		glm::vec3 worldCordPlane{ plane->getWorldCoordinateMatrix()[3] };
 		// Calculate distance
 		float distanceObjPlane = worldObjHooked.y - worldCordPlane.y - heightContainer;
-		cout << distanceObjPlane << endl;
 
 		if (distanceObjPlane < abs(thresholdHook)) {
-			// Release the container
-			cout << "[CRANE] Hook: release object" << endl;
 			// World coordinates hooked obj
 			glm::mat4 worldCoordHooked = hookedNode->getWorldCoordinateMatrix();
 			worldCoordHooked[3].y = heightContainer;
@@ -310,48 +280,35 @@ void keyboardCallback(unsigned char key, int x, int y) {
 			hooked = !hooked;
 			hookedNode = nullptr;
 		}
-		else {
-			cout << "[CRANE] Hook: the container is too far from the plane" << endl;
-		}
 	}
 
 	// Moving operaions for main camera
 	else if (currentCamera->getCamera()->getName() == "Main camera") {
 		switch (key) {
 		case 'w':
-			cout << "[CRANE] Camera: moving frontward" << endl;
 			camera3D->setMatrix(glm::translate(camera3D->getMatrix(), glm::vec3(0.0f, 0.0f, -cameraSpeed)));
 			break;
 
 		case 'a':
-			cout << "[CRANE] Camera: moving left" << endl;
 			camera3D->setMatrix(glm::translate(camera3D->getMatrix(), glm::vec3(-cameraSpeed, 0.0f, 0.0f)));
 			break;
 
 		case 's':
-			cout << "[CRANE] Camera: moving backward" << endl;
 			camera3D->setMatrix(glm::translate(camera3D->getMatrix(), glm::vec3(0.0f, 0.0f, cameraSpeed)));
 			break;
 
 		case 'd':
-			cout << "[CRANE] Camera: moving right" << endl;
 			camera3D->setMatrix(glm::translate(camera3D->getMatrix(), glm::vec3(cameraSpeed, 0.0f, 0.0f)));
 			break;
 
 		case ' ':
-			cout << "[CRANE] Camera: moving up" << endl;
 			camera3D->setMatrix(glm::translate(camera3D->getMatrix(), glm::vec3(0.0f, cameraSpeed, 0.0f)));
 			break;
 
 		case 'q':
-			cout << "[CRANE] Camera: moving down" << endl;
 			camera3D->setMatrix(glm::translate(camera3D->getMatrix(), glm::vec3(0.0f, -cameraSpeed, 0.0f)));
 			break;
 		}
-	}
-
-	else {
-		cout << "[CRANE] Warning: option '" << key  << "' not supported" << endl;
 	}
 
 	// Update cameras coordinate

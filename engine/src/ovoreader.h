@@ -28,7 +28,6 @@ using namespace std;
 #include "positionalLight.h"
 #include "spotLight.h"
 #include "lightType.h"
-#include "vertex.h"
 
 
 /////////////

@@ -25,7 +25,6 @@ Node LIB_API* Ovoreader::readFile(const char* path, const char* texturesDir) {
 		if (feof(dat))
 			break;
 		fread(&chunkSize, sizeof(unsigned int), 1, dat);
-		cout << "\n[chunk id: " << chunkId << ", chunk size: " << chunkSize << ", chunk type: ";
 
 
 		// Load whole chunk into memory:
@@ -67,7 +66,6 @@ Node LIB_API* Ovoreader::readFile(const char* path, const char* texturesDir) {
 				break;
 
             default:
-                cout << "UNKNOWN]" << endl;
                 cout << "ERROR: corrupted or bad data in file " << path << endl;
                 fclose(dat);
                 delete[] data;
@@ -78,12 +76,11 @@ Node LIB_API* Ovoreader::readFile(const char* path, const char* texturesDir) {
         delete[] data;
 	}
 
-    cout << "---------- GOING RECURSIVE ----------" << endl;
     Node* root = recursiveLoad(dat, path);
 
     // Done:
     fclose(dat);
-    cout << "\nFile parsed" << endl;
+    cout << "\nFile OVO parsed" << endl;
     return root;
 }
 
@@ -94,7 +91,6 @@ Node LIB_API* Ovoreader::recursiveLoad(FILE* dat, const char* path) {
     if (feof(dat))
         return nullptr;
     fread(&chunkSize, sizeof(unsigned int), 1, dat);
-    cout << "\n[chunk id: " << chunkId << ", chunk size: " << chunkSize << ", chunk type: ";
 
 
     // Load whole chunk into memory:
@@ -131,7 +127,6 @@ Node LIB_API* Ovoreader::recursiveLoad(FILE* dat, const char* path) {
 
     // Unkown objects cause the ovoreader to stop
     default:
-        cout << "UNKNOWN]" << endl;
         cout << "ERROR: corrupted or bad data in file " << path << endl;
         fclose(dat);
         delete[] data;
@@ -158,21 +153,17 @@ Node LIB_API* Ovoreader::recursiveLoad(FILE* dat, const char* path) {
 }
 
 void LIB_API Ovoreader::parseOject(char* data, const unsigned int& position) {
-    cout << "version]" << endl;
 
     // OVO revision number:
     unsigned int versionId;
     memcpy(&versionId, data + position, sizeof(unsigned int));
-    cout << "   Version . . . :  " << versionId << endl;
 }
 
 Material LIB_API* Ovoreader::parseMaterial(char* data, unsigned int& position, const char* textureDir) {
-    cout << "material]" << endl;
 
     // Material name:
     char materialName[FILENAME_MAX];
     strcpy(materialName, data + position);
-    cout << "   Name  . . . . :  " << materialName << endl;
     position += (unsigned int)strlen(materialName) + 1;
 
     // Material term colors, starting with emissive:
@@ -236,12 +227,9 @@ Material LIB_API* Ovoreader::parseMaterial(char* data, unsigned int& position, c
 }
 
 Node LIB_API* Ovoreader::parseNode(char* data, unsigned int& position, unsigned int* nChildren) {
-	cout << "node]" << endl;
-
 	// Node name:
 	char nodeName[FILENAME_MAX];
 	strcpy(nodeName, data + position);
-	cout << "   Name  . . . . :  " << nodeName << endl;
 	position += (unsigned int)strlen(nodeName) + 1;
 
 	// Node matrix:
@@ -252,7 +240,6 @@ Node LIB_API* Ovoreader::parseNode(char* data, unsigned int& position, unsigned 
     // Nr. of children nodes:
     unsigned int children;
     memcpy(&children, data + position, sizeof(unsigned int));
-    cout << "   Nr. children  :  " << children << endl;
     *nChildren = children;
     position += sizeof(unsigned int);
 
@@ -261,13 +248,11 @@ Node LIB_API* Ovoreader::parseNode(char* data, unsigned int& position, unsigned 
 }
 
 Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned int* nChildren) {
-    cout << "mesh]" << endl;
 
     // Mesh name:
     char meshName[FILENAME_MAX];
     strcpy(meshName, data + position);
     position += (unsigned int)strlen(meshName) + 1;
-    cout << "   Name  . . . . :  " << meshName << endl;
 
     // Mesh matrix:
     glm::mat4 matrix;
@@ -386,12 +371,10 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     // Nr. of vertices:
     unsigned int nVertices, nFaces;
     memcpy(&nVertices, data + position, sizeof(unsigned int));
-    cout << "   Nr. vertices  :  " << nVertices << endl;
     position += sizeof(unsigned int);
 
     // ...and faces:
     memcpy(&nFaces, data + position, sizeof(unsigned int));
-    cout << "   Nr. faces . . :  " << nFaces << endl;
     position += sizeof(unsigned int);
 
     // Allocate VBOs arrays
@@ -461,22 +444,30 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
+    // Activate client states
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
     // Generate a vertex buffer and bind it
     unsigned int vertexVbo;
     glGenBuffers(1, &vertexVbo);
     glBindBuffer(GL_ARRAY_BUFFER, vertexVbo);
+    glVertexPointer(3, GL_FLOAT, 0, nullptr);
     glBufferData(GL_ARRAY_BUFFER, nVertices * 3 * sizeof(float), vertices, GL_STATIC_DRAW); // Copy the VBO data from system to video memory
 
     // Generate a normal buffer and bind it
     unsigned int normalVbo;
     glGenBuffers(1, &normalVbo);
     glBindBuffer(GL_ARRAY_BUFFER, normalVbo);
+    glNormalPointer(GL_FLOAT, 0, nullptr);
     glBufferData(GL_ARRAY_BUFFER, nVertices * 3 * sizeof(float), normals, GL_STATIC_DRAW); // Copy the VBO data from system to video memory
 
     // Generate a texture buffer and bind it
     unsigned int textureVbo;
     glGenBuffers(1, &textureVbo);
     glBindBuffer(GL_ARRAY_BUFFER, textureVbo);
+    glTexCoordPointer(2, GL_FLOAT, 0, nullptr);
     glBufferData(GL_ARRAY_BUFFER, nVertices * 2 * sizeof(float), textures, GL_STATIC_DRAW); // Copy the VBO data from system to video memory
 
     // Generate a face buffer and bind it
@@ -489,7 +480,7 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     glBindVertexArray(0);
 
     // Create mesh
-    Mesh* mesh = new Mesh{ meshName, matrix,nFaces, vertexVbo, normalVbo, textureVbo, faceVbo, 0, material->second }; // 0 = vao
+    Mesh* mesh = new Mesh{ meshName, matrix,nFaces, vertexVbo, normalVbo, textureVbo, faceVbo, vao, material->second };
 
     // Delete unused resources
     delete[] vertices;
@@ -501,12 +492,10 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
 }
 
 Light LIB_API* Ovoreader::parseLight(char* data, unsigned int& position, unsigned int* nChildren) {
-    cout << "light]" << endl;
 
     // Light name:
     char lightName[FILENAME_MAX];
     strcpy(lightName, data + position);
-    cout << "   Name  . . . . :  " << lightName << endl;
     position += (unsigned int)strlen(lightName) + 1;
 
     // Light matrix:
@@ -536,7 +525,6 @@ Light LIB_API* Ovoreader::parseLight(char* data, unsigned int& position, unsigne
         case OvLight::Subtype::SPOT: strcpy(subtypeName, "spot"); break;
         default: strcpy(subtypeName, "UNDEFINED");
     }
-    cout << "   Subtype . . . :  " << (int)subtype << " (" << subtypeName << ")" << endl;
     position += sizeof(unsigned char);
 
     // Light color:
