@@ -23,38 +23,6 @@ LIB_API Mesh::~Mesh(){
 	glDeleteVertexArrays(1, &m_vao);
 }
 
-const Material LIB_API *Mesh::getMaterial() {
-	return m_material;
-}
-
-void LIB_API Mesh::setMaterial(Material *material) {
-	m_material = material;
-}
-
-void LIB_API Mesh::setNFaces(unsigned int nFaces) {
-	m_faces = nFaces;
-}
-
-void LIB_API Mesh::setVertexVbo(unsigned int vertexVbo) {
-	m_vertex_vbo = vertexVbo;
-}
-
-void LIB_API Mesh::setNormalVbo(unsigned int normalVbo) {
-	m_normal_vbo = normalVbo;
-}
-
-void LIB_API Mesh::setTextureVbo(unsigned int textureVbo) {
-	m_texture_vbo = textureVbo;
-}
-
-void LIB_API Mesh::setFaceIndexVbo(unsigned int faceIndexVbo) {
-	m_face_index_vbo = faceIndexVbo;
-}
-
-void LIB_API Mesh::setVao(unsigned int vao) {
-	m_vao = vao;
-}
-
 void LIB_API Mesh::render(glm::mat4 matrix) {
 	// Load material
 	m_material->apply();
@@ -127,39 +95,22 @@ void LIB_API Mesh::renderShadow(glm::mat4 cameraInv, glm::mat4 parentRelativeCoo
 	// Compute + load world coordinate 
 	glLoadMatrixf(glm::value_ptr(cameraInv * shadowCastMatrix));
 
-	// Draw shadow for each face composing the mesh
-	for (int i = 0; static_cast<unsigned int>(i) < m_faces; i++) {
-		// Load the three vertices composing a face
-		Vertex* v1 = m_vertices.at(i * 3);
-		Vertex* v2 = m_vertices.at(i * 3 + 1);
-		Vertex* v3 = m_vertices.at(i * 3 + 2);
 
-		// Draw face flat on y=0
-		glBegin(GL_TRIANGLES);
+	// Render
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
 
-		// Scalar distance + distance point * plane
-		glNormal3fv(glm::value_ptr(planeNormal));
-		glVertex3fv(glm::value_ptr(v1->getPosition()));
+	glBindBuffer(GL_ARRAY_BUFFER, m_vertex_vbo);
+	glVertexPointer(3, GL_FLOAT, 0, nullptr);
 
-		glNormal3fv(glm::value_ptr(planeNormal));
-		glVertex3fv(glm::value_ptr(v2->getPosition()));
+	glBindBuffer(GL_ARRAY_BUFFER, m_normal_vbo);
+	glNormalPointer(GL_FLOAT, 0, nullptr);
 
-		glNormal3fv(glm::value_ptr(planeNormal));
-		glVertex3fv(glm::value_ptr(v3->getPosition()));
-		glEnd();
-	}
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_face_index_vbo);
+	glDrawElements(GL_TRIANGLES, m_faces * 3, GL_UNSIGNED_INT, nullptr);
 
 	// Reset
 	glDepthFunc(GL_LESS);
-}
-
-// Add one face to the mesh: a face is represented by three vertices.
-// Given the i-th face, it will be composed by vertices in i, i+1 and i+2 position in the vertices vector
-void LIB_API Mesh::addFace(Vertex* v1, Vertex* v2, Vertex* v3) {
-	m_vertices.push_back(v1);
-	m_vertices.push_back(v2);
-	m_vertices.push_back(v3);
-	m_faces++;
 }
 
 void LIB_API Mesh::setShadowCast(bool enabled) {
