@@ -21,6 +21,8 @@ LIB_API void DirectionalLight::render(glm::mat4 matrix)
 	glm::vec4 objectCoordPosition(0.f, 0.f, 0.f, 0.f); //w = 0
 
 	//Reset attenuation
+
+	/*
 	glLightf(m_baseValueLights + m_lightId, GL_CONSTANT_ATTENUATION, 1.f);
 	glLightf(m_baseValueLights + m_lightId, GL_LINEAR_ATTENUATION, 0.f);
 	glLightf(m_baseValueLights + m_lightId, GL_QUADRATIC_ATTENUATION, 0.f);
@@ -35,5 +37,5 @@ LIB_API void DirectionalLight::render(glm::mat4 matrix)
 	glLightfv(m_baseValueLights + m_lightId, GL_AMBIENT, glm::value_ptr(m_lightAmbient));
 	glLightfv(m_baseValueLights + m_lightId, GL_DIFFUSE, glm::value_ptr(m_lightDiffuse));
 	glLightfv(m_baseValueLights + m_lightId, GL_SPECULAR, glm::value_ptr(m_lightSpecular));
-
+	*/
 }

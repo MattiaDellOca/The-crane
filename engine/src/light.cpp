@@ -33,7 +33,7 @@ LIB_API Light::Light(const std::string& name, glm::mat4 matrix, LightType type, 
 		//increment lightid
 		m_incrementalLightId++;
 		//enable light
-		glEnable(m_baseValueLights + m_lightId);
+		//glEnable(m_baseValueLights + m_lightId);
 	};
 
 

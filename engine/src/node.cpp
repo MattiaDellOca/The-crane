@@ -73,7 +73,7 @@ bool LIB_API Node::removeChild(Node* child) {
 }
 
 void LIB_API Node::render(glm::mat4 matrix) {
-	glLoadMatrixf(glm::value_ptr(matrix));
+	//glLoadMatrixf(glm::value_ptr(matrix));
 }
 
 

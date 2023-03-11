@@ -30,6 +30,7 @@ LIB_API void SpotLight::render(glm::mat4 matrix)
 	glm::vec4 objectCoordPosition(0.f, 0.f, 0.f, 1.f); //w = 1
 
 	//Load matrix
+	/*
 	glLoadMatrixf(glm::value_ptr(matrix));
 
 	//Attenuation
@@ -45,4 +46,5 @@ LIB_API void SpotLight::render(glm::mat4 matrix)
 	glLightfv(m_baseValueLights + m_lightId, GL_AMBIENT, glm::value_ptr(m_lightAmbient));
 	glLightfv(m_baseValueLights + m_lightId, GL_DIFFUSE, glm::value_ptr(m_lightDiffuse));
 	glLightfv(m_baseValueLights + m_lightId, GL_SPECULAR, glm::value_ptr(m_lightSpecular));
+	*/
 }

@@ -26,11 +26,11 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 
 	// Check if a texture has been set
 	if (m_material->getTexture() != nullptr) {
-		glEnable(GL_TEXTURE_2D);
+		//glEnable(GL_TEXTURE_2D);
 	}
 
 	// Load matrix
-	glLoadMatrixf(glm::value_ptr(matrix));
+	//glLoadMatrixf(glm::value_ptr(matrix));
 	
 	// Render the mesh using VAO
 	glBindVertexArray(m_vao);
@@ -40,7 +40,7 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 
 	// Check if a texture has been set
 	if (m_material->getTexture() != nullptr) {
-		glDisable(GL_TEXTURE_2D);
+		//glDisable(GL_TEXTURE_2D);
 	}
 }
 
@@ -65,14 +65,16 @@ void LIB_API Mesh::renderShadow(glm::mat4 cameraInv, glm::mat4 parentRelativeCoo
 	glm::mat4 shadowCastMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0.f, .7f, 0.f)) * projectionXZ * parentRelativeCoords * glm::scale(glm::mat4(1.f), glm::vec3(1.f, 0.f, 1.f));
 
 	// Set shadow material
+	/*
 	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 0);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(glm::vec3(0.0f, 0.0f, 0.0f)));
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glm::value_ptr(glm::vec3(0.05f, 0.05f, 0.05f)));
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, glm::value_ptr(glm::vec3(0.0f, 0.0f, 0.0f)));
 	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, glm::value_ptr(glm::vec3(0.f, 0.f, 0.f)));
+	*/
 	
 	// Compute + load world coordinate 
-	glLoadMatrixf(glm::value_ptr(cameraInv * shadowCastMatrix));
+	//glLoadMatrixf(glm::value_ptr(cameraInv * shadowCastMatrix));
 
 	// Render the mesh using VAO
 	// Warning: the VAO contains a VBO for rendering texture, but the shadows consist of a complete black color, therefore the texture are applied but not seen

@@ -206,12 +206,12 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 
 	// Enable Z-Buffer+Lighting+Face Culling
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHTING);
 	glEnable(GL_CULL_FACE);
-	glEnable(GL_NORMALIZE);
+	//glEnable(GL_NORMALIZE);
 	glShadeModel(GL_SMOOTH);
 
-	glEnableClientState(GL_VERTEX_ARRAY);
+	//glEnableClientState(GL_VERTEX_ARRAY);
 
 	// Set reshape function
 	glutReshapeFunc(reshapeCallback);
@@ -289,7 +289,7 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
 
 	// Activate lighting
-	glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHTING);
 
 	// Start rendering
 	if (m_scene_graph != nullptr) {
@@ -320,16 +320,16 @@ void LIB_API Engine::render2D(OrthographicCamera* camera, const std::list<std::t
 	m_curr_2Dcamera = camera;
 
 	// Disable lighting
-	glDisable(GL_LIGHTING);
+	//glDisable(GL_LIGHTING);
 
 	// Set properties
 	m_curr_2Dcamera->render(m_curr_2Dcamera->getProperties());
 
-	glColor3f(0.4f, 0.4f, 0.4f);
+	//glColor3f(0.4f, 0.4f, 0.4f);
 
 	for (const auto& element : list) {
-		glRasterPos2f(10.0f, static_cast<float>(std::get<1>(element)));
-		glutBitmapString(GLUT_BITMAP_8_BY_13, reinterpret_cast<const unsigned char*>(std::get<0>(element).c_str()));
+		//glRasterPos2f(10.0f, static_cast<float>(std::get<1>(element)));
+		//glutBitmapString(GLUT_BITMAP_8_BY_13, reinterpret_cast<const unsigned char*>(std::get<0>(element).c_str()));
 	}
 
 	// force refresh

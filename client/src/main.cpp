@@ -343,6 +343,8 @@ void specialKeyboardCallback(int key, int mouseX, int mouseY) {
 void timerCallback(int value) {
 	fps = frames;
 	frames = 0;
+
+	cout << "[CRANE]: FPS = " << fps << endl;
 }
 
 int main(int argc, char* argv[]) {
