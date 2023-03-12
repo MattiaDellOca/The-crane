@@ -2,6 +2,8 @@
 // #INCLUDE //
 //////////////
 
+#include "engine.h"
+
 	// Library main include
 #include "perspectiveCamera.h"
 #include <GL/freeglut.h>
@@ -18,6 +20,7 @@ LIB_API PerspectiveCamera::PerspectiveCamera(const std::string& name, glm::mat4 
 };
 
 void LIB_API PerspectiveCamera::render(glm::mat4 matrix) {
+	Engine::programShader->setMatrix(Engine::projectionMatrLocation, matrix);
 	/*
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(glm::value_ptr(matrix));

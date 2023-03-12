@@ -101,6 +101,7 @@
     <ClCompile Include="src\perspectiveCamera.cpp" />
     <ClCompile Include="src\positionalLight.cpp" />
     <ClCompile Include="src\renderingList.cpp" />
+    <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\spotLight.cpp" />
     <ClCompile Include="src\texture.cpp" />
   </ItemGroup>
@@ -122,6 +123,7 @@
     <ClInclude Include="src\perspectiveCamera.h" />
     <ClInclude Include="src\positionalLight.h" />
     <ClInclude Include="src\renderingList.h" />
+    <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\spotLight.h" />
     <ClInclude Include="src\texture.h" />
   </ItemGroup>

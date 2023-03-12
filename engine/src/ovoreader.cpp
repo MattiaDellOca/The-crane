@@ -457,6 +457,8 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     glBindBuffer(GL_ARRAY_BUFFER, vertexVbo);
     //glVertexPointer(3, GL_FLOAT, 0, nullptr);
     glBufferData(GL_ARRAY_BUFFER, nVertices * 3 * sizeof(float), vertices, GL_STATIC_DRAW); // Copy the VBO data from system to video memory
+    glVertexAttribPointer((GLuint)0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(0);
 
     // Generate a normal buffer and bind it
     unsigned int normalVbo;
@@ -477,7 +479,7 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     glGenBuffers(1, &faceVbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, faceVbo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, nFaces * 3 * sizeof(unsigned int), faces, GL_STATIC_DRAW); // Copy the VBO data from system to video memory
-
+    
     // Unbind the VAO
     glBindVertexArray(0);
 

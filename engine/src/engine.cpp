@@ -6,6 +6,7 @@
 	// Project classes
 #include "engine.h"
 #include "perspectiveCamera.h"
+#include "shader.h"
 
 	// C/C++
 #include <iostream>
@@ -27,6 +28,51 @@
 
 	// FreeImage:
 #include "FreeImage.h"
+
+/////////////
+// SHADERS //
+/////////////
+
+////////////////////////////
+Shader* Engine::vs = nullptr;
+Shader* Engine::fs = nullptr;
+Shader* Engine::programShader = nullptr;
+int Engine::projectionMatrLocation = -1; // -1 means 'not assigned', as 0 is a valid location
+int Engine::modelviewMatrLocation = -1;
+
+////////////////////////////
+const char* vertShader = R"(
+   #version 440 core
+
+   uniform mat4 projection;
+   uniform mat4 modelview;
+
+   layout(location = 0) in vec3 in_Position;
+   layout(location = 1) in vec4 in_Color;
+
+   out vec3 out_Color;
+
+   void main(void)
+   {
+      gl_Position = projection * modelview * vec4(in_Position, 1.0f);
+      out_Color = in_Color.rgb;
+   }
+)";
+
+////////////////////////////
+const char* fragShader = R"(
+   #version 440 core
+
+   in  vec3 out_Color;
+   
+   out vec4 frag_Output;
+
+   void main(void)
+   {
+      frag_Output = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+   }
+)";
+
 
 ////////////
 // STATIC //
@@ -222,6 +268,24 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Set running state
 	m_isRunning = true;
 
+	// Shaders
+	vs = new Shader("Vertex Shader");
+	vs->loadFromMemory(Shader::TYPE_VERTEX, vertShader);
+	// Compile fragment shader:
+	fs = new Shader("Fragment Shader");
+	fs->loadFromMemory(Shader::TYPE_FRAGMENT, fragShader);
+
+	// Setup shader program:
+	programShader = new Shader("Program shader");
+	programShader->build(vs, fs);
+	programShader->render();
+	programShader->bind(0, "in_Position");
+	programShader->bind(1, "in_Color");
+
+	// Get shader variable locations:
+	projectionMatrLocation = programShader->getParamLocation("projection");
+	modelviewMatrLocation = programShader->getParamLocation("modelview");
+
 	// Print information
 	std::cout << "OpenGL context" << std::endl;
 	std::cout << "   version  . . : " << glGetString(GL_VERSION) << std::endl;
@@ -275,6 +339,11 @@ bool LIB_API Engine::free()
 		std::cout << "ERROR: class not initialized" << std::endl;
 		return false;
 	}
+
+	// Delete shaders
+	delete programShader;
+	delete fs;
+	delete vs;
 
 	// Done:
 	m_initFlag = false;

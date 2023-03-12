@@ -1,5 +1,5 @@
 #include "mesh.h"
-
+#include "engine.h"
 
 // GLEW
 #include <GL/glew.h>
@@ -31,7 +31,9 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 
 	// Load matrix
 	//glLoadMatrixf(glm::value_ptr(matrix));
-	
+	Engine::programShader->setMatrix(Engine::modelviewMatrLocation, matrix);
+
+
 	// Render the mesh using VAO
 	glBindVertexArray(m_vao);
 	glDrawElements(GL_TRIANGLES, m_faces * 3, GL_UNSIGNED_INT, nullptr);

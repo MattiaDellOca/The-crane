@@ -15,6 +15,7 @@
 #include "renderingList.h"
 #include "ovoreader.h"
 #include "texture.h"
+#include "shader.h"
 
 #include <queue>
 
@@ -134,8 +135,31 @@ private:
 	*/
 	static void timerCallback(int value);
 
-
 public:
+	/**
+	Static Vertex Shader pointer
+	**/
+	static Shader* vs;
+
+	/**
+	Static Fragment Shader pointer
+	**/
+	static Shader* fs;
+
+	/**
+	Static Program Shader pointer
+	**/
+	static Shader* programShader;
+
+	/**
+	Static Location of projection matrix in the programShader
+	**/
+	static int projectionMatrLocation;
+
+	/**
+	Static Location of modelview matrix in the programShader
+	**/
+	static int modelviewMatrLocation;
 
 	/**
 	 * Initialize the engine.
@@ -221,7 +245,6 @@ public:
 	*/
 	static void disableWireframe();
 
-
 	/**
 	 * Enable Gouraund shading.
 	 */
@@ -244,7 +267,6 @@ public:
 	 * \param callback The callback function to set.
 	 */
 	static void setSpecialKeyboardFunction(void (*callback)(int, int, int));
-
 
 	/**
 	* Set the timer callback function.
