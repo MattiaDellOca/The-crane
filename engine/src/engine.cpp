@@ -51,11 +51,13 @@ const char* vertShader = R"(
    layout(location = 1) in vec4 in_Color;
 
    out vec3 out_Color;
+	out float dist;
 
    void main(void)
    {
       gl_Position = projection * modelview * vec4(in_Position, 1.0f);
-      out_Color = in_Color.rgb;
+		dist = abs(gl_Position.z / 5000.0f);
+      out_Color = vec3(1.0f, 0.0f, 0.0f);
    }
 )";
 
@@ -64,12 +66,14 @@ const char* fragShader = R"(
    #version 440 core
 
    in  vec3 out_Color;
-   
+   in  float dist;
+
    out vec4 frag_Output;
 
    void main(void)
    {
-      frag_Output = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+		vec3 fog = vec3(0.647f, 0.898f, 1.0f);
+      frag_Output = vec4(mix(out_Color, fog, dist), 1.0f);
    }
 )";
 
