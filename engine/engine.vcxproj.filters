@@ -88,7 +88,7 @@
       <Filter>Source Files\src</Filter>
     </ClCompile>
     <ClCompile Include="src\shader.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\src\utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -455,7 +455,6 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     unsigned int vertexVbo;
     glGenBuffers(1, &vertexVbo);
     glBindBuffer(GL_ARRAY_BUFFER, vertexVbo);
-    //glVertexPointer(3, GL_FLOAT, 0, nullptr);
     glBufferData(GL_ARRAY_BUFFER, nVertices * 3 * sizeof(float), vertices, GL_STATIC_DRAW); // Copy the VBO data from system to video memory
     glVertexAttribPointer((GLuint)0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     glEnableVertexAttribArray(0);
@@ -464,8 +463,9 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     unsigned int normalVbo;
     glGenBuffers(1, &normalVbo);
     glBindBuffer(GL_ARRAY_BUFFER, normalVbo);
-    //glNormalPointer(GL_FLOAT, 0, nullptr);
     glBufferData(GL_ARRAY_BUFFER, nVertices * 3 * sizeof(float), normals, GL_STATIC_DRAW); // Copy the VBO data from system to video memory
+    glVertexAttribPointer((GLuint)1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(1);
 
     // Generate a texture buffer and bind it
     unsigned int textureVbo;
