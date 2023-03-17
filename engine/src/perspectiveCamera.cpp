@@ -20,7 +20,7 @@ LIB_API PerspectiveCamera::PerspectiveCamera(const std::string& name, glm::mat4 
 };
 
 void LIB_API PerspectiveCamera::render(glm::mat4 matrix) {
-	Engine::programShader->setMatrix(Engine::projectionMatrLocation, matrix);
+	Engine::programShader->setMatrix(Engine::programShader->getParamLocation("projection"), matrix);
 	/*
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(glm::value_ptr(matrix));

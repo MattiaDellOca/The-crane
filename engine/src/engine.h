@@ -121,6 +121,16 @@ private:
 	static EngineGraphics* m_graphics_settings;
 
 	/**
+	Vertex Shader pointer
+	**/
+	static Shader* vs;
+
+	/**
+	Static Fragment Shader pointer
+	**/
+	static Shader* fs;
+
+	/**
 	 * Callback function for reshaping the window.
 	 *
 	 * \param width The new window width.
@@ -137,29 +147,9 @@ private:
 
 public:
 	/**
-	Static Vertex Shader pointer
-	**/
-	static Shader* vs;
-
-	/**
-	Static Fragment Shader pointer
-	**/
-	static Shader* fs;
-
-	/**
 	Static Program Shader pointer
 	**/
 	static Shader* programShader;
-
-	/**
-	Static Location of projection matrix in the programShader
-	**/
-	static int projectionMatrLocation;
-
-	/**
-	Static Location of modelview matrix in the programShader
-	**/
-	static int modelviewMatrLocation;
 
 	/**
 	 * Initialize the engine.

@@ -31,7 +31,7 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 
 	// Load matrix
 	//glLoadMatrixf(glm::value_ptr(matrix));
-	Engine::programShader->setMatrix(Engine::modelviewMatrLocation, matrix);
+	Engine::programShader->setMatrix(Engine::programShader->getParamLocation("modelview"), matrix);
 
 
 	// Render the mesh using VAO

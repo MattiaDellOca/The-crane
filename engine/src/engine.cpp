@@ -37,8 +37,6 @@
 Shader* Engine::vs = nullptr;
 Shader* Engine::fs = nullptr;
 Shader* Engine::programShader = nullptr;
-int Engine::projectionMatrLocation = -1; // -1 means 'not assigned', as 0 is a valid location
-int Engine::modelviewMatrLocation = -1;
 
 ////////////////////////////
 const char* vertShader = R"(
@@ -46,6 +44,7 @@ const char* vertShader = R"(
 
    uniform mat4 projection;
    uniform mat4 modelview;
+   uniform float farPlane;
 
    layout(location = 0) in vec3 in_Position;
    layout(location = 1) in vec4 in_Color;
@@ -56,7 +55,7 @@ const char* vertShader = R"(
    void main(void)
    {
       gl_Position = projection * modelview * vec4(in_Position, 1.0f);
-		dist = abs(gl_Position.z / 5000.0f);
+		dist = abs(gl_Position.z / farPlane);
       out_Color = vec3(1.0f, 0.0f, 0.0f);
    }
 )";
@@ -65,6 +64,8 @@ const char* vertShader = R"(
 const char* fragShader = R"(
    #version 440 core
 
+   uniform vec3 fog;
+
    in  vec3 out_Color;
    in  float dist;
 
@@ -72,7 +73,6 @@ const char* fragShader = R"(
 
    void main(void)
    {
-		vec3 fog = vec3(0.647f, 0.898f, 1.0f);
       frag_Output = vec4(mix(out_Color, fog, dist), 1.0f);
    }
 )";
@@ -286,10 +286,6 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	programShader->bind(0, "in_Position");
 	programShader->bind(1, "in_Color");
 
-	// Get shader variable locations:
-	projectionMatrLocation = programShader->getParamLocation("projection");
-	modelviewMatrLocation = programShader->getParamLocation("modelview");
-
 	// Print information
 	std::cout << "OpenGL context" << std::endl;
 	std::cout << "   version  . . : " << glGetString(GL_VERSION) << std::endl;
@@ -308,6 +304,7 @@ void LIB_API Engine::clear() {
 
 void LIB_API Engine::setBackgroundColor(float r, float g, float b) {
 	glClearColor(r, g, b, 1.0f);
+	programShader->setVec3(programShader->getParamLocation("fog"), glm::vec3(r, g, b));
 }
 
 
@@ -357,6 +354,9 @@ bool LIB_API Engine::free()
 void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	// Save camera
 	m_curr_3Dcamera = camera;
+
+	// Set the far plane used for creating the fog effect
+	programShader->setFloat(programShader->getParamLocation("farPlane"), camera->getFar());
 
 	// Set properties
 	m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
