@@ -44,19 +44,22 @@ const char* vertShader = R"(
 
    uniform mat4 projection;
    uniform mat4 modelview;
+   uniform mat3 normalMatrix;
    uniform float farPlane;
 
    layout(location = 0) in vec3 in_Position;
-   layout(location = 1) in vec4 in_Normal;
+   layout(location = 1) in vec3 in_Normal;
 
    out vec3 out_Color;
-	out float dist;
+   out vec3 normal;
+   out float dist;
 
    void main(void)
    {
       gl_Position = projection * modelview * vec4(in_Position, 1.0f);
-		dist = abs(gl_Position.z / farPlane);
+	  dist = abs(gl_Position.z / farPlane);
       out_Color = vec3(1.0f, 0.0f, 0.0f);
+      normal = normalMatrix * in_Normal;
    }
 )";
 
@@ -66,14 +69,15 @@ const char* fragShader = R"(
 
    uniform vec3 fog;
 
-   in  vec3 out_Color;
-   in  float dist;
+   in vec3 out_Color;
+   in vec3 normal;
+   in float dist;
 
    out vec4 frag_Output;
 
    void main(void)
    {
-      frag_Output = vec4(mix(out_Color, fog, dist), 1.0f);
+      frag_Output = vec4(mix(normal, fog, dist), 1.0f);
    }
 )";
 

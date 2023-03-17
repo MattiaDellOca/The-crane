@@ -52,6 +52,7 @@ public: //
    // Get/set:
    int getParamLocation(const char* name);
    inline void setMatrix(int param, const glm::mat4& mat);
+   inline void setMatrix3(int param, const glm::mat3& mat);
    inline void setFloat(int param, float value);
    inline void setInt(int param, int value);
    inline void setVec3(int param, const glm::vec3& vect);
