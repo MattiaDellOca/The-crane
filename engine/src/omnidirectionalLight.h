@@ -1,6 +1,7 @@
 #pragma once
 
 #include "positionalLight.h"
+#include "engine.h"
 
 /**
  * OmnidirectionalLight class that describes an omnidirectional (positional) light source (aka point light).

@@ -23,33 +23,33 @@ private:
 	 * \var m_ambient
 	 * \brief The ambient color of the material.
 	 *
-	 * m_ambient is a member variable that holds the ambient color of the material. It is a 4D vector with the red, green, blue, and alpha channel values.
+	 * m_ambient is a member variable that holds the ambient color of the material. It is a 3D vector with the red, greena and blue channel values.
 	 */
-	glm::vec4 m_ambient = glm::vec4{ 0.2f, 0.2f, 0.2f, 1.0f };
+	glm::vec3 m_ambient;
 	
 	/**
 	 * \var m_diffuse
 	 * \brief The diffuse color of the material.
 	 *
-	 * m_diffuse is a member variable that holds the diffuse color of the material. It is a 4D vector with the red, green, blue, and alpha channel values.
+	 * m_diffuse is a member variable that holds the diffuse color of the material. It is a 3D vector with the red, greena and blue channel values.
 	 */
-	glm::vec4 m_diffuse = glm::vec4{ 0.8f, 0.8f, 0.8f, 1.0f };
+	glm::vec3 m_diffuse;
 	
 	/**
 	 * \var m_specular
 	 * \brief The specular color of the material.
 	 *
-	 * m_specular is a member variable that holds the specular color of the material. It is a 4D vector with the red, green, blue, and alpha channel values.
+	 * m_specular is a member variable that holds the specular color of the material. It is a 3D vector with the red, greena and blue channel values.
 	 */
-	glm::vec4 m_specular = glm::vec4{0.0f, 0.0f, 0.0f, 1.0f};
+	glm::vec3 m_specular;
 	
 	/**
 	 * \var m_emission
 	 * \brief The emission color of the material.
 	 *
-	 * m_emission is a member variable that holds the emission color of the material. It is a 4D vector with the red, green, blue, and alpha channel values.
+	 * m_emission is a member variable that holds the emission color of the material. It is a 3D vector with the red, greena and blue channel values.
 	 */
-	glm::vec4 m_emission = glm::vec4{ 0.0f, 0.0f, 0.0f, 1.0f };
+	glm::vec3 m_emission;
 
 	/**
 	 * \var m_shininess
@@ -57,7 +57,7 @@ private:
 	 *
 	 * m_shininess is a member variable that holds the shininess value of the material. It is a float value that determines the specular highlight size and intensity.
 	 */
-	float m_shininess = 0.0f;
+	float m_shininess;
 
 	Texture* m_texture;
 public:
@@ -66,7 +66,7 @@ public:
 	 *
 	 * \param name The name of the material.
 	 */
-	explicit Material(const std::string& name);
+	explicit Material(const std::string& name, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 emission, float shininess = 0.0f);
 
 	/**
 	* \brief Destructor for the Material class.
@@ -112,67 +112,32 @@ public:
 	void apply();
 
 	/**
-	* \brief Sets the ambient color of the material.
-	*
-	* \param ambient The ambient color to be set. It is a 4D vector with the red, green, blue, and alpha channel values.
-	*/
-	void setAmbient(glm::vec4 ambient);
-
-	/**
-	 * \brief Sets the diffuse color of the material.
-	 *
-	 * \param diffuse The diffuse color to be set. It is a 4D vector with the red, green, blue, and alpha channel values.
-	 */
-	void setDiffuse(glm::vec4 diffuse);
-
-	/**
-	 * \brief Sets the specular color of the material.
-	 *
-	 * \param specular The specular color to be set. It is a 4D vector with the red, green, blue, and alpha channel values.
-	 */
-	void setSpecular(glm::vec4 specular);
-	
-	/**
-	 * \brief Sets the shininess value of the material.
-	 *
-	 * \param shininess The shininess value to be set. It is a float value that determines the specular highlight size and intensity.
-	 */
-	void setShininess(float shininess);
-
-	/**
-	 * \brief Sets the emission color of the material.
-	 *
-	 * \param emission The emission color to be set. It is a 4D vector with the red, green, blue, and alpha channel values.
-	 */
-	void setEmission(glm::vec4 emission);
-
-	/**
 	 * \brief Gets the ambient color of the material.
 	 *
-	 * \return The ambient color of the material. It is a 4D vector with the red, green, blue, and alpha channel values.
+	 * \return The ambient color of the material. It is a 3D vector with the red, greena and blue channel values.
 	 */
-	glm::vec4 getAmbient() const;
+	glm::vec3 getAmbient() const;
 
 	/**
 	 * \brief Gets the diffuse color of the material.
 	 *
-	 * \return The diffuse color of the material. It is a 4D vector with the red, green, blue, and alpha channel values.
+	 * \return The diffuse color of the material. It is a 3D vector with the red, greena and blue channel values.
 	 */
-	glm::vec4 getDiffuse() const;
+	glm::vec3 getDiffuse() const;
 
 	/**
 	 * \brief Gets the specular color of the material.
 	 *
-	 * \return The specular color of the material. It is a 4D vector with the red, green, blue, and alpha channel values.
+	 * \return The specular color of the material. It is a 3D vector with the red, greena and blue channel values.
 	 */
-	glm::vec4 getSpecular() const;
+	glm::vec3 getSpecular() const;
 
 	/**
 	 * \brief Gets the emission color of the material.
 	 *
-	 * \return The emission color of the material. It is a 4D vector with the red, green, blue, and alpha channel values.
+	 * \return The emission color of the material. It is a 3D vector with the red, greena and blue channel values.
 	 */
-	glm::vec4 getEmission() const;
+	glm::vec3 getEmission() const;
 
 	/**
 	 * \brief Gets the shininess value of the material.

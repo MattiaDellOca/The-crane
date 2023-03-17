@@ -9,7 +9,8 @@
    //FreeGLUT:
 #include <GL/freeglut.h>
 
-LIB_API Material::Material(const std::string& name) : Object{ name }, m_texture{nullptr} {};
+LIB_API Material::Material(const std::string& name, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 emission, float shininess) : Object{ name }, m_ambient{ ambient }, m_diffuse{ diffuse },
+m_specular{ specular }, m_emission{ emission }, m_shininess{ shininess }, m_texture { nullptr } {};
 
 LIB_API Material::~Material() {}
 
@@ -17,11 +18,11 @@ LIB_API Material::~Material() {}
 void LIB_API Material::apply() {
 	// Set material properties:
 	/*
-	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, m_shininess);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(m_ambient));
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glm::value_ptr(m_diffuse));
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, glm::value_ptr(m_specular));
-	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, glm::value_ptr(m_emission));
+	Engine::programShader->setVec3(Engine::programShader->getParamLocation("matEmission"), m_emission);
+	Engine::programShader->setVec3(Engine::programShader->getParamLocation("matAmbient"), m_ambient);
+	Engine::programShader->setVec3(Engine::programShader->getParamLocation("matDiffuse"), m_diffuse);
+	Engine::programShader->setVec3(Engine::programShader->getParamLocation("matSpecular"), m_specular);
+	Engine::programShader->setFloat(Engine::programShader->getParamLocation("matShininess"), m_shininess);
 	*/
 
 	// Apply texture if present
@@ -32,30 +33,6 @@ void LIB_API Material::apply() {
 
 // GETTER + SETTERS
 
-void LIB_API Material::setAmbient(glm::vec4 ambient) {
-	m_ambient = ambient;
-}
-
-void LIB_API Material::setDiffuse(glm::vec4 diffuse) {
-	m_diffuse = diffuse;
-}
-
-void LIB_API Material::setSpecular(glm::vec4 specular) {
-	m_specular = specular;
-}
-
-void LIB_API Material::setShininess(float shininess) {
-	m_shininess = shininess;
-}
-
-void LIB_API Material::setEmission(glm::vec4 emission) {
-	m_emission = emission;
-}
-
-glm::vec4 LIB_API Material::getAmbient() const {
-	return m_ambient;
-}
-
 Texture LIB_API* Material::getTexture() const {
 	return m_texture;
 }
@@ -64,12 +41,20 @@ void LIB_API Material::setTexture(Texture* texture) {
 	m_texture = texture;
 }
 
-glm::vec4 LIB_API Material::getDiffuse() const {
+glm::vec3 LIB_API Material::getAmbient() const {
 	return m_diffuse;
 }
 
-glm::vec4 LIB_API Material::getSpecular() const {
+glm::vec3 LIB_API Material::getDiffuse() const {
+	return m_diffuse;
+}
+
+glm::vec3 LIB_API Material::getSpecular() const {
 	return m_specular;
+}
+
+glm::vec3 LIB_API Material::getEmission() const {
+	return m_emission;
 }
 
 float LIB_API Material::getShininess() const {
@@ -80,6 +65,3 @@ void LIB_API Material::render(glm::mat4 coords)
 {
 }
 
-glm::vec4 LIB_API Material::getEmission() const {
-	return m_emission;
-}

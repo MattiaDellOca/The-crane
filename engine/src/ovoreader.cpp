@@ -211,13 +211,8 @@ Material LIB_API* Ovoreader::parseMaterial(char* data, unsigned int& position, c
     strcpy(metalnessMapName, data + position);
     position += (unsigned int)strlen(metalnessMapName) + 1;
 
-    Material* material = new Material{ materialName };
-    glm::vec4 tmp{ albedo.x, albedo.y, albedo.z, 1.0f };
-    material->setAmbient(tmp * 0.2f);
-    material->setDiffuse(tmp * 0.6f);
-    material->setSpecular(tmp * 0.4f);
-    material->setShininess((1 - sqrt(roughness)) * 128);
-    material->setEmission(glm::vec4(emission.x, emission.y, emission.z, 1.0f));
+    // Create material
+    Material* material = new Material{ materialName, albedo * 0.2f, albedo * 0.6f, albedo * 0.4f, emission, (1 - sqrt(roughness)) * 128 };
 
     // Load texture from assets path
     Texture* t = new Texture{textureName, std::string{textureDir} + std::string{textureName} };
@@ -464,7 +459,7 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     glGenBuffers(1, &normalVbo);
     glBindBuffer(GL_ARRAY_BUFFER, normalVbo);
     glBufferData(GL_ARRAY_BUFFER, nVertices * 3 * sizeof(float), normals, GL_STATIC_DRAW); // Copy the VBO data from system to video memory
-    glVertexAttribPointer((GLuint)1, 3, GL_FLOAT, GL_TRUE, 0, nullptr);
+    glVertexAttribPointer((GLuint)1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     glEnableVertexAttribArray(1);
 
     // Generate a texture buffer and bind it

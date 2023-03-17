@@ -21,10 +21,9 @@ LIB_API void OmnidirectionalLight::render(glm::mat4 matrix)
 	glm::vec4 objectCoordPosition(0.f, 0.f, 0.f, 1.f); //w = 1
 	float cutoff = 180.f; //special value
 
-	//Load matrix
+	// Load modelview matrix
+	//Engine::programShader->setVec3(Engine::programShader->getParamLocation("lightPosition"), matrix)
 	/*
-	glLoadMatrixf(glm::value_ptr(matrix));
-
 	//Attenuation
 	glLightf(m_baseValueLights + m_lightId, GL_CONSTANT_ATTENUATION, m_constantAttenuation);
 	glLightf(m_baseValueLights + m_lightId, GL_LINEAR_ATTENUATION, m_linearAttenuation);
