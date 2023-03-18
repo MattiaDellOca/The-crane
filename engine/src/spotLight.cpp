@@ -7,7 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 
-LIB_API SpotLight::SpotLight(const std::string& name, glm::mat4 matrix, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, float cutoff, glm::vec3 direction, float constantAttenuation, float linearAttenuation, float quadraticAttenuation)
+LIB_API SpotLight::SpotLight(const std::string& name, glm::mat4 matrix, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float cutoff, glm::vec3 direction, float constantAttenuation, float linearAttenuation, float quadraticAttenuation)
 	: PositionalLight(name, matrix, LightType::SPOT, ambient, diffuse, specular, constantAttenuation, linearAttenuation, quadraticAttenuation), m_direction{ direction } {
 	if (cutoff >= 0 && cutoff <= 90) {
 		m_cutoff = cutoff;

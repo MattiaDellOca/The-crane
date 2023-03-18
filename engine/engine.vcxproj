@@ -87,6 +87,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="shaderWrapper.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\directionalLight.cpp" />
     <ClCompile Include="src\engine.cpp" />
@@ -106,6 +107,7 @@
     <ClCompile Include="src\texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="shaderWrapper.h" />
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\cameraType.h" />
     <ClInclude Include="src\directionalLight.h" />

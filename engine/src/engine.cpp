@@ -7,6 +7,7 @@
 #include "engine.h"
 #include "perspectiveCamera.h"
 #include "shader.h"
+#include "../shaderWrapper.h"
 
 	// C/C++
 #include <iostream>
@@ -36,7 +37,6 @@
 ////////////////////////////
 Shader* Engine::vs = nullptr;
 Shader* Engine::fs = nullptr;
-Shader* Engine::programShader = nullptr;
 
 ////////////////////////////
 const char* vertShader = R"(
@@ -76,7 +76,7 @@ const char* fragShader = R"(
    in vec3 normal;
    in float dist;
 
-   out vec4 frag_Output;
+   out vec4 fragOutput;
 
    // Material properties:
    uniform vec3 matEmission;
@@ -93,7 +93,26 @@ const char* fragShader = R"(
 
    void main(void)
    {
-      frag_Output = vec4(mix(normal, fog, dist), 1.0f);
+      // Ambient term:
+      vec3 fragColor = matEmission + matAmbient;
+
+      // Diffuse term:
+      vec3 _normal = normalize(normal);
+      vec3 lightDirection = normalize(lightPosition - fragPosition.xyz);      
+      float nDotL = dot(lightDirection, _normal);   
+      if (nDotL > 0.0f)
+      {
+         fragColor += matDiffuse * nDotL * lightDiffuse;
+      
+         // Specular term:
+         vec3 halfVector = normalize(lightDirection + normalize(-fragPosition.xyz));                     
+         float nDotHV = dot(_normal, halfVector);         
+         fragColor += matSpecular * pow(nDotHV, matShininess) * lightSpecular;
+      } 
+      
+      // Final color:
+      //fragOutput = vec4(mix(fragColor, fog, dist), 1.0f);
+      fragOutput = vec4(fragColor, 1.0f);
    }
 )";
 
@@ -300,11 +319,11 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	fs->loadFromMemory(Shader::TYPE_FRAGMENT, fragShader);
 
 	// Setup shader program:
-	programShader = new Shader("Program shader");
-	programShader->build(vs, fs);
-	programShader->render();
-	programShader->bind(0, "in_Position");
-	programShader->bind(1, "in_Color");
+	ShaderWrapper::shader = new Shader("Program shader");
+	ShaderWrapper::shader->build(vs, fs);
+	ShaderWrapper::shader->render();
+	ShaderWrapper::shader->bind(0, "in_Position");
+	ShaderWrapper::shader->bind(1, "in_Color");
 
 	// Print information
 	std::cout << "OpenGL context" << std::endl;
@@ -324,7 +343,7 @@ void LIB_API Engine::clear() {
 
 void LIB_API Engine::setBackgroundColor(float r, float g, float b) {
 	glClearColor(r, g, b, 1.0f);
-	programShader->setVec3(programShader->getParamLocation("fog"), glm::vec3(r, g, b));
+	//ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("fog"), glm::vec3(r, g, b));
 }
 
 
@@ -362,7 +381,6 @@ bool LIB_API Engine::free()
 	}
 
 	// Delete shaders
-	delete programShader;
 	delete fs;
 	delete vs;
 
@@ -376,7 +394,7 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	m_curr_3Dcamera = camera;
 
 	// Set the far plane used for creating the fog effect
-	programShader->setFloat(programShader->getParamLocation("farPlane"), camera->getFar());
+	//ShaderWrapper::shader->setFloat(ShaderWrapper::shader->getParamLocation("farPlane"), camera->getFar());
 
 	// Set properties
 	m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());

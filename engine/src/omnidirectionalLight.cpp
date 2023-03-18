@@ -1,4 +1,5 @@
 #include "omnidirectionalLight.h"
+#include "../shaderWrapper.h"
 
 //FreeGLUT:
 #include <GL/freeglut.h>
@@ -7,7 +8,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 
-LIB_API OmnidirectionalLight::OmnidirectionalLight(const std::string& name, glm::mat4 matrix, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, float constantAttenuation, float linearAttenuation, float quadraticAttenuation)
+LIB_API OmnidirectionalLight::OmnidirectionalLight(const std::string& name, glm::mat4 matrix, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float constantAttenuation, float linearAttenuation, float quadraticAttenuation)
 	: PositionalLight(name, matrix, LightType::OMNIDIRECTIONAL, ambient, diffuse, specular, constantAttenuation,linearAttenuation, quadraticAttenuation)
 {};
 
@@ -22,7 +23,11 @@ LIB_API void OmnidirectionalLight::render(glm::mat4 matrix)
 	float cutoff = 180.f; //special value
 
 	// Load modelview matrix
-	//Engine::programShader->setVec3(Engine::programShader->getParamLocation("lightPosition"), matrix)
+	glm::vec3 position = { matrix[3].x, matrix[3].y, matrix[3].z };
+	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("lightPosition"), position);
+	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("lightAmbient"), m_lightAmbient);
+	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("lightDiffuse"), m_lightDiffuse);
+	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("lightSpecular"), m_lightSpecular);
 	/*
 	//Attenuation
 	glLightf(m_baseValueLights + m_lightId, GL_CONSTANT_ATTENUATION, m_constantAttenuation);

@@ -33,7 +33,7 @@ public:
 	 * \param linearAttenuation Linear attenuation term
 	 * \param quadraticAttenuation Quadratic attenuation term
 	 */
-	SpotLight(const std::string& name, glm::mat4 matrix, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular, float cutoff, glm::vec3 direction, float constantAttenuation = 1.f, float linearAttenuation = 0.f, float quadraticAttenuation = 0.f);
+	SpotLight(const std::string& name, glm::mat4 matrix, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float cutoff, glm::vec3 direction, float constantAttenuation = 1.f, float linearAttenuation = 0.f, float quadraticAttenuation = 0.f);
 
 	/**
 	 * Renders spot light in scene.

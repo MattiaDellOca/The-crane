@@ -60,25 +60,25 @@ protected:
 	 * \var m_lightAmbient
 	 * \brief The ambient color of the light.
 	 *
-	 * m_lightAmbient is a member variable that holds the ambient color of the light. It is a 4D vector with the red, green, blue, and alpha channel values.
+	 * m_lightAmbient is a member variable that holds the ambient color of the light. It is a 3D vector with the red, green and blue values.
 	 */
-	glm::vec4 m_lightAmbient;
+	glm::vec3 m_lightAmbient;
 
 	/**
 	 * \var m_lightDiffuse
 	 * \brief The diffuse color of the light.
 	 *
-	 * m_lightDiffuse is a member variable that holds the diffuse color of the light. It is a 4D vector with the red, green, blue, and alpha channel values.
+	 * m_lightDiffuse is a member variable that holds the diffuse color of the light. It is a 3D vector with the red, green and blue values.
 	 */
-	glm::vec4 m_lightDiffuse;
+	glm::vec3 m_lightDiffuse;
 
 	/**
 	 * \var m_lightSpecular
 	 * \brief The specular color of the light.
 	 *
-	 * m_lightSpecular is a member variable that holds the specular color of the light. It is a 4D vector with the red, green, blue, and alpha channel values.
+	 * m_lightSpecular is a member variable that holds the specular color of the light. It is a 3D vector with the red, green and blue values.
 	 */
-	glm::vec4 m_lightSpecular;
+	glm::vec3 m_lightSpecular;
 
 	/**
 	 * \brief Constructor for the Light class.
@@ -89,11 +89,11 @@ protected:
 	 * - POINT_LIGHT
 	 * - DIRECTIONAL_LIGHT
 	 * - SPOT_LIGHT
-	 * \param ambient The ambient color of the light. It is a 4D vector with the red, green, blue, and alpha channel values.
-	 * \param diffuse The diffuse color of the light. It is a 4D vector with the red, green, blue, and alpha channel values.
-	 * \param specular The specular color of the light. It is a 4D vector with the red, green, blue, and alpha channel values.
+	 * \param ambient The ambient color of the light. It is a 3D vector with the red, green and blue values.
+	 * \param diffuse The diffuse color of the light. It is a 3D vector with the red, green and blue values.
+	 * \param specular The specular color of the light. It is a 3D vector with the red, green and blue values.
 	 */
-	Light(const std::string& name, glm::mat4 transform, LightType type, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular);
+	Light(const std::string& name, glm::mat4 transform, LightType type, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular);
 public:
 	/**
 	 * \brief Renders the light object.

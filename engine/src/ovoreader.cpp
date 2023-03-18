@@ -557,22 +557,21 @@ Light LIB_API* Ovoreader::parseLight(char* data, unsigned int& position, unsigne
 
     // Generic declaration of Light
     Light* light = nullptr;
-    glm::vec4 tmp{ color.x, color.y, color.z, 1.0f };
     float attenuation;      // how to calculate this from radius --> http://learnwebgl.brown37.net/09_lights/lights_attenuation.html
 
     // Concrete declaration of Light
     switch ((OvLight::Subtype)subtype)
     {
         case OvLight::Subtype::DIRECTIONAL:
-            light = new DirectionalLight{ lightName, matrix, tmp, tmp, tmp };
+            light = new DirectionalLight{ lightName, matrix, color, color, color };
             break;
         case OvLight::Subtype::OMNI:
             attenuation = glm::clamp(10.0f / radius, 0.0f, 1.0f);
-            light = new OmnidirectionalLight{ lightName, matrix, tmp, tmp, tmp, 1.0f, attenuation };
+            light = new OmnidirectionalLight{ lightName, matrix, color, color, color, 1.0f, attenuation };
             break;
         case OvLight::Subtype::SPOT:
             attenuation = glm::clamp(10.0f / radius, 0.0f, 1.0f);
-            light = new SpotLight{ lightName, matrix, tmp, tmp, tmp, cutoff, direction, 1.0f, attenuation };
+            light = new SpotLight{ lightName, matrix, color, color, color, cutoff, direction, 1.0f, attenuation };
             break;
     }
 

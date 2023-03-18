@@ -147,11 +147,6 @@ private:
 
 public:
 	/**
-	Static Program Shader pointer
-	**/
-	static Shader* programShader;
-
-	/**
 	 * Initialize the engine.
 	 *
 	 * \param title The title of the window.

@@ -1,5 +1,6 @@
 
 #include "material.h"
+#include "../shaderWrapper.h"
 
 
    //GLM:
@@ -17,13 +18,12 @@ LIB_API Material::~Material() {}
 
 void LIB_API Material::apply() {
 	// Set material properties:
-	/*
-	Engine::programShader->setVec3(Engine::programShader->getParamLocation("matEmission"), m_emission);
-	Engine::programShader->setVec3(Engine::programShader->getParamLocation("matAmbient"), m_ambient);
-	Engine::programShader->setVec3(Engine::programShader->getParamLocation("matDiffuse"), m_diffuse);
-	Engine::programShader->setVec3(Engine::programShader->getParamLocation("matSpecular"), m_specular);
-	Engine::programShader->setFloat(Engine::programShader->getParamLocation("matShininess"), m_shininess);
-	*/
+	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("matEmission"), m_emission);
+	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("matAmbient"), m_ambient);
+	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("matDiffuse"), m_diffuse);
+	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("matSpecular"), m_specular);
+	ShaderWrapper::shader->setFloat(ShaderWrapper::shader->getParamLocation("matShininess"), m_shininess);
+	
 
 	// Apply texture if present
 	if (m_texture != nullptr) {

@@ -1,4 +1,5 @@
 #include "light.h"
+
 #include <stdexcept>
 //FreeGLUT:
 #include <GL/freeglut.h>
@@ -13,7 +14,7 @@ unsigned int Light::m_baseValueLights = GL_LIGHT0;
 unsigned int Light::m_incrementalLightId = 0;
 int Light::m_maxLights = 0;
 
-LIB_API Light::Light(const std::string& name, glm::mat4 matrix, LightType type, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular)
+LIB_API Light::Light(const std::string& name, glm::mat4 matrix, LightType type, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular)
 	: Node(name, matrix),
 	m_type{type},
 	m_lightId{ m_incrementalLightId },

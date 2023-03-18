@@ -16,7 +16,7 @@ public:
 	 * \param diffuse Diffuse term vector
 	 * \param specular Specular term vector
 	 */
-	DirectionalLight(const std::string& name, glm::mat4 matrix, glm::vec4 ambient, glm::vec4 diffuse, glm::vec4 specular);
+	DirectionalLight(const std::string& name, glm::mat4 matrix, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular);
 
 	/**
 	 * Render the light in the scene.
