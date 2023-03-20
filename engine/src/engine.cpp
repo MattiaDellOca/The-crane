@@ -113,8 +113,8 @@ const char* fragShader = R"(
       } 
       
       // Final color:
-      //fragOutput = vec4(mix(fragColor, fog, dist), 1.0f);
-      fragOutput = vec4(fragColor, 1.0f);
+      fragOutput = vec4(mix(fragColor, fog, dist), 1.0f);
+      //fragOutput = vec4(fragColor, 1.0f);
    }
 )";
 
@@ -345,7 +345,7 @@ void LIB_API Engine::clear() {
 
 void LIB_API Engine::setBackgroundColor(float r, float g, float b) {
 	glClearColor(r, g, b, 1.0f);
-	//ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("fog"), glm::vec3(r, g, b));
+	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("fog"), glm::vec3(r, g, b));
 }
 
 
@@ -396,7 +396,7 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	m_curr_3Dcamera = camera;
 
 	// Set the far plane used for creating the fog effect
-	//ShaderWrapper::shader->setFloat(ShaderWrapper::shader->getParamLocation("farPlane"), camera->getFar());
+	ShaderWrapper::shader->setFloat(ShaderWrapper::shader->getParamLocation("farPlane"), camera->getFar());
 
 	// Set properties
 	m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
