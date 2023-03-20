@@ -35,7 +35,7 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 
 	// Load inverse-transpose matrix
 	glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(matrix));
-	ShaderWrapper::shader->setMatrix3(ShaderWrapper::shader->getParamLocation("normalMatrix"), matrix);
+	ShaderWrapper::shader->setMatrix3(ShaderWrapper::shader->getParamLocation("normalMatrix"), normalMatrix);
 
 
 	// Render the mesh using VAO

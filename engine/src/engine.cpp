@@ -42,15 +42,17 @@ Shader* Engine::fs = nullptr;
 const char* vertShader = R"(
    #version 440 core
 
+   // Uniforms:
    uniform mat4 projection;
    uniform mat4 modelview;
    uniform mat3 normalMatrix;
    uniform float farPlane;
 
+	// Attributes:
    layout(location = 0) in vec3 in_Position;
    layout(location = 1) in vec3 in_Normal;
 
-   out vec3 out_Color;
+	// Varying:
    out vec3 normal;
    out vec4 fragPosition;
    out float dist;
@@ -59,8 +61,7 @@ const char* vertShader = R"(
    {
       fragPosition = modelview * vec4(in_Position, 1.0f);
       gl_Position = projection * fragPosition;
-	  dist = abs(gl_Position.z / farPlane);
-      out_Color = vec3(1.0f, 0.0f, 0.0f);
+	   dist = abs(gl_Position.z / farPlane);
       normal = normalMatrix * in_Normal;
    }
 )";
@@ -68,15 +69,16 @@ const char* vertShader = R"(
 ////////////////////////////
 const char* fragShader = R"(
    #version 440 core
+	
+   out vec4 fragOutput;
 
+	// Uniforms:
    uniform vec3 fog;
 
-   in vec3 out_Color;
-   in vec4 fragPosition;
+	// Varying:
    in vec3 normal;
-   in float dist;
-
-   out vec4 fragOutput;
+   in vec4 fragPosition;
+   in float dist;	
 
    // Material properties:
    uniform vec3 matEmission;
@@ -94,7 +96,7 @@ const char* fragShader = R"(
    void main(void)
    {
       // Ambient term:
-      vec3 fragColor = matEmission + matAmbient;
+      vec3 fragColor = matEmission + matAmbient * lightAmbient;
 
       // Diffuse term:
       vec3 _normal = normalize(normal);
@@ -323,8 +325,8 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	ShaderWrapper::shader->build(vs, fs);
 	ShaderWrapper::shader->render();
 	ShaderWrapper::shader->bind(0, "in_Position");
-	ShaderWrapper::shader->bind(1, "in_Color");
-
+	ShaderWrapper::shader->bind(1, "in_Normal");
+		
 	// Print information
 	std::cout << "OpenGL context" << std::endl;
 	std::cout << "   version  . . : " << glGetString(GL_VERSION) << std::endl;

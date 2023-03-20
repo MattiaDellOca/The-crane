@@ -6,6 +6,7 @@
    //GLM:
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
 
    //FreeGLUT:
 #include <GL/freeglut.h>
@@ -23,7 +24,7 @@ void LIB_API Material::apply() {
 	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("matDiffuse"), m_diffuse);
 	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("matSpecular"), m_specular);
 	ShaderWrapper::shader->setFloat(ShaderWrapper::shader->getParamLocation("matShininess"), m_shininess);
-	
+
 
 	// Apply texture if present
 	if (m_texture != nullptr) {
