@@ -1,6 +1,6 @@
 #include "mesh.h"
 #include "engine.h"
-#include "../shaderWrapper.h"
+#include "shaderWrapper.h"
 
 // GLEW
 #include <GL/glew.h>

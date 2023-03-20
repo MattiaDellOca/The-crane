@@ -1,6 +1,6 @@
 #pragma once
 
-#include "src/shader.h"
+#include "shader.h"
 
 class ShaderWrapper {
 public:

@@ -3,7 +3,7 @@
 //////////////
 
 #include "engine.h"
-#include "../shaderWrapper.h"
+#include "shaderWrapper.h"
 
 	// Library main include
 #include "perspectiveCamera.h"

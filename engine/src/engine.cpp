@@ -7,7 +7,7 @@
 #include "engine.h"
 #include "perspectiveCamera.h"
 #include "shader.h"
-#include "../shaderWrapper.h"
+#include "shaderWrapper.h"
 
 	// C/C++
 #include <iostream>

@@ -1,5 +1,5 @@
 #include "omnidirectionalLight.h"
-#include "../shaderWrapper.h"
+#include "shaderWrapper.h"
 
 //FreeGLUT:
 #include <GL/freeglut.h>

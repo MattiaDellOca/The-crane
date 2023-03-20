@@ -1,6 +1,6 @@
 
 #include "material.h"
-#include "../shaderWrapper.h"
+#include "shaderWrapper.h"
 
 
    //GLM:
