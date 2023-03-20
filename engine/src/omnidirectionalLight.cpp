@@ -19,8 +19,8 @@ LIB_API void OmnidirectionalLight::render(glm::mat4 matrix)
 	//Light position is set to object coordinates and is modified by the current OpenGL matrix (as with any other object):
 
 	//Values for omnidirectional light
-	glm::vec4 objectCoordPosition(0.f, 0.f, 0.f, 1.f); //w = 1
-	float cutoff = 180.f; //special value
+	//glm::vec4 objectCoordPosition(0.f, 0.f, 0.f, 1.f); //w = 1
+	//float cutoff = 180.f; //special value
 
 
 	// Load modelview matrix

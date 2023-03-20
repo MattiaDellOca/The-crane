@@ -114,7 +114,6 @@ const char* fragShader = R"(
       
       // Final color:
       fragOutput = vec4(mix(fragColor, fog, dist), 1.0f);
-      //fragOutput = vec4(fragColor, 1.0f);
    }
 )";
 
