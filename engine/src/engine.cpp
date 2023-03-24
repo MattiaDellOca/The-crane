@@ -7,7 +7,7 @@
 #include "engine.h"
 #include "perspectiveCamera.h"
 #include "shader.h"
-#include "shaderWrapper.h"
+#include "shaderManager.h"
 
 	// C/C++
 #include <iostream>
@@ -319,13 +319,15 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	fs = new Shader("Fragment Shader");
 	fs->loadFromMemory(Shader::TYPE_FRAGMENT, fragShader);
 
+	ShaderManager::CreateShader("programShader");
+	Shader* progShader = ShaderManager::GetShader("programShader");
+	progShader->build(vs, fs);
+	progShader->render();
+	progShader->bind(0, "in_Position");
+	progShader->bind(1, "in_Normal");
+
 	// Setup shader program:
-	ShaderWrapper::shader = new Shader("Program shader");
-	ShaderWrapper::shader->build(vs, fs);
-	ShaderWrapper::shader->render();
-	ShaderWrapper::shader->bind(0, "in_Position");
-	ShaderWrapper::shader->bind(1, "in_Normal");
-		
+
 	// Print information
 	std::cout << "OpenGL context" << std::endl;
 	std::cout << "   version  . . : " << glGetString(GL_VERSION) << std::endl;
@@ -344,7 +346,7 @@ void LIB_API Engine::clear() {
 
 void LIB_API Engine::setBackgroundColor(float r, float g, float b) {
 	glClearColor(r, g, b, 1.0f);
-	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("fog"), glm::vec3(r, g, b));
+	ShaderManager::GetShader("programShader")->setVec3(ShaderManager::GetShader("programShader")->getParamLocation("fog"), glm::vec3(r, g, b));
 }
 
 
@@ -395,7 +397,7 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	m_curr_3Dcamera = camera;
 
 	// Set the far plane used for creating the fog effect
-	ShaderWrapper::shader->setFloat(ShaderWrapper::shader->getParamLocation("farPlane"), camera->getFar());
+	ShaderManager::GetShader("programShader")->setFloat(ShaderManager::GetShader("programShader")->getParamLocation("farPlane"), camera->getFar());
 
 	// Set properties
 	m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());

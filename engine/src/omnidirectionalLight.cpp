@@ -1,5 +1,5 @@
 #include "omnidirectionalLight.h"
-#include "shaderWrapper.h"
+#include "shaderManager.h"
 
 //FreeGLUT:
 #include <GL/freeglut.h>
@@ -25,10 +25,10 @@ LIB_API void OmnidirectionalLight::render(glm::mat4 matrix)
 
 	// Load modelview matrix
 	glm::vec3 position = { matrix[3].x, matrix[3].y, matrix[3].z };
-	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("lightPosition"), position);
-	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("lightAmbient"), m_lightAmbient);
-	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("lightDiffuse"), m_lightDiffuse);
-	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("lightSpecular"), m_lightSpecular);
+	ShaderManager::GetShader("programShader")->setVec3(ShaderManager::GetShader("programShader")->getParamLocation("lightPosition"), position);
+	ShaderManager::GetShader("programShader")->setVec3(ShaderManager::GetShader("programShader")->getParamLocation("lightAmbient"), m_lightAmbient);
+	ShaderManager::GetShader("programShader")->setVec3(ShaderManager::GetShader("programShader")->getParamLocation("lightDiffuse"), m_lightDiffuse);
+	ShaderManager::GetShader("programShader")->setVec3(ShaderManager::GetShader("programShader")->getParamLocation("lightSpecular"), m_lightSpecular);
 
 	/*
 	//Attenuation

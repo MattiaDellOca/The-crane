@@ -90,8 +90,8 @@
     <ClCompile Include="src\shader.cpp">
       <Filter>Source Files\src\utilities</Filter>
     </ClCompile>
-    <ClCompile Include="src\shaderWrapper.cpp">
-      <Filter>Source Files\src</Filter>
+    <ClCompile Include="src\shaderManager.cpp">
+      <Filter>Source Files\src\utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -155,8 +155,8 @@
     <ClInclude Include="src\shader.h">
       <Filter>Header Files\src\utilities</Filter>
     </ClInclude>
-    <ClInclude Include="src\shaderWrapper.h">
-      <Filter>Header Files\src</Filter>
+    <ClInclude Include="src\shaderManager.h">
+      <Filter>Header Files\src\utilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

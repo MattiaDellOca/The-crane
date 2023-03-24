@@ -3,7 +3,7 @@
 //////////////
 
 #include "engine.h"
-#include "shaderWrapper.h"
+#include "shaderManager.h"
 
 	// Library main include
 #include "perspectiveCamera.h"
@@ -21,7 +21,7 @@ LIB_API PerspectiveCamera::PerspectiveCamera(const std::string& name, glm::mat4 
 };
 
 void LIB_API PerspectiveCamera::render(glm::mat4 matrix) {
-	ShaderWrapper::shader->setMatrix(ShaderWrapper::shader->getParamLocation("projection"), matrix);
+	ShaderManager::GetShader("programShader")->setMatrix(ShaderManager::GetShader("programShader")->getParamLocation("projection"), matrix);
 	/*
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(glm::value_ptr(matrix));
