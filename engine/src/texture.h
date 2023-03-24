@@ -130,14 +130,11 @@ public:
     static void disableAnisotropicFiltering();
 private:
     /**
-     * \brief Loads a texture from an image file.
+     * \brief Loads a texture either from an image file or by generating it.
      *
-     * \param file The path to the image file to use for the texture.
      * \param textureId A pointer to the texture ID to store the result.
-     * \throws 
      */
-    void static loadTexture(std::string file, unsigned int* textureId);
-
+    void loadTexture(unsigned int* textureId);
 
     /**
     * \var m_textures

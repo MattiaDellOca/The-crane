@@ -51,10 +51,12 @@ const char* vertShader = R"(
 	// Attributes:
    layout(location = 0) in vec3 in_Position;
    layout(location = 1) in vec3 in_Normal;
+   layout(location = 2) in vec2 in_TexCoord;
 
 	// Varying:
    out vec3 normal;
    out vec4 fragPosition;
+   out vec2 texCoord;
    out float dist;
 
    void main(void)
@@ -63,6 +65,7 @@ const char* vertShader = R"(
       gl_Position = projection * fragPosition;
 	   dist = abs(gl_Position.z / farPlane);
       normal = normalMatrix * in_Normal;
+      texCoord = in_TexCoord;
    }
 )";
 
@@ -78,7 +81,8 @@ const char* fragShader = R"(
 	// Varying:
    in vec3 normal;
    in vec4 fragPosition;
-   in float dist;	
+   in float dist;
+   in vec2 texCoord;	
 
    // Material properties:
    uniform vec3 matEmission;
@@ -93,8 +97,14 @@ const char* fragShader = R"(
    uniform vec3 lightDiffuse; 
    uniform vec3 lightSpecular;
 
+   // Texture mapping:
+   layout(binding = 0) uniform sampler2D texSampler;
+
    void main(void)
    {
+      // Texture element:
+      vec4 texel = texture(texSampler, texCoord);
+
       // Ambient term:
       vec3 fragColor = matEmission + matAmbient * lightAmbient;
 
@@ -113,7 +123,7 @@ const char* fragShader = R"(
       } 
       
       // Final color:
-      fragOutput = vec4(mix(fragColor, fog, dist), 1.0f);
+      fragOutput = texel * vec4(mix(fragColor, fog, dist), 1.0f);
    }
 )";
 
@@ -325,6 +335,7 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	ShaderWrapper::shader->render();
 	ShaderWrapper::shader->bind(0, "in_Position");
 	ShaderWrapper::shader->bind(1, "in_Normal");
+	ShaderWrapper::shader->bind(2, "in_TexCoord");
 		
 	// Print information
 	std::cout << "OpenGL context" << std::endl;

@@ -3,6 +3,7 @@
 #include <cstring>
 #include <iostream>
 #include <stdexcept> 
+#include <GL/glew.h>
 #include <GL/freeglut.h>
 #include "FreeImage.h"
 
@@ -42,7 +43,7 @@ void LIB_API Texture::render(glm::mat4 coords) {
         }
 
         // Reload from file
-        loadTexture(m_file_path, &m_texture_id);
+        loadTexture(&m_texture_id);
 
         // Set loaded to true if false
         if (!m_loaded)
@@ -114,7 +115,7 @@ void LIB_API Texture::setFilter(Filter f, TextureMipmap mipmap)
     }
 }
 
-void LIB_API Texture::loadTexture(std::string file, unsigned int* textureID) {
+void LIB_API Texture::loadTexture(unsigned int* textureID) {
     // Generate a new texture
     glGenTextures(1, textureID);
     glBindTexture(GL_TEXTURE_2D, *textureID);
@@ -122,44 +123,77 @@ void LIB_API Texture::loadTexture(std::string file, unsigned int* textureID) {
     // Align to 1 byte
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-    // Check if file exists
-    std::ifstream fileStream(file);
-    if (!fileStream.good()) {
-        throw std::invalid_argument("Texture file does not exist. Check the path.");
+    // Allocate an 1x1 bitmap to use as default value and fill it with whyte color
+    FIBITMAP* bitmap = FreeImage_Allocate(1, 1, 24);
+    BYTE* pixels = FreeImage_GetBits(bitmap);
+    pixels[0] = 255; // R
+    pixels[1] = 255; // G
+    pixels[2] = 255; // B
+    int intFormat = GL_RGB;
+    GLenum extFormat = GL_BGR;
+
+    // If a path is specified, read a texture from the specified path
+    if(m_file_path != "[none]") {
+        // Check if file exists
+        std::ifstream fileStream(m_file_path);
+        if (!fileStream.good()) {
+            throw std::invalid_argument("Texture file does not exist. Check the path.");
+        }
+
+        // Check if file type is supported
+        FREE_IMAGE_FORMAT format = FreeImage_GetFileType(m_file_path.c_str(), 0);
+        if (format == FIF_UNKNOWN) {
+            throw std::invalid_argument("Texture format not suppoted. List of the supported file types: https://freeimage.sourceforge.io/features.html");
+        }
+
+        // Load file path using FreeImage
+        bitmap = FreeImage_Load(format, m_file_path.c_str());
+        if (bitmap == nullptr) {
+            throw std::invalid_argument("Error while loading file. Please, check that the file is readable and not corrupted.");
+        }
+
+        // If DDS, flip vertically image
+        if (format == FIF_DDS) {
+            FreeImage_FlipVertical(bitmap);
+        }
+
+        // Now extract info
+        unsigned int width = FreeImage_GetWidth(bitmap);
+        unsigned int height = FreeImage_GetHeight(bitmap);
+        BYTE* data = FreeImage_GetBits(bitmap);
+
+        // Check if mipmap is enabled
+        if (Texture::m_settings_mipmap != _DISABLED) {
+            gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, width, height, GL_BGRA_EXT, GL_UNSIGNED_BYTE, static_cast<void*>(data));
+        }
+        else {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, static_cast<void*>(data));
+        }
+
+        if (FreeImage_GetBPP(bitmap) == 32)
+        {
+            intFormat = GL_RGBA;
+            extFormat = GL_BGRA;
+        }
     }
 
-    // Check if file type is supported
-    FREE_IMAGE_FORMAT format = FreeImage_GetFileType(file.c_str(), 0);
-    if (format == FIF_UNKNOWN) {
-        throw std::invalid_argument("Texture format not suppoted. List of the supported file types: https://freeimage.sourceforge.io/features.html");
-    }
+    // Update texture content:
+    glBindTexture(GL_TEXTURE_2D, *textureID);
+    glTexImage2D(GL_TEXTURE_2D, 0, intFormat, FreeImage_GetWidth(bitmap), FreeImage_GetHeight(bitmap), 0, extFormat, GL_UNSIGNED_BYTE, (void*)FreeImage_GetBits(bitmap));
+    glGenerateMipmap(GL_TEXTURE_2D);
 
-    // Load file path using FreeImage
-    FIBITMAP* bitmap = FreeImage_Load(format, file.c_str());
-    if (bitmap == nullptr) {
-        throw std::invalid_argument("Error while loading file. Please, check that the file is readable and not corrupted.");
-    }
+    // Set circular coordinates:
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-    // If DDS, flip vertically image
-    if (format == FIF_DDS) {
-        FreeImage_FlipVertical(bitmap);
-    }
+    // Set min/mag filters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
-    // Now extract info
-    unsigned int width = FreeImage_GetWidth(bitmap);
-    unsigned int height = FreeImage_GetHeight(bitmap);
-    BYTE* data = FreeImage_GetBits(bitmap);
-
-    // Check if mipmap is enabled
-    if (Texture::m_settings_mipmap != _DISABLED) {
-        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB, width, height, GL_BGRA_EXT, GL_UNSIGNED_BYTE, static_cast<void*>(data));
+    // Free loaded image if it was loaded from a file
+    if (m_file_path != "[none]") {
+        FreeImage_Unload(bitmap);
     }
-    else {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, static_cast<void*>(data));
-    }
-
-    // free loaded image
-    FreeImage_Unload(bitmap);
 }
 
 void LIB_API Texture::setTextureWrap(TextureWrap wrap) {
