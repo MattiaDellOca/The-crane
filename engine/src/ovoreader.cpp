@@ -563,7 +563,7 @@ Light LIB_API* Ovoreader::parseLight(char* data, unsigned int& position, unsigne
     switch ((OvLight::Subtype)subtype)
     {
         case OvLight::Subtype::DIRECTIONAL:
-            light = new DirectionalLight{ lightName, matrix, color, color, color };
+            light = new DirectionalLight{ lightName, matrix, color, color, color, direction };
             break;
         case OvLight::Subtype::OMNI:
             attenuation = glm::clamp(10.0f / radius, 0.0f, 1.0f);

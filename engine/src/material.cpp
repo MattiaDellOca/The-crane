@@ -19,7 +19,7 @@ LIB_API Material::~Material() {}
 
 void LIB_API Material::apply() {
 	// Set material properties:
-	Shader* progShader = ShaderManager::GetShader("programShader");
+	Shader* progShader = ShaderManager::getActiveShader();
 	progShader->setVec3(progShader->getParamLocation("matEmission"), m_emission);
 	progShader->setVec3(progShader->getParamLocation("matAmbient"), m_ambient);
 	progShader->setVec3(progShader->getParamLocation("matDiffuse"), m_diffuse);

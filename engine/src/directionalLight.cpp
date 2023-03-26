@@ -1,4 +1,5 @@
 #include "directionalLight.h"
+#include "shaderManager.h"
 
 //FreeGLUT:
 #include <GL/freeglut.h>
@@ -7,8 +8,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 
-LIB_API DirectionalLight::DirectionalLight(const std::string& name, glm::mat4 matrix, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular)
-	: Light(name, matrix, LightType::DIRECTIONAL, ambient, diffuse, specular) 
+LIB_API DirectionalLight::DirectionalLight(const std::string& name, glm::mat4 matrix, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 direction)
+	: Light(name, matrix, LightType::DIRECTIONAL, ambient, diffuse, specular), m_direction{ direction }
 {};
 
 
@@ -18,7 +19,18 @@ LIB_API void DirectionalLight::render(glm::mat4 matrix)
 	//Light position is set to object coordinates and is modified by the current OpenGL matrix (as with any other object):
 
 	//Values for omnidirectional light
-	glm::vec4 objectCoordPosition(0.f, 0.f, 0.f, 0.f); //w = 0
+	//glm::vec4 objectCoordPosition(0.f, 0.f, 0.f, 0.f); //w = 0
+
+
+	Shader* progShader = ShaderManager::GetShader("programShaderDirectionalLight");
+	progShader->setVec3(progShader->getParamLocation("lightDirection"), m_direction);
+	progShader->setVec3(progShader->getParamLocation("lightAmbient"), m_lightAmbient);
+	progShader->setVec3(progShader->getParamLocation("lightDiffuse"), m_lightDiffuse);
+	progShader->setVec3(progShader->getParamLocation("lightSpecular"), m_lightSpecular);
+	
+	
+
+
 
 	//Reset attenuation
 

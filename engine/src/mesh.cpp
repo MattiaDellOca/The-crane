@@ -32,7 +32,7 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 
 
 	// Load modelview matrix
-	Shader* progShader = ShaderManager::GetShader("programShader");
+	Shader* progShader = ShaderManager::getActiveShader();
 	progShader->setMatrix(progShader->getParamLocation("modelview"), matrix);
 
 	// Load inverse-transpose matrix

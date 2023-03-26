@@ -3,6 +3,7 @@
 
 // Initialize static map
 std::map<std::string, Shader*> ShaderManager::shaders;
+std::string ShaderManager::activeProgramShader;
 
 Shader LIB_API* ShaderManager::GetShader(std::string name) {
    auto it = shaders.find(name);
@@ -25,4 +26,13 @@ void LIB_API ShaderManager::free() {
 		delete it->second;
 	}
 	shaders.clear();
+}
+
+
+void LIB_API ShaderManager::setActiveShader(std::string name) {
+	activeProgramShader = name;
+}
+
+Shader LIB_API* ShaderManager::getActiveShader() {
+	return GetShader(activeProgramShader);
 }

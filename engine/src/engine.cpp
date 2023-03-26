@@ -63,7 +63,7 @@ const char* vertShader = R"(
 )";
 
 ////////////////////////////
-const char* fragShader = R"(
+const char* fragShaderOmniDirectionalLight = R"(
    #version 440 core
 	
    out vec4 fragOutput;
@@ -111,6 +111,55 @@ const char* fragShader = R"(
       // Final color:
       fragOutput = vec4(mix(fragColor, fog, dist), 1.0f);
    }
+)";
+
+////////////////////////////
+const char* fragShaderDirectionalLight = R"(
+	#version 440 core
+	
+	out vec4 fragOutput;
+	
+	// Uniforms:
+	uniform vec3 fog;
+	
+	// Varying:
+	in vec3 normal;
+	in vec4 fragPosition;
+	in float dist;
+	
+	// Material properties:
+	uniform vec3 matEmission;
+	uniform vec3 matAmbient;
+	uniform vec3 matDiffuse;
+	uniform vec3 matSpecular;
+	uniform float matShininess;
+	
+	// Directional light properties:
+	uniform vec3 lightDirection;
+	uniform vec3 lightAmbient;
+	uniform vec3 lightDiffuse;
+	uniform vec3 lightSpecular;
+	
+	void main(void)
+	{
+	// Ambient term:
+	vec3 fragColor = matEmission + matAmbient * lightAmbient;
+	// Diffuse term:
+	  vec3 _normal = normalize(normal);
+	  float nDotL = dot(-lightDirection, _normal);   
+	  if (nDotL > 0.0f)
+	  {
+	     fragColor += matDiffuse * nDotL * lightDiffuse;
+	  
+	     // Specular term:
+	     vec3 halfVector = normalize(-lightDirection + normalize(-fragPosition.xyz));                     
+	     float nDotHV = dot(_normal, halfVector);         
+	     fragColor += matSpecular * pow(nDotHV, matShininess) * lightSpecular;
+	  } 
+	  
+	  // Final color:
+	  fragOutput = vec4(mix(fragColor, fog, dist), 1.0f);
+	}
 )";
 
 
@@ -313,16 +362,27 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	vs->loadFromMemory(Shader::TYPE_VERTEX, vertShader);
 
 	// Compile fragment shader:
-	Shader* fs = ShaderManager::CreateShader("fragmentShader");
-	fs->loadFromMemory(Shader::TYPE_FRAGMENT, fragShader);
+	Shader* fsOmni = ShaderManager::CreateShader("fragmentShaderOmnidirectional");
+	fsOmni->loadFromMemory(Shader::TYPE_FRAGMENT, fragShaderOmniDirectionalLight);
 
-	Shader* progShader = ShaderManager::CreateShader("programShader");
-	progShader->build(vs, fs);
+	// Program1: Omnidirectional light
+	Shader* progShader = ShaderManager::CreateShader("programShaderOmnidirectionalLight");
+	progShader->build(vs, fsOmni);
 	progShader->render();
 	progShader->bind(0, "in_Position");
 	progShader->bind(1, "in_Normal");
 
-	// Setup shader program:
+	// Program2: Directional light
+	Shader* fsDir = ShaderManager::CreateShader("fragmentShaderDirectional");
+	fsDir->loadFromMemory(Shader::TYPE_FRAGMENT, fragShaderDirectionalLight);
+	Shader* progShader2 = ShaderManager::CreateShader("programShaderDirectionalLight");
+	progShader2->build(vs, fsDir);
+	progShader2->render();
+	progShader2->bind(0, "in_Position");
+	progShader2->bind(1, "in_Normal");
+
+	// Set default shader
+	ShaderManager::setActiveShader("programShaderDirectionalLight");
 
 	// Print information
 	std::cout << "OpenGL context" << std::endl;
@@ -342,7 +402,7 @@ void LIB_API Engine::clear() {
 
 void LIB_API Engine::setBackgroundColor(float r, float g, float b) {
 	glClearColor(r, g, b, 1.0f);
-	ShaderManager::GetShader("programShader")->setVec3(ShaderManager::GetShader("programShader")->getParamLocation("fog"), glm::vec3(r, g, b));
+	ShaderManager::getActiveShader()->setVec3(ShaderManager::getActiveShader()->getParamLocation("fog"), glm::vec3(r, g, b));
 }
 
 
@@ -392,7 +452,7 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	m_curr_3Dcamera = camera;
 
 	// Set the far plane used for creating the fog effect
-	ShaderManager::GetShader("programShader")->setFloat(ShaderManager::GetShader("programShader")->getParamLocation("farPlane"), camera->getFar());
+	ShaderManager::GetShader("programShaderDirectionalLight")->setFloat(ShaderManager::GetShader("programShaderDirectionalLight")->getParamLocation("farPlane"), camera->getFar());
 
 	// Set properties
 	m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());

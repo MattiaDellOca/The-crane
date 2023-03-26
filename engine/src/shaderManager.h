@@ -14,7 +14,7 @@
 class LIB_API ShaderManager {
 public:
    /**
-   Get a Shader by name.
+   * Get a Shader by name.
    * \param name The name of the Shader.
    * \return A pointer to the Shader object if found, nullptr otherwise.
    */
@@ -31,6 +31,20 @@ public:
    * Free all Shader objects and clear the ShaderManager.
    */
    static void free();
+
+   /**
+   * Set the active Shader.
+   * \param name The name of the Shader.
+   */
+   static void setActiveShader(std::string name);
+
+
+   /**
+   * Get the active Shader.
+   */
+   static Shader* getActiveShader();
+
 private:
    static std::map<std::string, Shader*> shaders;
+   static std::string activeProgramShader;
 };
