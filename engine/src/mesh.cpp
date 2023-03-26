@@ -30,12 +30,14 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 		//glEnable(GL_TEXTURE_2D);
 	}
 
+
 	// Load modelview matrix
-	ShaderManager::GetShader("programShader")->setMatrix(ShaderManager::GetShader("programShader")->getParamLocation("modelview"), matrix);
+	Shader* progShader = ShaderManager::GetShader("programShader");
+	progShader->setMatrix(progShader->getParamLocation("modelview"), matrix);
 
 	// Load inverse-transpose matrix
 	glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(matrix));
-	ShaderManager::GetShader("programShader")->setMatrix3(ShaderManager::GetShader("programShader")->getParamLocation("normalMatrix"), normalMatrix);
+	progShader->setMatrix3(progShader->getParamLocation("normalMatrix"), normalMatrix);
 
 
 	// Render the mesh using VAO

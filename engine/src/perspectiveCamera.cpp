@@ -21,12 +21,8 @@ LIB_API PerspectiveCamera::PerspectiveCamera(const std::string& name, glm::mat4 
 };
 
 void LIB_API PerspectiveCamera::render(glm::mat4 matrix) {
-	ShaderManager::GetShader("programShader")->setMatrix(ShaderManager::GetShader("programShader")->getParamLocation("projection"), matrix);
-	/*
-	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(glm::value_ptr(matrix));
-	glMatrixMode(GL_MODELVIEW);
-	*/
+	Shader* progShader = ShaderManager::GetShader("programShader");
+	progShader->setMatrix(progShader->getParamLocation("projection"), matrix);
 }
 
 void LIB_API PerspectiveCamera::updateWindowSize(unsigned int width, unsigned int height) {
