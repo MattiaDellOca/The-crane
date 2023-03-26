@@ -35,10 +35,6 @@
 /////////////
 
 ////////////////////////////
-Shader* Engine::vs = nullptr;
-Shader* Engine::fs = nullptr;
-
-////////////////////////////
 const char* vertShader = R"(
    #version 440 core
 
@@ -313,14 +309,14 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	m_isRunning = true;
 
 	// Shaders
-	vs = new Shader("Vertex Shader");
+	Shader* vs = ShaderManager::CreateShader("vertexShader");
 	vs->loadFromMemory(Shader::TYPE_VERTEX, vertShader);
+
 	// Compile fragment shader:
-	fs = new Shader("Fragment Shader");
+	Shader* fs = ShaderManager::CreateShader("fragmentShader");
 	fs->loadFromMemory(Shader::TYPE_FRAGMENT, fragShader);
 
-	ShaderManager::CreateShader("programShader");
-	Shader* progShader = ShaderManager::GetShader("programShader");
+	Shader* progShader = ShaderManager::CreateShader("programShader");
 	progShader->build(vs, fs);
 	progShader->render();
 	progShader->bind(0, "in_Position");
@@ -384,8 +380,7 @@ bool LIB_API Engine::free()
 	}
 
 	// Delete shaders
-	delete fs;
-	delete vs;
+	ShaderManager::free();
 
 	// Done:
 	m_initFlag = false;

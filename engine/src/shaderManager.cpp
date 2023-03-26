@@ -4,10 +4,6 @@
 // Initialize static map
 std::map<std::string, Shader*> ShaderManager::shaders;
 
-void LIB_API ShaderManager::AddShader(std::string name, Shader* shader) {
-   shaders[name] = shader;
-}
-
 Shader LIB_API* ShaderManager::GetShader(std::string name) {
    auto it = shaders.find(name);
    if (it != shaders.end()) {
@@ -19,6 +15,14 @@ Shader LIB_API* ShaderManager::GetShader(std::string name) {
    }
 }
 
-void LIB_API ShaderManager::CreateShader(const std::string& name) {
+Shader LIB_API* ShaderManager::CreateShader(const std::string& name) {
    shaders[name] = new Shader(name);
+   return shaders[name];
+}
+
+void LIB_API ShaderManager::free() {
+   for (auto it = shaders.begin(); it != shaders.end(); ++it) {
+		delete it->second;
+	}
+	shaders.clear();
 }
