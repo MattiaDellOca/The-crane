@@ -90,6 +90,7 @@
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\directionalLight.cpp" />
     <ClCompile Include="src\engine.cpp" />
+    <ClCompile Include="src\fbo.cpp" />
     <ClCompile Include="src\light.cpp" />
     <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\mesh.cpp" />
@@ -111,6 +112,7 @@
     <ClInclude Include="src\cameraType.h" />
     <ClInclude Include="src\directionalLight.h" />
     <ClInclude Include="src\engine.h" />
+    <ClInclude Include="src\fbo.h" />
     <ClInclude Include="src\lib.h" />
     <ClInclude Include="src\light.h" />
     <ClInclude Include="src\lightType.h" />

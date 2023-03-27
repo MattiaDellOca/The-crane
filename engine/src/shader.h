@@ -19,12 +19,12 @@
 
 
 
-//////////////////
-// CLASS Shader //
-//////////////////
+////////////
+// CLASS  //
+////////////
 
 /**
- * @brief OGL Shader. Management and rendering of shaders.
+ * \brief OGL Shader. Management and rendering of shaders.
  */
 class LIB_API Shader : public Object
 {

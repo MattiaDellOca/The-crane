@@ -93,6 +93,9 @@
     <ClCompile Include="src\shaderWrapper.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\fbo.cpp">
+      <Filter>Source Files\src\utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cameraType.h">
@@ -157,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="src\shaderWrapper.h">
       <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fbo.h">
+      <Filter>Header Files\src\utilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
