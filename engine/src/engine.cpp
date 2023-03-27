@@ -37,6 +37,8 @@
 ////////////////////////////
 Shader* Engine::vs = nullptr;
 Shader* Engine::fs = nullptr;
+Shader* Engine::pvs = nullptr;
+Shader* Engine::pfs = nullptr;
 
 ////////////////////////////
 const char* vertShader = R"(
@@ -63,7 +65,7 @@ const char* vertShader = R"(
    {
       fragPosition = modelview * vec4(in_Position, 1.0f);
       gl_Position = projection * fragPosition;
-	   dist = abs(gl_Position.z / farPlane);
+	  dist = abs(gl_Position.z / farPlane);
       normal = normalMatrix * in_Normal;
       texCoord = in_TexCoord;
    }
@@ -124,6 +126,51 @@ const char* fragShader = R"(
       
       // Final color:
       fragOutput = texel * vec4(mix(fragColor, fog, dist), 1.0f);
+   }
+)";
+
+////////////////////////////
+const char* passthroughVertShader = R"(
+   #version 440 core
+
+   // Uniforms:
+   uniform mat4 projection;
+   uniform mat4 modelview;   
+
+   // Attributes:
+   layout(location = 0) in vec2 in_Position;   
+   layout(location = 2) in vec2 in_TexCoord;
+
+   // Varying:   
+   out vec2 texCoord;
+
+   void main(void)
+   {      
+      gl_Position = projection * modelview * vec4(in_Position, 0.0f, 1.0f);    
+      texCoord = in_TexCoord;
+   }
+)";
+
+////////////////////////////
+const char* passthroughFragShader = R"(
+   #version 440 core
+   
+   in vec2 texCoord;
+   
+   uniform vec4 color;
+
+   out vec4 fragOutput;   
+
+   // Texture mapping:
+   layout(binding = 0) uniform sampler2D texSampler;
+
+   void main(void)   
+   {  
+      // Texture element:
+      vec4 texel = texture(texSampler, texCoord);      
+      
+      // Final color:
+      fragOutput = color * texel;       
    }
 )";
 
@@ -241,6 +288,33 @@ void LIB_API Engine::timerCallback(int value) {
 	glutTimerFunc(1000, timerCallback, 0);
 }
 
+void Engine::buildShaders() {
+	// Per pixel lighting shaders
+	vs = new Shader("Vertex Shader");
+	vs->loadFromMemory(Shader::TYPE_VERTEX, vertShader);
+	fs = new Shader("Fragment Shader");
+	fs->loadFromMemory(Shader::TYPE_FRAGMENT, fragShader);
+	// Setup per pixel lighting shader program:
+	ShaderWrapper::shader = new Shader("Program shader");
+	ShaderWrapper::shader->build(vs, fs);
+	ShaderWrapper::shader->render();
+	ShaderWrapper::shader->bind(0, "in_Position");
+	ShaderWrapper::shader->bind(1, "in_Normal");
+	ShaderWrapper::shader->bind(2, "in_TexCoord");
+
+	// Passthrough shaders
+	pvs = new Shader("Passthrough Vertex Shader");
+	pvs->loadFromMemory(Shader::TYPE_VERTEX, passthroughVertShader);
+	pfs = new Shader("Passthrough Fragment Shader");
+	pfs->loadFromMemory(Shader::TYPE_FRAGMENT, passthroughFragShader);
+	// Setup per pixel lighting shader program:
+	ShaderWrapper::passthroughShader = new Shader("Passthrough Program Shader");
+	ShaderWrapper::passthroughShader->build(pvs, pfs);
+	ShaderWrapper::passthroughShader->render();
+	ShaderWrapper::passthroughShader->bind(0, "in_Position");
+	ShaderWrapper::passthroughShader->bind(2, "in_TexCoord");
+}
+
 ////////////
 // PUBLIC //
 ////////////
@@ -322,20 +396,9 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Set running state
 	m_isRunning = true;
 
-	// Shaders
-	vs = new Shader("Vertex Shader");
-	vs->loadFromMemory(Shader::TYPE_VERTEX, vertShader);
-	// Compile fragment shader:
-	fs = new Shader("Fragment Shader");
-	fs->loadFromMemory(Shader::TYPE_FRAGMENT, fragShader);
-
-	// Setup shader program:
-	ShaderWrapper::shader = new Shader("Program shader");
-	ShaderWrapper::shader->build(vs, fs);
+	// Build shaders
+	buildShaders();
 	ShaderWrapper::shader->render();
-	ShaderWrapper::shader->bind(0, "in_Position");
-	ShaderWrapper::shader->bind(1, "in_Normal");
-	ShaderWrapper::shader->bind(2, "in_TexCoord");
 		
 	// Print information
 	std::cout << "OpenGL context" << std::endl;

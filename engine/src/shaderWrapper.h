@@ -5,4 +5,7 @@
 class ShaderWrapper {
 public:
 	static Shader* shader;
+
+	// WARING: temporarly, must be removed!
+	static Shader* passthroughShader;
 };

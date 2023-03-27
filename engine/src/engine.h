@@ -131,6 +131,16 @@ private:
 	static Shader* fs;
 
 	/**
+	Vertex Passthrough Shader pointer
+	**/
+	static Shader* pvs;
+
+	/**
+	Static Passthrough Fragment Shader pointer
+	**/
+	static Shader* pfs;
+
+	/**
 	 * Callback function for reshaping the window.
 	 *
 	 * \param width The new window width.
@@ -145,7 +155,13 @@ private:
 	*/
 	static void timerCallback(int value);
 
+	/**
+	* \brief Initialize and build program shaders
+	*/
+	static void buildShaders();
+
 public:
+
 	/**
 	 * Initialize the engine.
 	 *
