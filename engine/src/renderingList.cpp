@@ -102,11 +102,18 @@ void LIB_API RenderingList::render(glm::mat4 cameraMatrix) {
 	// render
 	for (size_t i = 0; i < lights.size(); i++) {
 
+		std::cout << "Render light nr. " << i+1 << " of " << lights.size() << " lights" << std::endl;
+
+		// light 0 is the only light that is not additive
+		if (i == 0) {
+			glDepthFunc(GL_LESS);
+		}
+
 		// Enable addictive blending from light 1 on:
 		if (i == 1) {
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_ONE, GL_ONE);
-			glDisable(GL_DEPTH_TEST);
+			glDepthFunc(GL_LEQUAL);
 		}
 
 		// Get first light
