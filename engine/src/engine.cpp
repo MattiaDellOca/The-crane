@@ -14,7 +14,7 @@
 #include <thread>
 
 
-   // GLM:
+	// GLM:
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -61,6 +61,7 @@ const char* vertShader = R"(
       normal = normalMatrix * in_Normal;
    }
 )";
+
 
 ////////////////////////////
 const char* fragShaderOmniDirectionalLight = R"(
@@ -126,7 +127,7 @@ const char* fragShaderDirectionalLight = R"(
 	in vec3 normal;
 	in vec4 fragPosition;
 	in float dist;
-	
+
 	// Material properties:
 	uniform vec3 matEmission;
 	uniform vec3 matAmbient;
@@ -163,13 +164,80 @@ const char* fragShaderDirectionalLight = R"(
 )";
 
 
+
+////////////////////////////
+const char* fragShaderSpotLight = R"(
+	#version 440 core
+	
+	out vec4 fragOutput;
+	
+	// Uniforms:
+	uniform vec3 fog;
+	
+	// Varying:
+	in vec3 normal;
+	in vec4 fragPosition;
+	in float dist;
+	
+	// Material properties:
+	uniform vec3 matEmission;
+	uniform vec3 matAmbient;
+	uniform vec3 matDiffuse;
+	uniform vec3 matSpecular;
+	uniform float matShininess;
+	
+	// Light properties:
+	uniform vec3 lightPosition;
+	uniform vec3 lightAmbient;
+	uniform vec3 lightDiffuse;
+	uniform vec3 lightSpecular;
+	uniform vec3 lightDirection; // The direction of the spot light
+	uniform float lightCutoff; // The angle of the spot light cone in degrees
+	uniform float lightExponent; // The exponent for the spot light falloff
+	
+	void main(void)
+	{
+    // Calculate the ambient light:
+    vec3 ambient = lightAmbient * matAmbient;
+    
+    // Calculate the diffuse light:
+    vec3 lightDir = normalize(lightPosition - fragPosition.xyz);
+    float cosTheta = dot(lightDir, normalize(normal));
+    vec3 diffuse = vec3(0.0);
+    if (cosTheta > 0.0) {
+        diffuse = lightDiffuse * matDiffuse * cosTheta;
+    }
+    
+    // Calculate the specular light:
+    vec3 specular = vec3(0.0);
+    vec3 viewDir = normalize(-fragPosition.xyz);
+    vec3 reflectDir = reflect(-lightDir, normalize(normal));
+    float cosPhi = dot(viewDir, reflectDir);
+    if (cosTheta > 0.0 && cosPhi > 0.0) {
+        specular = lightSpecular * matSpecular * pow(cosPhi, matShininess);
+    }
+    
+    // Calculate the spot light:
+    vec3 spotLight = vec3(0.0);
+    float cosAngle = dot(-lightDirection, lightDir);
+    if (cosAngle > cos(radians(lightCutoff))) {
+        float spotFactor = pow(cosAngle, lightExponent);
+        spotLight = lightDiffuse * matDiffuse * spotFactor;
+    }
+    
+    // Combine the lights and apply fog:
+    vec3 color = matEmission + ambient + diffuse + specular + spotLight;
+    fragOutput = vec4(mix(color, fog, dist), 1.0);
+	}
+)";
+
 ////////////
 // STATIC //
 ////////////
 
 // Reserved pointer:
 Node* Engine::m_scene_graph = nullptr;
-RenderingList* Engine::m_rendering_list = new RenderingList{"Rendering list"};
+RenderingList* Engine::m_rendering_list = new RenderingList{ "Rendering list" };
 bool Engine::m_initFlag = false;
 bool Engine::m_isRunning = false;
 int Engine::m_window_height = -1;
@@ -179,7 +247,7 @@ PerspectiveCamera* Engine::m_curr_3Dcamera = nullptr;
 OrthographicCamera* Engine::m_curr_2Dcamera = nullptr;
 EngineGraphics* Engine::m_graphics_settings = nullptr;
 
-	// timer function defined by user
+// timer function defined by user
 void(*userTimerCallback)(int);
 
 
@@ -221,7 +289,7 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 void __stdcall DebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam)
 {
 	// Ignore NVIDIA on VBO allocation
-	if(id != 131185 && type != 33361)
+	if (id != 131185 && type != 33361)
 		std::cout << "OpenGL says: \"" << std::string(message) << "\"" << std::endl;
 }
 #endif
@@ -304,8 +372,8 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	glutInitContextFlags(GLUT_DEBUG);
 	std::cout << "Running in FreeGLUT debugging mode" << std::endl;
 #endif
-	
-	
+
+
 	// Init FreeGLUT window
 	glutInitWindowPosition(500, 500);
 	m_window_width = width;
@@ -357,7 +425,7 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Set running state
 	m_isRunning = true;
 
-	// Shaders
+	// Vertex Shader
 	Shader* vs = ShaderManager::CreateShader("vertexShader");
 	vs->loadFromMemory(Shader::TYPE_VERTEX, vertShader);
 
@@ -381,8 +449,18 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	progShader2->bind(0, "in_Position");
 	progShader2->bind(1, "in_Normal");
 
+	// Program3: Spot light
+
+	Shader* fsSpot = ShaderManager::CreateShader("fragmentShaderSpot");
+	fsSpot->loadFromMemory(Shader::TYPE_FRAGMENT, fragShaderSpotLight);
+	Shader* progShader3 = ShaderManager::CreateShader("programShaderSpotLight");
+	progShader3->build(vs, fsSpot);
+	progShader3->render();
+	progShader3->bind(0, "in_Position");
+	progShader3->bind(1, "in_Normal");
+
 	// Set default shader
-	ShaderManager::setActiveShader("programShaderDirectionalLight");
+	ShaderManager::setActiveShader("programShaderSpotLight");
 
 	// Print information
 	std::cout << "OpenGL context" << std::endl;
@@ -407,7 +485,7 @@ void LIB_API Engine::setBackgroundColor(float r, float g, float b) {
 
 
 void LIB_API Engine::enableWireframe() {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void LIB_API Engine::disableWireframe() {
@@ -452,7 +530,7 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	m_curr_3Dcamera = camera;
 
 	// Set the far plane used for creating the fog effect
-	ShaderManager::GetShader("programShaderDirectionalLight")->setFloat(ShaderManager::GetShader("programShaderDirectionalLight")->getParamLocation("farPlane"), camera->getFar());
+	ShaderManager::getActiveShader()->setFloat(ShaderManager::getActiveShader()->getParamLocation("farPlane"), camera->getFar());
 
 	// Set properties
 	m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
@@ -518,12 +596,12 @@ void LIB_API Engine::run(void (*renderFunction)()) {
 // Callback setters
 //
 
-void LIB_API Engine::setSpecialKeyboardFunction(void (*callback)(int,int,int))
+void LIB_API Engine::setSpecialKeyboardFunction(void (*callback)(int, int, int))
 {
 	glutSpecialFunc(callback);
 }
 
-void LIB_API Engine::setKeyboardFunction(void (*callback)(unsigned char,int,int)) {
+void LIB_API Engine::setKeyboardFunction(void (*callback)(unsigned char, int, int)) {
 	glutKeyboardFunc(callback);
 }
 

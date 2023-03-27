@@ -1,10 +1,13 @@
 #include "spotLight.h"
+#include "shaderManager.h"
+
 #include <stdexcept>
 //FreeGLUT:
 #include <GL/freeglut.h>
 
 //GLM:
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 
 LIB_API SpotLight::SpotLight(const std::string& name, glm::mat4 matrix, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, float cutoff, glm::vec3 direction, float constantAttenuation, float linearAttenuation, float quadraticAttenuation)
@@ -23,28 +26,16 @@ LIB_API SpotLight::SpotLight(const std::string& name, glm::mat4 matrix, glm::vec
 
 LIB_API void SpotLight::render(glm::mat4 matrix)
 {
-	//Position in (0,0,0) and the translation matrix will move the light
-	//Light position is set to object coordinates and is modified by the current OpenGL matrix (as with any other object):
+	glm::vec3 position = { matrix[3].x, matrix[3].y, matrix[3].z };
+	std::cout << m_name << m_id << std::endl;
+	glm::vec4 direction = matrix * glm::vec4(m_direction, 0.0f);
 
-	//Values for omnidirectional light
-	glm::vec4 objectCoordPosition(0.f, 0.f, 0.f, 1.f); //w = 1
-
-	//Load matrix
-	/*
-	glLoadMatrixf(glm::value_ptr(matrix));
-
-	//Attenuation
-	glLightf(m_baseValueLights + m_lightId, GL_CONSTANT_ATTENUATION, m_constantAttenuation);
-	glLightf(m_baseValueLights + m_lightId, GL_LINEAR_ATTENUATION, m_linearAttenuation);
-	glLightf(m_baseValueLights + m_lightId, GL_QUADRATIC_ATTENUATION, m_quadraticAttenuation);
-
-	//Settings
-	glLightfv(m_baseValueLights + m_lightId, GL_POSITION, glm::value_ptr(objectCoordPosition));
-	glLightfv(m_baseValueLights + m_lightId, GL_SPOT_CUTOFF, &m_cutoff);
-	glLightfv(m_baseValueLights + m_lightId, GL_SPOT_DIRECTION, glm::value_ptr(m_direction));
-
-	glLightfv(m_baseValueLights + m_lightId, GL_AMBIENT, glm::value_ptr(m_lightAmbient));
-	glLightfv(m_baseValueLights + m_lightId, GL_DIFFUSE, glm::value_ptr(m_lightDiffuse));
-	glLightfv(m_baseValueLights + m_lightId, GL_SPECULAR, glm::value_ptr(m_lightSpecular));
-	*/
+	Shader* progShader = ShaderManager::GetShader("programShaderSpotLight");
+	progShader->setVec3(progShader->getParamLocation("lightPosition"), position);
+	progShader->setVec3(progShader->getParamLocation("lightAmbient"), m_lightAmbient);
+	progShader->setVec3(progShader->getParamLocation("lightDiffuse"), m_lightDiffuse);
+	progShader->setVec3(progShader->getParamLocation("lightSpecular"), m_lightSpecular);
+	progShader->setVec3(progShader->getParamLocation("lightDirection"), glm::vec3(direction.x, direction.y, direction.z));
+	progShader->setFloat(progShader->getParamLocation("lightCutoff"), m_cutoff);
+	progShader->setFloat(progShader->getParamLocation("lightExponent"), m_linearAttenuation);
 }
