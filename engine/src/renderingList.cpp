@@ -136,7 +136,7 @@ void LIB_API RenderingList::render(glm::mat4 cameraMatrix) {
 		ShaderManager::setActiveShader(shaderName);
 		ShaderManager::getActiveShader()->setInt(ShaderManager::getActiveShader()->getParamLocation("nrLights"), static_cast<int>(lights.size()));
 
-
+		m_camera->render(glm::mat4(1.f));
 
 		// Render light
 		dynamic_cast<Light*>(light->m_node)->render(inverseCameraMatrix * light->m_mat);

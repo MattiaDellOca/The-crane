@@ -25,11 +25,6 @@ void LIB_API Material::apply() {
 	progShader->setVec3(progShader->getParamLocation("matDiffuse"), m_diffuse);
 	progShader->setVec3(progShader->getParamLocation("matSpecular"), m_specular);
 	progShader->setFloat(progShader->getParamLocation("matShininess"), m_shininess);
-	/*progShader->setVec3(progShader->getParamLocation("matEmission"), glm::vec3(m_emission.x / 2, m_emission.y / 2, m_emission.z / 2));
-	progShader->setVec3(progShader->getParamLocation("matAmbient"), glm::vec3(m_ambient.x / 2, m_ambient.y / 2, m_ambient.z / 2));
-	progShader->setVec3(progShader->getParamLocation("matDiffuse"), glm::vec3(m_diffuse.x / 2, m_diffuse.y / 2, m_diffuse.z / 2));
-	progShader->setVec3(progShader->getParamLocation("matSpecular"), glm::vec3(m_specular.x / 2, m_specular.y / 2, m_specular.z / 2));
-	progShader->setFloat(progShader->getParamLocation("matShininess"), m_shininess/2);*/
 	
 	// Apply texture if present
 	if (m_texture != nullptr) {

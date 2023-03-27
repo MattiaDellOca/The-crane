@@ -566,6 +566,7 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 		m_rendering_list->pass(m_scene_graph, glm::mat4(1));
 
 		// Render
+		m_rendering_list->m_camera = m_curr_3Dcamera;
 		m_rendering_list->render(m_curr_3Dcamera->getMatrix());
 	}
 	else {
