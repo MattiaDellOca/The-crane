@@ -101,6 +101,7 @@
     <ClCompile Include="src\ovoreader.cpp" />
     <ClCompile Include="src\perspectiveCamera.cpp" />
     <ClCompile Include="src\positionalLight.cpp" />
+    <ClCompile Include="src\quad.cpp" />
     <ClCompile Include="src\renderingList.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\shaderWrapper.cpp" />
@@ -125,6 +126,7 @@
     <ClInclude Include="src\ovoreader.h" />
     <ClInclude Include="src\perspectiveCamera.h" />
     <ClInclude Include="src\positionalLight.h" />
+    <ClInclude Include="src\quad.h" />
     <ClInclude Include="src\renderingList.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\shaderWrapper.h" />

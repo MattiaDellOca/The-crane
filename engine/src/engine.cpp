@@ -190,6 +190,7 @@ int Engine::m_windowId = -1;
 PerspectiveCamera* Engine::m_curr_3Dcamera = nullptr;
 OrthographicCamera* Engine::m_curr_2Dcamera = nullptr;
 EngineGraphics* Engine::m_graphics_settings = nullptr;
+Quad* Engine::m_quad = nullptr;
 
 	// timer function defined by user
 void(*userTimerCallback)(int);
@@ -399,6 +400,9 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Build shaders
 	buildShaders();
 	ShaderWrapper::shader->render();
+
+	// Create quad
+	m_quad = new Quad("Quad", m_window_width, m_window_height);
 		
 	// Print information
 	std::cout << "OpenGL context" << std::endl;

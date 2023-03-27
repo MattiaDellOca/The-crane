@@ -16,6 +16,7 @@
 #include "ovoreader.h"
 #include "texture.h"
 #include "shader.h"
+#include "quad.h"
 
 #include <queue>
 
@@ -139,6 +140,11 @@ private:
 	Static Passthrough Fragment Shader pointer
 	**/
 	static Shader* pfs;
+
+	/**
+	* Static Quad used for 2D rendering
+	*/
+	static Quad* m_quad;
 
 	/**
 	 * Callback function for reshaping the window.

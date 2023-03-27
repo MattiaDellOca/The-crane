@@ -96,6 +96,9 @@
     <ClCompile Include="src\fbo.cpp">
       <Filter>Source Files\src\utilities</Filter>
     </ClCompile>
+    <ClCompile Include="src\quad.cpp">
+      <Filter>Source Files\src\utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cameraType.h">
@@ -162,6 +165,9 @@
       <Filter>Header Files\src</Filter>
     </ClInclude>
     <ClInclude Include="src\fbo.h">
+      <Filter>Header Files\src\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\quad.h">
       <Filter>Header Files\src\utilities</Filter>
     </ClInclude>
   </ItemGroup>
