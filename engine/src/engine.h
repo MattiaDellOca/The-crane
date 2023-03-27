@@ -135,6 +135,12 @@ private:
 	*/
 	static void timerCallback(int value);
 
+
+	/**
+	* Background color
+	*/
+	static glm::vec3 m_background_color;
+
 public:
 	/**
 	 * Initialize the engine.

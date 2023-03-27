@@ -6,7 +6,7 @@
 std::map<std::string, Shader*> ShaderManager::shaders;
 std::string ShaderManager::activeProgramShader;
 
-Shader LIB_API* ShaderManager::GetShader(std::string name) {
+Shader LIB_API* ShaderManager::getShader(std::string name) {
    auto it = shaders.find(name);
    if (it != shaders.end()) {
       return it->second;
@@ -17,7 +17,7 @@ Shader LIB_API* ShaderManager::GetShader(std::string name) {
    }
 }
 
-Shader LIB_API* ShaderManager::CreateShader(const std::string& name) {
+Shader LIB_API* ShaderManager::createShader(const std::string& name) {
    shaders[name] = new Shader(name);
    std::cout << "Shader \"" << name << "\" created with id=" << shaders[name]->getId() << std::endl;
    return shaders[name];
@@ -37,5 +37,5 @@ void LIB_API ShaderManager::setActiveShader(std::string name) {
 }
 
 Shader LIB_API* ShaderManager::getActiveShader() {
-	return GetShader(activeProgramShader);
+	return getShader(activeProgramShader);
 }

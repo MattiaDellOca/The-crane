@@ -17,7 +17,7 @@ LIB_API void DirectionalLight::render(glm::mat4 matrix)
 {
 	// Calculate the direction
 	glm::vec4 direction = matrix * glm::vec4(m_direction, 0.0f);
-	Shader* progShader = ShaderManager::GetShader("programShaderDirectionalLight");
+	Shader* progShader = ShaderManager::getShader("programShaderDirectionalLight");
 	progShader->setVec3(progShader->getParamLocation("lightDirection"), glm::vec3(direction.x, direction.y, direction.z));
 	progShader->setVec3(progShader->getParamLocation("lightAmbient"), m_lightAmbient);
 	progShader->setVec3(progShader->getParamLocation("lightDiffuse"), m_lightDiffuse);

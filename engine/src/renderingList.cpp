@@ -102,8 +102,6 @@ void LIB_API RenderingList::render(glm::mat4 cameraMatrix) {
 	// render
 	for (size_t i = 0; i < lights.size(); i++) {
 
-		std::cout << "Render light nr. " << i+1 << " of " << lights.size() << " lights" << std::endl;
-
 		// light 0 is the only light that is not additive
 		if (i == 0) {
 			glDepthFunc(GL_LESS);
@@ -138,6 +136,8 @@ void LIB_API RenderingList::render(glm::mat4 cameraMatrix) {
 		ShaderManager::setActiveShader(shaderName);
 		ShaderManager::getActiveShader()->setInt(ShaderManager::getActiveShader()->getParamLocation("nrLights"), static_cast<int>(lights.size()));
 
+
+
 		// Render light
 		dynamic_cast<Light*>(light->m_node)->render(inverseCameraMatrix * light->m_mat);
 
@@ -158,9 +158,10 @@ void LIB_API RenderingList::render(glm::mat4 cameraMatrix) {
 		}*/
 
 		// Disable blending, in case we used it:
-		if (lights.size() > 1)
-			glDisable(GL_BLEND);
-			glEnable(GL_DEPTH_TEST);
+	}
 
+	if (lights.size() > 1) {
+		glDisable(GL_BLEND);
+		glDepthFunc(GL_LESS);
 	}
 }

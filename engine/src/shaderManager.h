@@ -18,14 +18,14 @@ public:
    * \param name The name of the Shader.
    * \return A pointer to the Shader object if found, nullptr otherwise.
    */
-   static Shader* GetShader(std::string name);
+   static Shader* getShader(std::string name);
 
    /**
    * Create a new Shader.
    * \param name The name to give the new Shader.
    * \return A pointer to the new Shader object.
    */
-   static Shader* CreateShader(const std::string& name);
+   static Shader* createShader(const std::string& name);
 
    /**
    * Free all Shader objects and clear the ShaderManager.

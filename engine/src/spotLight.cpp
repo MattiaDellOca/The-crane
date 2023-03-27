@@ -29,7 +29,7 @@ LIB_API void SpotLight::render(glm::mat4 matrix)
 	glm::vec3 position = { matrix[3].x, matrix[3].y, matrix[3].z };
 	glm::vec4 direction = matrix * glm::vec4(m_direction, 0.0f);
 
-	Shader* progShader = ShaderManager::GetShader("programShaderSpotLight");
+	Shader* progShader = ShaderManager::getShader("programShaderSpotLight");
 	progShader->setVec3(progShader->getParamLocation("lightPosition"), position);
 	progShader->setVec3(progShader->getParamLocation("lightAmbient"), m_lightAmbient);
 	progShader->setVec3(progShader->getParamLocation("lightDiffuse"), m_lightDiffuse);
