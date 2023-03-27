@@ -27,7 +27,6 @@ LIB_API SpotLight::SpotLight(const std::string& name, glm::mat4 matrix, glm::vec
 LIB_API void SpotLight::render(glm::mat4 matrix)
 {
 	glm::vec3 position = { matrix[3].x, matrix[3].y, matrix[3].z };
-	std::cout << m_name << m_id << std::endl;
 	glm::vec4 direction = matrix * glm::vec4(m_direction, 0.0f);
 
 	Shader* progShader = ShaderManager::GetShader("programShaderSpotLight");

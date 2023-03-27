@@ -77,6 +77,9 @@ const char* fragShaderOmniDirectionalLight = R"(
    in vec4 fragPosition;
    in float dist;	
 
+	// nr lights
+	uniform int nrLights;
+
    // Material properties:
    uniform vec3 matEmission;
    uniform vec3 matAmbient;
@@ -93,24 +96,25 @@ const char* fragShaderOmniDirectionalLight = R"(
    void main(void)
    {
       // Ambient term:
-      vec3 fragColor = matEmission + matAmbient * lightAmbient;
-
+      vec3 fragColor = (matEmission + matAmbient * lightAmbient) / nrLights;
+		
       // Diffuse term:
       vec3 _normal = normalize(normal);
       vec3 lightDirection = normalize(lightPosition - fragPosition.xyz);      
       float nDotL = dot(lightDirection, _normal);   
       if (nDotL > 0.0f)
       {
-         fragColor += matDiffuse * nDotL * lightDiffuse;
+         fragColor += (matDiffuse * nDotL * lightDiffuse) / nrLights;
       
          // Specular term:
          vec3 halfVector = normalize(lightDirection + normalize(-fragPosition.xyz));                     
          float nDotHV = dot(_normal, halfVector);         
-         fragColor += matSpecular * pow(nDotHV, matShininess) * lightSpecular;
+         fragColor += (matSpecular * pow(nDotHV, matShininess) * lightSpecular) / nrLights;
       } 
       
       // Final color:
-      fragOutput = vec4(mix(fragColor, fog, dist), 1.0f);
+      //fragOutput = vec4(mix(fragColor, fog, dist), 1.0f);
+		fragOutput = vec4(fragColor, 1.0f);
    }
 )";
 
@@ -128,6 +132,9 @@ const char* fragShaderDirectionalLight = R"(
 	in vec4 fragPosition;
 	in float dist;
 
+	// nr lights
+	uniform int nrLights;
+
 	// Material properties:
 	uniform vec3 matEmission;
 	uniform vec3 matAmbient;
@@ -144,7 +151,7 @@ const char* fragShaderDirectionalLight = R"(
 	void main(void)
 	{
 	// Ambient term:
-	vec3 fragColor = matEmission + matAmbient * lightAmbient;
+	vec3 fragColor = (matEmission + matAmbient * lightAmbient)/nrLights;
 	// Diffuse term:
 	  vec3 _normal = normalize(normal);
 	  float nDotL = dot(-lightDirection, _normal);   
@@ -159,7 +166,8 @@ const char* fragShaderDirectionalLight = R"(
 	  } 
 	  
 	  // Final color:
-	  fragOutput = vec4(mix(fragColor, fog, dist), 1.0f);
+	  //fragOutput = vec4(mix(fragColor, fog, dist), 1.0f);
+	fragOutput = vec4(fragColor, 1.0f);
 	}
 )";
 
@@ -179,6 +187,10 @@ const char* fragShaderSpotLight = R"(
 	in vec4 fragPosition;
 	in float dist;
 	
+	// nr light
+	uniform int nrLights;
+
+
 	// Material properties:
 	uniform vec3 matEmission;
 	uniform vec3 matAmbient;
@@ -197,10 +209,10 @@ const char* fragShaderSpotLight = R"(
 	
 	void main(void)
 	{
-    // Calculate the ambient light:
+    //  Ambient term
     vec3 ambient = lightAmbient * matAmbient;
     
-    // Calculate the diffuse light:
+    // Diffuse term
     vec3 lightDir = normalize(lightPosition - fragPosition.xyz);
     float cosTheta = dot(lightDir, normalize(normal));
     vec3 diffuse = vec3(0.0);
@@ -208,7 +220,7 @@ const char* fragShaderSpotLight = R"(
         diffuse = lightDiffuse * matDiffuse * cosTheta;
     }
     
-    // Calculate the specular light:
+    // Specular term
     vec3 specular = vec3(0.0);
     vec3 viewDir = normalize(-fragPosition.xyz);
     vec3 reflectDir = reflect(-lightDir, normalize(normal));
@@ -226,8 +238,9 @@ const char* fragShaderSpotLight = R"(
     }
     
     // Combine the lights and apply fog:
-    vec3 color = matEmission + ambient + diffuse + specular + spotLight;
-    fragOutput = vec4(mix(color, fog, dist), 1.0);
+    vec3 color = (matEmission + ambient + diffuse + specular + spotLight)/nrLights;
+    //fragOutput = vec4(mix(color, fog, dist), 1.0);
+	fragOutput = vec4(color, 1.0);
 	}
 )";
 

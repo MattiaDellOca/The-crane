@@ -1,5 +1,6 @@
 #include "ShaderManager.h"
 #include <iostream>
+#include <GL/glew.h>
 
 // Initialize static map
 std::map<std::string, Shader*> ShaderManager::shaders;
@@ -18,6 +19,7 @@ Shader LIB_API* ShaderManager::GetShader(std::string name) {
 
 Shader LIB_API* ShaderManager::CreateShader(const std::string& name) {
    shaders[name] = new Shader(name);
+   std::cout << "Shader \"" << name << "\" created with id=" << shaders[name]->getId() << std::endl;
    return shaders[name];
 }
 
@@ -31,6 +33,7 @@ void LIB_API ShaderManager::free() {
 
 void LIB_API ShaderManager::setActiveShader(std::string name) {
 	activeProgramShader = name;
+   getActiveShader()->render();
 }
 
 Shader LIB_API* ShaderManager::getActiveShader() {
