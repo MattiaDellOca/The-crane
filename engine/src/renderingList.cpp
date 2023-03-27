@@ -45,34 +45,6 @@ void LIB_API RenderingList::pass(Node* node, glm::mat4 parentMatrix) {
 void LIB_API RenderingList::clear() {
 	m_list.clear();
 }
-/*
-
-RenderNode* getNextLight(std::list<RenderNode*>* lights) {
-	RenderNode* light = lights->front();
-	// Remove it from the list
-	lights->pop_front();
-
-	// Get the light type
-	LightType lightType = dynamic_cast<Light*>(light->m_node)->getLightType();
-
-	// Shader name
-	std::string shaderName = "programShader";
-
-	if (lightType == LightType::DIRECTIONAL)
-		shaderName += "Directional";
-	else if (lightType == LightType::OMNIDIRECTIONAL)
-		shaderName += "Omnidirectional";
-	else {
-		shaderName += "Spot";
-	}
-	shaderName += "Light";
-
-	// Set active shader
-	ShaderManager::setActiveShader(shaderName);
-
-	// Cast and return light
-	return light;
-}*/
 
 void LIB_API RenderingList::render(glm::mat4 cameraMatrix) {
 	glm::mat4 inverseCameraMatrix = glm::inverse(cameraMatrix);

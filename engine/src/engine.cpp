@@ -551,7 +551,7 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	ShaderManager::getActiveShader()->setVec3(ShaderManager::getActiveShader()->getParamLocation("fog"), m_background_color);
 
 	// Set properties
-	m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
+	//m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
 
 	// Activate lighting
 	//glEnable(GL_LIGHTING);
