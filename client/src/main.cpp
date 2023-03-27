@@ -10,7 +10,7 @@
 
 // Create camera
 glm::mat4 startCameraCoordinate = glm::translate(glm::mat4(1.f), glm::vec3(600.f, 900.f, 1500.f));
-PerspectiveCamera* camera3D = new PerspectiveCamera{ "Main camera", startCameraCoordinate, 650, 650, 1, 5000, 90 };
+PerspectiveCamera* camera3D = new PerspectiveCamera{ "Main camera", startCameraCoordinate, 512, 512, 1, 5000, 90 };
 PerspectiveCamera* camera3DHook;
 PerspectiveCamera* camera3DCabine;
 OrthographicCamera* camera2D = new OrthographicCamera{ "2d Camera", glm::mat4(1), 650, 650 };

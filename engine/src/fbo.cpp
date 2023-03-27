@@ -204,8 +204,10 @@ void Fbo::disable()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-/**
+/** 
  * Fbo rendering procedure.
+ * @param data generic pointer to instance data
+ * @return true on success, false on fail 	 
  */
 bool Fbo::render(void* data)
 {
@@ -219,4 +221,7 @@ bool Fbo::render(void* data)
 
 	// Done:   
 	return true;
+}
+
+void LIB_API Fbo::render(glm::mat4 matrix) {
 }

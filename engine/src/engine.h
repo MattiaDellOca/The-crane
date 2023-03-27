@@ -16,6 +16,7 @@
 #include "ovoreader.h"
 #include "texture.h"
 #include "shader.h"
+#include "fbo.h"
 #include "quad.h"
 
 #include <queue>

@@ -97,10 +97,16 @@ public: //
 	// Rendering:    
 	/**
 	 * \brief Fbo rendering procedure.
-	 * \param data generic pointer to instance data
+	 * \param glm::mat4 used for overriding
 	 * \returns true on success, false on fail
 	 */
 	bool render(void* data = nullptr);
+
+	/**
+    * \brief Renders the node and its children.
+    * \param coords The pre-computed world coordinates of the node.
+    */
+	void virtual render(glm::mat4 coords) override;
 
 	/**
 	 * \brief Revert to rendering to the context buffers.

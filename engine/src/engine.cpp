@@ -31,6 +31,26 @@
 #include "FreeImage.h"
 
 /////////////
+// #DEFINE //
+/////////////
+
+   // Window size:
+#define APP_WINDOWSIZEX   1024
+#define APP_WINDOWSIZEY   512
+#define APP_FBOSIZEX      APP_WINDOWSIZEX / 2
+#define APP_FBOSIZEY      APP_WINDOWSIZEY / 1
+
+// Enums:
+enum Eye
+{
+	EYE_LEFT = 0,
+	EYE_RIGHT = 1,
+
+	// Terminator:
+	EYE_LAST,
+};
+
+/////////////
 // SHADERS //
 /////////////
 
@@ -192,6 +212,10 @@ OrthographicCamera* Engine::m_curr_2Dcamera = nullptr;
 EngineGraphics* Engine::m_graphics_settings = nullptr;
 Quad* Engine::m_quad = nullptr;
 
+unsigned int fboTexId[EYE_LAST] = { 0, 0 };
+// FBO:      
+Fbo* fbo[EYE_LAST] = { nullptr, nullptr };
+
 	// timer function defined by user
 void(*userTimerCallback)(int);
 
@@ -252,6 +276,11 @@ Engine::~Engine() {
 	delete m_curr_2Dcamera;
 	delete m_curr_3Dcamera;
 	delete m_graphics_settings;
+	for (int c = 0; c < EYE_LAST; c++)
+	{
+		glDeleteTextures(1, &fboTexId[c]);
+		delete fbo[c];
+	}
 	FreeImage_DeInitialise();
 }
 
@@ -347,10 +376,10 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	
 	
 	// Init FreeGLUT window
-	glutInitWindowPosition(500, 500);
-	m_window_width = width;
-	m_window_height = height;
-	glutInitWindowSize(width, height);
+	glutInitWindowPosition(100, 100);
+	m_window_width = APP_WINDOWSIZEX;
+	m_window_height = APP_WINDOWSIZEY;
+	glutInitWindowSize(APP_WINDOWSIZEX, APP_WINDOWSIZEY);
 
 
 	// Global OpenGL settings:
@@ -403,6 +432,30 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 
 	// Create quad
 	m_quad = new Quad("Quad", m_window_width, m_window_height);
+
+	// Load FBO and its texture:
+	GLint prevViewport[4];
+	glGetIntegerv(GL_VIEWPORT, prevViewport);
+
+	for (int c = 0; c < EYE_LAST; c++)
+	{
+		glGenTextures(1, &fboTexId[c]);
+		glBindTexture(GL_TEXTURE_2D, fboTexId[c]);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, APP_FBOSIZEX, APP_FBOSIZEY, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		fbo[c] = new Fbo("FBO" + c);
+		fbo[c]->bindTexture(0, Fbo::BIND_COLORTEXTURE, fboTexId[c]);
+		fbo[c]->bindRenderBuffer(1, Fbo::BIND_DEPTHBUFFER, APP_FBOSIZEX, APP_FBOSIZEY);
+		if (!fbo[c]->isOk())
+			std::cout << "[ERROR] Invalid FBO" << std::endl;
+	}
+	Fbo::disable();
+	glViewport(0, 0, prevViewport[2], prevViewport[3]);
+
 		
 	// Print information
 	std::cout << "OpenGL context" << std::endl;
@@ -447,7 +500,7 @@ void LIB_API Engine::disableGouraund() {
 */
 void LIB_API Engine::swapBuffers() {
 	// Swap back buffer <-> front buffer
-	glutSwapBuffers();
+	//glutSwapBuffers();
 }
 
 bool LIB_API Engine::free()
@@ -475,32 +528,81 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	// Set the far plane used for creating the fog effect
 	ShaderWrapper::shader->setFloat(ShaderWrapper::shader->getParamLocation("farPlane"), camera->getFar());
 
-	// Set properties
-	m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
+	// Store the current viewport size:
+	GLint prevViewport[4];
+	glGetIntegerv(GL_VIEWPORT, prevViewport); // <---- ERROR!
 
-	// Activate lighting
-	//glEnable(GL_LIGHTING);
+	// Render to each eye:   
+	for (int c = 0; c < EYE_LAST; c++)
+	{
+		// Render into this FBO:
+		fbo[c]->render();
 
-	// Start rendering
-	if (m_scene_graph != nullptr) {
-		// Clear rendering list
-		m_rendering_list->clear();
+		// Clear the FBO content:
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
-		// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
-		m_rendering_list->pass(m_scene_graph, glm::mat4(1));
 
-		// Render
-		m_rendering_list->render(m_curr_3Dcamera->getMatrix());
+		////////////////
+		// 3D rendering:
+
+		glm::mat4 cameraMat = glm::translate(camera->getMatrix(), glm::vec3(-10.0f * c, 0.0f, 0.0f));
+
+		// Setup params for the PPL shader:
+		ShaderWrapper::shader->render();
+		m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
+
+		// Activate lighting
+		//glEnable(GL_LIGHTING);
+
+		// Start rendering the scene
+		if (m_scene_graph != nullptr) {
+			// Clear rendering list
+			m_rendering_list->clear();
+
+			// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
+			// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
+			m_rendering_list->pass(m_scene_graph, glm::mat4(1));
+
+			// Render
+			m_rendering_list->render(cameraMat);
+		}
+		else {
+			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
+			return;
+		}
 	}
-	else {
-		std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
-		return;
-	}
 
+	// Done with the FBO, go back to rendering into the window context buffers:
+	Fbo::disable();
+	glViewport(0, 0, prevViewport[2], prevViewport[3]);
+
+	////////////////
+	// 2D rendering:
+	m_curr_2Dcamera = new OrthographicCamera{ "2d Camera", glm::mat4(1), APP_WINDOWSIZEX, APP_WINDOWSIZEY };
+
+	// Set a matrix for the left "eye":    
+	glm::mat4 f = glm::mat4(1.0f);
+
+	// Setup the passthrough shader:
+	ShaderWrapper::passthroughShader->render();
+	ShaderWrapper::passthroughShader->setMatrix(ShaderWrapper::passthroughShader->getParamLocation("projection"), m_curr_2Dcamera->getProperties());
+	ShaderWrapper::passthroughShader->setMatrix(ShaderWrapper::passthroughShader->getParamLocation("modelview"), f);
+	ShaderWrapper::passthroughShader->setVec4(ShaderWrapper::passthroughShader->getParamLocation("color"), glm::vec4(1.0f, 0.0f, 0.0f, 0.0f));
+
+	m_quad->render(fboTexId[EYE_LEFT]);
+
+	// Do the same for the right "eye": 
+	f = glm::translate(glm::mat4(1.0f), glm::vec3(APP_WINDOWSIZEX / 2, 0.0f, 0.0f));
+	ShaderWrapper::passthroughShader->setMatrix(ShaderWrapper::passthroughShader->getParamLocation("modelview"), f);
+	ShaderWrapper::passthroughShader->setVec4(ShaderWrapper::passthroughShader->getParamLocation("color"), glm::vec4(0.0f, 1.0f, 1.0f, 0.0f));
+	
+	m_quad->render(fboTexId[EYE_RIGHT]);
+
+	// Swap buffers:
+	glutSwapBuffers();
 
 	// force refresh
-	glutPostRedisplay();
+	glutPostWindowRedisplay(m_windowId);
 }
 
 
