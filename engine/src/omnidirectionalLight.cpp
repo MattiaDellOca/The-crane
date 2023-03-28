@@ -15,10 +15,6 @@ LIB_API OmnidirectionalLight::OmnidirectionalLight(const std::string& name, glm:
 
 LIB_API void OmnidirectionalLight::render(glm::mat4 matrix)
 {	
-	std::cout << "constantAttenuation" << m_constantAttenuation << std::endl;
-	std::cout << "linearAttenuation" << m_linearAttenuation << std::endl;
-	std::cout << "quadraticAttenuation" << m_quadraticAttenuation << std::endl;
-
 	// Load light settings 
 	glm::vec3 position = { matrix[3].x, matrix[3].y, matrix[3].z };
 	Shader* progShader = ShaderManager::getShader("programShaderOmnidirectionalLight");
@@ -28,5 +24,6 @@ LIB_API void OmnidirectionalLight::render(glm::mat4 matrix)
 	progShader->setVec3(progShader->getParamLocation("lightSpecular"), m_lightSpecular);
 	progShader->setFloat(progShader->getParamLocation("lightAttenuationConstant"), m_constantAttenuation);
 	progShader->setFloat(progShader->getParamLocation("lightAttenuationLinear"), m_linearAttenuation);
+	progShader->setFloat(progShader->getParamLocation("lightAttenuationQuadratic"), m_quadraticAttenuation);
 
 }
