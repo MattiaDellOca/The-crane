@@ -101,7 +101,7 @@ const char* fragShaderOmniDirectionalLight = R"(
    void main(void)
    {
       // Ambient term:
-      vec3 fragColor = matEmission + matAmbient * lightAmbient;
+      vec3 fragColor = (matEmission + matAmbient * lightAmbient) / nrLights;
 		
       // Diffuse term:
       vec3 _normal = normalize(normal);
@@ -124,9 +124,8 @@ const char* fragShaderOmniDirectionalLight = R"(
 		fragColor = fragColor * attenuation;
 
       // Final color:
-      //fragOutput = vec4(mix(fragColor / nrLights, fog / nrLights, dist), 1.0f);
-      fragOutput = vec4(fragColor / nrLights, 1.0f);
-
+      //fragOutput = vec4(mix(fragColor, fog , dist), 1.0f);
+      fragOutput = vec4(fragColor, 1.0f);
    }
 )";
 
@@ -163,7 +162,7 @@ const char* fragShaderDirectionalLight = R"(
 	void main(void)
 	{
 	// Ambient term:
-	vec3 fragColor = (matEmission + matAmbient * lightAmbient)/nrLights;
+	vec3 fragColor = (matEmission + matAmbient * lightAmbient) / nrLights;
 	// Diffuse term:
 	  vec3 _normal = normalize(normal);
 	  float nDotL = dot(-lightDirection, _normal);   
@@ -178,8 +177,8 @@ const char* fragShaderDirectionalLight = R"(
 	  } 
 	  
 	  // Final color:
-	  //fragOutput = vec4(mix(fragColor / nrLights, fog / nrLights, dist), 1.0f);
-    fragOutput = vec4(fragColor / nrLights, 1.0);
+	  //fragOutput = vec4(mix(fragColor, fog, dist), 1.0f);
+     fragOutput = vec4(fragColor, 1.0);
 	}
 )";
 
@@ -250,10 +249,9 @@ const char* fragShaderSpotLight = R"(
     }
     
     // Combine the lights and apply fog:
-    vec3 fragColor = (matEmission + ambient + diffuse + specular + spotLight)/nrLights;
-    //fragOutput = vec4(mix(fragColor / nrLights, fog / nrLights, dist), 1.0);
-    fragOutput = vec4(fragColor / nrLights, 1.0);
-
+    vec3 fragColor = (matEmission / nrLights + ambient / nrLights + diffuse + specular + spotLight);
+    //fragOutput = vec4(mix(fragColor, fog, dist), 1.0);
+    fragOutput = vec4(fragColor, 1.0);
 	}
 )";
 
