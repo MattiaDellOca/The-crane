@@ -7,14 +7,14 @@
 #include "engine.h"
 #include "perspectiveCamera.h"
 #include "shader.h"
-#include "shaderWrapper.h"
+#include "shaderManager.h"
 
 	// C/C++
 #include <iostream>
 #include <thread>
 
 
-   // GLM:
+	// GLM:
 #include <glm/glm.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -33,10 +33,6 @@
 /////////////
 // SHADERS //
 /////////////
-
-////////////////////////////
-Shader* Engine::vs = nullptr;
-Shader* Engine::fs = nullptr;
 
 ////////////////////////////
 const char* vertShader = R"(
@@ -69,8 +65,9 @@ const char* vertShader = R"(
    }
 )";
 
+
 ////////////////////////////
-const char* fragShader = R"(
+const char* fragShaderOmniDirectionalLight = R"(
    #version 440 core
 	
    out vec4 fragOutput;
@@ -84,6 +81,12 @@ const char* fragShader = R"(
    in float dist;
    in vec2 texCoord;	
 
+   // Texture mapping:
+   layout(binding = 0) uniform sampler2D texSampler;
+
+	// nr lights
+	uniform int nrLights;
+
    // Material properties:
    uniform vec3 matEmission;
    uniform vec3 matAmbient;
@@ -96,9 +99,11 @@ const char* fragShader = R"(
    uniform vec3 lightAmbient; 
    uniform vec3 lightDiffuse; 
    uniform vec3 lightSpecular;
+	uniform float lightAttenuationConstant;
+	uniform float lightAttenuationLinear;
+	uniform float lightAttenuationQuadratic;
 
-   // Texture mapping:
-   layout(binding = 0) uniform sampler2D texSampler;
+
 
    void main(void)
    {
@@ -106,11 +111,14 @@ const char* fragShader = R"(
       vec4 texel = texture(texSampler, texCoord);
 
       // Ambient term:
-      vec3 fragColor = matEmission + matAmbient * lightAmbient;
-
+      vec3 fragColor = (matEmission + matAmbient * lightAmbient) / nrLights;
+		
       // Diffuse term:
       vec3 _normal = normalize(normal);
       vec3 lightDirection = normalize(lightPosition - fragPosition.xyz);      
+		float distance = length(lightPosition - fragPosition.xyz);
+		float attenuation = 1.0 / (lightAttenuationConstant + lightAttenuationLinear * distance + lightAttenuationQuadratic * (distance * distance));
+
       float nDotL = dot(lightDirection, _normal);   
       if (nDotL > 0.0f)
       {
@@ -119,14 +127,156 @@ const char* fragShader = R"(
          // Specular term:
          vec3 halfVector = normalize(lightDirection + normalize(-fragPosition.xyz));                     
          float nDotHV = dot(_normal, halfVector);         
-         fragColor += matSpecular * pow(nDotHV, matShininess) * lightSpecular;
+			fragColor += matSpecular * pow(nDotHV, matShininess) * lightSpecular;
       } 
       
+		// Attenuation term:
+		fragColor = fragColor * attenuation;
+
       // Final color:
-      fragOutput = texel * vec4(mix(fragColor, fog, dist), 1.0f);
+      //fragOutput = texel * vec4(mix(fragColor, fog , dist), 1.0f);
+      fragOutput = texel * vec4(fragColor, 1.0f);
    }
 )";
 
+////////////////////////////
+const char* fragShaderDirectionalLight = R"(
+	#version 440 core
+	
+	out vec4 fragOutput;
+	
+	// Uniforms:
+	uniform vec3 fog;
+	
+	// Varying:
+	in vec3 normal;
+	in vec4 fragPosition;
+	in float dist;
+   in vec2 texCoord;	
+
+   // Texture mapping:
+   layout(binding = 0) uniform sampler2D texSampler;
+
+	// nr lights
+	uniform int nrLights;
+
+	// Material properties:
+	uniform vec3 matEmission;
+	uniform vec3 matAmbient;
+	uniform vec3 matDiffuse;
+	uniform vec3 matSpecular;
+	uniform float matShininess;
+	
+	// Directional light properties:
+	uniform vec3 lightDirection;
+	uniform vec3 lightAmbient;
+	uniform vec3 lightDiffuse;
+	uniform vec3 lightSpecular;
+	
+	void main(void)
+	{
+    // Texture element:
+    vec4 texel = texture(texSampler, texCoord);
+
+	// Ambient term:
+	vec3 fragColor = (matEmission + matAmbient * lightAmbient) / nrLights;
+	// Diffuse term:
+	  vec3 _normal = normalize(normal);
+	  float nDotL = dot(-lightDirection, _normal);   
+	  if (nDotL > 0.0f)
+	  {
+	     fragColor += matDiffuse * nDotL * lightDiffuse;
+	  
+	     // Specular term:
+	     vec3 halfVector = normalize(-lightDirection + normalize(-fragPosition.xyz));                     
+	     float nDotHV = dot(_normal, halfVector);         
+	     fragColor += matSpecular * pow(nDotHV, matShininess) * lightSpecular;
+	  } 
+	  
+	  // Final color:
+	  //fragOutput = texel * vec4(mix(fragColor, fog, dist), 1.0f);
+     fragOutput = texel * vec4(fragColor, 1.0);
+	}
+)";
+
+
+
+////////////////////////////
+const char* fragShaderSpotLight = R"(
+	#version 440 core
+	
+	out vec4 fragOutput;
+	
+	// Uniforms:
+	uniform vec3 fog;
+	
+	// Varying:
+	in vec3 normal;
+	in vec4 fragPosition;
+	in float dist;
+   in vec2 texCoord;	
+	
+   // Texture mapping:
+   layout(binding = 0) uniform sampler2D texSampler;
+
+	// nr light
+	uniform int nrLights;
+
+	// Material properties:
+	uniform vec3 matEmission;
+	uniform vec3 matAmbient;
+	uniform vec3 matDiffuse;
+	uniform vec3 matSpecular;
+	uniform float matShininess;
+	
+	// Light properties:
+	uniform vec3 lightPosition;
+	uniform vec3 lightAmbient;
+	uniform vec3 lightDiffuse;
+	uniform vec3 lightSpecular;
+	uniform vec3 lightDirection; // The direction of the spot light
+	uniform float lightCutoff; // The angle of the spot light cone in degrees
+	uniform float lightExponent; // The exponent for the spot light falloff
+	
+	void main(void)
+	{
+    // Texture element:
+    vec4 texel = texture(texSampler, texCoord);
+
+    //  Ambient term
+    vec3 ambient = lightAmbient * matAmbient;
+    
+    // Diffuse term
+    vec3 lightDir = normalize(lightPosition - fragPosition.xyz);
+    float cosTheta = dot(lightDir, normalize(normal));
+    vec3 diffuse = vec3(0.0);
+    if (cosTheta > 0.0) {
+        diffuse = lightDiffuse * matDiffuse * cosTheta;
+    }
+    
+    // Specular term
+    vec3 specular = vec3(0.0);
+    vec3 viewDir = normalize(-fragPosition.xyz);
+    vec3 reflectDir = reflect(-lightDir, normalize(normal));
+    float cosPhi = dot(viewDir, reflectDir);
+    if (cosTheta > 0.0 && cosPhi > 0.0) {
+        specular = lightSpecular * matSpecular * pow(cosPhi, matShininess);
+    }
+    
+    // Calculate the spot light:
+    vec3 spotLight = vec3(0.0);
+    float cosAngle = dot(-lightDirection, lightDir);
+    if (cosAngle > cos(radians(lightCutoff))) {
+        float spotFactor = pow(cosAngle, lightExponent);
+        spotLight = lightDiffuse * matDiffuse * spotFactor;
+    }
+    
+    // Combine the lights and apply fog:
+    vec3 fragColor = (matEmission / nrLights + ambient / nrLights + diffuse + specular + spotLight);
+    //fragOutput = texel * vec4(mix(fragColor, fog, dist), 1.0);
+    fragOutput = texel * vec4(fragColor, 1.0);
+	}
+)";
 
 ////////////
 // STATIC //
@@ -134,17 +284,19 @@ const char* fragShader = R"(
 
 // Reserved pointer:
 Node* Engine::m_scene_graph = nullptr;
-RenderingList* Engine::m_rendering_list = new RenderingList{"Rendering list"};
+RenderingList* Engine::m_rendering_list = new RenderingList{ "Rendering list" };
 bool Engine::m_initFlag = false;
 bool Engine::m_isRunning = false;
 int Engine::m_window_height = -1;
 int Engine::m_window_width = -1;
 int Engine::m_windowId = -1;
+glm::vec3 Engine::m_background_color;
 PerspectiveCamera* Engine::m_curr_3Dcamera = nullptr;
 OrthographicCamera* Engine::m_curr_2Dcamera = nullptr;
 EngineGraphics* Engine::m_graphics_settings = nullptr;
 
-	// timer function defined by user
+
+// timer function defined by user
 void(*userTimerCallback)(int);
 
 
@@ -186,7 +338,7 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 void __stdcall DebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam)
 {
 	// Ignore NVIDIA on VBO allocation
-	if(id != 131185 && type != 33361)
+	if (id != 131185 && type != 33361)
 		std::cout << "OpenGL says: \"" << std::string(message) << "\"" << std::endl;
 }
 #endif
@@ -269,8 +421,8 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	glutInitContextFlags(GLUT_DEBUG);
 	std::cout << "Running in FreeGLUT debugging mode" << std::endl;
 #endif
-	
-	
+
+
 	// Init FreeGLUT window
 	glutInitWindowPosition(500, 500);
 	m_window_width = width;
@@ -322,21 +474,46 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Set running state
 	m_isRunning = true;
 
-	// Shaders
-	vs = new Shader("Vertex Shader");
+	// Vertex Shader
+	Shader* vs = ShaderManager::createShader("vertexShader");
 	vs->loadFromMemory(Shader::TYPE_VERTEX, vertShader);
-	// Compile fragment shader:
-	fs = new Shader("Fragment Shader");
-	fs->loadFromMemory(Shader::TYPE_FRAGMENT, fragShader);
 
-	// Setup shader program:
-	ShaderWrapper::shader = new Shader("Program shader");
-	ShaderWrapper::shader->build(vs, fs);
-	ShaderWrapper::shader->render();
-	ShaderWrapper::shader->bind(0, "in_Position");
-	ShaderWrapper::shader->bind(1, "in_Normal");
-	ShaderWrapper::shader->bind(2, "in_TexCoord");
-		
+	// Compile fragment shader:
+	Shader* fsOmni = ShaderManager::createShader("fragmentShaderOmnidirectional");
+	fsOmni->loadFromMemory(Shader::TYPE_FRAGMENT, fragShaderOmniDirectionalLight);
+
+	// Program1: Omnidirectional light
+	Shader* progShader = ShaderManager::createShader("programShaderOmnidirectionalLight");
+	progShader->build(vs, fsOmni);
+	progShader->render();
+	progShader->bind(0, "in_Position");
+	progShader->bind(1, "in_Normal");
+	progShader->bind(2, "in_TexCoord");
+
+
+	// Program2: Directional light
+	Shader* fsDir = ShaderManager::createShader("fragmentShaderDirectional");
+	fsDir->loadFromMemory(Shader::TYPE_FRAGMENT, fragShaderDirectionalLight);
+	Shader* progShader2 = ShaderManager::createShader("programShaderDirectionalLight");
+	progShader2->build(vs, fsDir);
+	progShader2->render();
+	progShader2->bind(0, "in_Position");
+	progShader2->bind(1, "in_Normal");
+	progShader2->bind(2, "in_TexCoord");
+
+	// Program3: Spot light
+	Shader* fsSpot = ShaderManager::createShader("fragmentShaderSpot");
+	fsSpot->loadFromMemory(Shader::TYPE_FRAGMENT, fragShaderSpotLight);
+	Shader* progShader3 = ShaderManager::createShader("programShaderSpotLight");
+	progShader3->build(vs, fsSpot);
+	progShader3->render();
+	progShader3->bind(0, "in_Position");
+	progShader3->bind(1, "in_Normal");
+	progShader3->bind(2, "in_TexCoord");
+
+	// Set default shader
+	ShaderManager::setActiveShader("programShaderSpotLight");
+
 	// Print information
 	std::cout << "OpenGL context" << std::endl;
 	std::cout << "   version  . . : " << glGetString(GL_VERSION) << std::endl;
@@ -355,12 +532,12 @@ void LIB_API Engine::clear() {
 
 void LIB_API Engine::setBackgroundColor(float r, float g, float b) {
 	glClearColor(r, g, b, 1.0f);
-	ShaderWrapper::shader->setVec3(ShaderWrapper::shader->getParamLocation("fog"), glm::vec3(r, g, b));
+	m_background_color = glm::vec3(r, g, b);
 }
 
 
 void LIB_API Engine::enableWireframe() {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
 void LIB_API Engine::disableWireframe() {
@@ -393,8 +570,7 @@ bool LIB_API Engine::free()
 	}
 
 	// Delete shaders
-	delete fs;
-	delete vs;
+	ShaderManager::free();
 
 	// Done:
 	m_initFlag = false;
@@ -406,13 +582,8 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	m_curr_3Dcamera = camera;
 
 	// Set the far plane used for creating the fog effect
-	ShaderWrapper::shader->setFloat(ShaderWrapper::shader->getParamLocation("farPlane"), camera->getFar());
-
-	// Set properties
-	m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
-
-	// Activate lighting
-	//glEnable(GL_LIGHTING);
+	ShaderManager::getActiveShader()->setFloat(ShaderManager::getActiveShader()->getParamLocation("farPlane"), camera->getFar());
+	//ShaderManager::getActiveShader()->setVec3(ShaderManager::getActiveShader()->getParamLocation("fog"), m_background_color);
 
 	// Start rendering
 	if (m_scene_graph != nullptr) {
@@ -424,6 +595,7 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 		m_rendering_list->pass(m_scene_graph, glm::mat4(1));
 
 		// Render
+		m_rendering_list->m_camera = m_curr_3Dcamera;
 		m_rendering_list->render(m_curr_3Dcamera->getMatrix());
 	}
 	else {
@@ -472,12 +644,12 @@ void LIB_API Engine::run(void (*renderFunction)()) {
 // Callback setters
 //
 
-void LIB_API Engine::setSpecialKeyboardFunction(void (*callback)(int,int,int))
+void LIB_API Engine::setSpecialKeyboardFunction(void (*callback)(int, int, int))
 {
 	glutSpecialFunc(callback);
 }
 
-void LIB_API Engine::setKeyboardFunction(void (*callback)(unsigned char,int,int)) {
+void LIB_API Engine::setKeyboardFunction(void (*callback)(unsigned char, int, int)) {
 	glutKeyboardFunc(callback);
 }
 

@@ -10,6 +10,7 @@
 #include <vector>
 #include <list>
 #include <algorithm>
+#include "perspectiveCamera.h"
 
 /**
  * \struct RenderNode
@@ -129,4 +130,7 @@ public:
 	 * \param cameraMatrix The camera matrix of the scene. It is a 4x4 matrix that represents the position and orientation of the camera in the scene.
 	 */
 	void render(glm::mat4 cameraMatrix) override;
+
+
+	PerspectiveCamera* m_camera;
 };

@@ -121,16 +121,6 @@ private:
 	static EngineGraphics* m_graphics_settings;
 
 	/**
-	Vertex Shader pointer
-	**/
-	static Shader* vs;
-
-	/**
-	Static Fragment Shader pointer
-	**/
-	static Shader* fs;
-
-	/**
 	 * Callback function for reshaping the window.
 	 *
 	 * \param width The new window width.
@@ -144,6 +134,12 @@ private:
 	* @param value passepartout value
 	*/
 	static void timerCallback(int value);
+
+
+	/**
+	* Background color
+	*/
+	static glm::vec3 m_background_color;
 
 public:
 	/**

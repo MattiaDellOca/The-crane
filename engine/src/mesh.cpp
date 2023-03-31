@@ -1,6 +1,6 @@
 #include "mesh.h"
 #include "engine.h"
-#include "shaderWrapper.h"
+#include "shaderManager.h"
 
 // GLEW
 #include <GL/glew.h>
@@ -30,12 +30,14 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 		//glEnable(GL_TEXTURE_2D);
 	}
 
+
 	// Load modelview matrix
-	ShaderWrapper::shader->setMatrix(ShaderWrapper::shader->getParamLocation("modelview"), matrix);
+	Shader* progShader = ShaderManager::getActiveShader();
+	progShader->setMatrix(progShader->getParamLocation("modelview"), matrix);
 
 	// Load inverse-transpose matrix
 	glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(matrix));
-	ShaderWrapper::shader->setMatrix3(ShaderWrapper::shader->getParamLocation("normalMatrix"), normalMatrix);
+	progShader->setMatrix3(progShader->getParamLocation("normalMatrix"), normalMatrix);
 
 
 	// Render the mesh using VAO

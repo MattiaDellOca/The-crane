@@ -15,8 +15,9 @@ public:
 	 * \param ambient Ambient term vector
 	 * \param diffuse Diffuse term vector
 	 * \param specular Specular term vector
+	 * \param direction Direction vector
 	 */
-	DirectionalLight(const std::string& name, glm::mat4 matrix, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular);
+	DirectionalLight(const std::string& name, glm::mat4 matrix, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular, glm::vec3 direction);
 
 	/**
 	 * Render the light in the scene.
@@ -24,4 +25,7 @@ public:
 	 * \param coords pre-computed world coordinates
 	 */
 	virtual void render(glm::mat4 coords) override;
+
+private:
+	glm::vec3 m_direction;
 };

@@ -367,7 +367,7 @@ int main(int argc, char* argv[]) {
 
 	// Set Texture settings
 	Engine::setGraphics(profile);
-	Engine::load("../assets/crane/crane.ovo", "../assets/crane/");
+	Engine::load("../assets/crane/craneOmni.ovo", "../assets/crane/");
 
 	// Searching nodes
 	root = Engine::getNode("[root]");
@@ -386,11 +386,11 @@ int main(int argc, char* argv[]) {
 	static_cast<Mesh*>(plane)->setShadowCast(false);
 
 	// Additional cameras
-	camera3DHook = new PerspectiveCamera{ "Hook camera", glm::rotate(hook->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(-1.0f, 0.f, 0.f)) * glm::rotate(glm::mat4(1.0f), glm::radians(90.f), glm::vec3(0.0f, 0.0f, -1.0f)), camera3D->getWidth(), camera3D->getHeight(), 1, 10000, 90 };
+	camera3DHook = new PerspectiveCamera{ "Hook camera", glm::rotate(hook->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(-1.0f, 0.f, 0.f)) * glm::rotate(glm::mat4(1.0f), glm::radians(90.f), glm::vec3(0.0f, 0.0f, -1.0f)), camera3D->getWidth(), camera3D->getHeight(), 1, 200, 90 };
 	hook->addChild(camera3DHook);
 
 	// Calculate cabine matrix
-	camera3DCabine = new PerspectiveCamera{ "Cabine camera", glm::rotate(cabine->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(0.0f, -1.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(-1.0f, 0.0f, 0.0f)), camera3D->getWidth(), camera3D->getHeight(), 1, 10000, 90 };
+	camera3DCabine = new PerspectiveCamera{ "Cabine camera", glm::rotate(cabine->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(0.0f, -1.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(-1.0f, 0.0f, 0.0f)), camera3D->getWidth(), camera3D->getHeight(), 1, 200, 90 };
 	cabine->addChild(camera3DCabine);
 
 	// Populate cameras list

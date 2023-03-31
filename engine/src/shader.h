@@ -67,6 +67,9 @@ public: //
    // Rendering:				
    bool render(void* data = nullptr);
 
+   // Getter
+   inline unsigned int getGlId() { return glId; }
+   
    /**
    * \brief Renders the node and its children.
    * \param coords The pre-computed world coordinates of the node.
