@@ -453,6 +453,10 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 		if (!fbo[c]->isOk())
 			std::cout << "[ERROR] Invalid FBO" << std::endl;
 	}
+	unsigned int ftt;
+	glGenTextures(1, &ftt);
+	glBindTexture(GL_TEXTURE_2D, ftt);
+
 	Fbo::disable();
 	glViewport(0, 0, prevViewport[2], prevViewport[3]);
 
@@ -529,6 +533,16 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	ShaderWrapper::shader->render();
 	ShaderWrapper::shader->setFloat(ShaderWrapper::shader->getParamLocation("farPlane"), camera->getFar());
 
+	stereoscopicRender();
+
+	// Swap buffers:
+	glutSwapBuffers();
+
+	// force refresh
+	glutPostWindowRedisplay(m_windowId);
+}
+
+void LIB_API Engine::stereoscopicRender() {
 	// Store the current viewport size:
 	GLint prevViewport[4];
 	glGetIntegerv(GL_VIEWPORT, prevViewport);
@@ -546,8 +560,7 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 		////////////////
 		// 3D rendering:
 
-		//glm::mat4 cameraMat = glm::translate(camera->getMatrix(), glm::vec3(-10.0f, 0.0f, 0.0f));
-		glm::mat4 cameraMat = m_curr_3Dcamera->getMatrix();
+		glm::mat4 cameraMat = glm::translate(m_curr_3Dcamera->getMatrix(), glm::vec3(c * -100.0f, 0.0f, 0.0f));
 
 		// Setup params for the PPL shader:
 		m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
@@ -596,14 +609,8 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	f = glm::translate(glm::mat4(1.0f), glm::vec3(APP_WINDOWSIZEX / 2, 0.0f, 0.0f));
 	ShaderWrapper::passthroughShader->setMatrix(ShaderWrapper::passthroughShader->getParamLocation("modelview"), f);
 	ShaderWrapper::passthroughShader->setVec4(ShaderWrapper::passthroughShader->getParamLocation("color"), glm::vec4(0.0f, 1.0f, 1.0f, 0.0f));
-	
+
 	m_quad->render(fboTexId[EYE_RIGHT]);
-
-	// Swap buffers:
-	glutSwapBuffers();
-
-	// force refresh
-	glutPostWindowRedisplay(m_windowId);
 }
 
 

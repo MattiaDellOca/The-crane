@@ -236,6 +236,13 @@ public:
 	* \param list list of text and position.
 	*/
 	static void render2D(OrthographicCamera* camera, const std::list<std::tuple<std::string, int>>& list);
+
+	/**
+	 * Render the scene using FBOs.
+	 *
+	 */
+	static void stereoscopicRender();
+
 	/**
 	 * Run the engine loop.
 	 *
