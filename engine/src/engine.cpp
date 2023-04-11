@@ -526,11 +526,12 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	m_curr_3Dcamera = camera;
 
 	// Set the far plane used for creating the fog effect
+	ShaderWrapper::shader->render();
 	ShaderWrapper::shader->setFloat(ShaderWrapper::shader->getParamLocation("farPlane"), camera->getFar());
 
 	// Store the current viewport size:
 	GLint prevViewport[4];
-	glGetIntegerv(GL_VIEWPORT, prevViewport); // <---- ERROR!
+	glGetIntegerv(GL_VIEWPORT, prevViewport);
 
 	// Render to each eye:   
 	for (int c = 0; c < EYE_LAST; c++)
@@ -545,10 +546,10 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 		////////////////
 		// 3D rendering:
 
-		glm::mat4 cameraMat = glm::translate(camera->getMatrix(), glm::vec3(-10.0f * c, 0.0f, 0.0f));
+		//glm::mat4 cameraMat = glm::translate(camera->getMatrix(), glm::vec3(-10.0f, 0.0f, 0.0f));
+		glm::mat4 cameraMat = m_curr_3Dcamera->getMatrix();
 
 		// Setup params for the PPL shader:
-		ShaderWrapper::shader->render();
 		m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
 
 		// Activate lighting
