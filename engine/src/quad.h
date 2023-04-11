@@ -2,7 +2,6 @@
 
 // Project classes
 #include "object.h"
-#include "shaderWrapper.h"
 
 // GLM:
 #include <glm/glm.hpp>
