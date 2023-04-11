@@ -31,6 +31,26 @@
 #include "FreeImage.h"
 
 /////////////
+// #DEFINE //
+/////////////
+
+   // Window size:
+#define APP_WINDOWSIZEX   1024
+#define APP_WINDOWSIZEY   512
+#define APP_FBOSIZEX      APP_WINDOWSIZEX / 2
+#define APP_FBOSIZEY      APP_WINDOWSIZEY / 1
+
+// Enums:
+enum Eye
+{
+	EYE_LEFT = 0,
+	EYE_RIGHT = 1,
+
+	// Terminator:
+	EYE_LAST,
+};
+
+/////////////
 // SHADERS //
 /////////////
 
@@ -59,7 +79,7 @@ const char* vertShader = R"(
    {
       fragPosition = modelview * vec4(in_Position, 1.0f);
       gl_Position = projection * fragPosition;
-	   dist = abs(gl_Position.z / farPlane);
+	  dist = abs(gl_Position.z / farPlane);
       normal = normalMatrix * in_Normal;
       texCoord = in_TexCoord;
    }
@@ -278,6 +298,48 @@ const char* fragShaderSpotLight = R"(
 	}
 )";
 
+   // Uniforms:
+   uniform mat4 projection;
+   uniform mat4 modelview;   
+
+   // Attributes:
+   layout(location = 0) in vec2 in_Position;   
+   layout(location = 2) in vec2 in_TexCoord;
+
+   // Varying:   
+   out vec2 texCoord;
+
+   void main(void)
+   {      
+      gl_Position = projection * modelview * vec4(in_Position, 0.0f, 1.0f);    
+      texCoord = in_TexCoord;
+   }
+)";
+
+////////////////////////////
+const char* passthroughFragShader = R"(
+   #version 440 core
+   
+   in vec2 texCoord;
+   
+   uniform vec4 color;
+
+   out vec4 fragOutput;   
+
+   // Texture mapping:
+   layout(binding = 0) uniform sampler2D texSampler;
+
+   void main(void)   
+   {  
+      // Texture element:
+      vec4 texel = texture(texSampler, texCoord);      
+      
+      // Final color:
+      fragOutput = color * texel;       
+   }
+)";
+
+
 ////////////
 // STATIC //
 ////////////
@@ -294,9 +356,13 @@ glm::vec3 Engine::m_background_color;
 PerspectiveCamera* Engine::m_curr_3Dcamera = nullptr;
 OrthographicCamera* Engine::m_curr_2Dcamera = nullptr;
 EngineGraphics* Engine::m_graphics_settings = nullptr;
+Quad* Engine::m_quad = nullptr;
 
+unsigned int fboTexId[EYE_LAST] = { 0, 0 };
+// FBO:      
+Fbo* fbo[EYE_LAST] = { nullptr, nullptr };
 
-// timer function defined by user
+	// timer function defined by user
 void(*userTimerCallback)(int);
 
 
@@ -356,6 +422,11 @@ Engine::~Engine() {
 	delete m_curr_2Dcamera;
 	delete m_curr_3Dcamera;
 	delete m_graphics_settings;
+	for (int c = 0; c < EYE_LAST; c++)
+	{
+		glDeleteTextures(1, &fboTexId[c]);
+		delete fbo[c];
+	}
 	FreeImage_DeInitialise();
 }
 
@@ -393,6 +464,33 @@ void LIB_API Engine::timerCallback(int value) {
 	glutTimerFunc(1000, timerCallback, 0);
 }
 
+void Engine::buildShaders() {
+	// Per pixel lighting shaders
+	vs = new Shader("Vertex Shader");
+	vs->loadFromMemory(Shader::TYPE_VERTEX, vertShader);
+	fs = new Shader("Fragment Shader");
+	fs->loadFromMemory(Shader::TYPE_FRAGMENT, fragShader);
+	// Setup per pixel lighting shader program:
+	ShaderWrapper::shader = new Shader("Program shader");
+	ShaderWrapper::shader->build(vs, fs);
+	ShaderWrapper::shader->render();
+	ShaderWrapper::shader->bind(0, "in_Position");
+	ShaderWrapper::shader->bind(1, "in_Normal");
+	ShaderWrapper::shader->bind(2, "in_TexCoord");
+
+	// Passthrough shaders
+	pvs = new Shader("Passthrough Vertex Shader");
+	pvs->loadFromMemory(Shader::TYPE_VERTEX, passthroughVertShader);
+	pfs = new Shader("Passthrough Fragment Shader");
+	pfs->loadFromMemory(Shader::TYPE_FRAGMENT, passthroughFragShader);
+	// Setup per pixel lighting shader program:
+	ShaderWrapper::passthroughShader = new Shader("Passthrough Program Shader");
+	ShaderWrapper::passthroughShader->build(pvs, pfs);
+	ShaderWrapper::passthroughShader->render();
+	ShaderWrapper::passthroughShader->bind(0, "in_Position");
+	ShaderWrapper::passthroughShader->bind(2, "in_TexCoord");
+}
+
 ////////////
 // PUBLIC //
 ////////////
@@ -424,10 +522,10 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 
 
 	// Init FreeGLUT window
-	glutInitWindowPosition(500, 500);
-	m_window_width = width;
-	m_window_height = height;
-	glutInitWindowSize(width, height);
+	glutInitWindowPosition(100, 100);
+	m_window_width = APP_WINDOWSIZEX;
+	m_window_height = APP_WINDOWSIZEY;
+	glutInitWindowSize(APP_WINDOWSIZEX, APP_WINDOWSIZEY);
 
 
 	// Global OpenGL settings:
@@ -474,42 +572,40 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Set running state
 	m_isRunning = true;
 
-	// Vertex Shader
-	Shader* vs = ShaderManager::createShader("vertexShader");
-	vs->loadFromMemory(Shader::TYPE_VERTEX, vertShader);
+	// Build shaders
+	buildShaders();
+	ShaderWrapper::shader->render();
 
-	// Compile fragment shader:
-	Shader* fsOmni = ShaderManager::createShader("fragmentShaderOmnidirectional");
-	fsOmni->loadFromMemory(Shader::TYPE_FRAGMENT, fragShaderOmniDirectionalLight);
+	// Create quad
+	m_quad = new Quad("Quad", m_window_width, m_window_height);
 
-	// Program1: Omnidirectional light
-	Shader* progShader = ShaderManager::createShader("programShaderOmnidirectionalLight");
 	progShader->build(vs, fsOmni);
 	progShader->render();
 	progShader->bind(0, "in_Position");
-	progShader->bind(1, "in_Normal");
-	progShader->bind(2, "in_TexCoord");
+	// Load FBO and its texture:
 
+	for (int c = 0; c < EYE_LAST; c++)
+	{
+		glGenTextures(1, &fboTexId[c]);
+		glBindTexture(GL_TEXTURE_2D, fboTexId[c]);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, APP_FBOSIZEX, APP_FBOSIZEY, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	// Program2: Directional light
-	Shader* fsDir = ShaderManager::createShader("fragmentShaderDirectional");
-	fsDir->loadFromMemory(Shader::TYPE_FRAGMENT, fragShaderDirectionalLight);
-	Shader* progShader2 = ShaderManager::createShader("programShaderDirectionalLight");
-	progShader2->build(vs, fsDir);
-	progShader2->render();
-	progShader2->bind(0, "in_Position");
-	progShader2->bind(1, "in_Normal");
-	progShader2->bind(2, "in_TexCoord");
+		fbo[c] = new Fbo("FBO" + c);
+		fbo[c]->bindTexture(0, Fbo::BIND_COLORTEXTURE, fboTexId[c]);
+		fbo[c]->bindRenderBuffer(1, Fbo::BIND_DEPTHBUFFER, APP_FBOSIZEX, APP_FBOSIZEY);
+		if (!fbo[c]->isOk())
+			std::cout << "[ERROR] Invalid FBO" << std::endl;
+	}
+	unsigned int ftt;
+	glGenTextures(1, &ftt);
+	glBindTexture(GL_TEXTURE_2D, ftt);
 
-	// Program3: Spot light
-	Shader* fsSpot = ShaderManager::createShader("fragmentShaderSpot");
-	fsSpot->loadFromMemory(Shader::TYPE_FRAGMENT, fragShaderSpotLight);
-	Shader* progShader3 = ShaderManager::createShader("programShaderSpotLight");
-	progShader3->build(vs, fsSpot);
-	progShader3->render();
-	progShader3->bind(0, "in_Position");
-	progShader3->bind(1, "in_Normal");
-	progShader3->bind(2, "in_TexCoord");
+	Fbo::disable();
+	glViewport(0, 0, prevViewport[2], prevViewport[3]);
 
 	// Set default shader
 	ShaderManager::setActiveShader("programShaderSpotLight");
@@ -555,9 +651,8 @@ void LIB_API Engine::disableGouraund() {
 /**
 * Swap back-buffer and front-buffer to show current render result
 */
-void LIB_API Engine::swapBuffers() {
 	// Swap back buffer <-> front buffer
-	glutSwapBuffers();
+	//glutSwapBuffers();
 }
 
 bool LIB_API Engine::free()
@@ -570,7 +665,8 @@ bool LIB_API Engine::free()
 	}
 
 	// Delete shaders
-	ShaderManager::free();
+	delete fs;
+	delete vs;
 
 	// Done:
 	m_initFlag = false;
@@ -582,20 +678,55 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	m_curr_3Dcamera = camera;
 
 	// Set the far plane used for creating the fog effect
-	ShaderManager::getActiveShader()->setFloat(ShaderManager::getActiveShader()->getParamLocation("farPlane"), camera->getFar());
-	//ShaderManager::getActiveShader()->setVec3(ShaderManager::getActiveShader()->getParamLocation("fog"), m_background_color);
+	ShaderWrapper::shader->render();
+	ShaderWrapper::shader->setFloat(ShaderWrapper::shader->getParamLocation("farPlane"), camera->getFar());
 
-	// Start rendering
-	if (m_scene_graph != nullptr) {
-		// Clear rendering list
-		m_rendering_list->clear();
+	stereoscopicRender();
 
-		// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
-		// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
-		m_rendering_list->pass(m_scene_graph, glm::mat4(1));
+	// Swap buffers:
+	glutSwapBuffers();
+
+	// force refresh
+	glutPostWindowRedisplay(m_windowId);
+	// Really necessary?
+	if (!m_initFlag)
+	{
+		std::cout << "ERROR: class not initialized" << std::endl;
+		return false;
+	}
+
+	// Delete shaders
+	ShaderManager::free();
+
+		// Render into this FBO:
+		fbo[c]->render();
+
+		// Clear the FBO content:
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+		////////////////
+	m_curr_3Dcamera = camera;
+
+	// Set the far plane used for creating the fog effect
+	ShaderWrapper::shader->setFloat(ShaderWrapper::shader->getParamLocation("farPlane"), camera->getFar());
+
+	// Set properties
+	m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
+
+	// Activate lighting
+	//glEnable(GL_LIGHTING);
+
+		// Start rendering the scene
+		if (m_scene_graph != nullptr) {
+			// Clear rendering list
+			m_rendering_list->clear();
+
+			// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
+			// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
+			m_rendering_list->pass(m_scene_graph, glm::mat4(1));
 
 		// Render
-		m_rendering_list->m_camera = m_curr_3Dcamera;
 		m_rendering_list->render(m_curr_3Dcamera->getMatrix());
 	}
 	else {
@@ -603,9 +734,31 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 		return;
 	}
 
+	// Done with the FBO, go back to rendering into the window context buffers:
+	Fbo::disable();
+	glViewport(0, 0, prevViewport[2], prevViewport[3]);
 
-	// force refresh
-	glutPostRedisplay();
+	////////////////
+	// 2D rendering:
+	m_curr_2Dcamera = new OrthographicCamera{ "2d Camera", glm::mat4(1), APP_WINDOWSIZEX, APP_WINDOWSIZEY };
+
+	// Set a matrix for the left "eye":    
+	glm::mat4 f = glm::mat4(1.0f);
+
+	// Setup the passthrough shader:
+	ShaderWrapper::passthroughShader->render();
+	ShaderWrapper::passthroughShader->setMatrix(ShaderWrapper::passthroughShader->getParamLocation("projection"), m_curr_2Dcamera->getProperties());
+	ShaderWrapper::passthroughShader->setMatrix(ShaderWrapper::passthroughShader->getParamLocation("modelview"), f);
+	ShaderWrapper::passthroughShader->setVec4(ShaderWrapper::passthroughShader->getParamLocation("color"), glm::vec4(1.0f, 0.0f, 0.0f, 0.0f));
+
+	m_quad->render(fboTexId[EYE_LEFT]);
+
+	// Do the same for the right "eye": 
+	f = glm::translate(glm::mat4(1.0f), glm::vec3(APP_WINDOWSIZEX / 2, 0.0f, 0.0f));
+	ShaderWrapper::passthroughShader->setMatrix(ShaderWrapper::passthroughShader->getParamLocation("modelview"), f);
+	ShaderWrapper::passthroughShader->setVec4(ShaderWrapper::passthroughShader->getParamLocation("color"), glm::vec4(0.0f, 1.0f, 1.0f, 0.0f));
+
+	m_quad->render(fboTexId[EYE_RIGHT]);
 }
 
 

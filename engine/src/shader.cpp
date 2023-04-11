@@ -6,7 +6,7 @@
 	// Header:
 #include "shader.h"
 
-// Glew (include it before GL.h):
+// Glew:
 #include <GL/glew.h>
 
 

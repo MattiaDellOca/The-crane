@@ -16,6 +16,8 @@
 #include "ovoreader.h"
 #include "texture.h"
 #include "shader.h"
+#include "fbo.h"
+#include "quad.h"
 
 #include <queue>
 
@@ -120,6 +122,17 @@ private:
 	*/
 	static EngineGraphics* m_graphics_settings;
 
+
+	/**
+	* Static Quad used for 2D rendering
+	*/
+	static Quad* m_quad;
+
+	/**
+	* Background color
+	*/
+	static glm::vec3 m_background_color;
+
 	/**
 	 * Callback function for reshaping the window.
 	 *
@@ -135,13 +148,13 @@ private:
 	*/
 	static void timerCallback(int value);
 
-
 	/**
-	* Background color
+	* \brief Initialize and build program shaders
 	*/
-	static glm::vec3 m_background_color;
+	static void buildShaders();
 
 public:
+
 	/**
 	 * Initialize the engine.
 	 *
@@ -209,6 +222,13 @@ public:
 	* \param list list of text and position.
 	*/
 	static void render2D(OrthographicCamera* camera, const std::list<std::tuple<std::string, int>>& list);
+
+	/**
+	 * Render the scene using FBOs.
+	 *
+	 */
+	static void stereoscopicRender();
+
 	/**
 	 * Run the engine loop.
 	 *
