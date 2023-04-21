@@ -22,10 +22,14 @@ public:
 	~Quad();
 
 	/**
-	* \brief Renders the node and its children.
+	* \brief Renders derived from class object.
 	* \param coords The pre-computed world coordinates of the node.
 	*/
 	virtual void render(glm::mat4) override;
 
+	/**
+	* \brief Render the Quad
+	* \param fboTexId the ID of texture to apply
+	*/
 	void render(unsigned int);
 };

@@ -17,6 +17,7 @@ LIB_API Quad::Quad(const std::string& name, unsigned int windowSizeX, unsigned i
 LIB_API Quad::~Quad() {
 	glDeleteBuffers(1, &m_vertex_vbo);
 	glDeleteBuffers(1, &m_texture_vbo);
+	glDeleteVertexArrays(1, &m_vao);
 }
 
 void LIB_API Quad::createPlane() {

@@ -18,6 +18,7 @@
 #include "shader.h"
 #include "fbo.h"
 #include "quad.h"
+#include "skybox.h"
 
 #include <queue>
 
@@ -117,6 +118,11 @@ private:
 	* Static Quad used for 2D rendering
 	*/
 	static Quad* m_quad;
+
+	/**
+	* Static Skybox
+	*/
+	static Skybox* m_skybox;
 
 	/**
 	* Background color

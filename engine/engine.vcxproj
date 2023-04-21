@@ -105,6 +105,7 @@
     <ClCompile Include="src\renderingList.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\shaderManager.cpp" />
+    <ClCompile Include="src\skybox.cpp" />
     <ClCompile Include="src\spotLight.cpp" />
     <ClCompile Include="src\texture.cpp" />
   </ItemGroup>
@@ -130,6 +131,7 @@
     <ClInclude Include="src\renderingList.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\shaderManager.h" />
+    <ClInclude Include="src\skybox.h" />
     <ClInclude Include="src\spotLight.h" />
     <ClInclude Include="src\texture.h" />
   </ItemGroup>

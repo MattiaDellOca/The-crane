@@ -333,6 +333,41 @@ const char* passthroughFragShader = R"(
    }
 )";
 
+////////////////////////////
+const char* skyboxPassthroughVertShader = R"(
+   #version 440 core
+
+   uniform mat4 projection;
+   uniform mat4 modelview;
+
+   layout(location = 0) in vec3 in_Position;      
+
+   out vec3 texCoord;
+
+   void main(void)
+   {
+      texCoord = in_Position;
+      gl_Position = projection * modelview * vec4(in_Position, 1.0f);            
+   }
+)";
+
+////////////////////////////
+const char* skyboxPassthroughFragShader = R"(
+   #version 440 core
+   
+   in vec3 texCoord;
+   
+   // Texture mapping (cubemap):
+   layout(binding = 0) uniform samplerCube cubemapSampler;
+
+   out vec4 fragOutput;
+
+   void main(void)
+   {       
+      fragOutput = texture(cubemapSampler, texCoord);
+   }
+)";
+
 
 ////////////
 // STATIC //
@@ -349,6 +384,7 @@ PerspectiveCamera* Engine::m_curr_3Dcamera = nullptr;
 OrthographicCamera* Engine::m_curr_2Dcamera = new OrthographicCamera{ "2d Camera", glm::mat4(1), APP_WINDOWSIZEX, APP_WINDOWSIZEY };
 EngineGraphics* Engine::m_graphics_settings = nullptr;
 Quad* Engine::m_quad = nullptr;
+Skybox* Engine::m_skybox = nullptr;
 
 // Enums:
 enum Eye
@@ -485,7 +521,7 @@ void Engine::buildShaders() {
 	progShader3->bind(1, "in_Normal");
 	progShader3->bind(2, "in_TexCoord");
 
-	// Passthrough shaders
+	// Passthrough shader:
 	Shader* pvs = ShaderManager::createShader("Passthrough Vertex Shader");
 	pvs->loadFromMemory(Shader::TYPE_VERTEX, passthroughVertShader);
 	Shader* pfs = ShaderManager::createShader("Passthrough Fragment Shader");
@@ -497,6 +533,17 @@ void Engine::buildShaders() {
 	passthroughShader->bind(0, "in_Position");
 	passthroughShader->bind(2, "in_TexCoord");
 
+	// Skybox passthrough shader:
+	Shader* spvs = ShaderManager::createShader("Skybox Passthrough Vertex Shader");
+	spvs->loadFromMemory(Shader::TYPE_VERTEX, skyboxPassthroughVertShader);
+	Shader* spfs = ShaderManager::createShader("Skybox Passthrough Fragment Shader");
+	spfs->loadFromMemory(Shader::TYPE_FRAGMENT, skyboxPassthroughFragShader);
+	Shader* skyboxPassthroughShader = ShaderManager::createShader("Skybox Passthrough Program Shader");
+	skyboxPassthroughShader->build(spvs, spfs);
+	skyboxPassthroughShader->render();
+	skyboxPassthroughShader->bind(0, "in_Position");
+
+	
 	// Set default shader
 	ShaderManager::setActiveShader("programShaderSpotLight");
 }
@@ -607,6 +654,17 @@ bool LIB_API Engine::init(const char* title, int* argc, char** argv)
 	Fbo::disable();
 	glViewport(0, 0, prevViewport[2], prevViewport[3]);
 
+	// Skybox
+	std::string cubemapNames[6] = {
+		"posx.jpg",
+		"negx.jpg",
+		"posy.jpg",
+		"negy.jpg",
+		"posz.jpg",
+		"negz.jpg"
+	};
+	m_skybox = new Skybox("Skybox", "../assets/skybox/", cubemapNames);
+
 	// Print information
 	std::cout << "OpenGL context" << std::endl;
 	std::cout << "   version  . . : " << glGetString(GL_VERSION) << std::endl;
@@ -713,6 +771,8 @@ void LIB_API Engine::stereoscopicRender() {
 			// Render
 			m_rendering_list->m_camera = m_curr_3Dcamera;
 			m_rendering_list->render(cameraMat);
+
+			m_skybox->render(glm::inverse(cameraMat));
 		}
 		else {
 			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
