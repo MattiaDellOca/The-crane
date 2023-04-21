@@ -2,9 +2,13 @@
 // #INCLUDE //
 //////////////
 
+#include <iostream>
+#include <fstream>
+#include <cstring>
 
 	// Project classes
 #include "engine.h"
+#include "configReader.h"
 #include "perspectiveCamera.h"
 #include "shader.h"
 #include "shaderManager.h"
@@ -29,6 +33,7 @@
 
 	// FreeImage:
 #include "FreeImage.h"
+
 
 /////////////
 // #DEFINE //
@@ -538,6 +543,11 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	m_initFlag = true;
 	std::cout << "Initializing engine" << std::endl;
 	std::cout << std::endl;
+
+	// Read config file
+	ConfigReader::read("../engine/app.config");
+	std::string renderingType = ConfigReader::get("RenderingType");
+	std::cout << "Rendering type: " << renderingType << std::endl;
 
 	// FreeGLUT init
 	glutInit(argc, argv);

@@ -87,11 +87,30 @@ struct Controller
 };
 
 
+
+
+/////////////////////
+// OvVRImpl class:
+/////////////////////
+
+class OvVR::OvVRImpl
+{
+public:
+	// OVR objects:	
+	vr::IVRSystem* vrSys;
+	vr::IVRRenderModels* vrModels;
+	vr::IVRCompositor* vrComp;
+	vr::TrackedDevicePose_t vrPoses[vr::k_unMaxTrackedDeviceCount];
+	std::vector<Controller*> controllers;
+
+};
+
+
 /////////////////////
 // OvVR class:
 /////////////////////
 
-LIB_API OvVR::OvVR() : vrSys(nullptr), vrModels(nullptr), vrComp(nullptr)
+LIB_API OvVR::OvVR() : impl(new OvVRImpl())
 {
 	controllers.clear();
 
@@ -100,6 +119,7 @@ LIB_API OvVR::OvVR() : vrSys(nullptr), vrModels(nullptr), vrComp(nullptr)
 
 LIB_API OvVR::~OvVR()
 {
+	delete impl;
 }
 
 /**
@@ -112,30 +132,30 @@ bool LIB_API OvVR::init()
 
 	// Init VR system:
 	std::cout << "Using OpenVR " << vr::k_nSteamVRVersionMajor << "." << vr::k_nSteamVRVersionMinor << "." << vr::k_nSteamVRVersionBuild << std::endl;
-	vrSys = vr::VR_Init(&error, vr::VRApplication_Scene);
+	impl->vrSys = vr::VR_Init(&error, vr::VRApplication_Scene);
 	if (error != vr::VRInitError_None)
 	{
-		vrSys = nullptr;
+		impl->vrSys = nullptr;
 		std::cout << "[ERROR] Unable to init VR runtime: " << vr::VR_GetVRInitErrorAsEnglishDescription(error) << std::endl;
 		return false;
 	}
-
+	
 	// Init render models:
-	vrModels = (vr::IVRRenderModels*)vr::VR_GetGenericInterface(vr::IVRRenderModels_Version, &error);
-	if (vrModels == nullptr)
+	impl->vrModels = (vr::IVRRenderModels*)vr::VR_GetGenericInterface(vr::IVRRenderModels_Version, &error);
+	if (impl->vrModels == nullptr)
 	{
-		vrSys = nullptr;
+		impl->vrSys = nullptr;
 		vr::VR_Shutdown();
 		std::cout << "[ERROR] Unable to get render model interface: " << vr::VR_GetVRInitErrorAsEnglishDescription(error) << std::endl;
 		return false;
 	}
 
 	// Initialize the compositor:
-	vrComp = vr::VRCompositor();
-	if (!vrComp)
+	impl->vrComp = vr::VRCompositor();
+	if (!impl->vrComp)
 	{
-		vrModels = nullptr;
-		vrSys = nullptr;
+		impl->vrModels = nullptr;
+		impl->vrSys = nullptr;
 		vr::VR_Shutdown();
 		std::cout << "[ERROR] Unable to get VR compositor" << std::endl;
 		return false;
@@ -148,13 +168,13 @@ bool LIB_API OvVR::init()
 	controllers.clear();
 	for (unsigned int c = 0; c < vr::k_unMaxTrackedDeviceCount; c++)
 	{
-		if (vrSys->GetTrackedDeviceClass(c) == vr::TrackedDeviceClass_Controller)
+		if (impl->vrSys->GetTrackedDeviceClass(c) == vr::TrackedDeviceClass_Controller)
 		{
 			std::cout << "   Found controller at " << c << std::endl;
 			Controller* cont = new Controller();
 			cont->id = c;
 
-			unsigned int bufferLen = vrSys->GetStringTrackedDeviceProperty(c, vr::Prop_RenderModelName_String, nullptr, 0, nullptr);
+			unsigned int bufferLen = impl->vrSys->GetStringTrackedDeviceProperty(c, vr::Prop_RenderModelName_String, nullptr, 0, nullptr);
 			if (bufferLen == 0)
 			{
 				std::cout << "[ERROR] Unable to get controller render model" << std::endl;
@@ -164,12 +184,12 @@ bool LIB_API OvVR::init()
 
 			std::string result;
 			result.resize(bufferLen);
-			vrSys->GetStringTrackedDeviceProperty(c, vr::Prop_RenderModelName_String, &result[0], bufferLen, nullptr);
+			impl->vrSys->GetStringTrackedDeviceProperty(c, vr::Prop_RenderModelName_String, &result[0], bufferLen, nullptr);
 			std::cout << "   Controller render model: '" << result << "'" << std::endl;
 			controllers.push_back(cont);
 		}
 	}
-
+	
 	// Done:
 	return true;
 }
@@ -186,9 +206,9 @@ bool LIB_API OvVR::free()
 	controllers.clear();
 
 	vr::VR_Shutdown();
-	vrComp = nullptr;
-	vrModels = nullptr;
-	vrSys = nullptr;
+	impl->vrComp = nullptr;
+	impl->vrModels = nullptr;
+	impl->vrSys = nullptr;
 
 	// Done:      
 	return true;
@@ -201,13 +221,13 @@ bool LIB_API OvVR::free()
  */
 std::string LIB_API OvVR::getTrackingSysName()
 {
-	unsigned int bufferLen = vrSys->GetStringTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_TrackingSystemName_String, nullptr, 0, nullptr);
+	unsigned int bufferLen = impl->vrSys->GetStringTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_TrackingSystemName_String, nullptr, 0, nullptr);
 	if (bufferLen == 0)
 		return std::string();
 
 	std::string result;
 	result.resize(bufferLen);
-	vrSys->GetStringTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_TrackingSystemName_String, &result[0], bufferLen, nullptr);
+	impl->vrSys->GetStringTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_TrackingSystemName_String, &result[0], bufferLen, nullptr);
 	return result;
 }
 
@@ -217,16 +237,16 @@ std::string LIB_API OvVR::getTrackingSysName()
  */
 bool LIB_API OvVR::printRenderModels()
 {
-	for (unsigned int c = 0; c < vrModels->GetRenderModelCount(); c++)
+	for (unsigned int c = 0; c < impl->vrModels->GetRenderModelCount(); c++)
 	{
 		char buffer[256];
-		vrModels->GetRenderModelName(c, buffer, 256);
+		impl->vrModels->GetRenderModelName(c, buffer, 256);
 		std::cout << "   " << c << ") " << buffer << " model" << std::endl;
 
-		for (unsigned int d = 0; d < vrModels->GetComponentCount(buffer); d++)
+		for (unsigned int d = 0; d < impl->vrModels->GetComponentCount(buffer); d++)
 		{
 			char cbuffer[256];
-			vrModels->GetComponentName(buffer, d, cbuffer, 256);
+			impl->vrModels->GetComponentName(buffer, d, cbuffer, 256);
 			std::cout << "     " << d << ") " << cbuffer << std::endl;
 		}
 	}
@@ -241,13 +261,13 @@ bool LIB_API OvVR::printRenderModels()
  */
 std::string LIB_API OvVR::getManufacturerName()
 {
-	unsigned int bufferLen = vrSys->GetStringTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_ManufacturerName_String, nullptr, 0, nullptr);
+	unsigned int bufferLen = impl->vrSys->GetStringTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_ManufacturerName_String, nullptr, 0, nullptr);
 	if (bufferLen == 0)
 		return std::string();
 
 	std::string result;
 	result.resize(bufferLen);
-	vrSys->GetStringTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_ManufacturerName_String, &result[0], bufferLen, nullptr);
+	impl->vrSys->GetStringTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_ManufacturerName_String, &result[0], bufferLen, nullptr);
 	return result;
 }
 
@@ -257,13 +277,13 @@ std::string LIB_API OvVR::getManufacturerName()
  */
 std::string LIB_API OvVR::getModelNumber()
 {
-	unsigned int bufferLen = vrSys->GetStringTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_ModelNumber_String, nullptr, 0, nullptr);
+	unsigned int bufferLen = impl->vrSys->GetStringTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_ModelNumber_String, nullptr, 0, nullptr);
 	if (bufferLen == 0)
 		return std::string();
 
 	std::string result;
 	result.resize(bufferLen);
-	vrSys->GetStringTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_ModelNumber_String, &result[0], bufferLen, nullptr);
+	impl->vrSys->GetStringTrackedDeviceProperty(vr::k_unTrackedDeviceIndex_Hmd, vr::Prop_ModelNumber_String, &result[0], bufferLen, nullptr);
 	return result;
 }
 
@@ -274,7 +294,7 @@ std::string LIB_API OvVR::getModelNumber()
 unsigned int LIB_API OvVR::getHmdIdealHorizRes()
 {
 	unsigned int result, dummy;
-	vrSys->GetRecommendedRenderTargetSize(&result, &dummy);
+	impl->vrSys->GetRecommendedRenderTargetSize(&result, &dummy);
 	return result;
 }
 
@@ -286,7 +306,7 @@ unsigned int LIB_API OvVR::getHmdIdealHorizRes()
 unsigned int LIB_API OvVR::getHmdIdealVertRes()
 {
 	unsigned int result, dummy;
-	vrSys->GetRecommendedRenderTargetSize(&dummy, &result);
+	impl->vrSys->GetRecommendedRenderTargetSize(&dummy, &result);
 	return result;
 }
 
@@ -324,20 +344,18 @@ glm::mat4 LIB_API OvVR::ovr2ogl(const vr::HmdMatrix44_t& matrix)
  */
 bool LIB_API OvVR::update()
 {
-	//Convwert vrPoses to an array
-	vr::TrackedDevicePose_t* posesArray = vrPoses.data();
-
 	// Main update method:
-	vrComp->WaitGetPoses(posesArray, vr::k_unMaxTrackedDeviceCount, nullptr, 0);
+	impl->vrComp->WaitGetPoses(impl->vrPoses, vr::k_unMaxTrackedDeviceCount, nullptr, 0);
 
 	// If used, update controllers:
 	for (auto c : controllers)
 	{
-		if (vrPoses[c->id].bPoseIsValid)
-			c->matrix = ovr2ogl(vrPoses[c->id].mDeviceToAbsoluteTracking);
+		if (impl->vrPoses[c->id].bPoseIsValid)
+			c->matrix = ovr2ogl(impl->vrPoses[c->id].mDeviceToAbsoluteTracking);
 	}
 
 	// Done:
+	return true;
 	return true;
 }
 
@@ -352,8 +370,8 @@ glm::mat4 LIB_API OvVR::getProjMatrix(OvEye eye, float nearPlane, float farPlane
 {
 	switch (eye)
 	{
-	case EYE_LEFT: return ovr2ogl(vrSys->GetProjectionMatrix(vr::Eye_Left, nearPlane, farPlane)); break;
-	case EYE_RIGHT: return ovr2ogl(vrSys->GetProjectionMatrix(vr::Eye_Right, nearPlane, farPlane)); break;
+	case EYE_LEFT: return ovr2ogl(impl->vrSys->GetProjectionMatrix(vr::Eye_Left, nearPlane, farPlane)); break;
+	case EYE_RIGHT: return ovr2ogl(impl->vrSys->GetProjectionMatrix(vr::Eye_Right, nearPlane, farPlane)); break;
 	default: return glm::mat4(1.0f);
 	}
 }
@@ -368,8 +386,8 @@ glm::mat4 LIB_API OvVR::getEye2HeadMatrix(OvEye eye)
 {
 	switch (eye)
 	{
-	case EYE_LEFT: return ovr2ogl(vrSys->GetEyeToHeadTransform(vr::Eye_Left)); break;
-	case EYE_RIGHT: return ovr2ogl(vrSys->GetEyeToHeadTransform(vr::Eye_Right)); break;
+	case EYE_LEFT: return ovr2ogl(impl->vrSys->GetEyeToHeadTransform(vr::Eye_Left)); break;
+	case EYE_RIGHT: return ovr2ogl(impl->vrSys->GetEyeToHeadTransform(vr::Eye_Right)); break;
 	default: return glm::mat4(1.0f);
 	}
 }
@@ -381,10 +399,10 @@ glm::mat4 LIB_API OvVR::getEye2HeadMatrix(OvEye eye)
  */
 glm::mat4 LIB_API OvVR::getModelviewMatrix()
 {
-	if (vrPoses[vr::k_unTrackedDeviceIndex_Hmd].bPoseIsValid == false)
+	if (impl->vrPoses[vr::k_unTrackedDeviceIndex_Hmd].bPoseIsValid == false)
 		return glm::mat4(1.0f);
 
-	glm::mat4 headPos = ovr2ogl(vrPoses[vr::k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking);
+	glm::mat4 headPos = ovr2ogl(impl->vrPoses[vr::k_unTrackedDeviceIndex_Hmd].mDeviceToAbsoluteTracking);
 	return headPos;
 }
 
@@ -418,7 +436,7 @@ Controller LIB_API* OvVR::getController(unsigned int pos) const
  */
 void LIB_API OvVR::setReprojection(bool flag)
 {
-	vrComp->ForceInterleavedReprojectionOn(flag);
+	impl->vrComp->ForceInterleavedReprojectionOn(flag);
 }
 
 
@@ -432,8 +450,8 @@ void LIB_API OvVR::pass(OvEye eye, unsigned int eyeTexture)
 	const vr::Texture_t t = { reinterpret_cast<void*>(uintptr_t(eyeTexture)), vr::TextureType_OpenGL, vr::ColorSpace_Linear };
 	switch (eye)
 	{
-	case EYE_LEFT:  vrComp->Submit(vr::Eye_Left, &t); break;
-	case EYE_RIGHT: vrComp->Submit(vr::Eye_Right, &t); break;
+	case EYE_LEFT:  impl->vrComp->Submit(vr::Eye_Left, &t); break;
+	case EYE_RIGHT: impl->vrComp->Submit(vr::Eye_Right, &t); break;
 	}
 }
 
@@ -443,5 +461,5 @@ void LIB_API OvVR::pass(OvEye eye, unsigned int eyeTexture)
  */
 void LIB_API OvVR::render()
 {
-	vrComp->PostPresentHandoff();
+	impl->vrComp->PostPresentHandoff();
 }

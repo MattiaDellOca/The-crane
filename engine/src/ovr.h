@@ -13,10 +13,6 @@
 
 namespace vr
 {
-	class IVRSystem;
-	class IVRRenderModels;
-	class IVRCompositor;
-	struct TrackedDevicePose_t;
 	struct HmdMatrix34_t;
 	struct HmdMatrix44_t;
 }
@@ -58,11 +54,8 @@ public:
 
 
 private:
-	// OVR objects:	
-	vr::IVRSystem* vrSys;
-	vr::IVRRenderModels* vrModels;
-	vr::IVRCompositor* vrComp;
-	std::vector < vr::TrackedDevicePose_t> vrPoses;
+	class OvVRImpl;
+	OvVRImpl* impl;
 	std::vector<Controller*> controllers;
 };
 
