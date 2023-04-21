@@ -73,16 +73,19 @@ void LIB_API Mesh::renderShadow(glm::mat4 cameraInv, glm::mat4 parentRelativeCoo
 	glm::mat4 shadowCastMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0.f, .7f, 0.f)) * projectionXZ * parentRelativeCoords * glm::scale(glm::mat4(1.f), glm::vec3(1.f, 0.f, 1.f));
 
 	// Set shadow material
-	/*
-	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 0);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, glm::value_ptr(glm::vec3(0.0f, 0.0f, 0.0f)));
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, glm::value_ptr(glm::vec3(0.05f, 0.05f, 0.05f)));
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, glm::value_ptr(glm::vec3(0.0f, 0.0f, 0.0f)));
-	glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, glm::value_ptr(glm::vec3(0.f, 0.f, 0.f)));
-	*/
+	Shader* progShader = ShaderManager::getActiveShader();
+	progShader->setVec3(progShader->getParamLocation("matEmission"), glm::vec3(0.f, 0.f, 0.f));
+	progShader->setVec3(progShader->getParamLocation("matAmbient"), glm::vec3(0.0f, 0.0f, 0.0f));
+	progShader->setVec3(progShader->getParamLocation("matDiffuse"), glm::vec3(0.0f, 0.0f, 0.0f));
+	progShader->setVec3(progShader->getParamLocation("matSpecular"), glm::vec3(0.0f, 0.0f, 0.0f));
+	progShader->setFloat(progShader->getParamLocation("matShininess"), 0.0f);
 	
-	// Compute + load world coordinate 
-	//glLoadMatrixf(glm::value_ptr(cameraInv * shadowCastMatrix));
+	// Load modelview matrix
+	progShader->setMatrix(progShader->getParamLocation("modelview"), cameraInv * shadowCastMatrix);
+
+	// Load inverse-transpose matrix
+	glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+	progShader->setMatrix3(progShader->getParamLocation("normalMatrix"), normalMatrix);
 
 	// Render the mesh using VAO
 	// Warning: the VAO contains a VBO for rendering texture, but the shadows consist of a complete black color, therefore the texture are applied but not seen

@@ -59,7 +59,7 @@ void LIB_API RenderingList::render(glm::mat4 cameraMatrix) {
 			lights.push_back(*it);
 		}
 		else {
-			// m_list is sorted, so if a *non* light is encounter, the for can be break
+			// m_list is sorted, so if a *non* light is encounter, the for can be broken
 			break;
 		}
 	}
@@ -120,18 +120,18 @@ void LIB_API RenderingList::render(glm::mat4 cameraMatrix) {
 			(*it)->m_node->render(inverseCameraMatrix * (*it)->m_mat);
 		}
 
-		/*
+		// Shadow rendering
 		for (auto it = m_list.begin(); it != m_list.end(); ++it) {
 			Mesh* m = dynamic_cast<Mesh*>((*it)->m_node);
 			if (m != nullptr && m->isShadowCastEnabled()) {
 				// call render method for each node
 				m->renderShadow(inverseCameraMatrix, (*it)->m_mat);
 			}
-		}*/
+		}
 
-		// Disable blending, in case we used it:
 	}
 
+	// Disable blending, in case we used it:
 	if (lights.size() > 1) {
 		glDisable(GL_BLEND);
 		glDepthFunc(GL_LESS);
