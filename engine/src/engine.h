@@ -98,16 +98,6 @@ private:
 	static int m_windowId;
 
 	/**
-	 * The width of the window.
-	 */
-	static int m_window_width;
-
-	/**
-	 * The height of the window.
-	 */
-	static int m_window_height;
-
-	/**
 	 * The current camera being used by the engine.
 	 */
 	static PerspectiveCamera* m_curr_3Dcamera;
@@ -159,13 +149,11 @@ public:
 	 * Initialize the engine.
 	 *
 	 * \param title The title of the window.
-	 * \param width The width of the window.
-	 * \param height The height of the window.
 	 * \param argc Pointer to the number of command-line arguments.
 	 * \param argv Array of command-line arguments.
 	 * \return True if the initialization was successful, false otherwise.
 	 */
-	static bool init(const char* title, unsigned int width, unsigned int height, int* argc, char** argv);
+	static bool init(const char* title, int* argc, char** argv);
 
 	/**
 	 * Load a 3D model from a file.
@@ -213,15 +201,7 @@ public:
 	 * 
 	 * \param camera with which render the scene.
 	 */
-	static void render3D(PerspectiveCamera* camera);
-
-	/**
-	* Render the 2D information.
-	* 
-	* \param camera with which render the information.
-	* \param list list of text and position.
-	*/
-	static void render2D(OrthographicCamera* camera, const std::list<std::tuple<std::string, int>>& list);
+	static void render(PerspectiveCamera* camera);
 
 	/**
 	 * Render the scene using FBOs.
@@ -297,19 +277,6 @@ public:
 	*/
 	static Node* getNode(const std::string& name);
 
-	/**
-	 * Returns the current window height. The engine must be initialized before calling this method.
-	 * 
-	 * \return Height of the window 
-	 */
-	static unsigned int getWindowHeight();
-
-	/**
-	 * Returns the current window height. The engine must be initialized before calling this method
-	 * 
-	 * \return Width of the window
-	 */
-	static unsigned int getWindowWidth();
 
 	/**
 	 * Force rendering.

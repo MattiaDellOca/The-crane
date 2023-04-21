@@ -13,7 +13,6 @@ glm::mat4 startCameraCoordinate = glm::translate(glm::mat4(1.f), glm::vec3(600.f
 PerspectiveCamera* camera3D = new PerspectiveCamera{ "Main camera", startCameraCoordinate, 512, 512, 1, 5000, 90 };
 PerspectiveCamera* camera3DHook;
 PerspectiveCamera* camera3DCabine;
-OrthographicCamera* camera2D = new OrthographicCamera{ "2d Camera", glm::mat4(1), 650, 650 };
 
 // Current camera
 CameraNode* currentCamera;
@@ -71,66 +70,7 @@ void display() {
 	Engine::clear();
 
 	// Render scene
-	Engine::render3D(currentCamera->getCamera());
-
-	// Preparation list 2D information
-	information2D.clear();
-
-	// top 2D information
-	unsigned int currPos = camera2D->getHeight();
-	information2D.emplace_back("======= Commands =======", currPos - 20);
-	information2D.emplace_back("[ g ] rotate crane counterclockwise", currPos - 35);
-	information2D.emplace_back("[ l ] rotate crane clockwise", currPos - 50);
-	information2D.emplace_back("[ h ] move trolley backward", currPos - 65);
-	information2D.emplace_back("[ k ] move trolley forward", currPos - 80);
-	information2D.emplace_back("[ u ] move cable up", currPos - 95);
-	information2D.emplace_back("[ j ] move cable down", currPos - 110);
-
-	if (hooked) {
-		information2D.emplace_back("[ m ] release container", currPos - 140);
-	}
-	else {
-		information2D.emplace_back("[ m ] hook container", currPos - 140);
-	}
-
-	if (currentCamera->getCamera()->getName() == "Main camera") {
-		information2D.emplace_back("[ w a s d ] move camera", currPos - 170);
-		information2D.emplace_back("[ space / q ] move camera up or down", currPos - 185);
-		information2D.emplace_back("[ directional keys ] rotate camera", currPos - 200);
-		information2D.emplace_back("[ LCTRL ] replace camera", currPos - 215);
-		information2D.emplace_back("========================", currPos - 230);
-	} else {
-		information2D.emplace_back("========================", currPos - 155);
-	}
-
-
-
-	// center 2D information
-	currPos = (camera2D->getHeight() - 20) / 2;
-	information2D.emplace_back("======= Settings =======", currPos);
-	if (isWireframe) {
-		information2D.emplace_back("[ 1 ] Disable wireframe", currPos - 15);
-	}
-	else {
-		information2D.emplace_back("[ 1 ] Enable wireframe", currPos - 15);
-	}
-	if (isGouraund) {
-		information2D.emplace_back("[ 2 ] Disable Gouraund", currPos - 30);
-	}
-	else {
-		information2D.emplace_back("[ 2 ] Enable Gouraund", currPos - 30);
-	}
-	information2D.emplace_back("[ c ] Switch camera to " + currentCamera->getNext()->getCamera()->getName(), currPos - 45);
-
-	information2D.emplace_back("========================", currPos - 60);
-
-	// bottom 2D information
-	information2D.emplace_back("======= Information =======", 40);
-	information2D.emplace_back(to_string(fps) + " fps", 25);
-	information2D.emplace_back("===========================", 10);
-
-	// Render 2D information
-	Engine::render2D(camera2D, information2D);
+	Engine::render(currentCamera->getCamera());
 
 	// Increment frame
 	frames++;
@@ -351,7 +291,7 @@ int main(int argc, char* argv[]) {
 	cout << "[Crane - SUPSI]" << endl;
 
 	// Initialize Engine
-	Engine::init("CRANE - An OpenGL crane simulator", 650, 650, &argc, argv);
+	Engine::init("CRANE - An OpenGL crane simulator", &argc, argv);
 	Engine::setKeyboardFunction(keyboardCallback);
 	Engine::setSpecialKeyboardFunction(specialKeyboardCallback);
 	Engine::setTimerFunction(timerCallback);  // Set up timer
@@ -404,7 +344,6 @@ int main(int argc, char* argv[]) {
 
 	// Free engine
 	Engine::free();
-	delete camera2D;
 	delete camera3D;
 	delete camera3DHook;
 	delete camera3DCabine;

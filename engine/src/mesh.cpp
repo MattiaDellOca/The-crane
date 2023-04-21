@@ -25,12 +25,6 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 	// Load material
 	m_material->apply();
 
-	// Check if a texture has been set
-	if (m_material->getTexture() != nullptr) {
-		//glEnable(GL_TEXTURE_2D);
-	}
-
-
 	// Load modelview matrix
 	Shader* progShader = ShaderManager::getActiveShader();
 	progShader->setMatrix(progShader->getParamLocation("modelview"), matrix);
@@ -44,12 +38,6 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 	glBindVertexArray(m_vao);
 	glDrawElements(GL_TRIANGLES, m_faces * 3, GL_UNSIGNED_INT, nullptr);
 	glBindVertexArray(0);
-	
-
-	// Check if a texture has been set
-	if (m_material->getTexture() != nullptr) {
-		//glDisable(GL_TEXTURE_2D);
-	}
 }
 
 void LIB_API Mesh::renderShadow(glm::mat4 cameraInv, glm::mat4 parentRelativeCoords) {

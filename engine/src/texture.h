@@ -130,17 +130,28 @@ public:
     static void disableAnisotropicFiltering();
 private:
     /**
-     * \brief Loads a texture either from an image file or by generating it.
+     * \brief Loads a texture either from an image file or by using the default one.
      *
      * \param textureId A pointer to the texture ID to store the result.
      */
     void loadTexture(unsigned int* textureId);
 
     /**
+     * \brief Generate a whyte 1x1 texture to use as default.
+     */
+    void generateDefaultTexture();
+
+    /**
     * \var m_textures
     * Static list of pointers to all the created Texture objects. 
     */
     static std::vector<Texture*> m_textures;
+
+    /**
+     * \var m_default_texture_id
+     * The ID of the default texture.
+     */
+    static unsigned int m_default_texture_id;
 
     /**
     * \var m_reload_request

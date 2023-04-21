@@ -40,16 +40,6 @@
 #define APP_FBOSIZEX      APP_WINDOWSIZEX / 2
 #define APP_FBOSIZEY      APP_WINDOWSIZEY / 1
 
-// Enums:
-enum Eye
-{
-	EYE_LEFT = 0,
-	EYE_RIGHT = 1,
-
-	// Terminator:
-	EYE_LAST,
-};
-
 /////////////
 // SHADERS //
 /////////////
@@ -353,15 +343,22 @@ Node* Engine::m_scene_graph = nullptr;
 RenderingList* Engine::m_rendering_list = new RenderingList{ "Rendering list" };
 bool Engine::m_initFlag = false;
 bool Engine::m_isRunning = false;
-int Engine::m_window_height = -1;
-int Engine::m_window_width = -1;
 int Engine::m_windowId = -1;
 glm::vec3 Engine::m_background_color;
 PerspectiveCamera* Engine::m_curr_3Dcamera = nullptr;
-OrthographicCamera* Engine::m_curr_2Dcamera = nullptr;
+OrthographicCamera* Engine::m_curr_2Dcamera = new OrthographicCamera{ "2d Camera", glm::mat4(1), APP_WINDOWSIZEX, APP_WINDOWSIZEY };
 EngineGraphics* Engine::m_graphics_settings = nullptr;
 Quad* Engine::m_quad = nullptr;
 
+// Enums:
+enum Eye
+{
+	EYE_LEFT = 0,
+	EYE_RIGHT = 1,
+
+	// Terminator:
+	EYE_LAST,
+};
 unsigned int fboTexId[EYE_LAST] = { 0, 0 };
 // FBO:      
 Fbo* fbo[EYE_LAST] = { nullptr, nullptr };
@@ -436,30 +433,12 @@ Engine::~Engine() {
 
 void Engine::reshapeCallback(int width, int height) {
 	std::cout << "[Reshape callback called] -> " << width << "x" << height << std::endl;
+	// ... ignore the params, we want a fixed-size window
 
-	// Update viewport size:
-	//glViewport(0, 0, width, height);
 
-	// Width + Height fields
-	m_window_width = width;
-	m_window_height = height;
-
-	// If current 3D camera is set, update width / height
-	if (m_curr_3Dcamera != nullptr) {
-		m_curr_3Dcamera->updateWindowSize(width, height);
-		std::cout << "[3D] -> " << width << "x" << height << std::endl;
-
-	}
-
-	// If current 2D camera is set, update width / height
-	if (m_curr_2Dcamera != nullptr) {
-		m_curr_2Dcamera->updateWindowSize(width, height);
-		std::cout << "[2D] -> " << width << "x" << height << std::endl;
-
-	}
-
-	// Update viewport size:
-	glViewport(0, 0, width, height);
+	// (bad) trick to avoid window resizing:
+	if (width != APP_WINDOWSIZEX || height != APP_WINDOWSIZEY)
+		glutReshapeWindow(APP_WINDOWSIZEX, APP_WINDOWSIZEY);
 
 }
 
@@ -526,7 +505,7 @@ void Engine::buildShaders() {
 // PUBLIC //
 ////////////
 
-bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int height, int* argc, char** argv)
+bool LIB_API Engine::init(const char* title, int* argc, char** argv)
 {
 	// Prevent double init:
 	if (m_initFlag)
@@ -554,8 +533,6 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 
 	// Init FreeGLUT window
 	glutInitWindowPosition(100, 100);
-	m_window_width = APP_WINDOWSIZEX;
-	m_window_height = APP_WINDOWSIZEY;
 	glutInitWindowSize(APP_WINDOWSIZEX, APP_WINDOWSIZEY);
 
 
@@ -588,9 +565,6 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Enable Z-Buffer+Lighting+Face Culling
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	glShadeModel(GL_SMOOTH);
-
-	//glEnableClientState(GL_VERTEX_ARRAY);
 
 	// Set reshape function
 	glutReshapeFunc(reshapeCallback);
@@ -605,7 +579,7 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	buildShaders();
 
 	// Create quad
-	m_quad = new Quad("Quad", m_window_width, m_window_height);
+	m_quad = new Quad("Quad", APP_WINDOWSIZEX, APP_WINDOWSIZEY);
 
 	// Load FBO and its texture:
 	GLint prevViewport[4];
@@ -627,10 +601,8 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 		if (!fbo[c]->isOk())
 			std::cout << "[ERROR] Invalid FBO" << std::endl;
 	}
-	// Dummy declaration
-	unsigned int ftt;
-	glGenTextures(1, &ftt);
-	glBindTexture(GL_TEXTURE_2D, ftt);
+	// Unbind FBO texture
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	Fbo::disable();
 	glViewport(0, 0, prevViewport[2], prevViewport[3]);
@@ -698,7 +670,7 @@ bool LIB_API Engine::free()
 	return true;
 }
 
-void LIB_API Engine::render3D(PerspectiveCamera* camera) {
+void LIB_API Engine::render(PerspectiveCamera* camera) {
 	// Save camera
 	m_curr_3Dcamera = camera;
 
@@ -727,11 +699,10 @@ void LIB_API Engine::stereoscopicRender() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		////////////////
 		// 3D rendering:
-		glm::mat4 cameraMat = glm::translate(m_curr_3Dcamera->getMatrix(), glm::vec3(c * -100.0f, 0.0f, 0.0f));
+		glm::mat4 cameraMat = glm::translate(m_curr_3Dcamera->getMatrix(), glm::vec3(c * -10.0f, 0.0f, 0.0f));
 		// Setup params for the PPL shader:
 		m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
-		// Activate lighting
-		//glEnable(GL_LIGHTING);
+
 		// Start rendering the scene
 		if (m_scene_graph != nullptr) {
 			// Clear rendering list
@@ -751,9 +722,7 @@ void LIB_API Engine::stereoscopicRender() {
 	// Done with the FBO, go back to rendering into the window context buffers:
 	Fbo::disable();
 	glViewport(0, 0, prevViewport[2], prevViewport[3]);
-	////////////////
-	// 2D rendering:
-	m_curr_2Dcamera = new OrthographicCamera{ "2d Camera", glm::mat4(1), APP_WINDOWSIZEX, APP_WINDOWSIZEY };
+
 	// Set a matrix for the left "eye":    
 	glm::mat4 f = glm::mat4(1.0f);
 	// Setup the passthrough shader:
@@ -772,27 +741,6 @@ void LIB_API Engine::stereoscopicRender() {
 }
 
 
-void LIB_API Engine::render2D(OrthographicCamera* camera, const std::list<std::tuple<std::string, int>>& list) {
-
-	// Save camera
-	m_curr_2Dcamera = camera;
-
-	// Disable lighting
-	//glDisable(GL_LIGHTING);
-
-	// Set properties
-	m_curr_2Dcamera->render(m_curr_2Dcamera->getProperties());
-
-	//glColor3f(0.4f, 0.4f, 0.4f);
-
-	for (const auto& element : list) {
-		//glRasterPos2f(10.0f, static_cast<float>(std::get<1>(element)));
-		//glutBitmapString(GLUT_BITMAP_8_BY_13, reinterpret_cast<const unsigned char*>(std::get<0>(element).c_str()));
-	}
-
-	// force refresh
-	glutPostRedisplay();
-}
 
 void LIB_API Engine::run(void (*renderFunction)()) {
 	glutDisplayFunc(renderFunction);
@@ -887,13 +835,6 @@ Node LIB_API* Engine::getNode(const std::string& name)
 	return m_scene_graph->searchNode(searchName);
 }
 
-unsigned int LIB_API Engine::getWindowWidth() {
-	return m_window_height;
-}
-
-unsigned int LIB_API Engine::getWindowHeight() {
-	return m_window_width;
-}
 
 void LIB_API Engine::redisplay() {
 	if (Engine::isRunning()) {
