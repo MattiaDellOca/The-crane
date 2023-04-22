@@ -37,16 +37,16 @@ void LIB_API Skybox::render(glm::mat4 matrix) {
 
 void LIB_API Skybox::buildCube() {
     // Vertex and tex. coords are the same
-    float cubeVertices[] =
+    glm::vec3 cubeVertices[] =
     {
-       -100.0f,  100.0f,  100.0f,
-       -100.0f, -100.0f,  100.0f,
-        100.0f, -100.0f,  100.0f,
-        100.0f,  100.0f,  100.0f,
-       -100.0f,  100.0f, -100.0f,
-       -100.0f, -100.0f, -100.0f,
-        100.0f, -100.0f, -100.0f,
-        100.0f,  100.0f, -100.0f,
+       glm::vec3(-100.0f,  100.0f,  100.0f),
+       glm::vec3(-100.0f, -100.0f,  100.0f),
+       glm::vec3(100.0f, -100.0f,  100.0f),
+       glm::vec3(100.0f,  100.0f,  100.0f),
+       glm::vec3(-100.0f,  100.0f, -100.0f),
+       glm::vec3(-100.0f, -100.0f, -100.0f),
+       glm::vec3(100.0f, -100.0f, -100.0f),
+       glm::vec3(100.0f,  100.0f, -100.0f),
     };
     
     // Face indexes
@@ -74,11 +74,12 @@ void LIB_API Skybox::buildCube() {
     glGenBuffers(1, &m_vertex_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertex_vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), 0);
     glEnableVertexAttribArray(0);
 
     glGenBuffers(1, &m_face_index_vbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_face_index_vbo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cubeFaces), cubeFaces, GL_STATIC_DRAW);
     
     // Unbind the VAO
     glBindVertexArray(0);
