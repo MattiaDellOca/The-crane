@@ -543,7 +543,6 @@ void Engine::buildShaders() {
 	skyboxPassthroughShader->render();
 	skyboxPassthroughShader->bind(0, "in_Position");
 
-	
 	// Set default shader
 	ShaderManager::setActiveShader("programShaderSpotLight");
 }
@@ -732,6 +731,10 @@ void LIB_API Engine::render(PerspectiveCamera* camera) {
 	// Save camera
 	m_curr_3Dcamera = camera;
 
+	ShaderManager::setActiveShader("Skybox Passthrough Program Shader");
+	Shader* progShader = ShaderManager::getActiveShader();
+	progShader->setMatrix(progShader->getParamLocation("projection"), camera->getProperties());
+
 	// Set the far plane used for creating the fog effect
 	//ShaderManager::getActiveShader()->setFloat(ShaderManager::getActiveShader()->getParamLocation("farPlane"), camera->getFar());
 
@@ -772,7 +775,7 @@ void LIB_API Engine::stereoscopicRender() {
 			m_rendering_list->m_camera = m_curr_3Dcamera;
 			m_rendering_list->render(cameraMat);
 
-			m_skybox->render(glm::inverse(cameraMat));
+			m_skybox->render(glm::inverse(m_curr_3Dcamera->getMatrix()));
 		}
 		else {
 			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;

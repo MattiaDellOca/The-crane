@@ -39,14 +39,14 @@ void LIB_API Skybox::buildCube() {
     // Vertex and tex. coords are the same
     glm::vec3 cubeVertices[] =
     {
-       glm::vec3(-100.0f,  100.0f,  100.0f),
-       glm::vec3(-100.0f, -100.0f,  100.0f),
-       glm::vec3(100.0f, -100.0f,  100.0f),
-       glm::vec3(100.0f,  100.0f,  100.0f),
-       glm::vec3(-100.0f,  100.0f, -100.0f),
-       glm::vec3(-100.0f, -100.0f, -100.0f),
-       glm::vec3(100.0f, -100.0f, -100.0f),
-       glm::vec3(100.0f,  100.0f, -100.0f),
+       glm::vec3(-10.0f,  10.0f,  10.0f),
+       glm::vec3(-10.0f, -10.0f,  10.0f),
+       glm::vec3(10.0f, -10.0f,  10.0f),
+       glm::vec3(10.0f,  10.0f,  10.0f),
+       glm::vec3(-10.0f,  10.0f, -10.0f),
+       glm::vec3(-10.0f, -10.0f, -10.0f),
+       glm::vec3(10.0f, -10.0f, -10.0f),
+       glm::vec3(10.0f,  10.0f, -10.0f),
     };
     
     // Face indexes
