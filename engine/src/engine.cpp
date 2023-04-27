@@ -39,7 +39,7 @@
 // #DEFINE //
 /////////////
 
-   // Window size:
+	// Window size:
 #define APP_WINDOWSIZEX   1024
 #define APP_WINDOWSIZEY   512
 #define APP_FBOSIZEX      APP_WINDOWSIZEX / 2
@@ -373,7 +373,7 @@ unsigned int fboTexId[EYE_LAST] = { 0, 0 };
 // FBO:      
 Fbo* fbo[EYE_LAST] = { nullptr, nullptr };
 
-	// timer function defined by user
+// timer function defined by user
 void(*userTimerCallback)(int);
 
 
@@ -646,7 +646,14 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	{
 		glGenTextures(1, &fboTexId[c]);
 		glBindTexture(GL_TEXTURE_2D, fboTexId[c]);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, APP_FBOSIZEX, APP_FBOSIZEY, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		if (m_renderType == "Stereoscopic") {
+			int fboSizeX = m_ovr->getHmdIdealHorizRes();
+			int fboSizeY = m_ovr->getHmdIdealVertRes();
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, fboSizeX, fboSizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr); // GL_RGBA8 is IMPORTANT!!
+		}
+		else {
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, APP_FBOSIZEX, APP_FBOSIZEY, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		}
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -654,7 +661,14 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 
 		fbo[c] = new Fbo("FBO" + c);
 		fbo[c]->bindTexture(0, Fbo::BIND_COLORTEXTURE, fboTexId[c]);
-		fbo[c]->bindRenderBuffer(1, Fbo::BIND_DEPTHBUFFER, APP_FBOSIZEX, APP_FBOSIZEY);
+		if (m_renderType == "Stereoscopic") {
+			int fboSizeX = m_ovr->getHmdIdealHorizRes();
+			int fboSizeY = m_ovr->getHmdIdealVertRes();
+			fbo[c]->bindRenderBuffer(1, Fbo::BIND_DEPTHBUFFER, fboSizeX, fboSizeY);
+		}
+		else {
+			fbo[c]->bindRenderBuffer(1, Fbo::BIND_DEPTHBUFFER, APP_FBOSIZEX, APP_FBOSIZEY);
+		}
 		if (!fbo[c]->isOk())
 			std::cout << "[ERROR] Invalid FBO" << std::endl;
 	}
@@ -725,7 +739,7 @@ bool LIB_API Engine::free()
 	ShaderManager::free();
 
 	// Delete ovr
-	if(m_renderType == "Stereoscopic")
+	if (m_renderType == "Stereoscopic")
 		delete m_ovr;
 
 
@@ -754,36 +768,89 @@ void LIB_API Engine::stereoscopicRender() {
 	// Store the current viewport size:
 	GLint prevViewport[4];
 	glGetIntegerv(GL_VIEWPORT, prevViewport);
-	// Render to each eye:   
-	for (int c = 0; c < EYE_LAST; c++)
-	{
-		// Render into this FBO:
-		fbo[c]->render();
-		// Clear the FBO content:
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		////////////////
-		// 3D rendering:
-		glm::mat4 cameraMat = glm::translate(m_curr_3Dcamera->getMatrix(), glm::vec3(c * -100.0f, 0.0f, 0.0f));
-		// Setup params for the PPL shader:
-		m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
-		// Activate lighting
-		//glEnable(GL_LIGHTING);
-		// Start rendering the scene
-		if (m_scene_graph != nullptr) {
-			// Clear rendering list
-			m_rendering_list->clear();
-			// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
-			// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
-			m_rendering_list->pass(m_scene_graph, glm::mat4(1));
-			// Render
-			m_rendering_list->m_camera = m_curr_3Dcamera;
-			m_rendering_list->render(cameraMat);
+
+	if (m_renderType == "Stereoscopic") {
+		// Render to each eye:   
+		
+		// Update user position:
+		m_ovr->update();
+		glm::mat4 headPos = m_ovr->getModelviewMatrix();
+
+
+		for (int c = 0; c < m_ovr->EYE_LAST; c++) {
+			// Get OpenVR matrices:
+			OvVR::OvEye curEye = (OvVR::OvEye)c;
+			glm::mat4 projMat = m_ovr->getProjMatrix(curEye, 1.0f, 1024.0f);
+			glm::mat4 eye2Head = m_ovr->getEye2HeadMatrix(curEye);
+
+			// Update camera projection matrix:
+			glm::mat4 ovrProjMat = projMat * glm::inverse(eye2Head);
+
+			// Update camera modelview matrix:
+			glm::mat4 ovrModelViewMat = glm::inverse(headPos); // Inverted because this is the camera matrix
+
+			// Render into this FBO:
+			fbo[c]->render();
+
+			// Clear the FBO content:
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			m_curr_3Dcamera->render(headPos);
+			// Activate lighting
+			//glEnable(GL_LIGHTING);
+			// Start rendering the scene
+			if (m_scene_graph != nullptr) {
+				// Clear rendering list
+				m_rendering_list->clear();
+				// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
+				// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
+				m_rendering_list->pass(m_scene_graph, glm::mat4(1));
+				// Render
+				m_rendering_list->m_camera = m_curr_3Dcamera;
+				m_rendering_list->render(headPos);
+			}
+			else {
+				std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
+				return;
+			}
+
+			m_ovr->pass(curEye, fboTexId[c]);
 		}
-		else {
-			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
-			return;
+		m_ovr->render();
+	}
+	else {
+		for (int c = 0; c < EYE_LAST; c++)
+		{
+			// Render into this FBO:
+			fbo[c]->render();
+			// Clear the FBO content:
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			////////////////
+			// 3D rendering:
+			glm::mat4 cameraMat = glm::translate(m_curr_3Dcamera->getMatrix(), glm::vec3(c * -100.0f, 0.0f, 0.0f));
+			// Setup params for the PPL shader:
+			m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
+			// Activate lighting
+			//glEnable(GL_LIGHTING);
+			// Start rendering the scene
+			if (m_scene_graph != nullptr) {
+				// Clear rendering list
+				m_rendering_list->clear();
+				// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
+				// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
+				m_rendering_list->pass(m_scene_graph, glm::mat4(1));
+				// Render
+				m_rendering_list->m_camera = m_curr_3Dcamera;
+				m_rendering_list->render(cameraMat);
+			}
+			else {
+				std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
+				return;
+			}
 		}
 	}
+
+
 	// Done with the FBO, go back to rendering into the window context buffers:
 	Fbo::disable();
 	glViewport(0, 0, prevViewport[2], prevViewport[3]);
