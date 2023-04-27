@@ -20,6 +20,7 @@
 #include "quad.h"
 
 #include <queue>
+#include "ovr.h"
 
 /**
  * \struct EngineGraphics
@@ -132,6 +133,16 @@ private:
 	* Background color
 	*/
 	static glm::vec3 m_background_color;
+
+	/**
+	 * Rendering type
+	 */
+	static std::string m_renderType;
+
+	/**
+	* OVR
+	*/
+	static OvVR* m_ovr;
 
 	/**
 	 * Callback function for reshaping the window.

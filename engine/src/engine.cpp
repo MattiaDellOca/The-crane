@@ -366,6 +366,8 @@ PerspectiveCamera* Engine::m_curr_3Dcamera = nullptr;
 OrthographicCamera* Engine::m_curr_2Dcamera = nullptr;
 EngineGraphics* Engine::m_graphics_settings = nullptr;
 Quad* Engine::m_quad = nullptr;
+std::string Engine::m_renderType = "";
+OvVR* Engine::m_ovr = nullptr;
 
 unsigned int fboTexId[EYE_LAST] = { 0, 0 };
 // FBO:      
@@ -547,6 +549,7 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Read config file
 	ConfigReader::read("../engine/app.config");
 	std::string renderingType = ConfigReader::get("RenderingType");
+	m_renderType = renderingType;
 	std::cout << "Rendering type: " << renderingType << std::endl;
 
 	// FreeGLUT init
@@ -607,6 +610,24 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 
 	// Init FreeImage for texture mapping
 	FreeImage_Initialise();
+
+	// Ovr init
+	if (m_renderType == "Stereoscopic")
+	{
+		m_ovr = new OvVR();
+		if (m_ovr->init() == false)
+		{
+			std::cout << "[ERROR] Unable to init OpenVR" << std::endl;
+			delete m_ovr;
+			return 1;
+		}
+
+		// Report some info:
+		std::cout << "   Manufacturer . . :  " << m_ovr->getManufacturerName() << std::endl;
+		std::cout << "   Tracking system  :  " << m_ovr->getTrackingSysName() << std::endl;
+		std::cout << "   Model number . . :  " << m_ovr->getModelNumber() << std::endl;
+	}
+
 
 	// Set running state
 	m_isRunning = true;
@@ -702,6 +723,11 @@ bool LIB_API Engine::free()
 
 	// Delete shaders
 	ShaderManager::free();
+
+	// Delete ovr
+	if(m_renderType == "Stereoscopic")
+		delete m_ovr;
+
 
 	// Done:
 	m_initFlag = false;
