@@ -735,8 +735,6 @@ void LIB_API Engine::render(PerspectiveCamera* camera) {
 	Shader* progShader = ShaderManager::getActiveShader();
 	progShader->setMatrix(progShader->getParamLocation("projection"), camera->getProperties());
 
-	// Set the far plane used for creating the fog effect
-	//ShaderManager::getActiveShader()->setFloat(ShaderManager::getActiveShader()->getParamLocation("farPlane"), camera->getFar());
 
 	stereoscopicRender();
 
@@ -773,9 +771,12 @@ void LIB_API Engine::stereoscopicRender() {
 			m_rendering_list->pass(m_scene_graph, glm::mat4(1));
 			// Render
 			m_rendering_list->m_camera = m_curr_3Dcamera;
+			m_rendering_list->m_skybox = m_skybox;
 			m_rendering_list->render(cameraMat);
 
-			m_skybox->render(glm::inverse(m_curr_3Dcamera->getMatrix()));
+			//glm::mat4 f = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -10.0f));
+			glm::mat4 f = glm::scale(glm::inverse(m_curr_3Dcamera->getMatrix()), glm::vec3(2500.0f, 2500.0f, 2500.0f));
+			m_skybox->render(f);
 		}
 		else {
 			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;

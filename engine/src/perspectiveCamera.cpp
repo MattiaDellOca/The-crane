@@ -21,6 +21,7 @@ LIB_API PerspectiveCamera::PerspectiveCamera(const std::string& name, glm::mat4 
 };
 
 void LIB_API PerspectiveCamera::render(glm::mat4 matrix) {
+
 	Shader* progShader = ShaderManager::getActiveShader();
 	progShader->setMatrix(progShader->getParamLocation("projection"), m_properties);
 }

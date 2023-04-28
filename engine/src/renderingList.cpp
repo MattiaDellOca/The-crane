@@ -131,9 +131,12 @@ void LIB_API RenderingList::render(glm::mat4 cameraMatrix) {
 
 	}
 
+
+	
 	// Disable blending, in case we used it:
 	if (lights.size() > 1) {
 		glDisable(GL_BLEND);
 		glDepthFunc(GL_LESS);
 	}
+	
 }

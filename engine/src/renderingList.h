@@ -5,12 +5,13 @@
 #include "mesh.h"
 #include "light.h"
 #include "camera.h"
+#include "perspectiveCamera.h"
+#include "skybox.h"
 
 #include <iterator>
 #include <vector>
 #include <list>
 #include <algorithm>
-#include "perspectiveCamera.h"
 
 /**
  * \struct RenderNode
@@ -133,4 +134,6 @@ public:
 
 
 	PerspectiveCamera* m_camera;
+
+	Skybox* m_skybox;
 };

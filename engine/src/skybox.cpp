@@ -24,29 +24,50 @@ LIB_API Skybox::~Skybox() {
 }
 
 void LIB_API Skybox::render(glm::mat4 matrix) {
+    // Keep only camera rotation
+    matrix[3] = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+
     // Load modelview matrix
     ShaderManager::setActiveShader("Skybox Passthrough Program Shader");
     Shader* progShader = ShaderManager::getActiveShader();
     progShader->setMatrix(progShader->getParamLocation("modelview"), matrix);
 
+    glBindTexture(GL_TEXTURE_2D, 0);
+
     // Render the mesh using VAO
+    glDisable(GL_CULL_FACE);
     glBindVertexArray(m_vao);
-    glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_SHORT, nullptr);
     glBindVertexArray(0);
 }
 
 void LIB_API Skybox::buildCube() {
+    /*
     // Vertex and tex. coords are the same
     glm::vec3 cubeVertices[] =
     {
-       glm::vec3(-10.0f,  10.0f,  10.0f),
-       glm::vec3(-10.0f, -10.0f,  10.0f),
-       glm::vec3(10.0f, -10.0f,  10.0f),
-       glm::vec3(10.0f,  10.0f,  10.0f),
-       glm::vec3(-10.0f,  10.0f, -10.0f),
-       glm::vec3(-10.0f, -10.0f, -10.0f),
-       glm::vec3(10.0f, -10.0f, -10.0f),
-       glm::vec3(10.0f,  10.0f, -10.0f),
+       glm::vec3(-1.0f,  1.0f,  1.0f),
+       glm::vec3(-1.0f, -1.0f,  1.0f),
+       glm::vec3(1.0f, -1.0f,  1.0f),
+       glm::vec3(1.0f,  1.0f,  1.0f),
+       glm::vec3(-1.0f,  1.0f, -1.0f),
+       glm::vec3(-1.0f, -1.0f, -1.0f),
+       glm::vec3(1.0f, -1.0f, -1.0f),
+       glm::vec3(1.0f,  1.0f, -1.0f),
+    };
+    */
+
+    float cubeVertices[] = // Vertex and tex. coords are the same
+    {
+       -1.0f,  1.0f,  1.0f,
+       -1.0f, -1.0f,  1.0f,
+        1.0f, -1.0f,  1.0f,
+        1.0f,  1.0f,  1.0f,
+       -1.0f,  1.0f, -1.0f,
+       -1.0f, -1.0f, -1.0f,
+        1.0f, -1.0f, -1.0f,
+        1.0f,  1.0f, -1.0f,
     };
     
     // Face indexes
@@ -73,16 +94,17 @@ void LIB_API Skybox::buildCube() {
     // Load cube data into a VBO:
     glGenBuffers(1, &m_vertex_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertex_vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), 0);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * 8, cubeVertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(0);
 
     glGenBuffers(1, &m_face_index_vbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_face_index_vbo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cubeFaces), cubeFaces, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short) * 3 * 12, cubeFaces, GL_STATIC_DRAW);
     
     // Unbind the VAO
     glBindVertexArray(0);
+    
 }
 
 void LIB_API Skybox::buildCubemap() {
