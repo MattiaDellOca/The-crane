@@ -433,10 +433,13 @@ Engine::~Engine() {
 	delete m_curr_2Dcamera;
 	delete m_curr_3Dcamera;
 	delete m_graphics_settings;
-	for (int c = 0; c < EYE_LAST; c++)
-	{
-		glDeleteTextures(1, &fboTexId[c]);
-		delete fbo[c];
+
+	if (m_renderType == "Stereoscopic") {
+		for (int c = 0; c < EYE_LAST; c++)
+		{
+			glDeleteTextures(1, &fboTexId[c]);
+			delete fbo[c];
+		}
 	}
 	FreeImage_DeInitialise();
 }
@@ -445,7 +448,8 @@ void Engine::reshapeCallback(int width, int height) {
 	std::cout << "[Reshape callback called] -> " << width << "x" << height << std::endl;
 
 	// Update viewport size:
-	//glViewport(0, 0, width, height);
+	glViewport(0, 0, width, height);
+
 
 	// Width + Height fields
 	m_window_width = width;
@@ -567,10 +571,17 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 
 	// Init FreeGLUT window
 	glutInitWindowPosition(100, 100);
-	m_window_width = APP_WINDOWSIZEX;
-	m_window_height = APP_WINDOWSIZEY;
-	glutInitWindowSize(APP_WINDOWSIZEX, APP_WINDOWSIZEY);
 
+	if (m_renderType == "Stereoscopic") {
+		m_window_width = APP_WINDOWSIZEX;
+		m_window_height = APP_WINDOWSIZEY;
+		glutInitWindowSize(APP_WINDOWSIZEX, APP_WINDOWSIZEY);
+	}
+	else {
+		m_window_width = width;
+		m_window_height = height;
+		glutInitWindowSize(width, height);
+	}
 
 	// Global OpenGL settings:
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
@@ -635,50 +646,53 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	// Build shaders
 	buildShaders();
 
-	// Create quad
-	m_quad = new Quad("Quad", m_window_width, m_window_height);
+	if (m_renderType == "Stereoscopic") {
 
-	// Load FBO and its texture:
-	GLint prevViewport[4];
-	glGetIntegerv(GL_VIEWPORT, prevViewport);
+		// Create quad
+		m_quad = new Quad("Quad", m_window_width, m_window_height);
 
-	for (int c = 0; c < EYE_LAST; c++)
-	{
-		glGenTextures(1, &fboTexId[c]);
-		glBindTexture(GL_TEXTURE_2D, fboTexId[c]);
-		if (m_renderType == "Stereoscopic") {
-			int fboSizeX = m_ovr->getHmdIdealHorizRes();
-			int fboSizeY = m_ovr->getHmdIdealVertRes();
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, fboSizeX, fboSizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr); // GL_RGBA8 is IMPORTANT!!
-		}
-		else {
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, APP_FBOSIZEX, APP_FBOSIZEY, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-		}
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		// Load FBO and its texture:
+		GLint prevViewport[4];
+		glGetIntegerv(GL_VIEWPORT, prevViewport);
 
-		fbo[c] = new Fbo("FBO" + c);
-		fbo[c]->bindTexture(0, Fbo::BIND_COLORTEXTURE, fboTexId[c]);
-		if (m_renderType == "Stereoscopic") {
-			int fboSizeX = m_ovr->getHmdIdealHorizRes();
-			int fboSizeY = m_ovr->getHmdIdealVertRes();
-			fbo[c]->bindRenderBuffer(1, Fbo::BIND_DEPTHBUFFER, fboSizeX, fboSizeY);
+		for (int c = 0; c < EYE_LAST; c++)
+		{
+			glGenTextures(1, &fboTexId[c]);
+			glBindTexture(GL_TEXTURE_2D, fboTexId[c]);
+			if (m_renderType == "Stereoscopic") {
+				int fboSizeX = m_ovr->getHmdIdealHorizRes();
+				int fboSizeY = m_ovr->getHmdIdealVertRes();
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, fboSizeX, fboSizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr); // GL_RGBA8 is IMPORTANT!!
+			}
+			else {
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, APP_FBOSIZEX, APP_FBOSIZEY, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+			}
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+			fbo[c] = new Fbo("FBO" + c);
+			fbo[c]->bindTexture(0, Fbo::BIND_COLORTEXTURE, fboTexId[c]);
+			if (m_renderType == "Stereoscopic") {
+				int fboSizeX = m_ovr->getHmdIdealHorizRes();
+				int fboSizeY = m_ovr->getHmdIdealVertRes();
+				fbo[c]->bindRenderBuffer(1, Fbo::BIND_DEPTHBUFFER, fboSizeX, fboSizeY);
+			}
+			else {
+				fbo[c]->bindRenderBuffer(1, Fbo::BIND_DEPTHBUFFER, APP_FBOSIZEX, APP_FBOSIZEY);
+			}
+			if (!fbo[c]->isOk())
+				std::cout << "[ERROR] Invalid FBO" << std::endl;
 		}
-		else {
-			fbo[c]->bindRenderBuffer(1, Fbo::BIND_DEPTHBUFFER, APP_FBOSIZEX, APP_FBOSIZEY);
-		}
-		if (!fbo[c]->isOk())
-			std::cout << "[ERROR] Invalid FBO" << std::endl;
+		// Dummy declaration
+		unsigned int ftt;
+		glGenTextures(1, &ftt);
+		glBindTexture(GL_TEXTURE_2D, ftt);
+
+		Fbo::disable();
+		glViewport(0, 0, prevViewport[2], prevViewport[3]);
 	}
-	// Dummy declaration
-	unsigned int ftt;
-	glGenTextures(1, &ftt);
-	glBindTexture(GL_TEXTURE_2D, ftt);
-
-	Fbo::disable();
-	glViewport(0, 0, prevViewport[2], prevViewport[3]);
 
 	// Print information
 	std::cout << "OpenGL context" << std::endl;
@@ -752,10 +766,29 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	// Save camera
 	m_curr_3Dcamera = camera;
 
-	// Set the far plane used for creating the fog effect
-	//ShaderManager::getActiveShader()->setFloat(ShaderManager::getActiveShader()->getParamLocation("farPlane"), camera->getFar());
 
-	stereoscopicRender();
+	if (m_renderType == "Stereoscopic") {
+		stereoscopicRender();
+	}
+	else {
+		// Save camera
+		m_curr_3Dcamera = camera;
+		// Start rendering
+		if (m_scene_graph != nullptr) {
+			// Clear rendering list
+			m_rendering_list->clear();
+			// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
+			// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
+			m_rendering_list->pass(m_scene_graph, glm::mat4(1));
+			// Render
+			m_rendering_list->m_camera = m_curr_3Dcamera;
+			m_rendering_list->render(m_curr_3Dcamera->getMatrix());
+		}
+		else {
+			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
+			return;
+		}
+	}
 
 	// Swap buffers:
 	glutSwapBuffers();
@@ -769,87 +802,52 @@ void LIB_API Engine::stereoscopicRender() {
 	GLint prevViewport[4];
 	glGetIntegerv(GL_VIEWPORT, prevViewport);
 
-	if (m_renderType == "Stereoscopic") {
-		// Render to each eye:   
-		
-		// Update user position:
-		m_ovr->update();
-		glm::mat4 headPos = m_ovr->getModelviewMatrix();
+	// Render to each eye:   
 
+	// Update user position:
+	m_ovr->update();
+	glm::mat4 headPos = m_ovr->getModelviewMatrix();
 
-		for (int c = 0; c < m_ovr->EYE_LAST; c++) {
-			// Get OpenVR matrices:
-			OvVR::OvEye curEye = (OvVR::OvEye)c;
-			glm::mat4 projMat = m_ovr->getProjMatrix(curEye, 1.0f, 1024.0f);
-			glm::mat4 eye2Head = m_ovr->getEye2HeadMatrix(curEye);
+	for (int c = 0; c < m_ovr->EYE_LAST; c++) {
+		// Get OpenVR matrices:
+		OvVR::OvEye curEye = (OvVR::OvEye)c;
+		glm::mat4 projMat = m_ovr->getProjMatrix(curEye, 1.0f, 1024.0f);
+		glm::mat4 eye2Head = m_ovr->getEye2HeadMatrix(curEye);
 
-			// Update camera projection matrix:
-			glm::mat4 ovrProjMat = projMat * glm::inverse(eye2Head);
+		// Update camera projection matrix:
+		glm::mat4 ovrProjMat = projMat * glm::inverse(eye2Head);
 
-			// Update camera modelview matrix:
-			glm::mat4 ovrModelViewMat = glm::inverse(headPos); // Inverted because this is the camera matrix
+		// Update camera modelview matrix:
+		glm::mat4 ovrModelViewMat = glm::inverse(headPos); // Inverted because this is the camera matrix
 
-			// Render into this FBO:
-			fbo[c]->render();
+		// Render into this FBO:
+		fbo[c]->render();
 
-			// Clear the FBO content:
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		// Clear the FBO content:
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			m_curr_3Dcamera->render(headPos);
-			// Activate lighting
-			//glEnable(GL_LIGHTING);
-			// Start rendering the scene
-			if (m_scene_graph != nullptr) {
-				// Clear rendering list
-				m_rendering_list->clear();
-				// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
-				// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
-				m_rendering_list->pass(m_scene_graph, glm::mat4(1));
-				// Render
-				m_rendering_list->m_camera = m_curr_3Dcamera;
-				m_rendering_list->render(headPos);
-			}
-			else {
-				std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
-				return;
-			}
-
-			m_ovr->pass(curEye, fboTexId[c]);
+		m_curr_3Dcamera->render(ovrProjMat);
+		// Activate lighting
+		//glEnable(GL_LIGHTING);
+		// Start rendering the scene
+		if (m_scene_graph != nullptr) {
+			// Clear rendering list
+			m_rendering_list->clear();
+			// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
+			// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
+			m_rendering_list->pass(m_scene_graph, glm::mat4(1));
+			// Render
+			m_rendering_list->m_camera = m_curr_3Dcamera;
+			m_rendering_list->render(headPos);
 		}
-		m_ovr->render();
-	}
-	else {
-		for (int c = 0; c < EYE_LAST; c++)
-		{
-			// Render into this FBO:
-			fbo[c]->render();
-			// Clear the FBO content:
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			////////////////
-			// 3D rendering:
-			glm::mat4 cameraMat = glm::translate(m_curr_3Dcamera->getMatrix(), glm::vec3(c * -100.0f, 0.0f, 0.0f));
-			// Setup params for the PPL shader:
-			m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
-			// Activate lighting
-			//glEnable(GL_LIGHTING);
-			// Start rendering the scene
-			if (m_scene_graph != nullptr) {
-				// Clear rendering list
-				m_rendering_list->clear();
-				// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
-				// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
-				m_rendering_list->pass(m_scene_graph, glm::mat4(1));
-				// Render
-				m_rendering_list->m_camera = m_curr_3Dcamera;
-				m_rendering_list->render(cameraMat);
-			}
-			else {
-				std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
-				return;
-			}
+		else {
+			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
+			return;
 		}
-	}
 
+		m_ovr->pass(curEye, fboTexId[c]);
+	}
+	m_ovr->render();
 
 	// Done with the FBO, go back to rendering into the window context buffers:
 	Fbo::disable();
