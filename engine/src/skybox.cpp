@@ -43,21 +43,6 @@ void LIB_API Skybox::render(glm::mat4 matrix) {
 }
 
 void LIB_API Skybox::buildCube() {
-    /*
-    // Vertex and tex. coords are the same
-    glm::vec3 cubeVertices[] =
-    {
-       glm::vec3(-1.0f,  1.0f,  1.0f),
-       glm::vec3(-1.0f, -1.0f,  1.0f),
-       glm::vec3(1.0f, -1.0f,  1.0f),
-       glm::vec3(1.0f,  1.0f,  1.0f),
-       glm::vec3(-1.0f,  1.0f, -1.0f),
-       glm::vec3(-1.0f, -1.0f, -1.0f),
-       glm::vec3(1.0f, -1.0f, -1.0f),
-       glm::vec3(1.0f,  1.0f, -1.0f),
-    };
-    */
-
     float cubeVertices[] = // Vertex and tex. coords are the same
     {
        -1.0f,  1.0f,  1.0f,
