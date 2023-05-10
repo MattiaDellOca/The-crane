@@ -9,8 +9,14 @@
 #define KEY_CTRL_L					0x0072
 
 // Create camera
-glm::mat4 startCameraCoordinate = glm::translate(glm::mat4(1.f), glm::vec3(600.f, 900.f, 1500.f));
-PerspectiveCamera* camera3D = new PerspectiveCamera{ "Main camera", startCameraCoordinate, 512, 512, 1, 5000, 90 };
+glm::mat4 startCameraCoordinateStandard = glm::translate(glm::mat4(1.f), glm::vec3(15.f, 15.f, 50.f));
+glm::mat4 startCameraCoordinateStereoscopic = glm::translate(glm::mat4(1.f), glm::vec3(2.0f, 20.5f, 0.5f));
+unsigned int width = 512;
+unsigned int height = 512;
+float near = 1.0f;
+float far = 250.f;
+float fov = 90.f;
+PerspectiveCamera* camera3D;
 PerspectiveCamera* camera3DHook;
 PerspectiveCamera* camera3DCabine;
 OrthographicCamera* camera2D = new OrthographicCamera{ "2d Camera", glm::mat4(1), 650, 650 };
@@ -19,7 +25,7 @@ OrthographicCamera* camera2D = new OrthographicCamera{ "2d Camera", glm::mat4(1)
 CameraNode* currentCamera;
 
 // Dynamic camera parameters
-float cameraSpeed = 10.0f;
+float cameraSpeed = 1.0f;
 float camera_sensitivity = 1.0f;
 
 // SceneObject objects
@@ -32,7 +38,7 @@ Node* cable2;
 Node* hook;
 Node* container1;
 Node* container2;
-const float heightContainer = 181.391907f;
+const float heightContainer = 3.538f;
 Node* plane;
 Node* cabine;
 
@@ -40,7 +46,7 @@ Node* cabine;
 float craneRotationSpeed = 1.f;
 float cablesScaleSpeed = 0.05f;
 float trolleySpeed = 0.5f;
-float thresholdHook = 200.f;
+float thresholdHook = 1.f;
 
 // flags
 bool hooked = false;
@@ -335,7 +341,7 @@ void specialKeyboardCallback(int key, int mouseX, int mouseY) {
 		break;
 
 	case KEY_CTRL_L:
-		camera3D->setMatrix(startCameraCoordinate);
+		camera3D->setMatrix(startCameraCoordinateStandard);
 		break;
 	}
 }
@@ -367,7 +373,8 @@ int main(int argc, char* argv[]) {
 
 	// Set Texture settings
 	Engine::setGraphics(profile);
-	Engine::load("../assets/crane/craneOmni.ovo", "../assets/crane/");
+	//Engine::load("../assets/crane/craneOmni.ovo", "../assets/crane/");
+	Engine::load("C:/Users/ManueleNolli/Desktop/VR/modify/crane.ovo", "C:/Users/ManueleNolli/Desktop/VR/modify/");
 
 	// Searching nodes
 	root = Engine::getNode("[root]");
@@ -384,6 +391,19 @@ int main(int argc, char* argv[]) {
 
 	// Disable plane shadow cast
 	static_cast<Mesh*>(plane)->setShadowCast(false);
+
+	// Read config file
+	ConfigReader::read("../client/app.config");
+	std::string renderingType = ConfigReader::get("RenderingType");
+	std::cout << "Client: Rendering type: " << renderingType << std::endl;
+
+	// Main camera
+	if (renderingType == "Stereoscopic") {
+		camera3D = new PerspectiveCamera{ "Main camera", startCameraCoordinateStereoscopic, width, height, near, far, fov };
+	}
+	else {
+		camera3D = new PerspectiveCamera{ "Main camera", startCameraCoordinateStandard, width, height, near, far, fov };
+	}
 
 	// Additional cameras
 	camera3DHook = new PerspectiveCamera{ "Hook camera", glm::rotate(hook->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(-1.0f, 0.f, 0.f)) * glm::rotate(glm::mat4(1.0f), glm::radians(90.f), glm::vec3(0.0f, 0.0f, -1.0f)), camera3D->getWidth(), camera3D->getHeight(), 1, 200, 90 };

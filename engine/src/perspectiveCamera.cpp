@@ -33,3 +33,11 @@ void LIB_API PerspectiveCamera::updateWindowSize(unsigned int width, unsigned in
 	// Recalculate perspective matrix
 	m_properties = glm::perspective(glm::radians(m_fov), (float)width / (float)height, m_near, m_far);
 }
+
+void LIB_API PerspectiveCamera::setPositionMatrix(glm::mat4 posMatrix) {
+	m_matrix = posMatrix;
+}
+
+void LIB_API PerspectiveCamera::setPropertiesMatrix(glm::mat4 propertiesMatrix) {
+	m_properties = propertiesMatrix;
+}

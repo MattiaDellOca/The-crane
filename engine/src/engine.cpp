@@ -554,7 +554,7 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	ConfigReader::read("../engine/app.config");
 	std::string renderingType = ConfigReader::get("RenderingType");
 	m_renderType = renderingType;
-	std::cout << "Rendering type: " << renderingType << std::endl;
+	std::cout << "Engine: Rendering type: " << renderingType << std::endl;
 
 	// FreeGLUT init
 	glutInit(argc, argv);
@@ -766,7 +766,6 @@ void LIB_API Engine::render3D(PerspectiveCamera* camera) {
 	// Save camera
 	m_curr_3Dcamera = camera;
 
-
 	if (m_renderType == "Stereoscopic") {
 		stereoscopicRender();
 	}
@@ -802,23 +801,27 @@ void LIB_API Engine::stereoscopicRender() {
 	GLint prevViewport[4];
 	glGetIntegerv(GL_VIEWPORT, prevViewport);
 
-	// Render to each eye:   
-
 	// Update user position:
 	m_ovr->update();
 	glm::mat4 headPos = m_ovr->getModelviewMatrix();
 
+	// Update camera position mantaining xyz position and using the head rotation
+	glm::mat4 realPos = headPos;
+	glm::mat4 currentCameraPos = m_curr_3Dcamera->getMatrix();
+	realPos[3][0] = currentCameraPos[3][0];
+	realPos[3][1] = currentCameraPos[3][1];
+	realPos[3][2] = currentCameraPos[3][2];
+	m_curr_3Dcamera->setMatrix(realPos);
+
 	for (int c = 0; c < m_ovr->EYE_LAST; c++) {
 		// Get OpenVR matrices:
 		OvVR::OvEye curEye = (OvVR::OvEye)c;
-		glm::mat4 projMat = m_ovr->getProjMatrix(curEye, 1.0f, 1024.0f);
+		glm::mat4 projMat = m_ovr->getProjMatrix(curEye, 1.0f, 250.0f);
 		glm::mat4 eye2Head = m_ovr->getEye2HeadMatrix(curEye);
 
 		// Update camera projection matrix:
 		glm::mat4 ovrProjMat = projMat * glm::inverse(eye2Head);
-
-		// Update camera modelview matrix:
-		glm::mat4 ovrModelViewMat = glm::inverse(headPos); // Inverted because this is the camera matrix
+		m_curr_3Dcamera->setPropertiesMatrix(ovrProjMat);
 
 		// Render into this FBO:
 		fbo[c]->render();
@@ -826,9 +829,6 @@ void LIB_API Engine::stereoscopicRender() {
 		// Clear the FBO content:
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		m_curr_3Dcamera->render(ovrProjMat);
-		// Activate lighting
-		//glEnable(GL_LIGHTING);
 		// Start rendering the scene
 		if (m_scene_graph != nullptr) {
 			// Clear rendering list
@@ -838,7 +838,7 @@ void LIB_API Engine::stereoscopicRender() {
 			m_rendering_list->pass(m_scene_graph, glm::mat4(1));
 			// Render
 			m_rendering_list->m_camera = m_curr_3Dcamera;
-			m_rendering_list->render(headPos);
+			m_rendering_list->render(m_curr_3Dcamera->getMatrix());
 		}
 		else {
 			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
