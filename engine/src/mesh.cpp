@@ -22,6 +22,7 @@ LIB_API Mesh::~Mesh(){
 }
 
 void LIB_API Mesh::render(glm::mat4 matrix) {
+
 	// Load material
 	m_material->apply();
 
@@ -58,7 +59,7 @@ void LIB_API Mesh::renderShadow(glm::mat4 cameraInv, glm::mat4 parentRelativeCoo
 	// 2. Add transformations
 	// 3. Project all points to XZ plane
 	// 4. Translate up to avoid z-fighting
-	glm::mat4 shadowCastMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0.f, .7f, 0.f)) * projectionXZ * parentRelativeCoords * glm::scale(glm::mat4(1.f), glm::vec3(1.f, 0.f, 1.f));
+	glm::mat4 shadowCastMatrix = glm::translate(glm::mat4(1.f), glm::vec3(0.f, .1f, 0.f)) * projectionXZ * parentRelativeCoords * glm::scale(glm::mat4(1.f), glm::vec3(1.f, 0.f, 1.f));
 
 	// Set shadow material
 	Shader* progShader = ShaderManager::getActiveShader();

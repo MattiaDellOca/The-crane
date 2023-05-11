@@ -99,6 +99,9 @@
     <ClCompile Include="src\quad.cpp">
       <Filter>Source Files\src\utilities</Filter>
     </ClCompile>
+    <ClCompile Include="src\ovr.cpp">
+      <Filter>Source Files\src\utilities</Filter>
+    </ClCompile>
     <ClCompile Include="src\skybox.cpp">
       <Filter>Source Files\src\utilities</Filter>
     </ClCompile>
@@ -173,6 +176,12 @@
     <ClInclude Include="src\quad.h">
       <Filter>Header Files\src\utilities</Filter>
     </ClInclude>
+    <ClInclude Include="src\ovr.h">
+      <Filter>Header Files\src\utilities</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
     <ClInclude Include="src\skybox.h">
       <Filter>Header Files\src\utilities</Filter>
     </ClInclude>

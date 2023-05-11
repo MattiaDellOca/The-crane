@@ -21,6 +21,9 @@
     <ClCompile Include="src\cameraNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\configReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\main.h">
@@ -29,5 +32,11 @@
     <ClInclude Include="src\cameraNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\configReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
 </Project>

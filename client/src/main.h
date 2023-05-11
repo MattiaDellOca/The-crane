@@ -10,5 +10,6 @@
 #include "src/spotLight.h"
 
 #include "cameraNode.h"
+#include "configReader.h"
 
 using namespace std; 
