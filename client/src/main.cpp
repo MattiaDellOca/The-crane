@@ -10,7 +10,6 @@
 
 // Create camera
 glm::mat4 startCameraCoordinateStandard = glm::translate(glm::mat4(1.f), glm::vec3(15.f, 15.f, 50.f));
-glm::mat4 startCameraCoordinateStereoscopic = glm::translate(glm::mat4(1.f), glm::vec3(2.4f, 32.4f, 0.65f));
 unsigned int width = 512;
 unsigned int height = 512;
 float near = 0.01f;
@@ -40,12 +39,16 @@ Node* container2;
 const float heightContainer = 3.538f;
 Node* plane;
 Node* cabine;
+Node* cameraVRObj;
+
+// Rendering type
+std::string renderingType;
 
 // Settings
 float craneRotationSpeed = 1.f;
 float cablesScaleSpeed = 0.05f;
 float trolleySpeed = 0.5f;
-float thresholdHook = 1.f;
+float thresholdHook = 10.f;
 
 // flags
 bool hooked = false;
@@ -116,10 +119,20 @@ void keyboardCallback(unsigned char key, int x, int y) {
 	else if (key == 'g') {
 		//rotate crane counterclockwise
 		slewingUnit->setMatrix(glm::rotate(slewingUnit->getMatrix(), glm::radians(craneRotationSpeed), glm::vec3(0.0f, 1.f, 0.f)));
+
+		if (renderingType == "Stereoscopic") {
+			// set xyz of the camera3D equal to the xyz of cameraVR
+			camera3D->setMatrix(cameraVRObj->getWorldCoordinateMatrix());
+		}
 	}
 	else if (key == 'l') {
 		// rotate crane counter clockwise
 		slewingUnit->setMatrix(glm::rotate(slewingUnit->getMatrix(), glm::radians(-craneRotationSpeed), glm::vec3(0.0f, 1.f, 0.f)));
+		
+		if (renderingType == "Stereoscopic") {
+			// set xyz of the camera3D equal to the xyz of cameraVR
+			camera3D->setMatrix(cameraVRObj->getWorldCoordinateMatrix());
+		}
 	}
 	else if (key == 'h') {
 		// move trolley backward
@@ -298,7 +311,7 @@ int main(int argc, char* argv[]) {
 
 	// Read config file
 	ConfigReader::read("../client/app.config");
-	std::string renderingType = ConfigReader::get("RenderingType");
+	renderingType = ConfigReader::get("RenderingType");
 	std::cout << "Rendering type: " << renderingType << std::endl;
 
 	// Initialize Engine
@@ -322,7 +335,7 @@ int main(int argc, char* argv[]) {
 
 	// Set Texture settings
 	Engine::setGraphics(profile);
-	Engine::load("../assets/crane/crane2.ovo", "../assets/crane/");
+	Engine::load("../assets/crane/crane.ovo", "../assets/crane/");
 
 	// Searching nodes
 	root = Engine::getNode("[root]");
@@ -336,13 +349,24 @@ int main(int argc, char* argv[]) {
 	container2 = Engine::getNode("Container2");
 	plane = Engine::getNode("Plane");
 	cabine = Engine::getNode("Cabine");
+	cameraVRObj = Engine::getNode("CameraVR");
 
 	// Disable plane shadow cast
 	static_cast<Mesh*>(plane)->setShadowCast(false);
 
 	// Main camera
 	if (renderingType == "Stereoscopic") {
-		camera3D = new PerspectiveCamera{ "Main camera", startCameraCoordinateStereoscopic, width, height, near, far, fov };
+		// The cameraVR is an object in the scene placed where the VR camera should be
+
+		glm::mat4 cameraVRWrldCoor = cameraVRObj->getWorldCoordinateMatrix();
+
+		// Mantain only translation
+		glm::vec3 cameraVRWrldCoorXYZ = glm::vec3(cameraVRWrldCoor[3][0], cameraVRWrldCoor[3][1], cameraVRWrldCoor[3][2]);
+
+		// create a mat4 identity with xyz of cameraVR
+		glm::mat4 startCameraCoordinateStereoscopic = glm::translate(glm::mat4(1.0f), cameraVRWrldCoorXYZ);
+
+		camera3D = new PerspectiveCamera{ "Main camera",startCameraCoordinateStereoscopic , width, height, near, far, fov };
 	}
 	else {
 		camera3D = new PerspectiveCamera{ "Main camera", startCameraCoordinateStandard, width, height, near, far, fov };

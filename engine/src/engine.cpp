@@ -761,8 +761,6 @@ void LIB_API Engine::render(PerspectiveCamera* camera) {
 		stereoscopicRender();
 	}
 	else {
-		// Save camera
-		m_curr_3Dcamera = camera;
 		// Start rendering
 		if (m_scene_graph != nullptr) {
 			// Clear rendering list
