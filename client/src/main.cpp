@@ -364,7 +364,11 @@ int main(int argc, char* argv[]) {
 	// Initialize Engine
 	Engine::init("CRANE - An OpenGL crane simulator", 650, 650, &argc, argv, renderingType);
 	Engine::setKeyboardFunction(keyboardCallback);
-	Engine::setSpecialKeyboardFunction(specialKeyboardCallback);
+
+	if (renderingType != "Stereoscopic") {
+		Engine::setSpecialKeyboardFunction(specialKeyboardCallback);
+	}
+
 	Engine::setTimerFunction(timerCallback);  // Set up timer
 
 	Engine::setBackgroundColor(0.647f, 0.898f, 1.0f);
