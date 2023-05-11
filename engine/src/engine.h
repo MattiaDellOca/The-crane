@@ -20,6 +20,7 @@
 #include "quad.h"
 
 #include <queue>
+#include "ovr.h"
 
 /**
  * \struct EngineGraphics
@@ -98,6 +99,15 @@ private:
 	static int m_windowId;
 
 	/**
+	* The width of the window.
+	*/
+	static int m_window_width;
+	/**
+	 * The height of the window.
+	 */
+	static int m_window_height;
+
+	/**
 	 * The current camera being used by the engine.
 	 */
 	static PerspectiveCamera* m_curr_3Dcamera;
@@ -122,6 +132,16 @@ private:
 	* Background color
 	*/
 	static glm::vec3 m_background_color;
+
+	/**
+	 * Rendering type
+	 */
+	static std::string m_renderType;
+
+	/**
+	* OVR
+	*/
+	static OvVR* m_ovr;
 
 	/**
 	 * Callback function for reshaping the window.
@@ -153,7 +173,7 @@ public:
 	 * \param argv Array of command-line arguments.
 	 * \return True if the initialization was successful, false otherwise.
 	 */
-	static bool init(const char* title, int* argc, char** argv);
+	static bool init(const char* title, unsigned int width, unsigned int height, int* argc, char** argv, std::string renderingType);
 
 	/**
 	 * Load a 3D model from a file.

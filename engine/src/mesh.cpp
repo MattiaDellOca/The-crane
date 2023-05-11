@@ -22,6 +22,7 @@ LIB_API Mesh::~Mesh(){
 }
 
 void LIB_API Mesh::render(glm::mat4 matrix) {
+
 	// Load material
 	m_material->apply();
 

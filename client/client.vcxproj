@@ -89,11 +89,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\cameraNode.cpp" />
+    <ClCompile Include="src\configReader.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cameraNode.h" />
+    <ClInclude Include="src\configReader.h" />
     <ClInclude Include="src\main.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

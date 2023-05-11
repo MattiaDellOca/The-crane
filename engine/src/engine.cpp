@@ -2,6 +2,9 @@
 // #INCLUDE //
 //////////////
 
+#include <iostream>
+#include <fstream>
+#include <cstring>
 
 	// Project classes
 #include "engine.h"
@@ -30,11 +33,12 @@
 	// FreeImage:
 #include "FreeImage.h"
 
+
 /////////////
 // #DEFINE //
 /////////////
 
-   // Window size:
+	// Window size:
 #define APP_WINDOWSIZEX   1024
 #define APP_WINDOWSIZEY   512
 #define APP_FBOSIZEX      APP_WINDOWSIZEX / 2
@@ -343,12 +347,16 @@ Node* Engine::m_scene_graph = nullptr;
 RenderingList* Engine::m_rendering_list = new RenderingList{ "Rendering list" };
 bool Engine::m_initFlag = false;
 bool Engine::m_isRunning = false;
+int Engine::m_window_height = -1;
+int Engine::m_window_width = -1;
 int Engine::m_windowId = -1;
 glm::vec3 Engine::m_background_color;
 PerspectiveCamera* Engine::m_curr_3Dcamera = nullptr;
 OrthographicCamera* Engine::m_curr_2Dcamera = new OrthographicCamera{ "2d Camera", glm::mat4(1), APP_WINDOWSIZEX, APP_WINDOWSIZEY };
 EngineGraphics* Engine::m_graphics_settings = nullptr;
 Quad* Engine::m_quad = nullptr;
+std::string Engine::m_renderType = "";
+OvVR* Engine::m_ovr = nullptr;
 
 // Enums:
 enum Eye
@@ -363,7 +371,7 @@ unsigned int fboTexId[EYE_LAST] = { 0, 0 };
 // FBO:      
 Fbo* fbo[EYE_LAST] = { nullptr, nullptr };
 
-	// timer function defined by user
+// timer function defined by user
 void(*userTimerCallback)(int);
 
 
@@ -423,22 +431,43 @@ Engine::~Engine() {
 	delete m_curr_2Dcamera;
 	delete m_curr_3Dcamera;
 	delete m_graphics_settings;
-	for (int c = 0; c < EYE_LAST; c++)
-	{
-		glDeleteTextures(1, &fboTexId[c]);
-		delete fbo[c];
+
+	if (m_renderType == "Stereoscopic") {
+		for (int c = 0; c < EYE_LAST; c++)
+		{
+			glDeleteTextures(1, &fboTexId[c]);
+			delete fbo[c];
+		}
 	}
 	FreeImage_DeInitialise();
 }
 
 void Engine::reshapeCallback(int width, int height) {
-	std::cout << "[Reshape callback called] -> " << width << "x" << height << std::endl;
-	// ... ignore the params, we want a fixed-size window
+	if (m_renderType == "Stereoscopic"){
+		// ... ignore the params, we want a fixed-size window
+		// (bad) trick to avoid window resizing:
+		if (width != APP_WINDOWSIZEX || height != APP_WINDOWSIZEY)
+			glutReshapeWindow(APP_WINDOWSIZEX, APP_WINDOWSIZEY);
+	}
+	else {
+		// Update viewport size:
+		glViewport(0, 0, width, height);
 
+		// Width + Height fields
+		m_window_width = width;
+		m_window_height = height;
 
-	// (bad) trick to avoid window resizing:
-	if (width != APP_WINDOWSIZEX || height != APP_WINDOWSIZEY)
-		glutReshapeWindow(APP_WINDOWSIZEX, APP_WINDOWSIZEY);
+		// If current 3D camera is set, update width / height
+		if (m_curr_3Dcamera != nullptr) {
+			m_curr_3Dcamera->updateWindowSize(width, height);
+			std::cout << "[3D] -> " << width << "x" << height << std::endl;
+		}
+
+		// Update viewport size:
+		glViewport(0, 0, width, height);
+
+	}
+
 
 }
 
@@ -505,7 +534,7 @@ void Engine::buildShaders() {
 // PUBLIC //
 ////////////
 
-bool LIB_API Engine::init(const char* title, int* argc, char** argv)
+bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int height, int* argc, char** argv, std::string renderingType)
 {
 	// Prevent double init:
 	if (m_initFlag)
@@ -517,6 +546,9 @@ bool LIB_API Engine::init(const char* title, int* argc, char** argv)
 	m_initFlag = true;
 	std::cout << "Initializing engine" << std::endl;
 	std::cout << std::endl;
+
+	// Copy config file
+	m_renderType = renderingType;
 
 	// FreeGLUT init
 	glutInit(argc, argv);
@@ -533,8 +565,17 @@ bool LIB_API Engine::init(const char* title, int* argc, char** argv)
 
 	// Init FreeGLUT window
 	glutInitWindowPosition(100, 100);
-	glutInitWindowSize(APP_WINDOWSIZEX, APP_WINDOWSIZEY);
 
+	if (m_renderType == "Stereoscopic") {
+		m_window_width = APP_WINDOWSIZEX;
+		m_window_height = APP_WINDOWSIZEY;
+		glutInitWindowSize(APP_WINDOWSIZEX, APP_WINDOWSIZEY);
+	}
+	else {
+		m_window_width = width;
+		m_window_height = height;
+		glutInitWindowSize(width, height);
+	}
 
 	// Global OpenGL settings:
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
@@ -572,40 +613,77 @@ bool LIB_API Engine::init(const char* title, int* argc, char** argv)
 	// Init FreeImage for texture mapping
 	FreeImage_Initialise();
 
+	// Ovr init
+	if (m_renderType == "Stereoscopic")
+	{
+		m_ovr = new OvVR();
+		if (m_ovr->init() == false)
+		{
+			std::cout << "[ERROR] Unable to init OpenVR" << std::endl;
+			delete m_ovr;
+			return 1;
+		}
+
+		// Report some info:
+		std::cout << "   Manufacturer . . :  " << m_ovr->getManufacturerName() << std::endl;
+		std::cout << "   Tracking system  :  " << m_ovr->getTrackingSysName() << std::endl;
+		std::cout << "   Model number . . :  " << m_ovr->getModelNumber() << std::endl;
+	}
+
+
 	// Set running state
 	m_isRunning = true;
 
 	// Build shaders
 	buildShaders();
 
-	// Create quad
-	m_quad = new Quad("Quad", APP_WINDOWSIZEX, APP_WINDOWSIZEY);
+	if (m_renderType == "Stereoscopic") {
 
-	// Load FBO and its texture:
-	GLint prevViewport[4];
-	glGetIntegerv(GL_VIEWPORT, prevViewport);
+		// Create quad
+		m_quad = new Quad("Quad", m_window_width, m_window_height);
 
-	for (int c = 0; c < EYE_LAST; c++)
-	{
-		glGenTextures(1, &fboTexId[c]);
-		glBindTexture(GL_TEXTURE_2D, fboTexId[c]);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, APP_FBOSIZEX, APP_FBOSIZEY, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		// Load FBO and its texture:
+		GLint prevViewport[4];
+		glGetIntegerv(GL_VIEWPORT, prevViewport);
 
-		fbo[c] = new Fbo("FBO" + c);
-		fbo[c]->bindTexture(0, Fbo::BIND_COLORTEXTURE, fboTexId[c]);
-		fbo[c]->bindRenderBuffer(1, Fbo::BIND_DEPTHBUFFER, APP_FBOSIZEX, APP_FBOSIZEY);
-		if (!fbo[c]->isOk())
-			std::cout << "[ERROR] Invalid FBO" << std::endl;
+		for (int c = 0; c < EYE_LAST; c++)
+		{
+			glGenTextures(1, &fboTexId[c]);
+			glBindTexture(GL_TEXTURE_2D, fboTexId[c]);
+			if (m_renderType == "Stereoscopic") {
+				int fboSizeX = m_ovr->getHmdIdealHorizRes();
+				int fboSizeY = m_ovr->getHmdIdealVertRes();
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, fboSizeX, fboSizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr); // GL_RGBA8 is IMPORTANT!!
+			}
+			else {
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, APP_FBOSIZEX, APP_FBOSIZEY, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+			}
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+			fbo[c] = new Fbo("FBO" + c);
+			fbo[c]->bindTexture(0, Fbo::BIND_COLORTEXTURE, fboTexId[c]);
+			if (m_renderType == "Stereoscopic") {
+				int fboSizeX = m_ovr->getHmdIdealHorizRes();
+				int fboSizeY = m_ovr->getHmdIdealVertRes();
+				fbo[c]->bindRenderBuffer(1, Fbo::BIND_DEPTHBUFFER, fboSizeX, fboSizeY);
+			}
+			else {
+				fbo[c]->bindRenderBuffer(1, Fbo::BIND_DEPTHBUFFER, APP_FBOSIZEX, APP_FBOSIZEY);
+			}
+			if (!fbo[c]->isOk())
+				std::cout << "[ERROR] Invalid FBO" << std::endl;
+		}
+		// Dummy declaration
+		unsigned int ftt;
+		glGenTextures(1, &ftt);
+		glBindTexture(GL_TEXTURE_2D, ftt);
+
+		Fbo::disable();
+		glViewport(0, 0, prevViewport[2], prevViewport[3]);
 	}
-	// Unbind FBO texture
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	Fbo::disable();
-	glViewport(0, 0, prevViewport[2], prevViewport[3]);
 
 	// Print information
 	std::cout << "OpenGL context" << std::endl;
@@ -665,6 +743,11 @@ bool LIB_API Engine::free()
 	// Delete shaders
 	ShaderManager::free();
 
+	// Delete ovr
+	if (m_renderType == "Stereoscopic")
+		delete m_ovr;
+
+
 	// Done:
 	m_initFlag = false;
 	return true;
@@ -674,10 +757,28 @@ void LIB_API Engine::render(PerspectiveCamera* camera) {
 	// Save camera
 	m_curr_3Dcamera = camera;
 
-	// Set the far plane used for creating the fog effect
-	//ShaderManager::getActiveShader()->setFloat(ShaderManager::getActiveShader()->getParamLocation("farPlane"), camera->getFar());
-
-	stereoscopicRender();
+	if (m_renderType == "Stereoscopic") {
+		stereoscopicRender();
+	}
+	else {
+		// Save camera
+		m_curr_3Dcamera = camera;
+		// Start rendering
+		if (m_scene_graph != nullptr) {
+			// Clear rendering list
+			m_rendering_list->clear();
+			// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
+			// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
+			m_rendering_list->pass(m_scene_graph, glm::mat4(1));
+			// Render
+			m_rendering_list->m_camera = m_curr_3Dcamera;
+			m_rendering_list->render(m_curr_3Dcamera->getMatrix());
+		}
+		else {
+			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
+			return;
+		}
+	}
 
 	// Swap buffers:
 	glutSwapBuffers();
@@ -690,18 +791,34 @@ void LIB_API Engine::stereoscopicRender() {
 	// Store the current viewport size:
 	GLint prevViewport[4];
 	glGetIntegerv(GL_VIEWPORT, prevViewport);
-	// Render to each eye:   
-	for (int c = 0; c < EYE_LAST; c++)
-	{
+
+	// Update user position:
+	m_ovr->update();
+	glm::mat4 headPos = m_ovr->getModelviewMatrix();
+
+	// Update camera position mantaining xyz position and using the head rotation
+	glm::mat4 realPos = headPos;
+	glm::mat4 currentCameraPos = m_curr_3Dcamera->getMatrix();
+	realPos[3][0] = currentCameraPos[3][0];
+	realPos[3][1] = currentCameraPos[3][1];
+	realPos[3][2] = currentCameraPos[3][2];
+	m_curr_3Dcamera->setMatrix(realPos);
+
+	for (int c = 0; c < m_ovr->EYE_LAST; c++) {
+		// Get OpenVR matrices:
+		OvVR::OvEye curEye = (OvVR::OvEye)c;
+		glm::mat4 projMat = m_ovr->getProjMatrix(curEye, 1.0f, 250.0f);
+		glm::mat4 eye2Head = m_ovr->getEye2HeadMatrix(curEye);
+
+		// Update camera projection matrix:
+		glm::mat4 ovrProjMat = projMat * glm::inverse(eye2Head);
+		m_curr_3Dcamera->setPropertiesMatrix(ovrProjMat);
+
 		// Render into this FBO:
 		fbo[c]->render();
+
 		// Clear the FBO content:
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		////////////////
-		// 3D rendering:
-		glm::mat4 cameraMat = glm::translate(m_curr_3Dcamera->getMatrix(), glm::vec3(c * -10.0f, 0.0f, 0.0f));
-		// Setup params for the PPL shader:
-		m_curr_3Dcamera->render(m_curr_3Dcamera->getProperties());
 
 		// Start rendering the scene
 		if (m_scene_graph != nullptr) {
@@ -712,13 +829,17 @@ void LIB_API Engine::stereoscopicRender() {
 			m_rendering_list->pass(m_scene_graph, glm::mat4(1));
 			// Render
 			m_rendering_list->m_camera = m_curr_3Dcamera;
-			m_rendering_list->render(cameraMat);
+			m_rendering_list->render(m_curr_3Dcamera->getMatrix());
 		}
 		else {
 			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
 			return;
 		}
+
+		m_ovr->pass(curEye, fboTexId[c]);
 	}
+	m_ovr->render();
+
 	// Done with the FBO, go back to rendering into the window context buffers:
 	Fbo::disable();
 	glViewport(0, 0, prevViewport[2], prevViewport[3]);
