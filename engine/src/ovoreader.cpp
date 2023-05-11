@@ -161,62 +161,64 @@ void LIB_API Ovoreader::parseOject(char* data, const unsigned int& position) {
 
 Material LIB_API* Ovoreader::parseMaterial(char* data, unsigned int& position, const char* textureDir) {
 
-    // Material name:
-    char materialName[FILENAME_MAX];
-    strcpy(materialName, data + position);
-    position += (unsigned int)strlen(materialName) + 1;
+   // Material name:
+   char materialName[FILENAME_MAX];
+   strcpy(materialName, data + position);
+   position += (unsigned int)strlen(materialName) + 1;
 
-    // Material term colors, starting with emissive:
-    glm::vec3 emission, albedo;
-    memcpy(&emission, data + position, sizeof(glm::vec3));
-    position += sizeof(glm::vec3);
+   // Material term colors, starting with emissive:
+   glm::vec3 emission, albedo;
+   memcpy(&emission, data + position, sizeof(glm::vec3));
+   position += sizeof(glm::vec3);
 
-    // Albedo:
-    memcpy(&albedo, data + position, sizeof(glm::vec3));
-    position += sizeof(glm::vec3);
+   // Albedo:
+   memcpy(&albedo, data + position, sizeof(glm::vec3));
+   position += sizeof(glm::vec3);
 
-    // Roughness factor:
-    float roughness;
-    memcpy(&roughness, data + position, sizeof(float));
-    position += sizeof(float);
+   // Roughness factor:
+   float roughness;
+   memcpy(&roughness, data + position, sizeof(float));
+   position += sizeof(float);
 
-    // Metalness factor:
-    position += sizeof(float);
+   // Metalness factor:
+   position += sizeof(float);
 
-    // Transparency factor:
-    position += sizeof(float);
+   // Transparency factor:
+   position += sizeof(float);
 
-    // Albedo texture filename, or [none] if not used:
-    char textureName[FILENAME_MAX];
-    strcpy(textureName, data + position);
-    position += (unsigned int)strlen(textureName) + 1;
+   // Albedo texture filename, or [none] if not used:
+   char textureName[FILENAME_MAX];
+   strcpy(textureName, data + position);
+   position += (unsigned int)strlen(textureName) + 1;
 
-    // Normal map filename, or [none] if not used:
-    char normalMapName[FILENAME_MAX];
-    strcpy(normalMapName, data + position);
-    position += (unsigned int)strlen(normalMapName) + 1;
+   // Normal map filename, or [none] if not used:
+   char normalMapName[FILENAME_MAX];
+   strcpy(normalMapName, data + position);
+   position += (unsigned int)strlen(normalMapName) + 1;
 
-    // Height map filename, or [none] if not used:
-    char heightMapName[FILENAME_MAX];
-    strcpy(heightMapName, data + position);
-    position += (unsigned int)strlen(heightMapName) + 1;
+   // Height map filename, or [none] if not used:
+   char heightMapName[FILENAME_MAX];
+   strcpy(heightMapName, data + position);
+   position += (unsigned int)strlen(heightMapName) + 1;
 
-    // Roughness map filename, or [none] if not used:
-    char roughnessMapName[FILENAME_MAX];
-    strcpy(roughnessMapName, data + position);
-    position += (unsigned int)strlen(roughnessMapName) + 1;
+   // Roughness map filename, or [none] if not used:
+   char roughnessMapName[FILENAME_MAX];
+   strcpy(roughnessMapName, data + position);
+   position += (unsigned int)strlen(roughnessMapName) + 1;
 
-    // Metalness map filename, or [none] if not used:
-    char metalnessMapName[FILENAME_MAX];
-    strcpy(metalnessMapName, data + position);
-    position += (unsigned int)strlen(metalnessMapName) + 1;
+   // Metalness map filename, or [none] if not used:
+   char metalnessMapName[FILENAME_MAX];
+   strcpy(metalnessMapName, data + position);
+   position += (unsigned int)strlen(metalnessMapName) + 1;
 
-    // Create material
-    Material* material = new Material{ materialName, albedo * 0.2f, albedo * 0.6f, albedo * 0.4f, emission, (1 - sqrt(roughness)) * 128 };
+   // Create material
+   Material* material = new Material{ materialName, albedo * 0.2f, albedo * 0.6f, albedo * 0.4f, emission, (1 - sqrt(roughness)) * 128 };
 
-    // Load texture from assets path
-    Texture* t = new Texture{textureName, std::string{textureDir} + std::string{textureName} };
-    material->setTexture(t);
+    if (std::string{textureName} != "[none]") {
+       // Load texture from assets path
+       Texture* t = new Texture{ textureName, std::string{textureDir} + std::string{textureName} };
+       material->setTexture(t);
+    }
 
     return material;
 }

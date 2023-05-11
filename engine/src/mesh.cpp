@@ -22,14 +22,9 @@ LIB_API Mesh::~Mesh(){
 }
 
 void LIB_API Mesh::render(glm::mat4 matrix) {
+
 	// Load material
 	m_material->apply();
-
-	// Check if a texture has been set
-	if (m_material->getTexture() != nullptr) {
-		//glEnable(GL_TEXTURE_2D);
-	}
-
 
 	// Load modelview matrix
 	Shader* progShader = ShaderManager::getActiveShader();

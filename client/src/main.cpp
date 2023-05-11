@@ -10,10 +10,10 @@
 
 // Create camera
 glm::mat4 startCameraCoordinateStandard = glm::translate(glm::mat4(1.f), glm::vec3(15.f, 15.f, 50.f));
-glm::mat4 startCameraCoordinateStereoscopic = glm::translate(glm::mat4(1.f), glm::vec3(2.0f, 20.5f, 0.5f));
+glm::mat4 startCameraCoordinateStereoscopic = glm::translate(glm::mat4(1.f), glm::vec3(2.4f, 32.4f, 0.65f));
 unsigned int width = 512;
 unsigned int height = 512;
-float near = 1.0f;
+float near = 0.01f;
 float far = 250.f;
 float fov = 90.f;
 PerspectiveCamera* camera3D;
@@ -356,8 +356,13 @@ void timerCallback(int value) {
 int main(int argc, char* argv[]) {
 	cout << "[Crane - SUPSI]" << endl;
 
+	// Read config file
+	ConfigReader::read("../client/app.config");
+	std::string renderingType = ConfigReader::get("RenderingType");
+	std::cout << "Rendering type: " << renderingType << std::endl;
+
 	// Initialize Engine
-	Engine::init("CRANE - An OpenGL crane simulator", 650, 650, &argc, argv);
+	Engine::init("CRANE - An OpenGL crane simulator", 650, 650, &argc, argv, renderingType);
 	Engine::setKeyboardFunction(keyboardCallback);
 	Engine::setSpecialKeyboardFunction(specialKeyboardCallback);
 	Engine::setTimerFunction(timerCallback);  // Set up timer
@@ -373,8 +378,7 @@ int main(int argc, char* argv[]) {
 
 	// Set Texture settings
 	Engine::setGraphics(profile);
-	//Engine::load("../assets/crane/craneOmni.ovo", "../assets/crane/");
-	Engine::load("C:/Users/ManueleNolli/Desktop/VR/modify/crane.ovo", "C:/Users/ManueleNolli/Desktop/VR/modify/");
+	Engine::load("../assets/crane/crane2.ovo", "../assets/crane/");
 
 	// Searching nodes
 	root = Engine::getNode("[root]");
@@ -391,11 +395,6 @@ int main(int argc, char* argv[]) {
 
 	// Disable plane shadow cast
 	static_cast<Mesh*>(plane)->setShadowCast(false);
-
-	// Read config file
-	ConfigReader::read("../client/app.config");
-	std::string renderingType = ConfigReader::get("RenderingType");
-	std::cout << "Client: Rendering type: " << renderingType << std::endl;
 
 	// Main camera
 	if (renderingType == "Stereoscopic") {

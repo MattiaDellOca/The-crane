@@ -176,7 +176,7 @@ public:
 	 * \param argv Array of command-line arguments.
 	 * \return True if the initialization was successful, false otherwise.
 	 */
-	static bool init(const char* title, unsigned int width, unsigned int height, int* argc, char** argv);
+	static bool init(const char* title, unsigned int width, unsigned int height, int* argc, char** argv, std::string renderingType);
 
 	/**
 	 * Load a 3D model from a file.
