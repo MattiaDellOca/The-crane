@@ -828,7 +828,12 @@ void LIB_API Engine::render(PerspectiveCamera* camera) {
 			// Render
 			m_rendering_list->m_camera = m_curr_3Dcamera;
 			m_rendering_list->render(m_curr_3Dcamera->getMatrix());
-			m_skybox->render(m_curr_3Dcamera->getMatrix());
+
+			ShaderManager::setActiveShader("Skybox Passthrough Program Shader");
+			Shader* progShader = ShaderManager::getActiveShader();
+			progShader->setMatrix(progShader->getParamLocation("projection"), m_curr_3Dcamera->getProperties());
+
+			m_skybox->render(glm::scale(glm::inverse(m_curr_3Dcamera->getMatrix()), glm::vec3(100.0f, 100.0f, 100.0f)));
 		}
 		else {
 			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
@@ -886,11 +891,13 @@ void LIB_API Engine::stereoscopicRender() {
 			// Render
 			m_rendering_list->m_camera = m_curr_3Dcamera;
 			m_rendering_list->m_skybox = m_skybox;
-			m_rendering_list->render(cameraMat);
+			m_rendering_list->render(m_curr_3Dcamera->getMatrix());
 
-			//glm::mat4 f = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -10.0f));
-			glm::mat4 f = glm::scale(glm::inverse(m_curr_3Dcamera->getMatrix()), glm::vec3(2500.0f, 2500.0f, 2500.0f));
-			m_skybox->render(f);
+			ShaderManager::setActiveShader("Skybox Passthrough Program Shader");
+			Shader* progShader = ShaderManager::getActiveShader();
+			progShader->setMatrix(progShader->getParamLocation("projection"), m_curr_3Dcamera->getProperties());
+
+			m_skybox->render(glm::scale(glm::inverse(m_curr_3Dcamera->getMatrix()), glm::vec3(100.0f, 100.0f, 100.0f)));
 		}
 		else {
 			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
