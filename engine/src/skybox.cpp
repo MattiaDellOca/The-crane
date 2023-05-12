@@ -5,31 +5,38 @@
 // FreeImage:
 #include <FreeImage.h>
 #include<iostream>
+
 LIB_API Skybox::Skybox(const std::string& name, const std::string& texturesPath, const std::string cubemapNames[6]) : Node(name, glm::mat4(1)), m_textures_path{ texturesPath },
 m_cubemap_names{ cubemapNames[0], cubemapNames[1], cubemapNames[2], cubemapNames[3], cubemapNames[4], cubemapNames[5] } {
     buildCube();
     buildCubemap();
 }
+
 LIB_API Skybox::~Skybox() {
     glDeleteBuffers(1, &m_vertex_vbo);
     glDeleteBuffers(1, &m_texture_vbo);
     glDeleteBuffers(1, &m_face_index_vbo);
     glDeleteVertexArrays(1, &m_vao);
 }
+
 void LIB_API Skybox::render(glm::mat4 matrix) {
     // Keep only camera rotation
     matrix[3] = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
     // Load modelview matrix
     ShaderManager::setActiveShader("Skybox Passthrough Program Shader");
     Shader* progShader = ShaderManager::getActiveShader();
     progShader->setMatrix(progShader->getParamLocation("modelview"), matrix);
     glBindTexture(GL_TEXTURE_2D, 0);
+
     // Render the mesh using VAO
     glDisable(GL_CULL_FACE);
     glBindVertexArray(m_vao);
     glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_SHORT, nullptr);
     glBindVertexArray(0);
+    glEnable(GL_CULL_FACE);
 }
+
 void LIB_API Skybox::buildCube() {
     float cubeVertices[] = // Vertex and tex. coords are the same
     {
@@ -76,6 +83,7 @@ void LIB_API Skybox::buildCube() {
     glBindVertexArray(0);
 
 }
+
 void LIB_API Skybox::buildCubemap() {
     // Create and bind cubemap:   
     glGenTextures(1, &m_cubemap_id);

@@ -105,6 +105,9 @@
     <ClCompile Include="src\skybox.cpp">
       <Filter>Source Files\src\utilities</Filter>
     </ClCompile>
+    <ClCompile Include="src\leapMotion.cpp">
+      <Filter>Source Files\src\utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cameraType.h">
@@ -177,6 +180,9 @@
       <Filter>Header Files\src\utilities</Filter>
     </ClInclude>
     <ClInclude Include="src\ovr.h">
+      <Filter>Header Files\src\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\leapMotion.h">
       <Filter>Header Files\src\utilities</Filter>
     </ClInclude>
   </ItemGroup>

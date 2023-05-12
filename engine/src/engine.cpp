@@ -372,6 +372,33 @@ const char* skyboxPassthroughFragShader = R"(
    }
 )";
 
+////////////////////////////
+const char* leapVertShader = R"(
+#version 440 core
+
+uniform mat4 projection;
+uniform mat4 modelview;
+
+layout(location = 0) in vec3 in_Position;
+
+void main(void)
+{
+   gl_Position = projection * modelview * vec4(in_Position, 1.0f);      
+})";
+
+
+////////////////////////////
+const char* leapFragShader = R"(
+#version 440 core
+   
+uniform vec3 color;   
+out vec4 frag_Output;
+   
+void main(void)
+{      
+   frag_Output = vec4(color, 1.0f);
+})";
+
 
 ////////////
 // STATIC //
@@ -572,6 +599,16 @@ void Engine::buildShaders() {
 	skyboxPassthroughShader->render();
 	skyboxPassthroughShader->bind(0, "in_Position");
 
+	// Leap shader:
+	Shader* lvs = ShaderManager::createShader("Leap Vertex Shader");
+	lvs->loadFromMemory(Shader::TYPE_VERTEX, leapVertShader);
+	Shader* lfs = ShaderManager::createShader("Skybox Fragment Shader");
+	lfs->loadFromMemory(Shader::TYPE_FRAGMENT, leapFragShader);
+	Shader* leapShader = ShaderManager::createShader("Leap Program Shader");
+	leapShader->build(lvs, lfs);
+	leapShader->render();
+	leapShader->bind(0, "in_Position");
+
 	// Set default shader
 	ShaderManager::setActiveShader("programShaderSpotLight");
 }
@@ -731,6 +768,9 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 		glViewport(0, 0, prevViewport[2], prevViewport[3]);
 	}
 
+	// Leap motion
+	m_leap = new Leap("Leapmotion", glm::mat4(1.0f));
+	m_leap->buildHands();
 
 	// Print information
 	std::cout << "OpenGL context" << std::endl;
@@ -794,6 +834,8 @@ bool LIB_API Engine::free()
 	if (m_renderType == "Stereoscopic")
 		delete m_ovr;
 
+	// Delete leap
+	m_leap->free();
 
 	// Done:
 	m_initFlag = false;
@@ -824,6 +866,11 @@ void LIB_API Engine::render(PerspectiveCamera* camera) {
 			progShader->setMatrix(progShader->getParamLocation("projection"), m_curr_3Dcamera->getProperties());
 
 			m_skybox->render(glm::scale(glm::inverse(m_curr_3Dcamera->getMatrix()), glm::vec3(100.0f, 100.0f, 100.0f)));
+
+			ShaderManager::setActiveShader("Leap Program Shader");
+			progShader = ShaderManager::getActiveShader();
+			progShader->setMatrix(progShader->getParamLocation("projection"), m_curr_3Dcamera->getProperties());
+			m_leap->render(glm::inverse(m_curr_3Dcamera->getMatrix()));
 		}
 		else {
 			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
