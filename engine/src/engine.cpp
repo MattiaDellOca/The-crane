@@ -731,16 +731,6 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 		glViewport(0, 0, prevViewport[2], prevViewport[3]);
 	}
 
-	// Skybox
-	std::string cubemapNames[6] = {
-		"posx.jpg",
-		"negx.jpg",
-		"posy.jpg",
-		"negy.jpg",
-		"posz.jpg",
-		"negz.jpg"
-	};
-	m_skybox = new Skybox("Skybox", "../assets/skybox/", cubemapNames);
 
 	// Print information
 	std::cout << "OpenGL context" << std::endl;
@@ -985,6 +975,10 @@ void LIB_API Engine::load(const std::string& path, const std::string& texturesDi
 // Load scene graph given a pointer to node
 void LIB_API Engine::load(Node* root) {
 	m_scene_graph = root;
+}
+
+void LIB_API Engine::loadSkybox(const std::string& filepath, const std::string* cubemapNames) {
+	m_skybox = new Skybox("Skybox", filepath, cubemapNames);
 }
 
 void LIB_API Engine::setGraphics(EngineGraphics& g) {

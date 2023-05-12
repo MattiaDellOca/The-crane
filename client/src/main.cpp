@@ -386,6 +386,16 @@ int main(int argc, char* argv[]) {
 	CameraNode* secondCamera = new CameraNode{ camera3DHook, thirdCamera };
 	currentCamera->setNext(secondCamera);
 
+	std::string cubemapNames[6] = {
+		"posx.jpg",
+		"negx.jpg",
+		"posy.jpg",
+		"negy.jpg",
+		"posz.jpg",
+		"negz.jpg"
+	};
+	Engine::loadSkybox("../assets/skybox/", cubemapNames);
+
 	// Start rendering some figures..
 	Engine::run(display);
 

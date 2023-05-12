@@ -185,7 +185,7 @@ public:
 	 * Load a 3D model from a file.
 	 *
 	 * \param filepath The path to the file containing the 3D model.
-	 * \param texturesDir The path to the directory containing the texture resources
+	 * \param texturesDir The path to the directory containing the texture resources.
 	 */
 	static void load(const std::string& filepath, const std::string& texturesDir);
 
@@ -195,6 +195,14 @@ public:
 	* \param root The root node of the model's scene graph.
 	*/
 	static void load(Node* root);
+
+	/**
+	 * Load a 3D model from a file.
+	 *
+	 * \param filepath The path to the file containing the texture composing the skybox.
+	 * \param filepath An array containing the names of the 6 textures composing the skybox.
+	 */
+	static void loadSkybox(const std::string& filepath, const std::string* cubemapNames);
 
 	/**
 	 * Clear the scene.
