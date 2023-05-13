@@ -9,8 +9,8 @@
 #include <GL/freeglut.h>
 
 
-LIB_API Mesh::Mesh(const std::string& name, glm::mat4 matrix, unsigned int faces, unsigned int vertexVbo, unsigned int normalVbo, unsigned int textureVbo, unsigned int faceIndexVbo, unsigned int vao, Material* material, bool cast_shadows)
-	: Node(name, matrix), m_material{ material }, m_cast_shadows{ cast_shadows }, m_faces{ faces }, m_vertex_vbo{ vertexVbo }, m_normal_vbo{ normalVbo }, m_texture_vbo{ textureVbo }, m_face_index_vbo{ faceIndexVbo }, m_vao{ vao } {};
+LIB_API Mesh::Mesh(const std::string& name, glm::mat4 matrix, unsigned int faces, float radius, unsigned int vertexVbo, unsigned int normalVbo, unsigned int textureVbo, unsigned int faceIndexVbo, unsigned int vao, Material* material, bool cast_shadows)
+	: Node(name, matrix), m_material{ material }, m_cast_shadows{ cast_shadows }, m_faces{ faces }, m_radius{radius}, m_vertex_vbo{vertexVbo}, m_normal_vbo{normalVbo}, m_texture_vbo{textureVbo}, m_face_index_vbo{faceIndexVbo}, m_vao{vao} {};
 
 LIB_API Mesh::~Mesh(){
 	glDeleteBuffers(1, &m_vertex_vbo);
@@ -22,7 +22,6 @@ LIB_API Mesh::~Mesh(){
 }
 
 void LIB_API Mesh::render(glm::mat4 matrix) {
-
 	// Load material
 	m_material->apply();
 

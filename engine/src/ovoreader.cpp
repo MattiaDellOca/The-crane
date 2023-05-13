@@ -286,6 +286,8 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     position += (unsigned int)strlen(materialName) + 1;
 
     // Mesh bounding sphere radius:
+    float radius;
+    memcpy(&radius, data + position, sizeof(float));
     position += sizeof(float);
 
     // Mesh bounding box minimum corner:
@@ -475,7 +477,7 @@ Mesh LIB_API* Ovoreader::parseMesh(char* data, unsigned int& position, unsigned 
     glBindVertexArray(0);
 
     // Create mesh
-    Mesh* mesh = new Mesh{ meshName, matrix,nFaces, vertexVbo, normalVbo, textureVbo, faceVbo, vao, material->second };
+    Mesh* mesh = new Mesh{ meshName, matrix,nFaces, radius, vertexVbo, normalVbo, textureVbo, faceVbo, vao, material->second };
 
     // Delete unused resources
     delete[] vertices;
