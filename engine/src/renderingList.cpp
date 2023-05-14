@@ -113,7 +113,9 @@ void LIB_API RenderingList::render(glm::mat4 cameraMatrix) {
 		// Render light
 		dynamic_cast<Light*>(light->m_node)->render(inverseCameraMatrix * light->m_mat);
 
-		// Sphere culling 
+		/******************
+		* SPHERE CULLING
+		*******************/
 		// create a sphere from camera position and far plane with radius equal to the distance between camera position and far plane
 		glm::vec3 cameraPosition = glm::vec3(cameraMatrix[3]);
 		glm::vec3 cameraDirection = glm::vec3(cameraMatrix[2]);
@@ -123,7 +125,7 @@ void LIB_API RenderingList::render(glm::mat4 cameraMatrix) {
 		glm::vec3 startSphere = cameraPosition + cameraDirection * nearPlane;
 
 		// end sphere is the camera position plus the farPlane in the direction
-		glm::vec3 endSphere = cameraPosition + cameraDirection * farPlane;
+		glm::vec3 endSphere = cameraPosition + cameraDirection * (farPlane * -1); // -1 because the direction is negative
 
 		// radius is the distance between the start and end sphere divided by two
 		float radius = glm::distance(startSphere, endSphere) / 2.f;
@@ -131,24 +133,30 @@ void LIB_API RenderingList::render(glm::mat4 cameraMatrix) {
 		// center is the point between the start and end sphere
 		glm::vec3 center = (startSphere + endSphere) / 2.f;
 
-		// Normal rendering
+		/******************
+		* RENDERING
+		*******************/
 		for (auto it = m_list.begin(); it != m_list.end(); ++it) {
 			// call render method for each node if it is in the sphere culling
 
-			// check if the node is inside the sphere culling
-			if (glm::distance(center, glm::vec3(dynamic_cast<Node*>((*it)->m_node)->getWorldCoordinateMatrix()[3])) < radius) {
-				// call render method for each node
+			// if is not a mesh, render it
+			if (dynamic_cast<Mesh*>((*it)->m_node) == nullptr) {
 				(*it)->m_node->render(inverseCameraMatrix * (*it)->m_mat);
 			}
-			else {
-				std::cout << "not rendered node: " << (*it)->m_node->getName() << " " << glm::distance(center, glm::vec3(dynamic_cast<Node*>((*it)->m_node)->getWorldCoordinateMatrix()[3])) << std::endl;
+			// if is it a mesh, check if it is inside the sphere culling
+			else if (glm::distance(center, glm::vec3(dynamic_cast<Mesh*>((*it)->m_node)->getWorldCoordinateMatrix()[3])) - dynamic_cast<Mesh*>((*it)->m_node)->getRadius() < radius) {
+				// call render method 
+				(*it)->m_node->render(inverseCameraMatrix * (*it)->m_mat);
 			}
 		}
 
-		// Shadow rendering
+		/******************
+		* SHADOW
+		*******************/
 		for (auto it = m_list.begin(); it != m_list.end(); ++it) {
 			Mesh* m = dynamic_cast<Mesh*>((*it)->m_node);
-			if (m != nullptr && m->isShadowCastEnabled()) {
+			// Check if it is a mesh, if it must render shadow and if it is inside the sphere culling
+			if (m != nullptr && m->isShadowCastEnabled() && glm::distance(center, glm::vec3(m->getWorldCoordinateMatrix()[3])) - m->getRadius() < radius) {
 				// call render method for each node
 				m->renderShadow(inverseCameraMatrix, (*it)->m_mat);
 			}

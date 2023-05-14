@@ -176,4 +176,10 @@ public:
 	* \param parentRelativeCoords The parent-relative coordinates of the mesh object.
 	*/
 	void renderShadow(glm::mat4 cameraInv, glm::mat4 parentRelativeCoords);
+
+	/**
+	* \brief Returns the radius of the mesh.
+	* 
+	*/
+	float getRadius() const;
 };

@@ -85,6 +85,11 @@ void LIB_API Mesh::renderShadow(glm::mat4 cameraInv, glm::mat4 parentRelativeCoo
 	glDepthFunc(GL_LESS);
 }
 
+float LIB_API Mesh::getRadius() const
+{
+	return m_radius;
+}
+
 void LIB_API Mesh::setShadowCast(bool enabled) {
 	this->m_cast_shadows = enabled;
 }
