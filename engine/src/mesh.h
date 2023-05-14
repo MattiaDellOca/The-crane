@@ -86,6 +86,12 @@ protected:
 	 * m_cast_shadows is a member variable that holds a boolean value indicating whether the mesh should cast shadows. If set to true, the mesh will cast shadows when rendered in a scene. If set to false, the mesh will not cast shadows.
 	 */
 	bool m_cast_shadows;
+
+	/**
+	 * \var m_radius
+	 * \brief The radius of the mesh.
+	 */
+	float m_radius;
 public:
 	/**
 	 * \brief Constructor for the Mesh class.
@@ -101,7 +107,7 @@ public:
 	 * \param material The material of the mesh. It is a pointer to a Material object.
 	 * \param cast_shadows If true, the mesh will block light therefore creates a shadow.
 	 */
-	Mesh(const std::string& name, glm::mat4 matrix,unsigned int faces, unsigned int vertexVbo, unsigned int normalVbo, unsigned int textureVbo, unsigned int faceIndexVbo, unsigned int vao, Material* material = nullptr, bool cast_shadows = true);
+	Mesh(const std::string& name, glm::mat4 matrix,unsigned int faces, float radius, unsigned int vertexVbo, unsigned int normalVbo, unsigned int textureVbo, unsigned int faceIndexVbo, unsigned int vao, Material* material = nullptr, bool cast_shadows = true);
 
 	/**
 	* \brief Destructor for the Mesh class.
@@ -170,4 +176,10 @@ public:
 	* \param parentRelativeCoords The parent-relative coordinates of the mesh object.
 	*/
 	void renderShadow(glm::mat4 cameraInv, glm::mat4 parentRelativeCoords);
+
+	/**
+	* \brief Returns the radius of the mesh.
+	* 
+	*/
+	float getRadius() const;
 };
