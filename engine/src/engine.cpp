@@ -872,7 +872,7 @@ void LIB_API Engine::render(PerspectiveCamera* camera) {
 			Shader* progShader = ShaderManager::getActiveShader();
 			progShader->setMatrix(progShader->getParamLocation("projection"), m_curr_3Dcamera->getProperties());
 
-			//m_skybox->render(glm::scale(glm::inverse(m_curr_3Dcamera->getMatrix()), glm::vec3(100.0f, 100.0f, 100.0f)));
+			m_skybox->render(glm::scale(glm::inverse(m_curr_3Dcamera->getMatrix()), glm::vec3(100.0f, 100.0f, 100.0f)));
 
 			ShaderManager::setActiveShader("Leap Program Shader");
 			progShader = ShaderManager::getActiveShader();
@@ -941,7 +941,7 @@ void LIB_API Engine::stereoscopicRender() {
 			Shader* progShader = ShaderManager::getActiveShader();
 			progShader->setMatrix(progShader->getParamLocation("projection"), m_curr_3Dcamera->getProperties());
 
-			//m_skybox->render(glm::scale(glm::inverse(m_curr_3Dcamera->getMatrix()), glm::vec3(100.0f, 100.0f, 100.0f)));
+			m_skybox->render(glm::scale(glm::inverse(m_curr_3Dcamera->getMatrix()), glm::vec3(100.0f, 100.0f, 100.0f)));
 
 			ShaderManager::setActiveShader("Leap Program Shader");
 			progShader = ShaderManager::getActiveShader();
