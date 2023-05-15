@@ -10,6 +10,7 @@
 
 // FreeGLUT:
 #include <GL/freeglut.h>
+#include <glm/gtx/string_cast.hpp>
 
 
 
@@ -175,29 +176,32 @@ void LIB_API Leap::render(glm::mat4 matrix) {
     ShaderManager::setActiveShader("Leap Program Shader");
     Shader* shader = ShaderManager::getActiveShader();
 
+    glm::vec3 scale = glm::vec3(0.001f, 0.001f, 0.001f);
+
     glBindVertexArray(m_vao);
 
     // Render hands using spheres:
     for (unsigned int h = 0; h < l->nHands; h++)
     {
         LEAP_HAND hand = l->pHands[h];
-        const float scale = 0.01f;
+        glm::mat4 f = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -300.0f, -500.0f) * scale);
 
         shader->setVec3(shader->getParamLocation("color"), glm::vec3((float)h, (float)(1 - h), 0.5f));
 
         // Elbow:
-        glm::mat4 c = glm::translate(glm::mat4(1.0f), glm::vec3(hand.arm.prev_joint.x * scale, hand.arm.prev_joint.y * scale, hand.arm.prev_joint.z * scale));
-        shader->setMatrix(shader->getParamLocation("modelview"), c);
+        glm::mat4 c = glm::translate(glm::mat4(1.0f), glm::vec3(hand.arm.prev_joint.x, hand.arm.prev_joint.y, hand.arm.prev_joint.z) * scale);
+        shader->setMatrix(shader->getParamLocation("modelview"), f * c);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
 
         // Wrist:
-        c = glm::translate(glm::mat4(1.0f), glm::vec3(hand.arm.next_joint.x * scale, hand.arm.next_joint.y * scale, hand.arm.next_joint.z * scale));
-        shader->setMatrix(shader->getParamLocation("modelview"), c);
+        c = glm::translate(glm::mat4(1.0f), glm::vec3(hand.arm.next_joint.x, hand.arm.next_joint.y, hand.arm.next_joint.z) * scale);
+        shader->setMatrix(shader->getParamLocation("modelview"), f * c);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
 
         // Palm:
-        c = glm::translate(glm::mat4(1.0f), glm::vec3(hand.palm.position.x * scale, hand.palm.position.y * scale, hand.palm.position.z * scale));
-        shader->setMatrix(shader->getParamLocation("modelview"), c);
+        c = glm::translate(glm::mat4(1.0f), glm::vec3(hand.palm.position.x, hand.palm.position.y, hand.palm.position.z) * scale);
+        shader->setMatrix(shader->getParamLocation("modelview"), f * c);
+        std::cout << glm::to_string(matrix * f * c) << std::endl;
         glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
 
         // Distal ends of bones for each digit:
@@ -207,8 +211,8 @@ void LIB_API Leap::render(glm::mat4 matrix) {
             for (unsigned int b = 0; b < 4; b++)
             {
                 LEAP_BONE bone = finger.bones[b];
-                c = glm::translate(glm::mat4(1.0f), glm::vec3(bone.next_joint.x * scale, bone.next_joint.y * scale, bone.next_joint.z * scale));
-                shader->setMatrix(shader->getParamLocation("modelview"), c);
+                c = glm::translate(glm::mat4(1.0f), glm::vec3(bone.next_joint.x, bone.next_joint.y, bone.next_joint.z) * scale);
+                shader->setMatrix(shader->getParamLocation("modelview"), f * c);
                 glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
             }
         }
@@ -219,7 +223,7 @@ void LIB_API Leap::render(glm::mat4 matrix) {
 void LIB_API Leap::buildHands() {
     // Build a sphere procedurally:   
     GLfloat x, y, z, alpha, beta; // Storage for coordinates and angles        
-    GLfloat radius = 0.2f;
+    GLfloat radius = 0.02f;
     int gradation = 10;
     for (alpha = 0.0; alpha < glm::pi<float>(); alpha += glm::pi<float>() / gradation)
         for (beta = 0.0f; beta < 2.01f * glm::pi<float>(); beta += glm::pi<float>() / gradation)
