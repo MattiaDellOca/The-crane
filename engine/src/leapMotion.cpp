@@ -182,7 +182,7 @@ void LIB_API Leap::render(glm::mat4 matrix) {
     for (unsigned int h = 0; h < l->nHands; h++)
     {
         LEAP_HAND hand = l->pHands[h];
-        glm::mat4 f = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -300.0f, -500.0f));
+        glm::mat4 f = glm::translate(glm::mat4(matrix), glm::vec3(0.0f, -3.0f, -5.0f));
 
         shader->setVec3(shader->getParamLocation("color"), glm::vec3((float)h, (float)(1 - h), 0.5f));
 

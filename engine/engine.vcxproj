@@ -67,7 +67,8 @@
       <AdditionalLibraryDirectories>..\dependencies\leap\lib\$(Platform);..\dependencies\openvr\lib\$(Platform);..\dependencies\freeimage\lib\$(Platform)\$(Configuration);..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\dependencies\glew\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\dependencies\openvr\bin\$(Platform)\openvr_api.dll "$(OutDir)" /Y &gt; nul</Command>
+      <Command>xcopy ..\dependencies\openvr\bin\$(Platform)\openvr_api.dll "$(OutDir)" /Y &gt; nul
+xcopy ..\dependencies\leap\bin\x64\LeapC.dll "$(OutDir)" /Y &gt; nul</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -89,7 +90,8 @@
       <AdditionalLibraryDirectories>..\dependencies\leap\lib\$(Platform);..\dependencies\openvr\lib\$(Platform);..\dependencies\freeimage\lib\$(Platform)\$(Configuration);..\dependencies\freeglut\lib\$(Platform)\$(Configuration);..\dependencies\glew\lib\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\dependencies\openvr\bin\$(Platform)\openvr_api.dll "$(OutDir)" /Y &gt; nul</Command>
+      <Command>xcopy ..\dependencies\openvr\bin\$(Platform)\openvr_api.dll "$(OutDir)" /Y &gt; nul
+xcopy ..\dependencies\leap\bin\x64\LeapC.dll "$(OutDir)" /Y &gt; nul</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

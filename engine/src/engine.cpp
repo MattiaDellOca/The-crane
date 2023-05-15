@@ -420,6 +420,7 @@ Quad* Engine::m_quad = nullptr;
 std::string Engine::m_renderType = "";
 OvVR* Engine::m_ovr = nullptr;
 Skybox* Engine::m_skybox = nullptr;
+Leap* Engine::m_leap = nullptr;
 
 // Enums:
 enum Eye
@@ -602,7 +603,7 @@ void Engine::buildShaders() {
 	// Leap shader:
 	Shader* lvs = ShaderManager::createShader("Leap Vertex Shader");
 	lvs->loadFromMemory(Shader::TYPE_VERTEX, leapVertShader);
-	Shader* lfs = ShaderManager::createShader("Skybox Fragment Shader");
+	Shader* lfs = ShaderManager::createShader("Leap Fragment Shader");
 	lfs->loadFromMemory(Shader::TYPE_FRAGMENT, leapFragShader);
 	Shader* leapShader = ShaderManager::createShader("Leap Program Shader");
 	leapShader->build(lvs, lfs);
@@ -770,6 +771,12 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 
 	// Leap motion
 	m_leap = new Leap("Leapmotion", glm::mat4(1.0f));
+	if (!m_leap->init())
+	{
+		std::cout << "[ERROR] Unable to init Leap Motion" << std::endl;
+		delete m_leap;
+		return -1;
+	}
 	m_leap->buildHands();
 
 	// Print information
@@ -865,7 +872,7 @@ void LIB_API Engine::render(PerspectiveCamera* camera) {
 			Shader* progShader = ShaderManager::getActiveShader();
 			progShader->setMatrix(progShader->getParamLocation("projection"), m_curr_3Dcamera->getProperties());
 
-			m_skybox->render(glm::scale(glm::inverse(m_curr_3Dcamera->getMatrix()), glm::vec3(100.0f, 100.0f, 100.0f)));
+			//m_skybox->render(glm::scale(glm::inverse(m_curr_3Dcamera->getMatrix()), glm::vec3(100.0f, 100.0f, 100.0f)));
 
 			ShaderManager::setActiveShader("Leap Program Shader");
 			progShader = ShaderManager::getActiveShader();

@@ -16,7 +16,6 @@
 // Leap Motion SDK:
 #include <LeapC.h>
 
-
 // Project classes
 #include "node.h"
 #include "shader.h"
