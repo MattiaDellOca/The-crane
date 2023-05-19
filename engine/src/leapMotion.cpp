@@ -184,6 +184,8 @@ void LIB_API Leap::render(glm::mat4 matrix) {
     for (unsigned int h = 0; h < l->nHands; h++)
     {
         LEAP_HAND hand = l->pHands[h];
+
+        // Distance from eye to hands
         glm::mat4 f = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -300.0f, -500.0f) * scale);
 
         shader->setVec3(shader->getParamLocation("color"), glm::vec3((float)h, (float)(1 - h), 0.5f));
@@ -204,6 +206,7 @@ void LIB_API Leap::render(glm::mat4 matrix) {
         std::cout << glm::to_string(matrix * f * c) << std::endl;
         glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
 
+
         // Distal ends of bones for each digit:
         for (unsigned int d = 0; d < 5; d++)
         {
@@ -223,7 +226,7 @@ void LIB_API Leap::render(glm::mat4 matrix) {
 void LIB_API Leap::buildHands() {
     // Build a sphere procedurally:   
     GLfloat x, y, z, alpha, beta; // Storage for coordinates and angles        
-    GLfloat radius = 0.02f;
+    GLfloat radius = 0.01f;
     int gradation = 10;
     for (alpha = 0.0; alpha < glm::pi<float>(); alpha += glm::pi<float>() / gradation)
         for (beta = 0.0f; beta < 2.01f * glm::pi<float>(); beta += glm::pi<float>() / gradation)
