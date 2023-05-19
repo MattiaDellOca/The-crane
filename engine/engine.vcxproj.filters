@@ -181,7 +181,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <ClInclude Include="src\skybox.h">
       <Filter>Header Files\src\utilities</Filter>
     </ClInclude>
