@@ -946,7 +946,7 @@ void LIB_API Engine::stereoscopicRender() {
 			ShaderManager::setActiveShader("Leap Program Shader");
 			progShader = ShaderManager::getActiveShader();
 			progShader->setMatrix(progShader->getParamLocation("projection"), m_curr_3Dcamera->getProperties());
-			m_leap->render(glm::inverse(m_curr_3Dcamera->getMatrix()));
+			m_leap->render(m_curr_3Dcamera->getMatrix());
 		}
 		else {
 			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
@@ -1018,6 +1018,10 @@ void LIB_API Engine::setMouseMotionFunction(void (*callback)(int, int)) {
 void LIB_API Engine::setTimerFunction(void (*callback)(int)) {
 	userTimerCallback = callback;
 	glutTimerFunc(1000, timerCallback, 0);
+}
+
+void LIB_API Engine::setCollisionCallback(void(*callback)(void*)) {
+	m_leap->setCollisionCallback(callback);
 }
 
 

@@ -168,7 +168,7 @@ const LEAP_TRACKING_EVENT* Leap::getCurFrame() const
     return &curFrame;
 }
 
-void LIB_API Leap::render(glm::mat4 matrix) {
+void LIB_API Leap::render(glm::mat4 cameraMatrix) {
     // Update Leap Motion status:
     update();
     const LEAP_TRACKING_EVENT* l = getCurFrame();
@@ -184,6 +184,7 @@ void LIB_API Leap::render(glm::mat4 matrix) {
     for (unsigned int h = 0; h < l->nHands; h++)
     {
         LEAP_HAND hand = l->pHands[h];
+        glm::mat4 wc;
 
         // Distance from eye to hands
         glm::mat4 f = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -300.0f, -500.0f) * scale);
@@ -192,20 +193,24 @@ void LIB_API Leap::render(glm::mat4 matrix) {
 
         // Elbow:
         glm::mat4 c = glm::translate(glm::mat4(1.0f), glm::vec3(hand.arm.prev_joint.x, hand.arm.prev_joint.y, hand.arm.prev_joint.z) * scale);
-        shader->setMatrix(shader->getParamLocation("modelview"), f * c);
+        shader->setMatrix(shader->getParamLocation("modelview"), f * c);    // wc = cameraInverse * cameraMatrix * f * c -> f * c
         glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
+        wc = cameraMatrix * f * c;
+        collision_callback(reinterpret_cast<void*>(&(wc)));
 
         // Wrist:
         c = glm::translate(glm::mat4(1.0f), glm::vec3(hand.arm.next_joint.x, hand.arm.next_joint.y, hand.arm.next_joint.z) * scale);
         shader->setMatrix(shader->getParamLocation("modelview"), f * c);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
+        wc = cameraMatrix * f * c;
+        collision_callback(reinterpret_cast<void*>(&(wc)));
 
         // Palm:
         c = glm::translate(glm::mat4(1.0f), glm::vec3(hand.palm.position.x, hand.palm.position.y, hand.palm.position.z) * scale);
         shader->setMatrix(shader->getParamLocation("modelview"), f * c);
-        std::cout << glm::to_string(matrix * f * c) << std::endl;
         glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
-
+        wc = cameraMatrix * f * c;
+        collision_callback(reinterpret_cast<void*>(&(wc)));
 
         // Distal ends of bones for each digit:
         for (unsigned int d = 0; d < 5; d++)
@@ -217,6 +222,8 @@ void LIB_API Leap::render(glm::mat4 matrix) {
                 c = glm::translate(glm::mat4(1.0f), glm::vec3(bone.next_joint.x, bone.next_joint.y, bone.next_joint.z) * scale);
                 shader->setMatrix(shader->getParamLocation("modelview"), f * c);
                 glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
+                wc = cameraMatrix * f * c;
+                collision_callback(reinterpret_cast<void*>(&(wc)));
             }
         }
     }
@@ -251,4 +258,8 @@ void LIB_API Leap::buildHands() {
     glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(glm::vec3), m_vertices.data(), GL_STATIC_DRAW);
     glVertexAttribPointer((GLuint)0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     glEnableVertexAttribArray(0);
+}
+
+void LIB_API Leap::setCollisionCallback(void(*callback)(void*)) {
+    collision_callback = callback;
 }

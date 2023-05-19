@@ -297,6 +297,11 @@ public:
 	static void setTimerFunction(void (*callback)(int));
 
 	/**
+	 * \brief Set collision callback
+	 */
+	static void setCollisionCallback(void(*callback)(void*));
+
+	/**
 	 * Check if the engine is running.
 	 *
 	 * \return True if the engine is running, false otherwise.

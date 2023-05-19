@@ -52,7 +52,7 @@ public: //
 	 *
 	 * This function is called to render the leap object in the scene.
 	 *
-	 * \param coords The pre-computed world coordinates of the leap object.
+	 * \param coords The matrix representing the camera position.
 	 */
 	void render(glm::mat4 coords) override;
 
@@ -60,6 +60,11 @@ public: //
 	 * \brief Build the spheres representing the hands.
 	 */
 	void buildHands();
+
+	/**
+	 * \brief Set collision callback
+	 */
+	void setCollisionCallback(void(*callback)(void*));
 
 
 	///////////	 
@@ -82,4 +87,9 @@ private:	//
 
 	unsigned int m_vertex_vbo = 0;
 	unsigned int m_vao = 0;
+
+	/**
+	 * \brief Callback for handling collisions
+	 */
+	void (*collision_callback)(void*);
 };
