@@ -19,6 +19,7 @@
 #include "fbo.h"
 #include "quad.h"
 #include "skybox.h"
+#include "leapMotion.h"
 
 #include <queue>
 #include "ovr.h"
@@ -148,6 +149,11 @@ private:
 	* OVR
 	*/
 	static OvVR* m_ovr;
+
+	/*
+	* Leap
+	*/
+	static Leap* m_leap;
 
 	/**
 	 * Callback function for reshaping the window.
