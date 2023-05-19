@@ -23,7 +23,7 @@ PerspectiveCamera* camera3DCabine;
 CameraNode* currentCamera;
 
 // Dynamic camera parameters
-float cameraSpeed = 1.0f;
+float cameraSpeed = 0.5f;
 float camera_sensitivity = 1.0f;
 
 // SceneObject objects
