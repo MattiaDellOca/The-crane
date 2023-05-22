@@ -387,7 +387,7 @@ int main(int argc, char* argv[]) {
 	container2 = Engine::getNode("Container2");
 	plane = Engine::getNode("Plane");
 	cabine = Engine::getNode("Cabine");
-	cameraVRObj = Engine::getNode("CameraVR");
+	cameraVRObj = Engine::getNode("PlaceholderCameraVR");
 
 	// Populate commands
 	Mesh* hookUp = static_cast<Mesh*>(Engine::getNode("HookUp"));
@@ -407,6 +407,9 @@ int main(int argc, char* argv[]) {
 
 	// Disable plane shadow cast
 	static_cast<Mesh*>(plane)->setShadowCast(false);
+
+	// Set player height
+	Engine::setPlayerHeight(1.71f);
 
 	// Main camera
 	if (renderingType == "Stereoscopic") {

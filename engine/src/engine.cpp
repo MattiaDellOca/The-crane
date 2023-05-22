@@ -412,6 +412,7 @@ bool Engine::m_isRunning = false;
 int Engine::m_window_height = -1;
 int Engine::m_window_width = -1;
 int Engine::m_windowId = -1;
+float Engine::m_playerHeight = 0.0f;
 glm::vec3 Engine::m_background_color;
 PerspectiveCamera* Engine::m_curr_3Dcamera = nullptr;
 OrthographicCamera* Engine::m_curr_2Dcamera = new OrthographicCamera{ "2d Camera", glm::mat4(1), APP_WINDOWSIZEX, APP_WINDOWSIZEY };
@@ -897,11 +898,13 @@ void LIB_API Engine::stereoscopicRender() {
 
 	// Update camera position mantaining xyz position and using the head rotation
 	glm::mat4 realPos = headPos;
+	
+	// Get the real position of the camera taking in consideration camera and head position
 	glm::mat4 currentCameraPos = m_curr_3Dcamera->getMatrix();
-	realPos[3][0] = currentCameraPos[3][0];
-	realPos[3][1] = currentCameraPos[3][1];
-	realPos[3][2] = currentCameraPos[3][2];
-	m_curr_3Dcamera->setMatrix(realPos);
+	realPos = currentCameraPos * headPos;
+
+	// translate realPos down by the height of the player
+	realPos[3][1] -= m_playerHeight;
 
 	for (int c = 0; c < m_ovr->EYE_LAST; c++) {
 		// Get OpenVR matrices:
@@ -929,18 +932,18 @@ void LIB_API Engine::stereoscopicRender() {
 			// Render
 			m_rendering_list->m_camera = m_curr_3Dcamera;
 			m_rendering_list->m_skybox = m_skybox;
-			m_rendering_list->render(m_curr_3Dcamera->getMatrix());
+			m_rendering_list->render(realPos);
 
 			ShaderManager::setActiveShader("Skybox Passthrough Program Shader");
 			Shader* progShader = ShaderManager::getActiveShader();
 			progShader->setMatrix(progShader->getParamLocation("projection"), m_curr_3Dcamera->getProperties());
 
-			m_skybox->render(glm::scale(glm::inverse(m_curr_3Dcamera->getMatrix()), glm::vec3(100.0f, 100.0f, 100.0f)));
+			m_skybox->render(glm::scale(glm::inverse(realPos), glm::vec3(100.0f, 100.0f, 100.0f)));
 
 			ShaderManager::setActiveShader("Leap Program Shader");
 			progShader = ShaderManager::getActiveShader();
 			progShader->setMatrix(progShader->getParamLocation("projection"), m_curr_3Dcamera->getProperties());
-			m_leap->render(m_curr_3Dcamera->getMatrix());
+			m_leap->render(realPos);
 		}
 		else {
 			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;
@@ -1061,6 +1064,10 @@ void LIB_API Engine::setGraphics(EngineGraphics& g) {
 	else {
 		Texture::disableAnisotropicFiltering();
 	}
+}
+
+void LIB_API Engine::setPlayerHeight(float height) {
+	m_playerHeight = height;
 }
 
 Node LIB_API* Engine::getNode(const std::string& name)
