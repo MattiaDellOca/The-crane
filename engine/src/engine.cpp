@@ -872,13 +872,7 @@ void LIB_API Engine::render(PerspectiveCamera* camera) {
 			ShaderManager::setActiveShader("Skybox Passthrough Program Shader");
 			Shader* progShader = ShaderManager::getActiveShader();
 			progShader->setMatrix(progShader->getParamLocation("projection"), m_curr_3Dcamera->getProperties());
-
 			m_skybox->render(glm::scale(glm::inverse(m_curr_3Dcamera->getMatrix()), glm::vec3(100.0f, 100.0f, 100.0f)));
-
-			ShaderManager::setActiveShader("Leap Program Shader");
-			progShader = ShaderManager::getActiveShader();
-			progShader->setMatrix(progShader->getParamLocation("projection"), m_curr_3Dcamera->getProperties());
-			m_leap->render(glm::inverse(m_curr_3Dcamera->getMatrix()));
 		}
 		else {
 			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;

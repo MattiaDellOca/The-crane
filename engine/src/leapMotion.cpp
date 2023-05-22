@@ -195,22 +195,16 @@ void LIB_API Leap::render(glm::mat4 cameraMatrix) {
         glm::mat4 c = glm::translate(glm::mat4(1.0f), glm::vec3(hand.arm.prev_joint.x, hand.arm.prev_joint.y, hand.arm.prev_joint.z) * scale);
         shader->setMatrix(shader->getParamLocation("modelview"), f * c);    // wc = cameraInverse * cameraMatrix * f * c -> f * c
         glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
-        wc = cameraMatrix * f * c;
-        collision_callback(reinterpret_cast<void*>(&(wc)));
 
         // Wrist:
         c = glm::translate(glm::mat4(1.0f), glm::vec3(hand.arm.next_joint.x, hand.arm.next_joint.y, hand.arm.next_joint.z) * scale);
         shader->setMatrix(shader->getParamLocation("modelview"), f * c);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
-        wc = cameraMatrix * f * c;
-        collision_callback(reinterpret_cast<void*>(&(wc)));
 
         // Palm:
         c = glm::translate(glm::mat4(1.0f), glm::vec3(hand.palm.position.x, hand.palm.position.y, hand.palm.position.z) * scale);
         shader->setMatrix(shader->getParamLocation("modelview"), f * c);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
-        wc = cameraMatrix * f * c;
-        collision_callback(reinterpret_cast<void*>(&(wc)));
 
         // Distal ends of bones for each digit:
         for (unsigned int d = 0; d < 5; d++)
@@ -218,12 +212,24 @@ void LIB_API Leap::render(glm::mat4 cameraMatrix) {
             LEAP_DIGIT finger = hand.digits[d];
             for (unsigned int b = 0; b < 4; b++)
             {
-                LEAP_BONE bone = finger.bones[b];
-                c = glm::translate(glm::mat4(1.0f), glm::vec3(bone.next_joint.x, bone.next_joint.y, bone.next_joint.z) * scale);
-                shader->setMatrix(shader->getParamLocation("modelview"), f * c);
-                glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
-                wc = cameraMatrix * f * c;
-                collision_callback(reinterpret_cast<void*>(&(wc)));
+                // handle point of index
+                if (d == 1 && b == 3) {
+                    shader->setVec3(shader->getParamLocation("color"), glm::vec3(0.0f, 0.0f, 1.0f));
+                    LEAP_BONE bone = finger.bones[b];
+                    c = glm::translate(glm::mat4(1.0f), glm::vec3(bone.next_joint.x, bone.next_joint.y, bone.next_joint.z) * scale);
+                    shader->setMatrix(shader->getParamLocation("modelview"), f * c);
+                    glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
+                    wc = cameraMatrix * f * c;
+                    collision_callback(reinterpret_cast<void*>(&(wc)));
+                    shader->setVec3(shader->getParamLocation("color"), glm::vec3((float)h, (float)(1 - h), 0.5f));
+                }
+                else {
+                    // handle other finger parts
+                    LEAP_BONE bone = finger.bones[b];
+                    c = glm::translate(glm::mat4(1.0f), glm::vec3(bone.next_joint.x, bone.next_joint.y, bone.next_joint.z) * scale);
+                    shader->setMatrix(shader->getParamLocation("modelview"), f * c);
+                    glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
+                }
             }
         }
     }
