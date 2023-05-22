@@ -69,10 +69,8 @@ const float maxExtensionsCable = 50;
 int fps = 0;
 int frames = 0;
 
-// 2D information
-// string = text to write
-// int = heigh position
-std::list<std::tuple<std::string, int>> information2D;
+// Command map
+std::map<Mesh*, void(*)()> commands;
 
 void display() {
 	// Clear image
@@ -88,99 +86,72 @@ void display() {
 	Engine::swapBuffers();
 }
 
-void keyboardCallback(unsigned char key, int x, int y) {
-	if (key == '1') {
-		if (isWireframe) {
-			cout << "[CRANE] Settings: Disable wireframe" << endl;
-			Engine::disableWireframe();
-		}
-		else {
-			cout << "[CRANE] Settings: Enable wireframe" << endl;
-			Engine::enableWireframe();
-		}
-		isWireframe = !isWireframe;
+void moveCableUp() {
+	if (extensionsCableCount > 0) {
+		// There is an object between the hook and the cable
+		Node* hookParent = cable1->getChildren().at(0);
+
+		cable1->setMatrix(glm::scale(cable1->getMatrix(), glm::vec3(1.0f, 1.0f - cablesScaleSpeed, 1.0f)));
+		cable2->setMatrix(glm::scale(cable2->getMatrix(), glm::vec3(1.0f, 1.0f - cablesScaleSpeed, 1.0f)));
+
+		// adapt matrix
+		hookParent->setMatrix(glm::scale(hookParent->getMatrix(), glm::vec3(1.0f, 1.0f + cablesScaleSpeed, 1.0f)));
+
+		extensionsCableCount--;
 	}
-	else if (key == '2') {
-		if (isGouraund) {
-			cout << "[CRANE] Settings: Gouraund shading disabled" << endl;
-			Engine::disableGouraund();
-		}
-		else {
-			cout << "[CRANE] Settings: Gouraund shading enabled" << endl;
-			Engine::enableGouraund();
-		}
-		isGouraund = !isGouraund;
+}
+
+void moveCableDown() {
+	if (maxExtensionsCable > extensionsCableCount + 1) {
+		// There is an object between the hook and the cable
+		Node* hookParent = cable1->getChildren().at(0);
+
+		cable1->setMatrix(glm::scale(cable1->getMatrix(), glm::vec3(1.0f, 1.0f + cablesScaleSpeed, 1.0f)));
+		cable2->setMatrix(glm::scale(cable2->getMatrix(), glm::vec3(1.0f, 1.0f + cablesScaleSpeed, 1.0f)));
+
+		// adapt matrix
+		hookParent->setMatrix(glm::scale(hookParent->getMatrix(), glm::vec3(1.0f, 1.0f - cablesScaleSpeed, 1.0f)));
+
+		extensionsCableCount++;
 	}
-	else if (key == 'c') {
-		currentCamera->getNext()->getCamera()->updateWindowSize(currentCamera->getCamera()->getWidth(), currentCamera->getCamera()->getHeight());
-		currentCamera = currentCamera->getNext();
+}
+
+void rotateCounterclockwise() {
+	slewingUnit->setMatrix(glm::rotate(slewingUnit->getMatrix(), glm::radians(craneRotationSpeed), glm::vec3(0.0f, 1.f, 0.f)));
+
+	if (renderingType == "Stereoscopic") {
+		// set xyz of the camera3D equal to the xyz of cameraVR
+		camera3D->setMatrix(cameraVRObj->getWorldCoordinateMatrix());
 	}
+}
 
-	else if (key == 'g') {
-		//rotate crane counterclockwise
-		slewingUnit->setMatrix(glm::rotate(slewingUnit->getMatrix(), glm::radians(craneRotationSpeed), glm::vec3(0.0f, 1.f, 0.f)));
+void rotateClockwise() {
+	slewingUnit->setMatrix(glm::rotate(slewingUnit->getMatrix(), glm::radians(-craneRotationSpeed), glm::vec3(0.0f, 1.f, 0.f)));
 
-		if (renderingType == "Stereoscopic") {
-			// set xyz of the camera3D equal to the xyz of cameraVR
-			camera3D->setMatrix(cameraVRObj->getWorldCoordinateMatrix());
-		}
+	if (renderingType == "Stereoscopic") {
+		// set xyz of the camera3D equal to the xyz of cameraVR
+		camera3D->setMatrix(cameraVRObj->getWorldCoordinateMatrix());
 	}
-	else if (key == 'l') {
-		// rotate crane counter clockwise
-		slewingUnit->setMatrix(glm::rotate(slewingUnit->getMatrix(), glm::radians(-craneRotationSpeed), glm::vec3(0.0f, 1.f, 0.f)));
-		
-		if (renderingType == "Stereoscopic") {
-			// set xyz of the camera3D equal to the xyz of cameraVR
-			camera3D->setMatrix(cameraVRObj->getWorldCoordinateMatrix());
-		}
+}
+
+void moveTrolleyForward() {
+	if (maxTrolley > movementTrolleyCount + 1) {
+		trolley->setMatrix(glm::translate(trolley->getMatrix(), glm::vec3(trolleySpeed, 0.0f, 0.0f)));
+
+		movementTrolleyCount++;
 	}
-	else if (key == 'h') {
-		// move trolley backward
-		if (minTrolley < movementTrolleyCount - 1) {
-			trolley->setMatrix(glm::translate(trolley->getMatrix(), glm::vec3(-trolleySpeed, 0.0f, 0.0f)));
+}
 
-			movementTrolleyCount--;
-		}
+void moveTrolleyBackward() {
+	if (minTrolley < movementTrolleyCount - 1) {
+		trolley->setMatrix(glm::translate(trolley->getMatrix(), glm::vec3(-trolleySpeed, 0.0f, 0.0f)));
+
+		movementTrolleyCount--;
 	}
-	else if (key == 'k') {
-		// move trolley forward
-		if (maxTrolley > movementTrolleyCount + 1) {
-			trolley->setMatrix(glm::translate(trolley->getMatrix(), glm::vec3(trolleySpeed, 0.0f, 0.0f)));
+}
 
-			movementTrolleyCount++;
-		}
-	}
-	else if (key == 'u') {
-		// move cable up
-		if (extensionsCableCount > 0) {
-			// There is an object between the hook and the cable
-			Node* hookParent = cable1->getChildren().at(0);
-
-			cable1->setMatrix(glm::scale(cable1->getMatrix(), glm::vec3(1.0f, 1.0f - cablesScaleSpeed, 1.0f)));
-			cable2->setMatrix(glm::scale(cable2->getMatrix(), glm::vec3(1.0f, 1.0f - cablesScaleSpeed, 1.0f)));
-
-			// adapt matrix
-			hookParent->setMatrix(glm::scale(hookParent->getMatrix(), glm::vec3(1.0f, 1.0f + cablesScaleSpeed, 1.0f)));
-
-			extensionsCableCount--;
-		}
-	}
-	else if (key == 'j') {
-		// move cable down
-		if (maxExtensionsCable > extensionsCableCount + 1) {
-			// There is an object between the hook and the cable
-			Node* hookParent = cable1->getChildren().at(0);
-
-			cable1->setMatrix(glm::scale(cable1->getMatrix(), glm::vec3(1.0f, 1.0f + cablesScaleSpeed, 1.0f)));
-			cable2->setMatrix(glm::scale(cable2->getMatrix(), glm::vec3(1.0f, 1.0f + cablesScaleSpeed, 1.0f)));
-
-			// adapt matrix
-			hookParent->setMatrix(glm::scale(hookParent->getMatrix(), glm::vec3(1.0f, 1.0f - cablesScaleSpeed, 1.0f)));
-
-			extensionsCableCount++;
-		}
-	}
-	else if (key == 'm' && !hooked) {
+void hookContainer() {
+	if (!hooked) {
 		// hook one of the containers
 
 		// Get world coordinates
@@ -220,7 +191,7 @@ void keyboardCallback(unsigned char key, int x, int y) {
 			hookedNode = container2;
 		}
 	}
-	else if (key == 'm' && hooked) {
+	else {
 		// Get world coordinates
 		glm::vec3 worldObjHooked{ hookedNode->getWorldCoordinateMatrix()[3] };
 		glm::vec3 worldCordPlane{ plane->getWorldCoordinateMatrix()[3] };
@@ -239,6 +210,57 @@ void keyboardCallback(unsigned char key, int x, int y) {
 			hooked = !hooked;
 			hookedNode = nullptr;
 		}
+	}
+}
+
+void keyboardCallback(unsigned char key, int x, int y) {
+	if (key == '1') {
+		if (isWireframe) {
+			cout << "[CRANE] Settings: Disable wireframe" << endl;
+			Engine::disableWireframe();
+		}
+		else {
+			cout << "[CRANE] Settings: Enable wireframe" << endl;
+			Engine::enableWireframe();
+		}
+		isWireframe = !isWireframe;
+	}
+	else if (key == '2') {
+		if (isGouraund) {
+			cout << "[CRANE] Settings: Gouraund shading disabled" << endl;
+			Engine::disableGouraund();
+		}
+		else {
+			cout << "[CRANE] Settings: Gouraund shading enabled" << endl;
+			Engine::enableGouraund();
+		}
+		isGouraund = !isGouraund;
+	}
+	else if (key == 'c') {
+		currentCamera->getNext()->getCamera()->updateWindowSize(currentCamera->getCamera()->getWidth(), currentCamera->getCamera()->getHeight());
+		currentCamera = currentCamera->getNext();
+	}
+
+	else if (key == 'g') {
+		rotateCounterclockwise();
+	}
+	else if (key == 'l') {
+		rotateClockwise();
+	}
+	else if (key == 'h') {
+		moveTrolleyBackward();
+	}
+	else if (key == 'k') {
+		moveTrolleyForward();
+	}
+	else if (key == 'u') {
+		moveCableUp();
+	}
+	else if (key == 'j') {
+		moveCableDown();
+	}
+	else if (key == 'm') {
+		hookContainer();
 	}
 
 	// Moving operaions for main camera
@@ -306,28 +328,17 @@ void timerCallback(int value) {
 	cout << "[CRANE]: FPS = " << fps << endl;
 }
 
+
 void collisionCallback(void* data) {
 	glm::mat4 matrix = *reinterpret_cast<glm::mat4*>(data);
 	//std::cout << glm::to_string(matrix) << std::endl;
 
-	Mesh* hookUp = static_cast<Mesh*>(Engine::getNode("HookUp"));
-	glm::mat4 hookUpWc = hookUp->getWorldCoordinateMatrix();
-	//std::cout << "button: " << glm::to_string(hookUpWc) << std::endl;
-
-	if (glm::distance(hookUpWc[3], matrix[3]) < hookUp->getRadius()) {
-		std::cout << "colliding";
-		// move cable up
-		if (extensionsCableCount > 0) {
-			// There is an object between the hook and the cable
-			Node* hookParent = cable1->getChildren().at(0);
-
-			cable1->setMatrix(glm::scale(cable1->getMatrix(), glm::vec3(1.0f, 1.0f - 0.01f, 1.0f)));
-			cable2->setMatrix(glm::scale(cable2->getMatrix(), glm::vec3(1.0f, 1.0f - 0.01f, 1.0f)));
-
-			// adapt matrix
-			hookParent->setMatrix(glm::scale(hookParent->getMatrix(), glm::vec3(1.0f, 1.0f + cablesScaleSpeed, 1.0f)));
-
-			extensionsCableCount--;
+	for (const auto& pair : commands) {
+		glm::mat4 wc = pair.first->getWorldCoordinateMatrix();
+		if (glm::distance(wc[3], matrix[3]) < pair.first->getRadius()) {
+			std::cout << "collision detected!" << std::endl;
+			//std::cout << "button: " << glm::to_string(wc) << std::endl;
+			pair.second();
 		}
 	}
 }
@@ -377,6 +388,22 @@ int main(int argc, char* argv[]) {
 	plane = Engine::getNode("Plane");
 	cabine = Engine::getNode("Cabine");
 	cameraVRObj = Engine::getNode("CameraVR");
+
+	// Populate commands
+	Mesh* hookUp = static_cast<Mesh*>(Engine::getNode("HookUp"));
+	Mesh* hookDown = static_cast<Mesh*>(Engine::getNode("HookDown"));
+	Mesh* rotateLeft = static_cast<Mesh*>(Engine::getNode("RotateLeft"));
+	Mesh* rotateRight = static_cast<Mesh*>(Engine::getNode("RotateRight"));
+	Mesh* trolleyForward = static_cast<Mesh*>(Engine::getNode("TrolleyForward"));
+	Mesh* trolleyBackward = static_cast<Mesh*>(Engine::getNode("TrolleyBackward"));
+	Mesh* hook = static_cast<Mesh*>(Engine::getNode("HookContainer"));
+	commands.insert({ hookUp, moveCableUp });
+	commands.insert({ hookDown, moveCableDown });
+	commands.insert({ rotateLeft, rotateCounterclockwise });
+	commands.insert({ rotateRight, rotateClockwise });
+	commands.insert({ trolleyForward, moveTrolleyForward });
+	commands.insert({ trolleyBackward, moveTrolleyBackward });
+	commands.insert({ hook, hookContainer });
 
 	// Disable plane shadow cast
 	static_cast<Mesh*>(plane)->setShadowCast(false);
