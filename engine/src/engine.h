@@ -19,6 +19,7 @@
 #include "fbo.h"
 #include "quad.h"
 #include "skybox.h"
+#include "leapMotion.h"
 
 #include <queue>
 #include "ovr.h"
@@ -148,6 +149,11 @@ private:
 	* OVR
 	*/
 	static OvVR* m_ovr;
+
+	/*
+	* Leap
+	*/
+	static Leap* m_leap;
 
 	/**
 	 * Callback function for reshaping the window.
@@ -289,6 +295,11 @@ public:
 	* \param callback The callback function to set.
 	*/
 	static void setTimerFunction(void (*callback)(int));
+
+	/**
+	 * \brief Set collision callback
+	 */
+	static void setCollisionCallback(void(*callback)(void*));
 
 	/**
 	 * Check if the engine is running.

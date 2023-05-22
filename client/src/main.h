@@ -13,3 +13,5 @@
 #include "configReader.h"
 
 using namespace std; 
+
+glm::mat4 calculateWorldCoordinates(Node* node, glm::mat4 matrix);

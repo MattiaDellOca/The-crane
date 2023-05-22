@@ -306,6 +306,33 @@ void timerCallback(int value) {
 	cout << "[CRANE]: FPS = " << fps << endl;
 }
 
+void collisionCallback(void* data) {
+	glm::mat4 matrix = *reinterpret_cast<glm::mat4*>(data);
+	//std::cout << glm::to_string(matrix) << std::endl;
+
+	Mesh* hookUp = static_cast<Mesh*>(Engine::getNode("HookUp"));
+	glm::mat4 hookUpWc = hookUp->getWorldCoordinateMatrix();
+	//std::cout << "button: " << glm::to_string(hookUpWc) << std::endl;
+
+	if (glm::distance(hookUpWc[3], matrix[3]) < hookUp->getRadius()) {
+		std::cout << "colliding";
+		// move cable up
+		if (extensionsCableCount > 0) {
+			// There is an object between the hook and the cable
+			Node* hookParent = cable1->getChildren().at(0);
+
+			cable1->setMatrix(glm::scale(cable1->getMatrix(), glm::vec3(1.0f, 1.0f - 0.01f, 1.0f)));
+			cable2->setMatrix(glm::scale(cable2->getMatrix(), glm::vec3(1.0f, 1.0f - 0.01f, 1.0f)));
+
+			// adapt matrix
+			hookParent->setMatrix(glm::scale(hookParent->getMatrix(), glm::vec3(1.0f, 1.0f + cablesScaleSpeed, 1.0f)));
+
+			extensionsCableCount--;
+		}
+	}
+}
+
+
 int main(int argc, char* argv[]) {
 	cout << "[Crane - SUPSI]" << endl;
 
@@ -377,7 +404,7 @@ int main(int argc, char* argv[]) {
 	hook->addChild(camera3DHook);
 
 	// Calculate cabine matrix
-	camera3DCabine = new PerspectiveCamera{ "Cabine camera", glm::rotate(cabine->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(0.0f, -1.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(-1.0f, 0.0f, 0.0f)), camera3D->getWidth(), camera3D->getHeight(), 1, 200, 90 };
+	camera3DCabine = new PerspectiveCamera{ "Cabine camera", glm::rotate(cabine->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(0.0f, -1.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(-1.0f, 0.0f, 0.0f)), camera3D->getWidth(), camera3D->getHeight(), 0.000001, 200, 90 };
 	cabine->addChild(camera3DCabine);
 
 	// Populate cameras list
@@ -395,6 +422,8 @@ int main(int argc, char* argv[]) {
 		"negz.jpg"
 	};
 	Engine::loadSkybox("../assets/skybox/", cubemapNames);
+
+	Engine::setCollisionCallback(reinterpret_cast<void (*)(void*)>(collisionCallback));
 
 	// Start rendering some figures..
 	Engine::run(display);
