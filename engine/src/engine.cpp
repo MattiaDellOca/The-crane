@@ -909,12 +909,10 @@ void LIB_API Engine::stereoscopicRender() {
 	for (int c = 0; c < m_ovr->EYE_LAST; c++) {
 		// Get OpenVR matrices:
 		OvVR::OvEye curEye = (OvVR::OvEye)c;
-		glm::mat4 projMat = m_ovr->getProjMatrix(curEye, 1.0f, 250.0f);
+		glm::mat4 projMat = m_ovr->getProjMatrix(curEye, m_curr_3Dcamera->getNear(), m_curr_3Dcamera->getFar());
 		glm::mat4 eye2Head = m_ovr->getEye2HeadMatrix(curEye);
 
-		// Update camera projection matrix:
-		glm::mat4 ovrProjMat = projMat * glm::inverse(eye2Head);
-		m_curr_3Dcamera->setPropertiesMatrix(ovrProjMat);
+		
 
 		// Render into this FBO:
 		fbo[c]->render();

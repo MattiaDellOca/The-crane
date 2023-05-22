@@ -59,6 +59,7 @@ float movementTrolleyCount = 0;
 // settings flags
 bool isWireframe = false;
 bool isGouraund = true;
+bool isColliding = false;
 
 // Range of movement
 const float minTrolley = -50;
@@ -71,6 +72,7 @@ int frames = 0;
 
 // Command map
 std::map<Mesh*, void(*)()> commands;
+Mesh* hookButton = nullptr;
 
 void display() {
 	// Clear image
@@ -331,15 +333,26 @@ void timerCallback(int value) {
 
 void collisionCallback(void* data) {
 	glm::mat4 matrix = *reinterpret_cast<glm::mat4*>(data);
-	//std::cout << glm::to_string(matrix) << std::endl;
 
 	for (const auto& pair : commands) {
 		glm::mat4 wc = pair.first->getWorldCoordinateMatrix();
 		if (glm::distance(wc[3], matrix[3]) < pair.first->getRadius()) {
-			std::cout << "collision detected!" << std::endl;
-			//std::cout << "button: " << glm::to_string(wc) << std::endl;
+			// If it's colliding with the hook button for the first time, execute command
+			if (!isColliding && pair.first->getName() == "HookContainer") {
+				isColliding = true;
+			}
+			else if (isColliding && pair.first->getName() == "HookContainer") {
+				// If it's collising with the hook button and it's not the first time, ignore
+				break;
+			}
 			pair.second();
 		}
+
+	}
+
+	// If the collision has exited, register it
+	if (isColliding && glm::distance(hookButton->getWorldCoordinateMatrix()[3], matrix[3]) > hookButton->getRadius()) {
+		isColliding = false;
 	}
 }
 
@@ -396,20 +409,20 @@ int main(int argc, char* argv[]) {
 	Mesh* rotateRight = static_cast<Mesh*>(Engine::getNode("RotateRight"));
 	Mesh* trolleyForward = static_cast<Mesh*>(Engine::getNode("TrolleyForward"));
 	Mesh* trolleyBackward = static_cast<Mesh*>(Engine::getNode("TrolleyBackward"));
-	Mesh* hook = static_cast<Mesh*>(Engine::getNode("HookContainer"));
+	hookButton = static_cast<Mesh*>(Engine::getNode("HookContainer"));
 	commands.insert({ hookUp, moveCableUp });
 	commands.insert({ hookDown, moveCableDown });
 	commands.insert({ rotateLeft, rotateCounterclockwise });
 	commands.insert({ rotateRight, rotateClockwise });
 	commands.insert({ trolleyForward, moveTrolleyForward });
 	commands.insert({ trolleyBackward, moveTrolleyBackward });
-	commands.insert({ hook, hookContainer });
+	commands.insert({ hookButton, hookContainer });
 
 	// Disable plane shadow cast
 	static_cast<Mesh*>(plane)->setShadowCast(false);
 
 	// Set player height
-	Engine::setPlayerHeight(1.71f);
+	Engine::setPlayerHeight(0.0f);
 
 	// Main camera
 	if (renderingType == "Stereoscopic") {
