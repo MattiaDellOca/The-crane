@@ -155,6 +155,11 @@ private:
 	*/
 	static Leap* m_leap;
 
+	/** 
+	* Player Height.
+	*/
+	static float m_playerHeight;
+
 	/**
 	 * Callback function for reshaping the window.
 	 *
@@ -223,6 +228,11 @@ public:
 	 * \param b The blue component of the background color (range: 0.0 to 1.0).
 	 */
 	static void setBackgroundColor(float r, float g, float b);
+
+	/** 
+	 * Set playerHeight
+	 */
+	static void setPlayerHeight(float height);
 
 	/**
 	 * Swap the front and back buffers.
