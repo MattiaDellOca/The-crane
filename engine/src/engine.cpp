@@ -16,6 +16,17 @@
 #include <iostream>
 #include <thread>
 
+	// Shaders:
+#include "shader.vertex.cpp"
+#include "shader.fragmentOmniDirectionalLight.cpp"
+#include "shader.fragmentDirectionalLight.cpp"
+#include "shader.fragmentSpotLight.cpp"
+#include "shader.passthroughVertex.cpp"
+#include "shader.passthroughFragment.cpp"
+#include "shader.skyboxPassthroughVertex.cpp"
+#include "shader.skyboxPassthroughFragment.cpp"
+#include "shader.leapVertex.cpp"
+#include "shader.leapFragment.cpp"
 
 	// GLM:
 #include <glm/glm.hpp>
@@ -34,6 +45,7 @@
 #include "FreeImage.h"
 
 
+
 /////////////
 // #DEFINE //
 /////////////
@@ -43,361 +55,6 @@
 #define APP_WINDOWSIZEY   512
 #define APP_FBOSIZEX      APP_WINDOWSIZEX / 2
 #define APP_FBOSIZEY      APP_WINDOWSIZEY / 1
-
-/////////////
-// SHADERS //
-/////////////
-
-////////////////////////////
-const char* vertShader = R"(
-   #version 440 core
-
-   // Uniforms:
-   uniform mat4 projection;
-   uniform mat4 modelview;
-   uniform mat3 normalMatrix;
-   uniform float farPlane;
-
-	// Attributes:
-   layout(location = 0) in vec3 in_Position;
-   layout(location = 1) in vec3 in_Normal;
-   layout(location = 2) in vec2 in_TexCoord;
-
-	// Varying:
-   out vec3 normal;
-   out vec4 fragPosition;
-   out vec2 texCoord;
-   out float dist;
-
-   void main(void)
-   {
-      fragPosition = modelview * vec4(in_Position, 1.0f);
-      gl_Position = projection * fragPosition;
-	  dist = abs(gl_Position.z / farPlane);
-      normal = normalMatrix * in_Normal;
-      texCoord = in_TexCoord;
-   }
-)";
-
-
-////////////////////////////
-const char* fragShaderOmniDirectionalLight = R"(
-   #version 440 core
-	
-   out vec4 fragOutput;
-
-	// Uniforms:
-   uniform vec3 fog;
-
-	// Varying:
-   in vec3 normal;
-   in vec4 fragPosition;
-   in float dist;
-   in vec2 texCoord;	
-
-   // Texture mapping:
-   layout(binding = 0) uniform sampler2D texSampler;
-
-	// nr lights
-	uniform int nrLights;
-
-   // Material properties:
-   uniform vec3 matEmission;
-   uniform vec3 matAmbient;
-   uniform vec3 matDiffuse;
-   uniform vec3 matSpecular;
-   uniform float matShininess;
-
-   // Light properties:
-   uniform vec3 lightPosition; 
-   uniform vec3 lightAmbient; 
-   uniform vec3 lightDiffuse; 
-   uniform vec3 lightSpecular;
-	uniform float lightAttenuationConstant;
-	uniform float lightAttenuationLinear;
-	uniform float lightAttenuationQuadratic;
-
-
-
-   void main(void)
-   {
-      // Texture element:
-      vec4 texel = texture(texSampler, texCoord);
-
-      // Ambient term:
-      vec3 fragColor = (matEmission + matAmbient * lightAmbient) / nrLights;
-		
-      // Diffuse term:
-      vec3 _normal = normalize(normal);
-      vec3 lightDirection = normalize(lightPosition - fragPosition.xyz);      
-		float distance = length(lightPosition - fragPosition.xyz);
-		float attenuation = 1.0 / (lightAttenuationConstant + lightAttenuationLinear * distance + lightAttenuationQuadratic * (distance * distance));
-
-      float nDotL = dot(lightDirection, _normal);   
-      if (nDotL > 0.0f)
-      {
-         fragColor += matDiffuse * nDotL * lightDiffuse;
-      
-         // Specular term:
-         vec3 halfVector = normalize(lightDirection + normalize(-fragPosition.xyz));                     
-         float nDotHV = dot(_normal, halfVector);         
-			fragColor += matSpecular * pow(nDotHV, matShininess) * lightSpecular;
-      } 
-      
-		// Attenuation term:
-		fragColor = fragColor * attenuation;
-
-      // Final color:
-      //fragOutput = texel * vec4(mix(fragColor, fog , dist), 1.0f);
-      fragOutput = texel * vec4(fragColor, 1.0f);
-   }
-)";
-
-////////////////////////////
-const char* fragShaderDirectionalLight = R"(
-	#version 440 core
-	
-	out vec4 fragOutput;
-	
-	// Uniforms:
-	uniform vec3 fog;
-	
-	// Varying:
-	in vec3 normal;
-	in vec4 fragPosition;
-	in float dist;
-   in vec2 texCoord;	
-
-   // Texture mapping:
-   layout(binding = 0) uniform sampler2D texSampler;
-
-	// nr lights
-	uniform int nrLights;
-
-	// Material properties:
-	uniform vec3 matEmission;
-	uniform vec3 matAmbient;
-	uniform vec3 matDiffuse;
-	uniform vec3 matSpecular;
-	uniform float matShininess;
-	
-	// Directional light properties:
-	uniform vec3 lightDirection;
-	uniform vec3 lightAmbient;
-	uniform vec3 lightDiffuse;
-	uniform vec3 lightSpecular;
-	
-	void main(void)
-	{
-    // Texture element:
-    vec4 texel = texture(texSampler, texCoord);
-
-	// Ambient term:
-	vec3 fragColor = (matEmission + matAmbient * lightAmbient) / nrLights;
-	// Diffuse term:
-	  vec3 _normal = normalize(normal);
-	  float nDotL = dot(-lightDirection, _normal);   
-	  if (nDotL > 0.0f)
-	  {
-	     fragColor += matDiffuse * nDotL * lightDiffuse;
-	  
-	     // Specular term:
-	     vec3 halfVector = normalize(-lightDirection + normalize(-fragPosition.xyz));                     
-	     float nDotHV = dot(_normal, halfVector);         
-	     fragColor += matSpecular * pow(nDotHV, matShininess) * lightSpecular;
-	  } 
-	  
-	  // Final color:
-	  //fragOutput = texel * vec4(mix(fragColor, fog, dist), 1.0f);
-     fragOutput = texel * vec4(fragColor, 1.0);
-	}
-)";
-
-
-
-////////////////////////////
-const char* fragShaderSpotLight = R"(
-	#version 440 core
-	
-	out vec4 fragOutput;
-	
-	// Uniforms:
-	uniform vec3 fog;
-	
-	// Varying:
-	in vec3 normal;
-	in vec4 fragPosition;
-	in float dist;
-   in vec2 texCoord;	
-	
-   // Texture mapping:
-   layout(binding = 0) uniform sampler2D texSampler;
-
-	// nr light
-	uniform int nrLights;
-
-	// Material properties:
-	uniform vec3 matEmission;
-	uniform vec3 matAmbient;
-	uniform vec3 matDiffuse;
-	uniform vec3 matSpecular;
-	uniform float matShininess;
-	
-	// Light properties:
-	uniform vec3 lightPosition;
-	uniform vec3 lightAmbient;
-	uniform vec3 lightDiffuse;
-	uniform vec3 lightSpecular;
-	uniform vec3 lightDirection; // The direction of the spot light
-	uniform float lightCutoff; // The angle of the spot light cone in degrees
-	uniform float lightExponent; // The exponent for the spot light falloff
-	
-	void main(void)
-	{
-    // Texture element:
-    vec4 texel = texture(texSampler, texCoord);
-
-    //  Ambient term
-    vec3 ambient = lightAmbient * matAmbient;
-    
-    // Diffuse term
-    vec3 lightDir = normalize(lightPosition - fragPosition.xyz);
-    float cosTheta = dot(lightDir, normalize(normal));
-    vec3 diffuse = vec3(0.0);
-    if (cosTheta > 0.0) {
-        diffuse = lightDiffuse * matDiffuse * cosTheta;
-    }
-    
-    // Specular term
-    vec3 specular = vec3(0.0);
-    vec3 viewDir = normalize(-fragPosition.xyz);
-    vec3 reflectDir = reflect(-lightDir, normalize(normal));
-    float cosPhi = dot(viewDir, reflectDir);
-    if (cosTheta > 0.0 && cosPhi > 0.0) {
-        specular = lightSpecular * matSpecular * pow(cosPhi, matShininess);
-    }
-    
-    // Calculate the spot light:
-    vec3 spotLight = vec3(0.0);
-    float cosAngle = dot(-lightDirection, lightDir);
-    if (cosAngle > cos(radians(lightCutoff))) {
-        float spotFactor = pow(cosAngle, lightExponent);
-        spotLight = lightDiffuse * matDiffuse * spotFactor;
-    }
-    
-    // Combine the lights and apply fog:
-    vec3 fragColor = (matEmission / nrLights + ambient / nrLights + diffuse + specular + spotLight);
-    //fragOutput = texel * vec4(mix(fragColor, fog, dist), 1.0);
-    fragOutput = texel * vec4(fragColor, 1.0);
-	}
-)";
-
-////////////////////////////
-const char* passthroughVertShader = R"(
-   #version 440 core
-
-   // Uniforms:
-   uniform mat4 projection;
-   uniform mat4 modelview;   
-
-   // Attributes:
-   layout(location = 0) in vec2 in_Position;   
-   layout(location = 2) in vec2 in_TexCoord;
-
-   // Varying:   
-   out vec2 texCoord;
-
-   void main(void)
-   {      
-      gl_Position = projection * modelview * vec4(in_Position, 0.0f, 1.0f);    
-      texCoord = in_TexCoord;
-   }
-)";
-
-////////////////////////////
-const char* passthroughFragShader = R"(
-   #version 440 core
-   
-   in vec2 texCoord;
-   
-   uniform vec4 color;
-
-   out vec4 fragOutput;   
-
-   // Texture mapping:
-   layout(binding = 0) uniform sampler2D texSampler;
-
-   void main(void)   
-   {  
-      // Texture element:
-      vec4 texel = texture(texSampler, texCoord);      
-      
-      // Final color:
-      fragOutput = color * texel;       
-   }
-)";
-
-////////////////////////////
-const char* skyboxPassthroughVertShader = R"(
-   #version 440 core
-
-   uniform mat4 projection;
-   uniform mat4 modelview;
-
-   layout(location = 0) in vec3 in_Position;      
-
-   out vec3 texCoord;
-
-   void main(void)
-   {
-      texCoord = in_Position;
-      gl_Position = projection * modelview * vec4(in_Position, 1.0f);            
-   }
-)";
-
-////////////////////////////
-const char* skyboxPassthroughFragShader = R"(
-   #version 440 core
-   
-   in vec3 texCoord;
-   
-   // Texture mapping (cubemap):
-   layout(binding = 0) uniform samplerCube cubemapSampler;
-
-   out vec4 fragOutput;
-
-   void main(void)
-   {       
-      fragOutput = texture(cubemapSampler, texCoord);
-   }
-)";
-
-////////////////////////////
-const char* leapVertShader = R"(
-#version 440 core
-
-uniform mat4 projection;
-uniform mat4 modelview;
-
-layout(location = 0) in vec3 in_Position;
-
-void main(void)
-{
-   gl_Position = projection * modelview * vec4(in_Position, 1.0f);      
-})";
-
-
-////////////////////////////
-const char* leapFragShader = R"(
-#version 440 core
-   
-uniform vec3 color;   
-out vec4 frag_Output;
-   
-void main(void)
-{      
-   frag_Output = vec4(color, 1.0f);
-})";
 
 
 ////////////
@@ -444,30 +101,30 @@ void(*userTimerCallback)(int);
 // DLL MAIN //
 //////////////
 #ifdef _WINDOWS
-#include <Windows.h>
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- * DLL entry point. Avoid to rely on it for easier code portability (Linux doesn't use this method).
- * @param instDLL handle
- * @param reason reason
- * @param _reserved reserved
- * @return true on success, false on failure
- */
-int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
-{
-	// Check use:
-	switch (reason)
+	#include <Windows.h>
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * DLL entry point. Avoid to rely on it for easier code portability (Linux doesn't use this method).
+	 * @param instDLL handle
+	 * @param reason reason
+	 * @param _reserved reserved
+	 * @return true on success, false on failure
+	 */
+	int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 	{
-		///////////////////////////
-	case DLL_PROCESS_ATTACH: //
-		break;
-		///////////////////////////
-	case DLL_PROCESS_DETACH: //
-		break;
+		// Check use:
+		switch (reason)
+		{
+			///////////////////////////
+		case DLL_PROCESS_ATTACH: //
+			break;
+			///////////////////////////
+		case DLL_PROCESS_DETACH: //
+			break;
+		}
+		// Done:
+		return true;
 	}
-	// Done:
-	return true;
-}
 #endif
 
 #ifdef _DEBUG
@@ -540,6 +197,7 @@ void LIB_API Engine::timerCallback(int value) {
 	(*userTimerCallback)(value);
 	glutTimerFunc(1000, timerCallback, 0);
 }
+
 
 void Engine::buildShaders() {
 	// Per pixel lighting shaders
@@ -776,7 +434,7 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 	{
 		std::cout << "[ERROR] Unable to init Leap Motion" << std::endl;
 		delete m_leap;
-		return -1;
+		return false;
 	}
 	m_leap->buildHands();
 

@@ -2,6 +2,10 @@
 #include <iostream>
 #include <GL/glew.h>
 
+#include <fstream>
+#include <string>
+
+
 // Initialize static map
 std::map<std::string, Shader*> ShaderManager::shaders;
 std::string ShaderManager::activeProgramShader;

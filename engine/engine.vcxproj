@@ -114,6 +114,15 @@ xcopy ..\dependencies\leap\bin\x64\LeapC.dll "$(OutDir)" /Y &gt; nul</Command>
     <ClCompile Include="src\quad.cpp" />
     <ClCompile Include="src\renderingList.cpp" />
     <ClCompile Include="src\shader.cpp" />
+    <ClCompile Include="src\shader.fragmentDirectionalLight.cpp" />
+    <ClCompile Include="src\shader.fragmentOmniDirectionalLight.cpp" />
+    <ClCompile Include="src\shader.fragmentSpotLight.cpp" />
+    <ClCompile Include="src\shader.leapFragment.cpp" />
+    <ClCompile Include="src\shader.leapVertex.cpp" />
+    <ClCompile Include="src\shader.passthroughFragment.cpp" />
+    <ClCompile Include="src\shader.passthroughVertex.cpp" />
+    <ClCompile Include="src\shader.SkyboxPassthroughFragment.cpp" />
+    <ClCompile Include="src\shader.SkyboxPassthroughVertex.cpp" />
     <ClCompile Include="src\shaderManager.cpp" />
     <ClCompile Include="src\skybox.cpp" />
     <ClCompile Include="src\spotLight.cpp" />
@@ -146,6 +155,9 @@ xcopy ..\dependencies\leap\bin\x64\LeapC.dll "$(OutDir)" /Y &gt; nul</Command>
     <ClInclude Include="src\skybox.h" />
     <ClInclude Include="src\spotLight.h" />
     <ClInclude Include="src\texture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\shader.vertex.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
