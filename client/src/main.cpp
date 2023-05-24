@@ -123,7 +123,7 @@ void rotateCounterclockwise() {
 
 	if (renderingType == "Stereoscopic") {
 		// set xyz of the camera3D equal to the xyz of cameraVR
-		camera3D->setMatrix(cameraVRObj->getWorldCoordinateMatrix());
+		//camera3D->setMatrix(cameraVRObj->getWorldCoordinateMatrix());
 	}
 }
 
@@ -437,6 +437,7 @@ int main(int argc, char* argv[]) {
 		glm::mat4 startCameraCoordinateStereoscopic = glm::translate(glm::mat4(1.0f), cameraVRWrldCoorXYZ);
 
 		camera3D = new PerspectiveCamera{ "Main camera",startCameraCoordinateStereoscopic , width, height, near, far, fov };
+		camera3D->setParent(cameraVRObj);
 	}
 	else {
 		camera3D = new PerspectiveCamera{ "Main camera", startCameraCoordinateStandard, width, height, near, far, fov };

@@ -895,17 +895,6 @@ void LIB_API Engine::stereoscopicRender() {
 	// Update user position:
 	m_ovr->update();
 	glm::mat4 headPos = m_ovr->getModelviewMatrix();
-	
-	 // Update camera position mantaining xyz position and using the head rotation
-	glm::mat4 realPos = headPos;
-	
-	// Get the real position of the camera taking in consideration camera and head position
-	glm::mat4 currentCameraPos = m_curr_3Dcamera->getMatrix();
-	realPos = currentCameraPos * headPos;
-
-	// translate realPos down by the height of the player
-	realPos[3][1] -= m_playerHeight;
-	
 
 	for (int c = 0; c < m_ovr->EYE_LAST; c++) {
 		// Get OpenVR matrices:
@@ -913,9 +902,12 @@ void LIB_API Engine::stereoscopicRender() {
 		glm::mat4 projMat = m_ovr->getProjMatrix(curEye, m_curr_3Dcamera->getNear(), m_curr_3Dcamera->getFar());
 		glm::mat4 eye2Head = m_ovr->getEye2HeadMatrix(curEye);
 
-		// Update camera projection matrix
+		// Update camera projection and modelview matrices
 		m_curr_3Dcamera->setPropertiesMatrix(projMat * glm::inverse(eye2Head));
-
+		m_curr_3Dcamera->setMatrix(headPos);
+		glm::mat4 realPos = m_curr_3Dcamera->getWorldCoordinateMatrix();
+		realPos[3][1] -= m_playerHeight;
+		m_curr_3Dcamera->setMatrix(realPos);
 
 		// Render into this FBO:
 		fbo[c]->render();
@@ -933,18 +925,18 @@ void LIB_API Engine::stereoscopicRender() {
 			// Render
 			m_rendering_list->m_camera = m_curr_3Dcamera;
 			m_rendering_list->m_skybox = m_skybox;
-			m_rendering_list->render(realPos);
+			m_rendering_list->render(m_curr_3Dcamera->getMatrix());
 
 			ShaderManager::setActiveShader("Skybox Passthrough Program Shader");
 			Shader* progShader = ShaderManager::getActiveShader();
 			progShader->setMatrix(progShader->getParamLocation("projection"), m_curr_3Dcamera->getProperties());
 
-			m_skybox->render(glm::scale(glm::inverse(realPos), glm::vec3(100.0f, 100.0f, 100.0f)));
+			m_skybox->render(glm::scale(glm::inverse(m_curr_3Dcamera->getMatrix()), glm::vec3(100.0f, 100.0f, 100.0f)));
 
 			ShaderManager::setActiveShader("Leap Program Shader");
 			progShader = ShaderManager::getActiveShader();
 			progShader->setMatrix(progShader->getParamLocation("projection"), m_curr_3Dcamera->getProperties());
-			m_leap->render(realPos);
+			m_leap->render(m_curr_3Dcamera->getMatrix());
 		}
 		else {
 			std::cout << "[ENGINE] WARNING: Scene graph not initialized" << std::endl;

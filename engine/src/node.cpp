@@ -18,10 +18,10 @@ LIB_API Node::~Node() {
 	//if the node has no children remove the pointer to the parent
 	//else if delete them
 
-		for (Node* node : m_children) {
-			delete node;
-		}
-		m_children.clear();
+	for (Node* node : m_children) {
+		delete node;
+	}
+	m_children.clear();
 }
 
 const glm::mat4 LIB_API Node::getMatrix() {
@@ -76,13 +76,13 @@ void LIB_API Node::render(glm::mat4 matrix) {
 }
 
 
- Node LIB_API* Node::searchNode(const char* name) {
+Node LIB_API* Node::searchNode(const char* name) {
 
-	 //if the names match returns
+	//if the names match returns
 	if (name == m_name) {
 		return this;
 	}
-	
+
 	//search in each children
 	for (Node* node : m_children) {
 
@@ -94,22 +94,21 @@ void LIB_API Node::render(glm::mat4 matrix) {
 			return result;
 		}
 	}
-	
+
 	//if the node is not found return null
 	return nullptr;
 }
 
 
- const glm::mat4 LIB_API Node::getWorldCoordinateMatrix() {
+const glm::mat4 LIB_API Node::getWorldCoordinateMatrix() {
+	glm::mat4 worldCoordinate(1.f);
 
-		 glm::mat4 worldCoordinate(1.f);
+	Node* currentNode = this;
+	while (currentNode != nullptr) {
+		worldCoordinate = currentNode->m_matrix * worldCoordinate;
+		currentNode = currentNode->m_parent;
+	}
 
-		 Node* currentNode = this;
-		 while (currentNode != nullptr) {
-			 worldCoordinate = currentNode->m_matrix * worldCoordinate;
-			 currentNode = currentNode->m_parent;
-		 }
+	return worldCoordinate;
 
-		 return worldCoordinate;
-	 
- }
+}
