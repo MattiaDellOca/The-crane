@@ -33,7 +33,6 @@ void LIB_API Mesh::render(glm::mat4 matrix) {
 	glm::mat3 normalMatrix = glm::inverseTranspose(glm::mat3(matrix));
 	progShader->setMatrix3(progShader->getParamLocation("normalMatrix"), normalMatrix);
 
-
 	// Render the mesh using VAO
 	glBindVertexArray(m_vao);
 	glDrawElements(GL_TRIANGLES, m_faces * 3, GL_UNSIGNED_INT, nullptr);

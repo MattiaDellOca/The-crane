@@ -216,7 +216,7 @@ Material LIB_API* Ovoreader::parseMaterial(char* data, unsigned int& position, c
 
     if (std::string{textureName} != "[none]") {
        // Load texture from assets path
-       Texture* t = new Texture{ textureName, std::string{textureDir} + std::string{textureName} };
+       Texture* t = new Texture2D{ textureName, std::string{textureDir} + std::string{textureName} };
        material->setTexture(t);
     }
 

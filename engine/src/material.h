@@ -2,7 +2,7 @@
 
 #include "lib.h"
 #include "object.h"
-#include "texture.h"
+#include "texture2D.h"
 
 #include <iostream>
 

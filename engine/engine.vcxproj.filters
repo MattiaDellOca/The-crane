@@ -138,6 +138,9 @@
     <ClCompile Include="src\shader.SkyboxPassthroughVertex.cpp">
       <Filter>Source Files\src\shaders</Filter>
     </ClCompile>
+    <ClCompile Include="src\texture2D.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cameraType.h">
@@ -214,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="src\leapMotion.h">
       <Filter>Header Files\src\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\texture2D.h">
+      <Filter>Header Files\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

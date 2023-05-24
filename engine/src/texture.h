@@ -94,13 +94,12 @@ public:
     */
     Texture& operator=(Texture o) = delete;
 
-
     /**
      * \brief Renders the texture.
      *
      * \param coords UNUSED.
      */
-    virtual void render(glm::mat4 coords) override;
+    virtual void render(glm::mat4 coords) override = 0;
     
     /**
      * \brief Sets the filter and mipmap to use when rendering textures.
@@ -128,30 +127,14 @@ public:
      * \brief Disables anisotropic filtering for textures.
      */
     static void disableAnisotropicFiltering();
-private:
+protected:
+
     /**
      * \brief Loads a texture either from an image file or by using the default one.
      *
      * \param textureId A pointer to the texture ID to store the result.
      */
-    void loadTexture(unsigned int* textureId);
-
-    /**
-     * \brief Generate a whyte 1x1 texture to use as default.
-     */
-    void generateDefaultTexture();
-
-    /**
-    * \var m_textures
-    * Static list of pointers to all the created Texture objects. 
-    */
-    static std::vector<Texture*> m_textures;
-
-    /**
-     * \var m_default_texture_id
-     * The ID of the default texture.
-     */
-    static unsigned int m_default_texture_id;
+    virtual void loadTexture(unsigned int* textureId) = 0;
 
     /**
     * \var m_reload_request
@@ -164,6 +147,12 @@ private:
      * The ID of the texture.
      */
     unsigned int m_texture_id;
+
+    /**
+    * \var m_textures
+    * Static list of pointers to all the created Texture objects.
+    */
+    static std::vector<Texture*> m_textures;
 
     /**
      * \var m_file_path
