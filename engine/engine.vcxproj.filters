@@ -37,6 +37,9 @@
     <Filter Include="Header Files\src\utilities">
       <UniqueIdentifier>{9be82b27-d22a-4019-bbcb-37dca1af741f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\shaders">
+      <UniqueIdentifier>{e0776eb2-1830-42e2-b82d-62c919b4fbf5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\directionalLight.cpp">
@@ -107,6 +110,33 @@
     </ClCompile>
     <ClCompile Include="src\leapMotion.cpp">
       <Filter>Source Files\src\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader.fragmentDirectionalLight.cpp">
+      <Filter>Source Files\src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader.fragmentOmniDirectionalLight.cpp">
+      <Filter>Source Files\src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader.fragmentSpotLight.cpp">
+      <Filter>Source Files\src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader.leapFragment.cpp">
+      <Filter>Source Files\src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader.leapVertex.cpp">
+      <Filter>Source Files\src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader.passthroughFragment.cpp">
+      <Filter>Source Files\src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader.passthroughVertex.cpp">
+      <Filter>Source Files\src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader.SkyboxPassthroughFragment.cpp">
+      <Filter>Source Files\src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shader.SkyboxPassthroughVertex.cpp">
+      <Filter>Source Files\src\shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,5 +220,10 @@
     <ClInclude Include="src\skybox.h">
       <Filter>Header Files\src\utilities</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\shader.vertex.cpp">
+      <Filter>Source Files\src\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
