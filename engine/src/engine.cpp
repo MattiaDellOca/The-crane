@@ -189,8 +189,6 @@ void Engine::reshapeCallback(int width, int height) {
 		glViewport(0, 0, width, height);
 
 	}
-
-
 }
 
 void LIB_API Engine::timerCallback(int value) {
@@ -481,7 +479,7 @@ void LIB_API Engine::disableGouraund() {
 */
 void LIB_API Engine::swapBuffers() {
 	// Swap back buffer <-> front buffer
-	//glutSwapBuffers();
+	glutSwapBuffers();
 }
 
 bool LIB_API Engine::free()
@@ -518,13 +516,12 @@ void LIB_API Engine::render(PerspectiveCamera* camera) {
 	else {
 		// Start rendering
 		if (m_scene_graph != nullptr) {
-			// Clear rendering list
+			// Populate rendering list
 			m_rendering_list->clear();
-			// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
-			// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
 			m_rendering_list->pass(m_scene_graph, glm::mat4(1));
-			// Render
 			m_rendering_list->m_camera = m_curr_3Dcamera;
+
+			// Render
 			m_rendering_list->render(m_curr_3Dcamera->getMatrix());
 
 			ShaderManager::setActiveShader("Skybox Passthrough Program Shader");
@@ -575,12 +572,9 @@ void LIB_API Engine::stereoscopicRender() {
 
 		// Start rendering the scene
 		if (m_scene_graph != nullptr) {
-			// Clear rendering list
+			// Populate rendering list
 			m_rendering_list->clear();
-			// Popolate rendering list: the second parameter is an idetity matrix because the "pass" function is recursive and
-			// need the matrix of the parent node when rendering its child. Since "root" has no parent, pass an identity matrix instead
 			m_rendering_list->pass(m_scene_graph, glm::mat4(1));
-			// Render
 			m_rendering_list->m_camera = m_curr_3Dcamera;
 			m_rendering_list->m_skybox = m_skybox;
 			m_rendering_list->render(m_curr_3Dcamera->getMatrix());
@@ -661,7 +655,6 @@ void LIB_API Engine::setMouseWheelFunction(void (*callback)(int, int, int, int))
 void LIB_API Engine::setMouseMotionFunction(void (*callback)(int, int)) {
 	glutPassiveMotionFunc(callback);
 }
-
 
 void LIB_API Engine::setTimerFunction(void (*callback)(int)) {
 	userTimerCallback = callback;

@@ -39,7 +39,7 @@ Node* container2;
 const float heightContainer = 3.538f;
 Node* plane;
 Node* cabine;
-Node* cameraVRObj;
+Node* cameraVRPlaceholder;
 
 // Rendering type
 std::string renderingType;
@@ -59,12 +59,12 @@ float movementTrolleyCount = 0;
 // settings flags
 bool isWireframe = false;
 bool isGouraund = true;
-bool isColliding = false;
+bool timerFlag = true;
 
 // Range of movement
 const float minTrolley = -50;
 const float maxTrolley = 6;
-const float maxExtensionsCable = 50;
+const float maxExtensionsCable = 47.5;
 
 // FPS
 int fps = 0;
@@ -83,9 +83,6 @@ void display() {
 
 	// Increment frame
 	frames++;
-
-	// Swap buffers to show rendered image
-	Engine::swapBuffers();
 }
 
 void moveCableUp() {
@@ -120,20 +117,10 @@ void moveCableDown() {
 
 void rotateCounterclockwise() {
 	slewingUnit->setMatrix(glm::rotate(slewingUnit->getMatrix(), glm::radians(craneRotationSpeed), glm::vec3(0.0f, 1.f, 0.f)));
-
-	if (renderingType == "Stereoscopic") {
-		// set xyz of the camera3D equal to the xyz of cameraVR
-		//camera3D->setMatrix(cameraVRObj->getWorldCoordinateMatrix());
-	}
 }
 
 void rotateClockwise() {
 	slewingUnit->setMatrix(glm::rotate(slewingUnit->getMatrix(), glm::radians(-craneRotationSpeed), glm::vec3(0.0f, 1.f, 0.f)));
-
-	if (renderingType == "Stereoscopic") {
-		// set xyz of the camera3D equal to the xyz of cameraVR
-		camera3D->setMatrix(cameraVRObj->getWorldCoordinateMatrix());
-	}
 }
 
 void moveTrolleyForward() {
@@ -153,6 +140,11 @@ void moveTrolleyBackward() {
 }
 
 void hookContainer() {
+	// If function has been called recently, ignore the call
+	if (!timerFlag)
+		return;
+
+	timerFlag = false;
 	if (!hooked) {
 		// hook one of the containers
 
@@ -239,8 +231,10 @@ void keyboardCallback(unsigned char key, int x, int y) {
 		isGouraund = !isGouraund;
 	}
 	else if (key == 'c') {
-		currentCamera->getNext()->getCamera()->updateWindowSize(currentCamera->getCamera()->getWidth(), currentCamera->getCamera()->getHeight());
-		currentCamera = currentCamera->getNext();
+		if (currentCamera->getNext() != nullptr) {
+			currentCamera->getNext()->getCamera()->updateWindowSize(currentCamera->getCamera()->getWidth(), currentCamera->getCamera()->getHeight());
+			currentCamera = currentCamera->getNext();
+		}
 	}
 
 	else if (key == 'g') {
@@ -294,9 +288,11 @@ void keyboardCallback(unsigned char key, int x, int y) {
 		}
 	}
 
-	// Update cameras coordinate
-	camera3DHook->setMatrix(glm::rotate(hook->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(-1.0f, 0.f, 0.f)) * glm::rotate(glm::mat4(1.0f), glm::radians(90.f), glm::vec3(0.0f, 0.0f, -1.0f)) * glm::translate(glm::mat4(1.0f), glm::vec3(0, 0.5f, 0.5f)));
-	camera3DCabine->setMatrix(glm::rotate(cameraVRObj->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(0.0f, -1.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(-1.0f, 0.0f, 0.0f)));
+	if (renderingType == "Standard") {
+		// Update cameras coordinate
+		camera3DHook->setMatrix(glm::rotate(hook->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(-1.0f, 0.f, 0.f)) * glm::rotate(glm::mat4(1.0f), glm::radians(90.f), glm::vec3(0.0f, 0.0f, -1.0f)) * glm::translate(glm::mat4(1.0f), glm::vec3(0, 0.5f, 0.5f)));
+		camera3DCabine->setMatrix(glm::rotate(cameraVRPlaceholder->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(0.0f, -1.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(-1.0f, 0.0f, 0.0f)));
+	}
 }
 
 void specialKeyboardCallback(int key, int mouseX, int mouseY) {
@@ -326,6 +322,7 @@ void specialKeyboardCallback(int key, int mouseX, int mouseY) {
 void timerCallback(int value) {
 	fps = frames;
 	frames = 0;
+	timerFlag = true;
 
 	cout << "[CRANE]: FPS = " << fps << endl;
 }
@@ -336,23 +333,10 @@ void collisionCallback(void* data) {
 
 	for (const auto& pair : commands) {
 		glm::mat4 wc = pair.first->getWorldCoordinateMatrix();
+		// If there is a collision with a button, execute related command
 		if (glm::distance(wc[3], matrix[3]) < pair.first->getRadius()) {
-			// If it's colliding with the hook button for the first time, execute command
-			if (!isColliding && pair.first->getName() == "HookContainer") {
-				isColliding = true;
-			}
-			else if (isColliding && pair.first->getName() == "HookContainer") {
-				// If it's collising with the hook button and it's not the first time, ignore
-				break;
-			}
 			pair.second();
 		}
-
-	}
-
-	// If the collision has exited, register it
-	if (isColliding && glm::distance(hookButton->getWorldCoordinateMatrix()[3], matrix[3]) > hookButton->getRadius()) {
-		isColliding = false;
 	}
 }
 
@@ -368,13 +352,7 @@ int main(int argc, char* argv[]) {
 	// Initialize Engine
 	Engine::init("CRANE - An OpenGL crane simulator", 650, 650, &argc, argv, renderingType);
 	Engine::setKeyboardFunction(keyboardCallback);
-
-	if (renderingType != "Stereoscopic") {
-		Engine::setSpecialKeyboardFunction(specialKeyboardCallback);
-	}
-
-	Engine::setTimerFunction(timerCallback);  // Set up timer
-
+	Engine::setTimerFunction(timerCallback); 
 	Engine::setBackgroundColor(0.647f, 0.898f, 1.0f);
 
 	// Create graphics profile
@@ -400,7 +378,7 @@ int main(int argc, char* argv[]) {
 	container2 = Engine::getNode("Container2");
 	plane = Engine::getNode("Plane");
 	cabine = Engine::getNode("Cabine");
-	cameraVRObj = Engine::getNode("PlaceholderCameraVR");
+	cameraVRPlaceholder = Engine::getNode("PlaceholderCameraVR");
 
 	// Populate commands
 	Mesh* hookUp = static_cast<Mesh*>(Engine::getNode("HookUp"));
@@ -424,38 +402,31 @@ int main(int argc, char* argv[]) {
 	// Set player height
 	Engine::setPlayerHeight(0.0f);
 
-	// Main camera
 	if (renderingType == "Stereoscopic") {
-		// The cameraVR is an object in the scene placed where the VR camera should be
+		// Populate cameras list
+		camera3D = new PerspectiveCamera{ "Main camera", glm::mat4(1) , width, height, near, far, fov};
+		camera3D->setParent(cameraVRPlaceholder);
+		currentCamera = new CameraNode{ camera3D, nullptr };
 
-		glm::mat4 cameraVRWrldCoor = cameraVRObj->getWorldCoordinateMatrix();
-
-		// Mantain only translation
-		glm::vec3 cameraVRWrldCoorXYZ = glm::vec3(cameraVRWrldCoor[3][0], cameraVRWrldCoor[3][1], cameraVRWrldCoor[3][2]);
-
-		// create a mat4 identity with xyz of cameraVR
-		glm::mat4 startCameraCoordinateStereoscopic = glm::translate(glm::mat4(1.0f), cameraVRWrldCoorXYZ);
-
-		camera3D = new PerspectiveCamera{ "Main camera",startCameraCoordinateStereoscopic , width, height, near, far, fov };
-		camera3D->setParent(cameraVRObj);
+		// Callbacks
+		Engine::setCollisionCallback(reinterpret_cast<void (*)(void*)>(collisionCallback));
 	}
 	else {
+		// Populate cameras list
 		camera3D = new PerspectiveCamera{ "Main camera", startCameraCoordinateStandard, width, height, near, far, fov };
+		camera3DHook = new PerspectiveCamera{ "Hook camera", glm::rotate(hook->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(-1.0f, 0.f, 0.f)) * glm::rotate(glm::mat4(1.0f), glm::radians(90.f), glm::vec3(0.0f, 0.0f, -1.0f)) * glm::translate(glm::mat4(1.0f), glm::vec3(0, 0.5f, 0.5f)), width, height, near, far, fov };
+		hook->addChild(camera3DHook);
+		camera3DCabine = new PerspectiveCamera{ "Cabine camera", glm::rotate(cameraVRPlaceholder->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(0.0f, -1.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(-1.0f, 0.0f, 0.0f)), width, height, near, far, fov };
+		cabine->addChild(camera3DCabine);
+
+		// Populate cameras list
+		currentCamera = new CameraNode{ camera3D, nullptr };
+		CameraNode* thirdCamera = new CameraNode{ camera3DCabine, currentCamera };
+		CameraNode* secondCamera = new CameraNode{ camera3DHook, thirdCamera };
+		currentCamera->setNext(secondCamera);
+
+		Engine::setSpecialKeyboardFunction(specialKeyboardCallback);
 	}
-
-	// Additional cameras
-	camera3DHook = new PerspectiveCamera{ "Hook camera", glm::rotate(hook->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(-1.0f, 0.f, 0.f)) * glm::rotate(glm::mat4(1.0f), glm::radians(90.f), glm::vec3(0.0f, 0.0f, -1.0f)) * glm::translate(glm::mat4(1.0f), glm::vec3(0, 0.5f, 0.5f)), width, height, near, far, fov};
-	hook->addChild(camera3DHook);
-
-	// Calculate cabine matrix
-	camera3DCabine = new PerspectiveCamera{ "Cabine camera", glm::rotate(cameraVRObj->getWorldCoordinateMatrix(), glm::radians(90.f), glm::vec3(0.0f, -1.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), glm::radians(30.0f), glm::vec3(-1.0f, 0.0f, 0.0f)), width, height, near, far, fov };
-	cabine->addChild(camera3DCabine);
-
-	// Populate cameras list
-	currentCamera = new CameraNode{ camera3D, nullptr };
-	CameraNode* thirdCamera = new CameraNode{ camera3DCabine, currentCamera };
-	CameraNode* secondCamera = new CameraNode{ camera3DHook, thirdCamera };
-	currentCamera->setNext(secondCamera);
 
 	std::string cubemapNames[6] = {
 		"posx.jpg",
@@ -466,8 +437,6 @@ int main(int argc, char* argv[]) {
 		"negz.jpg"
 	};
 	Engine::loadSkybox("../assets/skybox/", cubemapNames);
-
-	Engine::setCollisionCallback(reinterpret_cast<void (*)(void*)>(collisionCallback));
 
 	// Start rendering some figures..
 	Engine::run(display);
