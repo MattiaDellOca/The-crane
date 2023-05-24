@@ -895,8 +895,8 @@ void LIB_API Engine::stereoscopicRender() {
 	// Update user position:
 	m_ovr->update();
 	glm::mat4 headPos = m_ovr->getModelviewMatrix();
-
-	// Update camera position mantaining xyz position and using the head rotation
+	
+	 // Update camera position mantaining xyz position and using the head rotation
 	glm::mat4 realPos = headPos;
 	
 	// Get the real position of the camera taking in consideration camera and head position
@@ -905,6 +905,7 @@ void LIB_API Engine::stereoscopicRender() {
 
 	// translate realPos down by the height of the player
 	realPos[3][1] -= m_playerHeight;
+	
 
 	for (int c = 0; c < m_ovr->EYE_LAST; c++) {
 		// Get OpenVR matrices:
@@ -912,7 +913,9 @@ void LIB_API Engine::stereoscopicRender() {
 		glm::mat4 projMat = m_ovr->getProjMatrix(curEye, m_curr_3Dcamera->getNear(), m_curr_3Dcamera->getFar());
 		glm::mat4 eye2Head = m_ovr->getEye2HeadMatrix(curEye);
 
-		
+		// Update camera projection matrix
+		m_curr_3Dcamera->setPropertiesMatrix(projMat * glm::inverse(eye2Head));
+
 
 		// Render into this FBO:
 		fbo[c]->render();
