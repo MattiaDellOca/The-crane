@@ -1,18 +1,12 @@
 #include "texture2D.h"
 
-#include <cstring>
-#include <iostream>
-#include <stdexcept> 
 #include <GL/glew.h>
-#include <GL/freeglut.h>
 #include "FreeImage.h"
-
-#include <fstream>
 
 
 unsigned int Texture2D::m_default_texture_id = 0;
 
-LIB_API Texture2D::Texture2D(const std::string& name, const std::string& file_path) : Texture(name, file_path) {
+LIB_API Texture2D::Texture2D(const std::string& name, const std::string& file_path) : Texture(name), m_file_path{ file_path } {
 	if (!m_default_texture_id)
 		generateDefaultTexture();
 

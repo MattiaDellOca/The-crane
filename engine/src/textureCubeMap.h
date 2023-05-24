@@ -3,32 +3,33 @@
 #include "texture.h"
 
 /**
- * \class Texture2D
- * \brief A class for rendering 2D textures.
+ * \class TextureCubeMap
+ * \brief A class for rendering cube map textures.
  *
- * The Texture2D is derived from the Texture class
+ * The TextureCubeMap is derived from the Texture class
  */
-class LIB_API Texture2D : public Texture {
+class LIB_API TextureCubeMap : public Texture {
 public:
     /**
-     * \brief Constructor for the Texture2D class.
+     * \brief Constructor for the TextureCubeMap class.
      *
      * \param name The name of the texture.
-     * \param file_path The path to the image file to use for the texture.
+     * \param dir_path The path to the directory containing the textures.
+     * \param cubemapNames The names of the image files used for the textures.
      */
-    Texture2D(const std::string& name, const std::string& file_path);
+    TextureCubeMap(const std::string& name, const std::string& dir_path, const std::string* cubemapNames);
 
     /**
     * \brief Deconstructor.
     */
-    ~Texture2D();
+    ~TextureCubeMap();
 
     /**
    * \brief Copy constructor for the Texture2D class.
    *
    * \param o The Texture2D object to copy.
    */
-    Texture2D(const Texture2D& o) = delete;
+    TextureCubeMap(const TextureCubeMap& o) = delete;
 
     /**
     * \brief Copy assignment operator for the Texture2D class.
@@ -36,14 +37,14 @@ public:
     * \param o The Texture2D object to copy.
     * \returns A reference to the Texture2D object.
     */
-    Texture2D& operator=(const Texture2D& o) = delete;
+    TextureCubeMap& operator=(const TextureCubeMap& o) = delete;
 
     /**
     * \brief Move constructor for the Texture2D class.
     *
     * \param o The Texture2D object to move.
     */
-    Texture2D(Texture2D&& o) = delete;
+    TextureCubeMap(TextureCubeMap&& o) = delete;
 
     /**
     * \brief move assignment operator for the Texture2D class.
@@ -51,7 +52,7 @@ public:
     * \param o The Texture2D object to move.
     * \returns A reference to the Texture2D object.
     */
-    Texture2D& operator=(Texture2D o) = delete;
+    TextureCubeMap& operator=(TextureCubeMap o) = delete;
 
 
     /**
@@ -69,19 +70,14 @@ private:
     void loadTexture(unsigned int* textureId) override;
 
     /**
-     * \brief Generate a whyte 1x1 texture to use as default.
+     * \var m_textures_path
+     * The path to the directory containing the textures.
      */
-    void generateDefaultTexture();
+    std::string m_dir_path;
 
     /**
-     * \var m_file_path
-     * The path to the image file used for the texture.
+     * \var m_cubemap_names
+     * The names of the image files used for the textures.
      */
-    std::string m_file_path;
-
-    /**
-     * \var m_default_texture_id
-     * The ID of the default texture.
-     */
-    static unsigned int m_default_texture_id;
+    std::string m_cubemap_names[6];
 };

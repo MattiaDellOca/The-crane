@@ -141,6 +141,9 @@
     <ClCompile Include="src\texture2D.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
+    <ClCompile Include="src\textureCubeMap.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cameraType.h">
@@ -219,6 +222,9 @@
       <Filter>Header Files\src\utilities</Filter>
     </ClInclude>
     <ClInclude Include="src\texture2D.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\textureCubeMap.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
   </ItemGroup>

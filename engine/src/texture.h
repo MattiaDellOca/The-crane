@@ -1,8 +1,11 @@
 #pragma once
 
 #include "lib.h"
-#include "object.h" // include the header for the Object class
+#include "object.h" 
+#include <fstream>
+#include <iostream>
 #include <vector>
+#include <stdexcept> 
 
 /**
  * \def GL_TEXTURE_MAX_ANISOTROPY_EXT
@@ -55,9 +58,8 @@ public:
      * \brief Constructor for the Texture class.
      *
      * \param name The name of the texture.
-     * \param file_path The path to the image file to use for the texture.
      */
-    Texture(const std::string& name, const std::string& file_path);
+    Texture(const std::string& name);
 
     /**
     * \brief Deconstructor.
@@ -153,12 +155,6 @@ protected:
     * Static list of pointers to all the created Texture objects.
     */
     static std::vector<Texture*> m_textures;
-
-    /**
-     * \var m_file_path
-     * The path to the image file used for the texture.
-     */
-    std::string m_file_path;
 
     /**
      * \var m_loaded

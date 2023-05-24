@@ -4,6 +4,7 @@
 #include "node.h"
 #include "shader.h"
 #include "shaderManager.h"
+#include "textureCubeMap.h"
 
 // GLM:
 #include <glm/glm.hpp>
@@ -18,9 +19,7 @@ private:
 	unsigned int m_vao = 0;
 
     // Textures:
-    unsigned int m_cubemap_id;
-    std::string m_textures_path;
-    std::string m_cubemap_names[6];
+    TextureCubeMap* texture;
 
     /**
     * \brief Instantiate VAO for cube

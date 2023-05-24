@@ -1,13 +1,6 @@
 #include "texture.h"
 
-#include <cstring>
-#include <iostream>
-#include <stdexcept> 
 #include <GL/glew.h>
-#include <GL/freeglut.h>
-#include "FreeImage.h"
-
-#include <fstream>
 
 Filter LIB_API Texture::m_settings_filter = Filter::NEAREST;
 TextureMipmap LIB_API Texture::m_settings_mipmap = TextureMipmap::_DISABLED;
@@ -15,7 +8,7 @@ TextureWrap LIB_API Texture::m_settings_wrap = TextureWrap::REPEAT;
 bool LIB_API Texture::m_settings_dirty = false;
 std::vector<Texture*> LIB_API Texture::m_textures{};
 
-LIB_API Texture::Texture(const std::string& name, const std::string& file_path) : Object(name), m_file_path(file_path), m_loaded{ false } {
+LIB_API Texture::Texture(const std::string& name) : Object(name), m_loaded{ false } {
 	// Lazy loading of textures
 	m_loaded = false;
 

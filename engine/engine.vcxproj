@@ -128,6 +128,7 @@ xcopy ..\dependencies\leap\bin\x64\LeapC.dll "$(OutDir)" /Y &gt; nul</Command>
     <ClCompile Include="src\spotLight.cpp" />
     <ClCompile Include="src\texture.cpp" />
     <ClCompile Include="src\texture2D.cpp" />
+    <ClCompile Include="src\textureCubeMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
@@ -157,6 +158,7 @@ xcopy ..\dependencies\leap\bin\x64\LeapC.dll "$(OutDir)" /Y &gt; nul</Command>
     <ClInclude Include="src\spotLight.h" />
     <ClInclude Include="src\texture.h" />
     <ClInclude Include="src\texture2D.h" />
+    <ClInclude Include="src\textureCubeMap.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shader.vertex.cpp" />
