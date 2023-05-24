@@ -184,16 +184,16 @@ void LIB_API Leap::render(glm::mat4 cameraMatrix) {
     for (unsigned int h = 0; h < l->nHands; h++)
     {
         LEAP_HAND hand = l->pHands[h];
-        glm::mat4 wc;
+        glm::mat4 ec;
 
         // Distance from eye to hands
-        glm::mat4 f = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -300.0f, -500.0f) * scale);
+        glm::mat4 f = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -300.0f, -600.0f) * scale);
 
         shader->setVec3(shader->getParamLocation("color"), glm::vec3((float)h, (float)(1 - h), 0.5f));
 
         // Elbow:
         glm::mat4 c = glm::translate(glm::mat4(1.0f), glm::vec3(hand.arm.prev_joint.x, hand.arm.prev_joint.y, hand.arm.prev_joint.z) * scale);
-        shader->setMatrix(shader->getParamLocation("modelview"), f * c);    // wc = cameraInverse * cameraMatrix * f * c -> f * c
+        shader->setMatrix(shader->getParamLocation("modelview"), f * c);    // eyeCoordinates = cameraInverse * cameraMatrix * f * c -> f * c
         glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
 
         // Wrist:
@@ -219,8 +219,8 @@ void LIB_API Leap::render(glm::mat4 cameraMatrix) {
                     c = glm::translate(glm::mat4(1.0f), glm::vec3(bone.next_joint.x, bone.next_joint.y, bone.next_joint.z) * scale);
                     shader->setMatrix(shader->getParamLocation("modelview"), f * c);
                     glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)m_vertices.size());
-                    wc = cameraMatrix * f * c;
-                    collision_callback(reinterpret_cast<void*>(&(wc)));
+                    ec = cameraMatrix * f * c;
+                    collision_callback(reinterpret_cast<void*>(&(ec)));
                     shader->setVec3(shader->getParamLocation("color"), glm::vec3((float)h, (float)(1 - h), 0.5f));
                 }
                 else {
