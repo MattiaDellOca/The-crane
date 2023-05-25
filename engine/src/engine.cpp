@@ -599,12 +599,12 @@ void LIB_API Engine::stereoscopicRender() {
 
 	passthroughShader->setMatrix(passthroughShader->getParamLocation("projection"), m_curr_2Dcamera->getProperties());
 	passthroughShader->setMatrix(passthroughShader->getParamLocation("modelview"), f);
-	passthroughShader->setVec4(passthroughShader->getParamLocation("color"), glm::vec4(1.0f, 0.0f, 0.0f, 0.0f));
+	passthroughShader->setVec4(passthroughShader->getParamLocation("color"), glm::vec4(1.0f, 1.0f, 1.0f, 0.0f));
 	m_quad->render(fboTexId[EYE_LEFT]);
 	// Do the same for the right "eye": 
 	f = glm::translate(glm::mat4(1.0f), glm::vec3(APP_WINDOWSIZEX / 2, 0.0f, 0.0f));
 	passthroughShader->setMatrix(passthroughShader->getParamLocation("modelview"), f);
-	passthroughShader->setVec4(passthroughShader->getParamLocation("color"), glm::vec4(0.0f, 1.0f, 1.0f, 0.0f));
+	passthroughShader->setVec4(passthroughShader->getParamLocation("color"), glm::vec4(1.0f, 1.0f, 1.0f, 0.0f));
 	m_quad->render(fboTexId[EYE_RIGHT]);
 }
 
