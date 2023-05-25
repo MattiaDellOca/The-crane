@@ -535,9 +535,6 @@ void LIB_API Engine::render(PerspectiveCamera* camera) {
 		}
 	}
 
-	// Swap buffers:
-	glutSwapBuffers();
-
 	// force refresh
 	glutPostWindowRedisplay(m_windowId);
 }
