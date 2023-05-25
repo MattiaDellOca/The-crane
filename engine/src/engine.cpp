@@ -101,30 +101,30 @@ void(*userTimerCallback)(int);
 // DLL MAIN //
 //////////////
 #ifdef _WINDOWS
-	#include <Windows.h>
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * DLL entry point. Avoid to rely on it for easier code portability (Linux doesn't use this method).
-	 * @param instDLL handle
-	 * @param reason reason
-	 * @param _reserved reserved
-	 * @return true on success, false on failure
-	 */
-	int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
+#include <Windows.h>
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ * DLL entry point. Avoid to rely on it for easier code portability (Linux doesn't use this method).
+ * @param instDLL handle
+ * @param reason reason
+ * @param _reserved reserved
+ * @return true on success, false on failure
+ */
+int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
+{
+	// Check use:
+	switch (reason)
 	{
-		// Check use:
-		switch (reason)
-		{
-			///////////////////////////
-		case DLL_PROCESS_ATTACH: //
-			break;
-			///////////////////////////
-		case DLL_PROCESS_DETACH: //
-			break;
-		}
-		// Done:
-		return true;
+		///////////////////////////
+	case DLL_PROCESS_ATTACH: //
+		break;
+		///////////////////////////
+	case DLL_PROCESS_DETACH: //
+		break;
 	}
+	// Done:
+	return true;
+}
 #endif
 
 #ifdef _DEBUG
@@ -165,7 +165,7 @@ Engine::~Engine() {
 }
 
 void Engine::reshapeCallback(int width, int height) {
-	if (m_renderType == "Stereoscopic"){
+	if (m_renderType == "Stereoscopic") {
 		// ... ignore the params, we want a fixed-size window
 		// (bad) trick to avoid window resizing:
 		if (width != APP_WINDOWSIZEX || height != APP_WINDOWSIZEY)
@@ -391,14 +391,10 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 		{
 			glGenTextures(1, &fboTexId[c]);
 			glBindTexture(GL_TEXTURE_2D, fboTexId[c]);
-			if (m_renderType == "Stereoscopic") {
-				int fboSizeX = m_ovr->getHmdIdealHorizRes();
-				int fboSizeY = m_ovr->getHmdIdealVertRes();
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, fboSizeX, fboSizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr); // GL_RGBA8 is IMPORTANT!!
-			}
-			else {
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, APP_FBOSIZEX, APP_FBOSIZEY, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-			}
+			int fboSizeX = m_ovr->getHmdIdealHorizRes();
+			int fboSizeY = m_ovr->getHmdIdealVertRes();
+
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, fboSizeX, fboSizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr); // GL_RGBA8 is IMPORTANT!!
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -406,14 +402,9 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 
 			fbo[c] = new Fbo("FBO" + c);
 			fbo[c]->bindTexture(0, Fbo::BIND_COLORTEXTURE, fboTexId[c]);
-			if (m_renderType == "Stereoscopic") {
-				int fboSizeX = m_ovr->getHmdIdealHorizRes();
-				int fboSizeY = m_ovr->getHmdIdealVertRes();
-				fbo[c]->bindRenderBuffer(1, Fbo::BIND_DEPTHBUFFER, fboSizeX, fboSizeY);
-			}
-			else {
-				fbo[c]->bindRenderBuffer(1, Fbo::BIND_DEPTHBUFFER, APP_FBOSIZEX, APP_FBOSIZEY);
-			}
+
+			fbo[c]->bindRenderBuffer(1, Fbo::BIND_DEPTHBUFFER, fboSizeX, fboSizeY);
+
 			if (!fbo[c]->isOk())
 				std::cout << "[ERROR] Invalid FBO" << std::endl;
 		}
@@ -424,17 +415,17 @@ bool LIB_API Engine::init(const char* title, unsigned int width, unsigned int he
 
 		Fbo::disable();
 		glViewport(0, 0, prevViewport[2], prevViewport[3]);
-	}
 
-	// Leap motion
-	m_leap = new Leap("Leapmotion", glm::mat4(1.0f));
-	if (!m_leap->init())
-	{
-		std::cout << "[ERROR] Unable to init Leap Motion" << std::endl;
-		delete m_leap;
-		return false;
+		// Leap motion
+		m_leap = new Leap("Leapmotion", glm::mat4(1.0f));
+		if (!m_leap->init())
+		{
+			std::cout << "[ERROR] Unable to init Leap Motion" << std::endl;
+			delete m_leap;
+			return false;
+		}
+		m_leap->buildHands();
 	}
-	m_leap->buildHands();
 
 	// Print information
 	std::cout << "OpenGL context" << std::endl;
@@ -494,12 +485,12 @@ bool LIB_API Engine::free()
 	// Delete shaders
 	ShaderManager::free();
 
-	// Delete ovr
-	if (m_renderType == "Stereoscopic")
+	if (m_renderType == "Stereoscopic") {
+		// Delete ovr
 		delete m_ovr;
-
-	// Delete leap
-	m_leap->free();
+		// Delete leap
+		m_leap->free();
+	}
 
 	// Done:
 	m_initFlag = false;
