@@ -161,6 +161,8 @@ xcopy ..\dependencies\leap\bin\x64\LeapC.dll "$(OutDir)" /Y &gt; nul</Command>
     <ClInclude Include="src\textureCubeMap.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagramReduced.cd" />
     <None Include="src\shader.vertex.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

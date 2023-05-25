@@ -237,5 +237,7 @@
     <None Include="src\shader.vertex.cpp">
       <Filter>Source Files\src\shaders</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagramReduced.cd" />
   </ItemGroup>
 </Project>
