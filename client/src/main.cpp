@@ -84,8 +84,7 @@ void display() {
 	// Increment frame
 	frames++;
 
-	if (renderingType == "Standard")
-		Engine::swapBuffers();
+	Engine::swapBuffers();
 }
 
 void moveCableUp() {
