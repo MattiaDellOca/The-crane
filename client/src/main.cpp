@@ -353,7 +353,6 @@ int main(int argc, char* argv[]) {
 
 	// Initialize Engine
 	Engine::init("CRANE - An OpenGL crane simulator", 650, 650, &argc, argv, renderingType);
-	Engine::setKeyboardFunction(keyboardCallback);
 	Engine::setTimerFunction(timerCallback); 
 	Engine::setBackgroundColor(0.647f, 0.898f, 1.0f);
 
@@ -427,6 +426,8 @@ int main(int argc, char* argv[]) {
 		CameraNode* secondCamera = new CameraNode{ camera3DHook, thirdCamera };
 		currentCamera->setNext(secondCamera);
 
+		// Callbacks
+		Engine::setKeyboardFunction(keyboardCallback);
 		Engine::setSpecialKeyboardFunction(specialKeyboardCallback);
 	}
 
